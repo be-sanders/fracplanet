@@ -224,8 +224,12 @@ and <code>-fn <em>font</em></code>.
 <h3>Render tab</h3>
 
 <p>
-  Options for OpenGL rendering appear on this tab.
-  Currently the only option is a tickbox to select wireframe rendering.
+  Options for OpenGL rendering appear on this tab, and the frame rate is also displayed.
+  Currently the only options are a tickbox to select wireframe rendering,
+  and another to select display-list rendering (the default is immediate mode).
+  Display list rendering is generally but not always faster (depends on your OpenGL implementation and graphics drivers).
+  The main reason display list is not enabled by default is that the application may pause for a long time
+  while OpenGL processes a list when it is first rendered.
 </p>
 
 <h3>About tab</h3>
