@@ -81,6 +81,12 @@ INSTALLS += executable
 executable.path = /usr/local/bin
 executable.files = fracplanet 
 
+######################################
+# Other stuff:
+# Disable implicit cast from QString to char*
+                                                                                QMAKE_CXXFLAGS_RELEASE += -DQT_NO_ASCII_CAST
+QMAKE_CXXFLAGS_DEBUG += -DQT_NO_ASCII_CAST
+
 #######################################
 # Make a .tar.gz
 #
