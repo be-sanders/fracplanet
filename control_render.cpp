@@ -41,9 +41,9 @@ ControlRender::ControlRender(QWidget* parent,ParametersRender* param)
 	  this,SLOT(setDisplayList(int))
 	  );
 
-  joystick_mouse=new QCheckBox("Joystick mouse",this);
+  joystick_mouse=new QCheckBox("Joystick mouse-Y (fly mode)",this);
   joystick_mouse->setChecked(parameters->joystick_mouse);
-  QToolTip::add(joystick_mouse,"Mouse functions as joystick in fly mode:\nmouse moved down/pulled-back pitches up.");
+  QToolTip::add(joystick_mouse,"Mouse y-axis functions as joystick in fly mode:\nmouse moved down/pulled-back pitches up.");
   connect(
 	  joystick_mouse,SIGNAL(stateChanged(int)),
 	  this,SLOT(setJoystickMouse(int))

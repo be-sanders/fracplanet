@@ -215,15 +215,6 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(lake_becomes_sea_spinbox,"The percentage of planetary surface which must be covered by a lake for it to be considered a sea");
 
-  new QLabel("Oceans & rivers emissive",grid_rivers);
-  oceans_and_rivers_emissive_spinbox=new QSpinBox(0,100,10,grid_rivers);
-  oceans_and_rivers_emissive_spinbox->setValue((uint)(100.0*parameters->oceans_and_rivers_emissive));
-  connect(
-	  oceans_and_rivers_emissive_spinbox,SIGNAL(valueChanged(int)),
-	  this,SLOT(setOceansAndRiversEmissive(int))
-	  );
-  QToolTip::add(oceans_and_rivers_emissive_spinbox,"Percentage of ocean and river colour which is emissive");
- 
   QGrid*const grid_colours=new QGrid(2,Qt::Horizontal,tab_colours);
   
   colour_ocean_button=new QPushButton(build_icon_of_colour(parameters->colour_ocean),"Ocean",grid_colours);
@@ -257,6 +248,15 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  this,SLOT(pickColourHigh())
 	  );
 
+  new QLabel("Oceans & rivers emissive",grid_colours);
+  oceans_and_rivers_emissive_spinbox=new QSpinBox(0,100,10,grid_colours);
+  oceans_and_rivers_emissive_spinbox->setValue((uint)(100.0*parameters->oceans_and_rivers_emissive));
+  connect(
+	  oceans_and_rivers_emissive_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setOceansAndRiversEmissive(int))
+	  );
+  QToolTip::add(oceans_and_rivers_emissive_spinbox,"Percentage of ocean and river colour which is emissive");
+ 
   regenerate_button=new QPushButton("Regenerate",this);
   connect(
 	  regenerate_button,SIGNAL(clicked()),
