@@ -25,21 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   "Fracplanet" is an interactive tool for generating fractal planets and terrains.
   It can output the generated meshes to files suitable for use by POV-Ray.
 
-  \todo Figure out how to build RPMs.
-  \todo Add "flight simulator" mode to get in close.
-  \todo Add colour-chooser for picking terrain colours.
-  \todo Add Unix "man" page.
-  \todo Improve code documentation.
-
-  \section Known bugs
-  - I recently installed the newly released Nvidia drivers for RH8.0 (was using Mesa before), and this app now sometimes causes the whole screen to jitter left-right by perhaps one pixel.  It only seems to be a problem at high frame rates (low levels of subdivision).  The fact that it affects the whole screen suggests its not me, but then I can't see any similar problems in e.g the OpenGL screensavers.  Hmmm.
-
-  \section history History
-  This was written for fun after a year off from computing, just to check I could still find my way around emacs, C++, STL, linux, OpenGL, doxygen etc.
-
-  What did I learn ?  Well:
-    - Qt is wonderful, but it's a shame it looks so ugly amongst all my themed gtk windows.  Next time I write a GUI app I'll use gtkmm and see how it works out.
-    - Using emacs is like riding a bike; you never forget.  
+  \todo For new features to be added, se the TODO file.
  */
 
 #include <qapplication.h>
