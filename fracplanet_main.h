@@ -77,6 +77,7 @@ protected:
 
   QProgressDialog* progress_dialog;
 
+  bool startup;
  public:
   FracplanetMain(QWidget* parent);
   virtual ~FracplanetMain();

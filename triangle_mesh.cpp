@@ -85,12 +85,18 @@ void TriangleMesh::compute_vertex_normals()
   progress_complete("Normals computed");
 }
 
-void TriangleMesh::subdivide(const XYZ& variation)
+/*! level parameter is just for progress information
+ */
+void TriangleMesh::subdivide(const XYZ& variation,uint level)
 {
   const uint steps=vertices()+triangles();
   uint step=0;
 
-  progress_start(100,"Subdividing");
+  {
+    std::ostringstream msg;
+    msg << "Subdivision level " << level;
+    progress_start(100,msg.str());
+  }
   
   {
     // Make a copy of our data
@@ -176,9 +182,9 @@ void TriangleMesh::subdivide(uint subdivisions,uint flat_subdivisions,const XYZ&
   for (uint s=0;s<subdivisions;s++)
     {
       if (s<flat_subdivisions)
-	subdivide(XYZ(0.0,0.0,0.0));
+	subdivide(XYZ(0.0,0.0,0.0),s);
       else
-	subdivide(variation/(1<<s));
+	subdivide(variation/(1<<s),s);
     }
 }
 

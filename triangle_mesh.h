@@ -235,7 +235,7 @@ public:
   void compute_vertex_normals();
 
   //! Perform a single subdivision pass with perturbations up to the specified size
-  void subdivide(const XYZ& variation);
+  void subdivide(const XYZ& variation,uint level);
   
   //! Perform a number of subdivisions, possibly some unperturbed ("flat"), and halving the perturbation variation each iteration.
   void subdivide(uint subdivisions,uint flat_subdivisions,const XYZ& variation);
