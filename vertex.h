@@ -45,7 +45,7 @@ class Vertex
   ByteRGB _colour[2];
 
   //! Flag that this vertex should use emissive shading
-  uchar _emissive;
+  bool _emissive;
  public:
 
   //! Constructor.  NB No default values set.

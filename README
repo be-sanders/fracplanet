@@ -1,6 +1,5 @@
 ABOUT
 =====
-[This was the original "Project Purpose and Summarization" for sourceforge.]
 Software to generate random planets and terrain with oceans, mountains, icecaps and rivers.
 Parameters are specified interactively and the results displayed using OpenGL.
 The generated objects can be dumped in Pov-Ray format.
@@ -29,17 +28,37 @@ BUILDING
 ========
 This has only been tested on RH8 and RH9
 
-You should just be able to do
+Either use the traditional
+ ./configure
+ make
 
+Or just have both done for you by running 
   ./BUILD
-
-(All this does is a qmake followed by a make!)
+(which also adds $QTDIR/bin to the PATH while running the above commands;
+this may be useful on distros which don't have qmake in the default
+user path).
 
 This will give you a "fracplanet" executable which you can run with
   ./fracplanet
-or install where you like.
+or install where you like. 
 
-USING
+BUILD OPTIONS
+=============
+There are already some generally effective overrides for 
+Qt's fairly conservative (at least on RedHat) compile options 
+in the fracplanet.pro file (where QMAKE_CXXFLAGS_RELEASE is
+modified).  If you change them, do a "make distclean" before 
+you rebuild to make sure Makefiles are rebuilt. 
+
+The easiest way to get some additional CPU-specific optimisations
+is to use the configuration option:
+  ./configure <cpu>
+where <cpu> is p3,p4 or xp as appropriate e.g ./configure p4
+and rebuild from clean (again, "make distclean" is a good idea).
+Note that the ./BUILD script doesn't support this option; you have 
+to use configure and make. 
+
+USAGE
 =====
 User documentation is contained in fracplanet.htm
 If you just want to dive in all you need to know is this:
@@ -73,12 +92,6 @@ will attempt to install the executable in
 and some HTML user documentation (fracplanet.htm and fracplanet.css ) in 
   /usr/local/share/doc/fracplanet
 
-BUILDING CODE DOCUMENTATION
-===========================
-If you have doxygen (and graphviz) and want to build the code documentation
-subdirectory too, execute 
-  make doc
-
 RAY TRACING OUTPUT
 ==================
 Once you have run fracplanet and saved a planet/landscape 
@@ -87,17 +100,11 @@ Once you have run fracplanet and saved a planet/landscape
 Expect to get a lot of "determinant too small" messages, 
 especially when using high degrees of subdivision.
 
-CLEANING UP
-===========
-To clean up this directory, do
-  make clean
-which deletes everything except the doc directory.
-Do 
-  make realclean
-to get rid of everything including the doc directory.
-Do
-  make distclean
-to clean up qmake generated makefiles; useful after changing the .pro file.
+BUILDING CODE DOCUMENTATION
+===========================
+If you have doxygen (and graphviz) and want to build the code documentation
+subdirectory too, execute 
+  ./mkdoc
 
 THANKS
 ======
