@@ -1,3 +1,5 @@
+- Borrow some improvements from sister evolvotron project (e.g VERSION mechanism)
+- Check for OpenGL errors
 - Add emissive option for oceans and rivers.
 - Add control over heights at which colours switch.
 - Figure out how to build RPMs.
