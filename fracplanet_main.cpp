@@ -81,7 +81,7 @@ void FracplanetMain::progress_start(uint target,const std::string& info)
   progress_dialog->setLabelText(progress_info.c_str());
   progress_dialog->show();
 
-  last_step=-1;
+  last_step=static_cast<uint>(-1);
   
   QApplication::setOverrideCursor(Qt::WaitCursor);  
 
@@ -124,7 +124,7 @@ void FracplanetMain::progress_complete(const std::string& info)
 
   progress_dialog->setLabelText(info.c_str());
 
-  last_step=(uint)-1;
+  last_step=static_cast<uint>(-1);
 
   QApplication::restoreOverrideCursor();
 
