@@ -9,6 +9,7 @@ From release 0.0.3:
  - Save uses Qt file-picker dialog
  - Slider control of ambient
  - Amount of movement independent of FPS rate.
+ - Clean up bogus files in CVS
 
 From release 0.0.1:
  - Bump version number to 0.0.3 (0.0.2 omitted docs)
