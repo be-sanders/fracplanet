@@ -19,7 +19,6 @@ documentation.files = fracplanet.htm fracplanet.css
 QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -O3 -fomit-frame-pointer -funroll-loops -ffast-math 
 
-
 ##################
 # Architecture specific optimisations
 # The following architecture options make the compiled executables less portable.
