@@ -43,7 +43,7 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   tabs->setMinimumWidth(384);
 
   QTabWidget* tab_terrain=new QTabWidget(this);  
-  tabs->addTab(tab_terrain,"Landscape");
+  tabs->addTab(tab_terrain,"Terrain");
 
   //QVBox*const tab_terrain=new QVBox(tabs);
   //tabs->addTab(tab_terrain,"Landscape");
@@ -68,7 +68,7 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 
   object_type_button_group=new QHButtonGroup(tab_terrain_basics);
   object_type_planet_button=new QRadioButton("Planet",object_type_button_group);
-  object_type_terrain_button=new QRadioButton("Terrain",object_type_button_group);
+  object_type_terrain_button=new QRadioButton("Terrain area",object_type_button_group);
 
   switch (parameters->object_type)
     {
@@ -153,7 +153,7 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   QToolTip::add(noise_terms_spinbox,"Number of terms in added Perlin noise");
 
   noise_frequency_label=new QLabel("Noise frequency",grid_terrain_noise);
-  noise_frequency_spinbox=new QSpinBox(0,1000,1,grid_terrain_noise);
+  noise_frequency_spinbox=new QSpinBox(0,1000,10,grid_terrain_noise);
   noise_frequency_spinbox->setValue(static_cast<int>(100*parameters->noise_frequency));
   connect(
 	  noise_frequency_spinbox,SIGNAL(valueChanged(int)),
@@ -162,7 +162,7 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   QToolTip::add(noise_frequency_spinbox,"Frequency for Perlin noise 1st term");
 
   noise_amplitude_label=new QLabel("Noise amplitude",grid_terrain_noise);
-  noise_amplitude_spinbox=new QSpinBox(0,100,10,grid_terrain_noise);
+  noise_amplitude_spinbox=new QSpinBox(0,100,1,grid_terrain_noise);
   noise_amplitude_spinbox->setValue(static_cast<int>(100*parameters->noise_amplitude));  
   connect(
 	  noise_amplitude_spinbox,SIGNAL(valueChanged(int)),
@@ -171,13 +171,13 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   QToolTip::add(noise_amplitude_spinbox,"Amplitude for Perlin noise 1st term");
 
   noise_amplitude_decay_label=new QLabel("Noise amplitude decay rate",grid_terrain_noise);
-  noise_amplitude_decay_spinbox=new QSpinBox(0,100,1,grid_terrain_noise);
+  noise_amplitude_decay_spinbox=new QSpinBox(0,100,10,grid_terrain_noise);
   noise_amplitude_decay_spinbox->setValue(static_cast<int>(100*parameters->noise_amplitude_decay));  
   connect(
 	  noise_amplitude_decay_spinbox,SIGNAL(valueChanged(int)),
 	  this,SLOT(setNoiseAmplitudeDecay(int))
 	  );
-  QToolTip::add(noise_amplitude_decay_spinbox,"Amplitude decay rate for subsequent Perlin noise terms");
+  QToolTip::add(noise_amplitude_decay_spinbox,"Amplitude decay rate for subsequent Perlin noise terms\n(subsequent terms are this percentage amplitude of the previous term)");
 
   power_law_label=new QLabel("Power law:",grid_terrain_basics);
   power_law_spinbox=new QSpinBox(1,10000,10,grid_terrain_basics);

@@ -1,9 +1,13 @@
 - River generation may get stuck at high subdivisioon levels (>=9)
-  Suspect precision problems with height calculation
+  Suspect precision problems with height calculation.
+  On the other hand, sometimes it just takes a LONG time.
+  Too long; needs investigating; seems to be something to do with false
+  exits from lakes... the lake then has to be flooded again slightly higher
+  to discover an alternative exit.
 
 - If the viewer is maximised, then hidden and reshown by terrain regeneration,
   it seems to be impossible to un-maximise it (needs testing on more recent Qt/
   metacity than RH8).
 
-- Terrain (mostly) diappears when viewed from beneath.
+- Terrain Terrain (mostly) diappears when viewed from beneath.
   Nothing wrong with back-face culling, would be better to restrict tilt range.

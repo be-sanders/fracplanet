@@ -42,19 +42,19 @@ Or just have both done for you by running
 this may be useful on distros which don't have qmake in the default
 user path).
 
-NB In either case you do almost certainly do need your QTDIR 
+NB In either case you do almost certainly DO need your QTDIR 
 environment variable to be correctly defined.
 
 This will give you a "fracplanet" executable which you can run with
   ./fracplanet
 or install where you like. 
 
-[The author tests on RedHat8 & 9, and Debian testing (sarge).]
+[The author primarily uses Debian Sarge these days].
 
 BUILD OPTIONS
 =============
 There are already some generally effective overrides for 
-Qt's fairly conservative (at least on RedHat) compile options 
+Qt's usually fairly conservative compile options 
 in the fracplanet.pro file (where QMAKE_CXXFLAGS_RELEASE is
 modified).  If you change them, do a "make distclean" before 
 you rebuild to make sure Makefiles are rebuilt. 
@@ -95,7 +95,7 @@ On a 2.4GHz machine with a GeForce4 and the Nvidia OpenGL drivers display
 rates start to suffer around subdivision level 7.
 
 When generating many rivers at high levels of subdivision, the 
-river generation progress bar may stall for long periods 
+river generation progress bar may stall for LONG periods 
 (this is generally due to a large lake being formed somewhere).
 
 INSTALL
@@ -113,7 +113,7 @@ RAY TRACING OUTPUT
 Once you have run fracplanet and saved a planet/landscape 
 (as e.g terrain.pov and terrain.inc), do e.g
   povray -Q9 -geometry 768x576 terrain.pov
-Expect to get a lot of "determinant too small" messages, 
+Expect to get MANY "determinant too small" messages, 
 especially when using high degrees of subdivision.
 It takes POVRay a LOT longer to read large models than
 to render them, so make the most of it once it's loaded
@@ -134,4 +134,3 @@ For bug reports, feedback and patches:
   Tobias Klausmann 
   Frank Plohmann 
   Steve Roylance 
-

@@ -39,7 +39,7 @@ FracplanetMain::FracplanetMain(QWidget* parent)
 
   tab=new QTabWidget(vbox);
   
-  tab->addTab(control_terrain,"Terrain");
+  tab->addTab(control_terrain,"Create");
   tab->addTab(control_save,"Save");
   tab->addTab(control_render,"Render");
   tab->addTab(control_about,"About");

@@ -38,14 +38,15 @@ and <code>-fn <em>font</em></code>.
   The fracplanet GUI presents a tabbed controls area, a progress bar area and a 3D rendering window bordered by two sliders.
 </p>
 
-<h3>Terrain tab</h3>
+<h3>Create tab</h3>
 
 <p>
-  Note that none of the parameters adjustable on this tab have any effect on the displayed model until one of the &quot;Regenerate&quot; buttons is pressed.  This tab is now further subdivided into sub-tabs.
+  Note that none of the parameters adjustable on this tab have any effect on the displayed model until one of 
+  the &quot;Regenerate&quot; buttons is pressed.  This tab is now further subdivided into sub-tabs.
 
   <dl>
 
-    <dt>Planet/Terrain</dt>
+    <dt>Planet/Terrain area</dt>
     <dd>
       These radio buttons select the type of object to be created.
       Planet creates planets by subdividing an icosahedron.
@@ -79,7 +80,7 @@ and <code>-fn <em>font</em></code>.
       Specifies the maximum size of vertical perturbations at the first level of subdivision.
       The maximum perturbation size is then halved at each subsequent subdivision.
       Planets and terrain areas both have a nominal radius of 1.0, 
-      and the number here is divided by 1024 so if you specify a vertical variation of 128 you could get mountains which are on the order of 12.5 percent of the planet's radius high, or even larger if subsequent perturbations accumulate upwards at a point (of course suppressing initial large perturbations using the &quot;Unperturbed&quot; parameter will tend to reduce this).
+      and the number here is divided by 100 so if you specify a vertical variation of 12 you could get mountains which are on the order of 12 percent of the planet's radius high, or even larger if subsequent perturbations accumulate upwards at a point (of course suppressing initial large perturbations using the &quot;Unperturbed&quot; parameter will tend to reduce this).
       This is of course a ridiculous height for mountains on anything but an asteroid, but using realistic values will just produce very boring looking planets. 
     </dd>
   

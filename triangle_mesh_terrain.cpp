@@ -162,6 +162,8 @@ void TriangleMeshTerrain::do_rivers(const ParametersTerrain& parameters)
 	step++;
 	progress_step((100*step)/steps);
       
+	// TODO: Vertices to add should be sorted by height.
+	// Then when a rise in river level is forced, all the upstream points can be put back into the current set.
 	std::set<uint> vertices_to_add;
 
 	std::set<uint> current_vertices;
@@ -178,7 +180,7 @@ void TriangleMeshTerrain::do_rivers(const ParametersTerrain& parameters)
 	current_vertices.insert(source_vertex);
 	current_vertices_height=vertex_height(source_vertex);
 
-	while(1)
+	while(true)
 	  {
 	    std::multimap<float,uint> flow_candidates;
 	    bool reached_sea=false;
@@ -205,7 +207,7 @@ void TriangleMeshTerrain::do_rivers(const ParametersTerrain& parameters)
 	      }
 	    else if (current_vertices.size()>=maximum_lake_size)
 	      {
-		break;
+		break;  // Lake becomes an inland sea
 	      }
 	    else
 	      {
@@ -231,6 +233,7 @@ void TriangleMeshTerrain::do_rivers(const ParametersTerrain& parameters)
 		current_vertices.clear();
 		current_vertices.insert((*(flow_candidates.begin())).second);
 		current_vertices_height=(*(flow_candidates.begin())).first;
+		std::cerr<<"-";
 	      }
 	    else if ((*(flow_candidates.begin())).first<current_vertices_height+geometry().epsilon())  // Or expand across flat...
 	      {
@@ -241,16 +244,18 @@ void TriangleMeshTerrain::do_rivers(const ParametersTerrain& parameters)
 		  {
 		    current_vertices.insert((*(it_flat)).second);
 		  }
+		std::cerr<<"=";
 	      }
-	    else // Otherwise the water level must rise
+	    else // Otherwise the water level must rise to height of the lowest flow candidate 
 	      {
 		current_vertices.insert((*(flow_candidates.begin())).second);
-		current_vertices_height=(*(flow_candidates.begin())).first;
+		current_vertices_height=(*(flow_candidates.begin())).first+geometry().epsilon();   // Rise a bit more to avoid getting stuck due to precision.
 	      
 		for (std::set<uint>::const_iterator it=current_vertices.begin();it!=current_vertices.end();it++)
 		  {
 		    set_vertex_height(*it,current_vertices_height);
 		  }
+		std::cerr<<"+";
 	      }
 	  }
 	river_vertices.insert(vertices_to_add.begin(),vertices_to_add.end());
