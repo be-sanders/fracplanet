@@ -42,15 +42,19 @@ FracplanetMain::FracplanetMain(QWidget* parent)
   tab->addTab(control_render,"Render");
   tab->addTab(control_about,"About");
 
-  progress_box=new QGroupBox(2,Qt::Vertical,"Progress",vbox);
-  progress_label=new QLabel(progress_box);
-  progress_bar=new QProgressBar(progress_box);
+  progress_dialog=new QProgressDialog("Progress","Cancel",100);
+  progress_dialog->setCancelButton(0);
+  progress_dialog->setAutoClose(false); // Avoid it flashing on and off
+
+  //progress_box=new QGroupBox(2,Qt::Vertical,"Progress",vbox);
+  //progress_label=new QLabel(progress_box);
+  //progress_bar=new QProgressBar(progress_box);
 
   viewer=new TriangleMeshViewer(0,&parameters_render);     // Viewer will be a top-level-window
   viewer->resize(512,512);
   viewer->move(384,64);  // Moves view away from controls on most window managers
 
-  regenerate(); 
+  regenerate();
 
   raise();   // On app start-up the control panel is the most important thing (regenerate raises the viewer window).
 }
@@ -63,10 +67,11 @@ FracplanetMain::~FracplanetMain()
 
 void FracplanetMain::progress_start(uint target,const std::string& info)
 {
-  progress_label->setText(info.c_str());
-  progress_label->repaint();
-  progress_bar->setTotalSteps(target);
-  progress_bar->reset();
+  progress_dialog->setLabelText(info.c_str());
+  progress_dialog->setTotalSteps(target);
+  progress_dialog->reset();
+  progress_dialog->show();
+
   last_step=(uint)-1;
   
   QApplication::setOverrideCursor(Qt::WaitCursor);  
@@ -77,16 +82,17 @@ void FracplanetMain::progress_step(uint step)
   // We might be called lots of times with the same step.  Don't know if Qt handles this efficiently so check for it ourselves.
   if (step!=last_step)
     {
-      progress_bar->setProgress(step);
+      progress_dialog->setProgress(step);
       last_step=step;
     }
 }
 
 void FracplanetMain::progress_complete(const std::string& info)
 {
-  progress_label->setText(info.c_str());
-  progress_label->repaint();
-  progress_bar->reset();
+  progress_dialog->setLabelText(info.c_str());
+  progress_dialog->reset();
+  //progress_dialog->hide();  // Flashes on and off too much so leave it to end to hide.
+
   last_step=(uint)-1;
 
   QApplication::restoreOverrideCursor();
@@ -122,6 +128,7 @@ void FracplanetMain::regenerate()
 
   viewer->showNormal();
   viewer->raise();
+  progress_dialog->hide();
 }
 
 void FracplanetMain::save()

@@ -67,6 +67,12 @@ and rebuild from clean (again, "make distclean" is a good idea).
 I've no idea how much benefit these provide.
 You can also use these with the ./BUILD script e.g "./BUILD p4"
 
+BUILD PROBLEMS
+==============
+- For a Debian system with nvidia-glx it seems to be necessary to have
+nvidia-glx-dev installed when you build otherwise the application does
+not function properly.
+
 USAGE
 =====
 User documentation is contained in fracplanet.htm

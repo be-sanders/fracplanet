@@ -32,6 +32,7 @@ extern "C"
 #include <qhbox.h>
 #include <qvbox.h>
 #include <qlabel.h>
+#include <qprogressdialog.h>
 
 #include <iostream>
 
@@ -73,10 +74,8 @@ protected:
   QTabWidget* tab;
 
   uint last_step;
-  QGroupBox* progress_box;
-  QLabel* progress_label;
-  QProgressBar* progress_bar;
 
+  QProgressDialog* progress_dialog;
 
  public:
   FracplanetMain(QWidget* parent);
