@@ -79,7 +79,7 @@ class ControlSave : public QVBox
     }
   void setBasename(const QString& s)
     {
-      parameters->basename=s;
+      parameters->basename=s.local8Bit();
     }
 };
 
