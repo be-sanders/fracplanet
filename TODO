@@ -1,4 +1,6 @@
 - Fix river/lake hang for high subdivision levels
+- Option to add Perlin noise (might make rivers meander more)
+- More feedback when building display list
 - Borrow some improvements from sister evolvotron project
 - "man" page instead/besides HTML
 - Check for OpenGL errors
@@ -13,5 +15,4 @@
   (or be separate window, disappearing when not rendering?), with menus to access control dialogs.
 - Use Qt file dialog for save.
 - Clouds.
-- Option to add Perlin noise (might make rivers meander more)
 
