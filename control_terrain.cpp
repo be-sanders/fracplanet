@@ -39,11 +39,23 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
    ,parameters(param)
    ,regenerate_target(tgt)
 {
-  QTabWidget* tabs=new QTabWidget(this);
+  QTabWidget* tabs=new QTabWidget(this);      // Top level tab widget
   tabs->setMinimumWidth(384);
 
-  QVBox*const tab_terrain=new QVBox(tabs);
+  QTabWidget* tab_terrain=new QTabWidget(this);  
   tabs->addTab(tab_terrain,"Landscape");
+
+  //QVBox*const tab_terrain=new QVBox(tabs);
+  //tabs->addTab(tab_terrain,"Landscape");
+
+  QVBox*const tab_terrain_basics=new QVBox(tab_terrain);
+  tab_terrain->addTab(tab_terrain_basics,"Basics");
+
+  QVBox*const tab_terrain_subdivision=new QVBox(tab_terrain);
+  tab_terrain->addTab(tab_terrain_subdivision,"Subdivision");
+
+  QVBox*const tab_terrain_noise=new QVBox(tab_terrain);
+  tab_terrain->addTab(tab_terrain_noise,"Noise");
 
   QVBox*const tab_snow=new QVBox(tabs);
   tabs->addTab(tab_snow,"Snow");
@@ -54,7 +66,7 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   QVBox*const tab_colours=new QVBox(tabs);
   tabs->addTab(tab_colours,"Colours");
 
-  object_type_button_group=new QHButtonGroup(tab_terrain);
+  object_type_button_group=new QHButtonGroup(tab_terrain_basics);
   object_type_planet_button=new QRadioButton("Planet",object_type_button_group);
   object_type_terrain_button=new QRadioButton("Terrain",object_type_button_group);
 
@@ -73,56 +85,12 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  this,SLOT(setObjectType(int))
 	  );
 	  
-  QGrid*const grid_terrain=new QGrid(2,Qt::Horizontal,tab_terrain);
+  QGrid*const grid_terrain_basics=new QGrid(2,Qt::Horizontal,tab_terrain_basics);
+  QGrid*const grid_terrain_subdivision=new QGrid(2,Qt::Horizontal,tab_terrain_subdivision);
+  QGrid*const grid_terrain_noise=new QGrid(2,Qt::Horizontal,tab_terrain_noise);
 
-  subdivisions_seed_label=new QLabel("Perturbation seed:",grid_terrain);
-  subdivisions_seed_spinbox=new QSpinBox(0xffffffff,0x7fffffff,1,grid_terrain);
-  subdivisions_seed_spinbox->setValue(parameters->subdivisions_seed);
-  connect(
-	  subdivisions_seed_spinbox,SIGNAL(valueChanged(int)),
-	  this,SLOT(setSubdivisionsSeed(int))
-	  );
-  QToolTip::add(subdivisions_seed_spinbox,"The random seed for vertex perturbations.");
-
-  subdivisions_label=new QLabel("Subdivisions:",grid_terrain);
-  subdivisions_spinbox=new QSpinBox(0,16,1,grid_terrain);
-  subdivisions_spinbox->setValue(parameters->subdivisions);
-  connect(
-	  subdivisions_spinbox,SIGNAL(valueChanged(int)),
-	  this,SLOT(setSubdivisions(int))
-	  );
-  QToolTip::add(subdivisions_spinbox,"The number of times the initial structure will be subdivided.  WARNING: INCREASE SLOWLY!");
-
-  subdivisions_unperturbed_label=new QLabel("Unperturbed:",grid_terrain);
-  subdivisions_unperturbed_spinbox=new QSpinBox(0,16,1,grid_terrain);
-  subdivisions_unperturbed_spinbox->setValue(parameters->subdivisions_unperturbed);
-  connect(
-	  subdivisions_unperturbed_spinbox,SIGNAL(valueChanged(int)),
-	  this,SLOT(setSubdivisionsUnperturbed(int))
-	  );
-  QToolTip::add(subdivisions_unperturbed_spinbox,"The number of subdivisions which will be performed without perturbing vertices");
-
-
-  variation_vertical_label=new QLabel("Variation (vertical) (/1024):",grid_terrain);
-  variation_vertical_spinbox=new QSpinBox(0,256,1,grid_terrain);
-  variation_vertical_spinbox->setValue((int)(1024*parameters->variation.z));
-  connect(
-	  variation_vertical_spinbox,SIGNAL(valueChanged(int)),
-	  this,SLOT(setVariationVertical(int))
-	  );
-  QToolTip::add(variation_vertical_spinbox,"The magnitude of random height perturbations");
-
-  variation_horizontal_label=new QLabel("Variation (horizontal) (/1024):",grid_terrain);
-  variation_horizontal_spinbox=new QSpinBox(0,256,1,grid_terrain);
-  variation_horizontal_spinbox->setValue((int)(1024*parameters->variation.x));
-  connect(
-	  variation_horizontal_spinbox,SIGNAL(valueChanged(int)),
-	  this,SLOT(setVariationHorizontal(int))
-	  );
-  QToolTip::add(variation_horizontal_spinbox,"The magnitude of random horizontal perturbations");
-
-  base_height_label=new QLabel("Base land height (%):",grid_terrain);
-  base_height_spinbox=new QSpinBox(-100,100,10,grid_terrain);
+  base_height_label=new QLabel("Base land height (%):",grid_terrain_basics);
+  base_height_spinbox=new QSpinBox(-100,100,10,grid_terrain_basics);
   base_height_spinbox->setValue((uint)(100.0*parameters->base_height));
   connect(
 	  base_height_spinbox,SIGNAL(valueChanged(int)),
@@ -130,8 +98,89 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(base_height_spinbox,"The initial height of land relative to sea-level");
 
-  power_law_label=new QLabel("Power law:",grid_terrain);
-  power_law_spinbox=new QSpinBox(1,10000,10,grid_terrain);
+  terrain_seed_label=new QLabel("Terrain random seed:",grid_terrain_basics);
+  terrain_seed_spinbox=new QSpinBox(0xffffffff,0x7fffffff,1,grid_terrain_basics);
+  terrain_seed_spinbox->setValue(parameters->terrain_seed);
+  connect(
+	  terrain_seed_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setTerrainSeed(int))
+	  );
+  QToolTip::add(terrain_seed_spinbox,"The random seed for subdivision and noise.");
+
+  subdivisions_label=new QLabel("Subdivisions:",grid_terrain_subdivision);
+  subdivisions_spinbox=new QSpinBox(0,16,1,grid_terrain_subdivision);
+  subdivisions_spinbox->setValue(parameters->subdivisions);
+  connect(
+	  subdivisions_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setSubdivisions(int))
+	  );
+  QToolTip::add(subdivisions_spinbox,"The number of times the initial structure will be subdivided.\nWARNING: EACH STEP QUADRUPLES THE MEMORY REQUIREMENT!");
+
+  subdivisions_unperturbed_label=new QLabel("Unperturbed subdivisions:",grid_terrain_subdivision);
+  subdivisions_unperturbed_spinbox=new QSpinBox(0,16,1,grid_terrain_subdivision);
+  subdivisions_unperturbed_spinbox->setValue(parameters->subdivisions_unperturbed);
+  connect(
+	  subdivisions_unperturbed_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setSubdivisionsUnperturbed(int))
+	  );
+  QToolTip::add(subdivisions_unperturbed_spinbox,"The number of subdivisions which will be performed without perturbing vertices");
+
+  variation_vertical_label=new QLabel("Vertical perturbation :",grid_terrain_subdivision);
+  variation_vertical_spinbox=new QSpinBox(0,50,1,grid_terrain_subdivision);
+  variation_vertical_spinbox->setValue((int)(100*parameters->variation.z));
+  connect(
+	  variation_vertical_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setVariationVertical(int))
+	  );
+  QToolTip::add(variation_vertical_spinbox,"The magnitude of random height perturbations");
+
+  variation_horizontal_label=new QLabel("Horizontal perturbation:",grid_terrain_subdivision);
+  variation_horizontal_spinbox=new QSpinBox(0,25,1,grid_terrain_subdivision);
+  variation_horizontal_spinbox->setValue((int)(100*parameters->variation.x));
+  connect(
+	  variation_horizontal_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setVariationHorizontal(int))
+	  );
+  QToolTip::add(variation_horizontal_spinbox,"The magnitude of random horizontal perturbations");
+
+  noise_terms_label=new QLabel("Noise terms",grid_terrain_noise);
+  noise_terms_spinbox=new QSpinBox(0,10,1,grid_terrain_noise);
+  noise_terms_spinbox->setValue(parameters->noise_terms);
+  connect(
+	  noise_terms_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setNoiseTerms(int))
+	  );
+  QToolTip::add(noise_terms_spinbox,"Number of terms in added Perlin noise");
+
+  noise_frequency_label=new QLabel("Noise frequency",grid_terrain_noise);
+  noise_frequency_spinbox=new QSpinBox(0,1000,1,grid_terrain_noise);
+  noise_frequency_spinbox->setValue(static_cast<int>(100*parameters->noise_frequency));
+  connect(
+	  noise_frequency_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setNoiseFrequency(int))
+	  );
+  QToolTip::add(noise_frequency_spinbox,"Frequency for Perlin noise 1st term");
+
+  noise_amplitude_label=new QLabel("Noise amplitude",grid_terrain_noise);
+  noise_amplitude_spinbox=new QSpinBox(0,100,10,grid_terrain_noise);
+  noise_amplitude_spinbox->setValue(static_cast<int>(100*parameters->noise_amplitude));  
+  connect(
+	  noise_amplitude_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setNoiseAmplitude(int))
+	  );
+  QToolTip::add(noise_amplitude_spinbox,"Amplitude for Perlin noise 1st term");
+
+  noise_amplitude_decay_label=new QLabel("Noise amplitude decay rate",grid_terrain_noise);
+  noise_amplitude_decay_spinbox=new QSpinBox(0,100,1,grid_terrain_noise);
+  noise_amplitude_decay_spinbox->setValue(static_cast<int>(100*parameters->noise_amplitude_decay));  
+  connect(
+	  noise_amplitude_decay_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setNoiseAmplitudeDecay(int))
+	  );
+  QToolTip::add(noise_amplitude_decay_spinbox,"Amplitude decay rate for subsequent Perlin noise terms");
+
+  power_law_label=new QLabel("Power law:",grid_terrain_basics);
+  power_law_spinbox=new QSpinBox(1,10000,10,grid_terrain_basics);
   power_law_spinbox->setValue((int)(100*parameters->power_law));
   connect(
 	  power_law_spinbox,SIGNAL(valueChanged(int)),
@@ -269,7 +318,7 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  this,SLOT(regenerate_rivers_with_new_seed())
 	  );
 
-  regenerate_with_new_seed_button=new QPushButton("...with new perturbations seed",this);
+  regenerate_with_new_seed_button=new QPushButton("...with new terrain seed",this);
   connect(
 	  regenerate_with_new_seed_button,SIGNAL(clicked()),
 	  this,SLOT(regenerate_with_new_seed())
@@ -289,8 +338,8 @@ void ControlTerrain::regenerate_rivers_with_new_seed()
 
 void ControlTerrain::regenerate_with_new_seed()
 {
-  parameters->subdivisions_seed++;
-  subdivisions_seed_spinbox->setValue(parameters->subdivisions_seed);
+  parameters->terrain_seed++;
+  terrain_seed_spinbox->setValue(parameters->terrain_seed);
 
   regenerate_target->regenerate();
 }

@@ -23,11 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _control_about_h_
 #define _control_about_h_
 
-#include <qhbox.h>
 #include <qvbox.h>
-#include <qlabel.h>
-#include <qtextedit.h>
-
 #include "useful.h"
 
 //! Displays "About" type info
@@ -35,10 +31,6 @@ class ControlAbout : public QVBox
 {
  private:
   Q_OBJECT;
-
- protected:
-  QLabel* label;
-  QTextEdit* license;
 
  public:
   ControlAbout(QWidget* parent);

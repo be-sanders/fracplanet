@@ -38,8 +38,8 @@ public:
   typedef enum {ObjectTypePlanet,ObjectTypeTerrain} ObjectType;
   ObjectType object_type;
   
-  //! Random seed for subdivision perturbations.
-  uint subdivisions_seed;
+  //! Random seed for subdivision and noise.
+  uint terrain_seed;
 
   //! Number of subdivisions.
   uint subdivisions;
@@ -49,6 +49,18 @@ public:
   
   //! Maximum size of perturbations (z in vertical direction, x & y horizontally).
   XYZ variation;
+
+  //! Number of Perlin noise terms
+  uint noise_terms;
+
+  //! Frequency of 1st noise term
+  float noise_frequency;
+
+  //! Amplitude of 1st noise term
+  float noise_amplitude;
+
+  //! Amplitude decay rate for successive terms
+  float noise_amplitude_decay;
 
   //! Initial height of unsubdivided, unperturbed terrain, expressed as a proportion of variation.z
   float base_height;

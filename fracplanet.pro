@@ -15,9 +15,10 @@ documentation.files = fracplanet.htm fracplanet.css
 ##################
 # Improved optimisation options from qmake defaults.
 # Now leaving these ON for general distribution
+# -funroll-loops unproven 
 
 QMAKE_CXXFLAGS_RELEASE -= -O2
-QMAKE_CXXFLAGS_RELEASE += -O3 -fomit-frame-pointer -funroll-loops -ffast-math 
+QMAKE_CXXFLAGS_RELEASE += -O3 -fomit-frame-pointer -ffast-math 
 
 ##################
 # Architecture specific optimisations

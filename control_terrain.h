@@ -64,9 +64,12 @@ class ControlTerrain : public QVBox
   QHButtonGroup* object_type_button_group;
   QRadioButton* object_type_planet_button;
   QRadioButton* object_type_terrain_button;
+
+  QLabel* base_height_label;
+  QSpinBox* base_height_spinbox;
   
-  QLabel* subdivisions_seed_label;
-  QSpinBox* subdivisions_seed_spinbox;
+  QLabel* terrain_seed_label;
+  QSpinBox* terrain_seed_spinbox;
   QLabel* subdivisions_label;
   QSpinBox* subdivisions_spinbox;
   QLabel* subdivisions_unperturbed_label;
@@ -77,8 +80,14 @@ class ControlTerrain : public QVBox
   QLabel* variation_horizontal_label;
   QSpinBox* variation_horizontal_spinbox;
 
-  QLabel* base_height_label;
-  QSpinBox* base_height_spinbox;
+  QLabel* noise_terms_label;
+  QSpinBox* noise_terms_spinbox;
+  QLabel* noise_frequency_label;
+  QSpinBox* noise_frequency_spinbox;
+  QLabel* noise_amplitude_label;
+  QSpinBox* noise_amplitude_spinbox;
+  QLabel* noise_amplitude_decay_label;
+  QSpinBox* noise_amplitude_decay_spinbox;
 
   QLabel* power_law_label;
   QSpinBox* power_law_spinbox;
@@ -135,9 +144,9 @@ class ControlTerrain : public QVBox
 	case 1: parameters->object_type=ParametersTerrain::ObjectTypeTerrain;break;
 	}
     }
-  void setSubdivisionsSeed(int v)
+  void setTerrainSeed(int v)
     {
-      parameters->subdivisions_seed=v;
+      parameters->terrain_seed=v;
     }
   void setSubdivisions(int v)
     {
@@ -149,12 +158,28 @@ class ControlTerrain : public QVBox
     }
   void setVariationVertical(int v)
     {
-      parameters->variation.z=v/1024.0;
+      parameters->variation.z=v/100.0;
     }
   void setVariationHorizontal(int v)
     {
-      parameters->variation.x=v/1024.0;
-      parameters->variation.y=v/1024.0;
+      parameters->variation.x=v/100.0;
+      parameters->variation.y=v/100.0;
+    }
+  void setNoiseTerms(int v)
+    {
+      parameters->noise_terms=v;
+    }
+  void setNoiseFrequency(int v)
+    {
+      parameters->noise_frequency=v/100.0;
+    }
+  void setNoiseAmplitude(int v)
+    {
+      parameters->noise_amplitude=v/100.0;
+    }
+  void setNoiseAmplitudeDecay(int v)
+    {
+      parameters->noise_amplitude_decay=v/100.0;
     }
   void setBaseHeight(int v)
     {

@@ -18,12 +18,30 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "control_about.h"
 #include "license.h"
 
+#include <qlabel.h>
+#include <qtextedit.h>
+#include <qapplication.h>
+#include <qfont.h>
+
 ControlAbout::ControlAbout(QWidget* parent)
   :QVBox(parent)
 {
-  label=new QLabel("\nFracplanet - version "+QString(FRACPLANET_VERSION)+"\n\nAuthor\ntimday@timday.com\n\nHome page\nhttp://fracplanet.sourceforge.net\n\nProject page\nhttp://sourceforge.net/projects/fracplanet\n\nLicense:",this);
-  label->setAlignment(Qt::AlignHCenter|label->alignment());
+  QLabel* label0=new QLabel("\nFracplanet - version "+QString(FRACPLANET_VERSION),this);
+  label0->setAlignment(Qt::AlignHCenter|label0->alignment());
+  QFont label0_font(QApplication::font());
+  label0_font.setBold(true);
+  label0->setFont(label0_font);
 
+  QLabel* label1=new QLabel("\nby timday@timday.com\nhttp://fracplanet.sourceforge.net:",this);
+  label1->setAlignment(Qt::AlignHCenter|label0->alignment());
+  QFont label1_font(QApplication::font());
+  label1_font.setPointSize(std::max(2,label1_font.pointSize()-4));
+  label1->setFont(label1_font);
+
+  QLabel* label2=new QLabel("\nLicense:",this);
+  label2->setAlignment(Qt::AlignHCenter|label0->alignment());
+
+  QTextEdit* license;
   license=new QTextEdit(this);
   license->setReadOnly(true);
   license->setTextFormat(PlainText);

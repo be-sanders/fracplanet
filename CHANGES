@@ -1,6 +1,8 @@
 From release 0.1.0:
  - Bump version number to 0.1.1
  - Progress dialog separated
+ - Variation uses % scale
+ - Cosmetic changes
 
 From release 0.0.3:
  - Bump version number to 0.1.0
