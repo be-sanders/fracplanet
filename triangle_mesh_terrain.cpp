@@ -258,8 +258,14 @@ void TriangleMeshTerrain::do_colours(const ParametersTerrain& parameters)
 	vertex(triangle(i).vertex(1)).colour(1,parameters.colour_ocean);
 	vertex(triangle(i).vertex(2)).colour(1,parameters.colour_ocean);
 
-	// For debugging, set the colour0 of those triangles to red
+	if (parameters.oceans_and_rivers_emissive>0.0f)
+	  {
+	    vertex(triangle(i).vertex(0)).emissive(1,true);
+	    vertex(triangle(i).vertex(1)).emissive(1,true);
+	    vertex(triangle(i).vertex(2)).emissive(1,true);
+	  }
 
+	// For debugging, set the colour0 of those triangles to red
 	vertex(triangle(i).vertex(0)).colour(0,ByteRGB(255,0,0));
 	vertex(triangle(i).vertex(1)).colour(0,ByteRGB(255,0,0));
 	vertex(triangle(i).vertex(2)).colour(0,ByteRGB(255,0,0));
@@ -296,6 +302,7 @@ void TriangleMeshTerrain::do_colours(const ParametersTerrain& parameters)
 	else if (is_river)
 	  {
 	    vertex(i).colour(0,parameters.colour_river);
+	    vertex(i).emissive(0,true);
 	  }
 	else if (normalised_height<beachline)
 	  {
@@ -323,6 +330,7 @@ void TriangleMeshTerrain::do_terrain(const ParametersTerrain& parameters)
   do_rivers(parameters);
   compute_vertex_normals();
   do_colours(parameters);
+  set_emissive(parameters.oceans_and_rivers_emissive);
 }
 
 TriangleMeshTerrainPlanet::TriangleMeshTerrainPlanet(const ParametersTerrain& parameters,Progress* progress)

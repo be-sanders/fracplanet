@@ -88,20 +88,78 @@ void TriangleMeshViewerDisplay::paintGL()
 	  std::cerr << "Building display list...\n";
 	}
 
-      GLfloat default_material[3]={1.0,1.0,1.0};
-      glMaterialfv(GL_FRONT,GL_DIFFUSE,default_material);
+      GLfloat default_material_white[3]={1.0f,1.0f,1.0f};
+      GLfloat default_material_black[3]={0.0f,0.0f,0.0f};
+      glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,default_material_white);
+      glMaterialfv(GL_FRONT,GL_EMISSION,default_material_black);
 
-      // Point GL at arrays of data
-      glVertexPointer(3,GL_FLOAT,sizeof(Vertex),&(mesh->vertex(0).position().x));
-      glNormalPointer(GL_FLOAT,sizeof(Vertex),&(mesh->vertex(0).normal().x));
-      glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(mesh->vertex(0).colour(0).r));
+      if (mesh->emissive()==0.0f)
+	{
+	  // Use "Color Material" mode 'cos everything is the same material.... just change the colour
+	  glEnable(GL_COLOR_MATERIAL);
+	  glColorMaterial(GL_FRONT,GL_AMBIENT_AND_DIFFUSE);
 
-      // Draw the colour-zero triangles
-      glDrawElements(GL_TRIANGLES,3*mesh->triangles_of_colour0(),GL_UNSIGNED_INT,&(mesh->triangle(0).vertex(0)));
+	  // Point GL at arrays of data
+	  glVertexPointer(3,GL_FLOAT,sizeof(Vertex),&(mesh->vertex(0).position().x));
+	  glNormalPointer(GL_FLOAT,sizeof(Vertex),&(mesh->vertex(0).normal().x));
+	  glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(mesh->vertex(0).colour(0).r));
 
-      // Switch to alternate colour and draw the colour-one triangles
-      glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(mesh->vertex(0).colour(1).r));
-      glDrawElements(GL_TRIANGLES,3*mesh->triangles_of_colour1(),GL_UNSIGNED_INT,&(mesh->triangle(mesh->triangles_of_colour0()).vertex(0)));
+	  // Draw the colour-zero triangles
+	  glDrawElements(GL_TRIANGLES,3*mesh->triangles_of_colour0(),GL_UNSIGNED_INT,&(mesh->triangle(0).vertex(0)));
+
+	  // Switch to alternate colour and draw the colour-one triangles
+	  glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(mesh->vertex(0).colour(1).r));
+	  glDrawElements(GL_TRIANGLES,3*mesh->triangles_of_colour1(),GL_UNSIGNED_INT,&(mesh->triangle(mesh->triangles_of_colour0()).vertex(0)));
+
+	  glDisable(GL_COLOR_MATERIAL);
+	}
+      else
+	{
+	  // If there could be emissive vertices, we need to do things the hard way.	  
+
+	  const float k=1.0f/255.0f;
+	  const float em=k*(     mesh->emissive());
+	  const float ad=k*(1.0f-mesh->emissive());
+
+	  glBegin(GL_TRIANGLES);
+	  for (unsigned int t=0;t<mesh->triangles();t++)
+	    {
+	      const uint c=(t<mesh->triangles_of_colour0() ? 0 : 1);
+
+	      for (uint i=0;i<3;i++)
+		{
+		  const uint vn=mesh->triangle(t).vertex(i);
+		  const Vertex& v=mesh->vertex(vn);
+		  
+		  GLfloat c_ad[3];
+		  GLfloat c_em[3];
+		  if (v.emissive(c))
+		    {
+		      c_ad[0]=v.colour(c).r*ad;
+		      c_ad[1]=v.colour(c).g*ad;
+		      c_ad[2]=v.colour(c).b*ad;
+		      c_em[0]=v.colour(c).r*em;
+		      c_em[1]=v.colour(c).g*em;
+		      c_em[2]=v.colour(c).b*em;
+		    }
+		  else
+		    {
+		      c_ad[0]=v.colour(c).r*k;
+		      c_ad[1]=v.colour(c).g*k;
+		      c_ad[2]=v.colour(c).b*k;
+		      c_em[0]=0.0f;
+		      c_em[1]=0.0f;
+		      c_em[2]=0.0f;
+		    }
+
+		  glNormal3fv(&(v.normal().x));
+		  glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,c_ad);
+		  glMaterialfv(GL_FRONT,GL_EMISSION,c_em);
+		  glVertex3fv(&(v.position().x));
+		}
+	    }
+	  glEnd();
+	}
 
       if (building_display_list)
 	{
@@ -161,10 +219,6 @@ void TriangleMeshViewerDisplay::initializeGL()
 
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
-
-  // Use "Color Material" Mode 'cos everything is the same material.... just change the colour
-  glEnable(GL_COLOR_MATERIAL);
-  glColorMaterial(GL_FRONT,GL_AMBIENT_AND_DIFFUSE);
 
   // Do smooth shading 'cos colours are specified at vertices
   glShadeModel(GL_SMOOTH);

@@ -61,6 +61,9 @@ protected:
 
   //! The index of the triangle at which we switch to the alternate colour.
   uint _triangle_switch_colour;
+
+  //! The emission level for vertices with the _emissive flag set
+  float _emissive;
   
   //! Accessor.
   Vertex& vertex(uint i)
@@ -93,7 +96,8 @@ protected:
 public:
   //! Constructor.
   TriangleMesh(Progress* progress)
-    :_progress(progress)
+    :_emissive(0.0)
+    ,_progress(progress)
     {}
 
   //! Copy constructor.
@@ -101,12 +105,25 @@ public:
     :_vertex(mesh._vertex)
     ,_triangle(mesh._triangle)
     ,_triangle_switch_colour(0)
+    ,_emissive(mesh._emissive)
     ,_progress(mesh._progress)
     {}
   
   //! Destructor.
   virtual ~TriangleMesh()
     {}
+
+  //! Accessor
+  void set_emissive(float e)
+    {
+      _emissive=e;
+    }
+
+  //! Accessor
+  const float emissive() const
+    {
+      return _emissive;
+    }
 
   //! Append a vertex.
   void add_vertex(const Vertex& v)

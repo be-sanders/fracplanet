@@ -1,10 +1,15 @@
 ABOUT
 =====
-Software to generate random planets and terrain with oceans, mountains, icecaps and rivers.
-Parameters are specified interactively and the results displayed using OpenGL.
-The generated objects can be dumped in Pov-Ray format.
-Coded using C++ and STL.  Uses Qt and OpenGL libraries.  
-Should build and work on any platform with these available.
+Fracplanet generates random planets and terrain with oceans, 
+mountains, icecaps and rivers.  Parameters are specified interactively 
+and the results displayed using OpenGL.  The generated objects can be
+dumped to Pov-Ray format.
+
+It uses C++ (with STL), Qt and OpenGL.  
+
+Home page: http://www.bottlenose.demon.co.uk/share/fracplanet
+
+Author: timday at timday dot com
 
 LICENSE
 =======
@@ -26,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 BUILDING
 ========
-This has only been tested on RH8 and RH9
+This has only been tested on RedHat8 and 9
 
 Either use the traditional
  ./configure
@@ -37,6 +42,9 @@ Or just have both done for you by running
 (which also adds $QTDIR/bin to the PATH while running the above commands;
 this may be useful on distros which don't have qmake in the default
 user path).
+
+NB In either case you do almost certainly do need your QTDIR 
+environment variable to be correctly defined.
 
 This will give you a "fracplanet" executable which you can run with
   ./fracplanet

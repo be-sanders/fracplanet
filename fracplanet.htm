@@ -156,13 +156,20 @@ and <code>-fn <em>font</em></code>.
       If the lake becomes sufficiently large (greater than the percentage of available surface area specified here) then it is considered to have become an inland sea and it is no longer necessary for the lake to rise until an outflow to be discovered (in the real world, surface evaporation replaces the outflow). 
       Increasing this number may result in larger lakes, but the process of river generation can take considerably longer.
     </dd>
+
+    <dt>Oceans and rivers emissive</dt>
+    <dd>
+      Sets the emission (i.e glow) of lakes and rivers, on a scale of 0-100.
+      This is mainly to facilitate glowing lava planets.
+      Note that for terrain generated with emission non-zero, 
+      an alternative rendering path must be used which may be a little slower.
+    </dd>
   
     <dt>Change colours</dt>
     <dd>
       Click on these buttons to bring up a colour-picking dialog and change the colour for the selected class of terrain.
       Each button displays the colour currently selected for that class.
-      Obvious things you might want to do are to change the shoreline colour to the same colour as the low level terrain (I mean, those beaches are pretty absurdly <em>wide</em> otherwise), change the orange highlands to a more mountainous grey, or perhaps (like the author) you lean toward an apocalyptic &quot;lava world&quot; with red rivers and oceans, black shorelines and ash-grey terrain.
-      Unfortunately this latter case really needs the ability to select ambient shading for some terrain types (everything is diffuse currently) so that lava rivers and oceans can glow nicely on the dark side.
+      Obvious things you might want to do are to change the shoreline colour to the same colour as the low level terrain (I mean, those beaches are pretty absurdly <em>wide</em> otherwise), change the orange highlands to a more mountainous grey, or perhaps (like the author) you lean toward an apocalyptic &quot;lava world&quot; with red rivers and oceans (use emission to make them glow), black shorelines and ash-grey terrain.
     </dd>
   
     <dt>Regenerate</dt>

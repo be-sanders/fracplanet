@@ -104,6 +104,8 @@ class ControlTerrain : public QVBox
   QLabel* lake_becomes_sea_label;
   QSpinBox* lake_becomes_sea_spinbox;
 
+  QSpinBox* oceans_and_rivers_emissive_spinbox;
+
   QLabel* colour_label;
   QGrid* colour_grid;
   QPushButton* colour_ocean_button;
@@ -112,8 +114,6 @@ class ControlTerrain : public QVBox
   QPushButton* colour_river_button;
   QPushButton* colour_snow_button;
   QPushButton* colour_high_button;
-
-  QSlider* oceans_and_rivers_emissive_slider;
 
   QPushButton* regenerate_button;
   QPushButton* regenerate_with_new_seed_button;
