@@ -26,7 +26,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "triangle_mesh.h"
 
 //! This class holds all the terrain-related methods.  
-/*! It's intended to be used as a "mix-in", adding terrain generating functionality to terrain objects subclassed from simpler geometries.
+/*! It's intended to be used as a "mix-in", adding terrain generating 
+  functionality to terrain objects subclassed from simpler geometries.
   \todo Multiple inheritance pretty yucky.  Switch to a "Factory" pattern.
  */
 class TriangleMeshTerrain : virtual TriangleMesh
@@ -41,6 +42,9 @@ class TriangleMeshTerrain : virtual TriangleMesh
   //! Maximum height of terrain (used to scale to/from "normalised" height).
   float max_height;
 
+  //! Add noise to the terrain
+  void do_noise(const ParametersTerrain& parameters);
+
   //! Impose a sea level (raise lower vertices, and note sea triangles).
   void do_sea_level(const ParametersTerrain& parameters);
 
@@ -50,7 +54,7 @@ class TriangleMeshTerrain : virtual TriangleMesh
   //! Generate river network.
   void do_rivers(const ParametersTerrain& parameters);
 
-  //!Final colouration pass.
+  //! Final colouration pass.
   void do_colours(const ParametersTerrain& parameters);
 
  public:

@@ -52,6 +52,7 @@ HEADERS += \
            fracplanet_main.h \
            geometry.h \
            license.h \
+           noise.h \
            parameters_render.h \
            parameters_save.h \
            parameters_terrain.h \
@@ -78,6 +79,7 @@ SOURCES += \
            fracplanet_main.cpp \
            geometry.cpp \
            license.cpp \
+           noise.cpp \
            parameters_render.cpp \
            parameters_save.cpp \
            parameters_terrain.cpp \

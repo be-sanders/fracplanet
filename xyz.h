@@ -240,6 +240,14 @@ class RandomXYZInEllipsoid : public XYZ
   RandomXYZInEllipsoid(Random01& rng,const XYZ& axes);
 };
 
+//! Generates a random point on the surface of a unit-radius sphere
+class RandomXYZSphereNormal : public XYZ
+{
+ public:
+  RandomXYZSphereNormal(Random01& rng);
+};
+
+
 #endif
 
 

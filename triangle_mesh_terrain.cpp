@@ -16,8 +16,31 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "triangle_mesh_terrain.h"
+#include "noise.h"
 
 #include <sstream>
+
+void TriangleMeshTerrain::do_noise(const ParametersTerrain& parameters)
+{
+  const uint steps=vertices();
+  uint step=0;
+
+  progress_start(100,"Noise");
+
+  MultiscaleNoise noise(parameters.terrain_seed,parameters.noise_terms,parameters.noise_amplitude_decay);
+  for (uint i=0;i<vertices();i++)
+    {
+      step++;
+      progress_step((100*step)/steps);	  
+      
+      const float h=vertex_height(i);
+      const float p=parameters.noise_amplitude*noise(vertex(i).position());
+      
+      set_vertex_height(i,h+p);
+    }
+  
+  progress_complete("Noise");
+}
 
 void TriangleMeshTerrain::do_sea_level(const ParametersTerrain& /*parameters*/)
 {
@@ -97,7 +120,7 @@ void TriangleMeshTerrain::do_rivers(const ParametersTerrain& parameters)
 
     const uint steps=triangles_of_colour1()+triangles();
     uint step=0;
-
+    
     for (uint i=triangles_of_colour0();i!=triangles();i++)
       {
 	step++;
@@ -325,6 +348,7 @@ void TriangleMeshTerrain::do_colours(const ParametersTerrain& parameters)
 
 void TriangleMeshTerrain::do_terrain(const ParametersTerrain& parameters)
 {
+  do_noise(parameters);
   do_sea_level(parameters);
   do_power_law(parameters);
   do_rivers(parameters);

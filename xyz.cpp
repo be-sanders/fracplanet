@@ -78,10 +78,16 @@ RandomXYZInEllipsoid::RandomXYZInEllipsoid(Random01& rng,const XYZ& axes)
 	 );
 }
 
+RandomXYZSphereNormal::RandomXYZSphereNormal(Random01& rng)
+:XYZ(0.0,0.0,0.0)
+{
+  float m2;
+  do
+    {
+      assign(RandomXYZInSphere(rng,1.0));
+      m2=magnitude2();
+    }
+  while (m2==0.0);
 
-
-
-
-
-
-
+  (*this)/=sqrtf(m2);
+}
