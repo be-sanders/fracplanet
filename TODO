@@ -1,21 +1,17 @@
-- Abandon ByteRGB class as it takes 4 bytes not 3.
-  Replace with explicit uchars in Vertex, which is the only place which really uses them
-  Then would have space for some flags for e.g use emissive colour.
 - Fix river/lake hang for high subdivision levels
 - Borrow some improvements from sister evolvotron project
-- Add emissive option for oceans and rivers.
 - "man" page instead/besides HTML
 - Check for OpenGL errors
 - Add control over heights at which colours switch.
-- Figure out how to build RPMs.
 - Add "flight simulator" mode for getting in closer to terrain.
-- Add Unix "man" page.
 - Improve code documentation.
 - Move terrain computation and save into separate threads so interface isn't locked.
   Or completely change GUI: make OpenGL area a separate window which goes away while
   recalculating.  Parameters still in a tabbed dialog, but replaced by nothing but
   progress meter while recalculating ?
-- Permit specification of ambient colour components (for planets with glowing red lava).
 - Rethink GUI.  Make terrain display take up most of main window
   (or be separate window, disappearing when not rendering?), with menus to access control dialogs.
 - Use Qt file dialog for save.
+- Clouds.
+- Option to add Perlin noise (might make rivers meander more)
+
