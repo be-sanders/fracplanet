@@ -1,0 +1,270 @@
+<html>
+
+<head>
+  <title>
+    Fracplanet user documentation
+  </title>
+  <meta name="keywords" content="Fracplanet, user documentation, user manual"/>
+  <meta name="description" content="Fracplanet user documentation"/>
+  <link rel="stylesheet" title="Default styles" type="text/css" href="fracplanet.css" media="screen"/>
+</head>
+
+<body>
+
+<h1>
+  Fracplanet user documentation
+</h1>
+
+<h2>Introduction</h2>
+
+<p>
+  Fracplanet is an application to generate random planets and terrain with oceans, mountains, icecaps and rivers.
+  Parameters are specified interactively and the results displayed using OpenGL.
+  The generated objects can be dumped in Pov-Ray format.
+</p>
+
+<h2>Command line arguments</h2>
+
+<p>
+  Fracplanet has no command line arguments other than those intercepted and interpreted by Qt.
+These are pretty much what you'd expect most X11 applications to handle 
+e.g <code>-geometry <em>X</em>x<em>Y</em></code> 
+and <code>-fn <em>font</em></code>.
+</p>
+
+<h2>GUI</h2>
+
+<p>
+  The fracplanet GUI presents a tabbed controls area, a progress bar area and a 3D rendering window bordered by two sliders.
+</p>
+
+<h3>Terrain tab</h3>
+
+<p>
+  Note that none of the parameters adjustable on this tab have any effect on the displayed model until one of the &quot;Regenerate&quot; buttons is pressed.
+
+  <dl>
+
+    <dt>Planet/Terrain</dt>
+    <dd>
+      These radio buttons select the type of object to be created.
+      Planet creates planets by subdividing an icosahedron.
+      Terrain creates flat-based terrain areas by subdividing 6 triangles arranged in a hexagon.
+    </dd>
+
+    <dt>Perturbation seed</dt>
+    <dd>
+      Specifies the random number generator seed used when creating terrain.
+      Regenerating without changing this value will produce the same terrain, allowing the user to play with subdivision levels, colours etc while still retaining the same basic pattern of oceans and continents. 
+      The value is initially set to the system time on application start-up.
+    </dd>
+  
+    <dt>Subdivisions</dt>
+    <dd>
+      The number of subdivisions of the initial structure.
+      Each successive level of subdivision increases the number of triangles by a factor of four, so users should increase this parameter with caution.
+      This has a major impact on the amount of memory consumed, the frame rate and the responsiveness of the application.
+      On the author's machine (2.4GHz P4, 256MB RAM, GeForce4, NVidia drivers) the limit of usability is reached at subdivision level 8.
+    </dd>
+  
+    <dt>Unperturbed</dt>
+    <dd>
+      Specifies the number of subdivisions which will be performed <em>without</em> random perturbation of the vertices.
+      Lower numbers (0, 1) produce a few large continents.
+      Higher values produce many small islands.
+    </dd>
+  
+    <dt>Variation (vertical)</dt>
+    <dd>
+      Specifies the maximum size of vertical perturbations at the first level of subdivision.
+      The maximum perturbation size is then halved at each subsequent subdivision.
+      Planets and terrain areas both have a nominal radius of 1.0, 
+      and the number here is divided by 1024 so if you specify a vertical variation of 128 you could get mountains which are on the order of 12.5 percent of the planet's radius high, or even larger if subsequent perturbations accumulate upwards at a point (of course suppressing initial large perturbations using the &quot;Unperturbed&quot; parameter will tend to reduce this).
+      This is of course a ridiculous height for mountains on anything but an asteroid, but using realistic values will just produce very boring looking planets. 
+    </dd>
+  
+    <dt>Variation (horizontal)</dt>
+    <dd>
+      Specifies the maximum size of horizontal perturbations at the first level of subdivision.
+      The maximum perturbation size is then halved at each subsequent subdivision.
+      Beware of making this value too large as it can produce overhanging/self-intersecting terrain,
+      on the other hand small values can be useful for breaking up obvious artifacts of the initial geometry.
+    </dd>
+  
+    <dt>Base land height</dt>
+    <dd>
+      This expresses the initial height of the terrain (relative to the sea level) as a percentage of the vertical maximum perturbation size.
+      Negative values produce (on average) more ocean than land, positive values produce more land than ocean. 
+    </dd>
+  
+    <dt>Power law</dt>
+    <dd>
+      A power law applied to all above-sea-level heights after terrain generation.
+      (This consists of normalising the height relative to the maximum height in the terrain model and raising it to the power of this number divided by 100).
+      Values above 100 flatten low terrain, tending to produce smooth plains surrounding spiky mountains.
+      Values below 100 flatten high terrain, tending to produce smooth highlands surrounded by steep cliffs.
+    </dd>
+  
+    <dt>Snowline at equator</dt>
+    <dd>
+      The nominal height of the snowline at the equator of a planet (and everywhere on a flat-based terrain area), expressed as a percentage of the maximum height of the terrain.
+    </dd>
+  
+    <dt>Snowline at pole</dt>
+    <dd>
+      The nominal height of the snowline at the poles of a planet (unused for a flat-based terrain area), expressed as a percentage of the maximum height of the terrain.
+    </dd>
+  
+    <dt>Snowline power law</dt>
+    <dd>
+      Tweaking this parameter lets you control whether the snowline remains high up and only plunges downward towards the poles, or whether it only quickly rises near the equator.
+      Experiment, it has a fairly subtle effect.
+    </dd>
+  
+    <dt>Snowline slope suppression</dt>
+    <dd>
+      The larger this value is, the harder it is for snow to stick to steep slopes (you can see this effect for real on any mountain range).
+      This breaks up the snowline quite nicely, as it otherwise tends to stop at an artificially uniform height (reduce this parameter to zero to see what I mean).
+    </dd>
+  
+    <dt>Snowline glacier effect</dt>
+    <dd>
+      If this parameter is positive, rivers tend to form glaciers and you will see e.g white lines running out of snowy areas, and frozen lakes.
+      If this parameter is negative rivers find it harder to freeze and you will see them running through snowy areas and forming un-frozen lakes.
+    </dd>
+  
+    <dt>Rivers</dt>
+    <dd>
+      Specifies the number of rivers to be generated.
+      Note that rivers starting in the sea are immediately abandoned, but still count against this number
+      (this is so the relative proportions of land/ocean can be tweaked without affecting the average river density).
+      Rivers run from vertex to vertex along triangle edges, and are then rendered by blending from the river vertex colour to the surrounding terrain colour.
+      This isn't ideal as they aren't very sharply defined.
+      A previous version of the software flowed rivers from triangle to triangle which produced nice solid edged rivers (like the oceans are)
+      but since they weren't flat it still wasn't ideal.
+    </dd>
+  
+    <dt>Rivers seed</dt>
+    <dd>
+      Random number seed for river generation.
+      If you change this, but not the perturbation seed, you can get a different river network on the same terrain.
+    </dd>
+  
+    <dt>Lake becomes sea</dt>
+    <dd>
+      As a river is flowed across a terrain, it will sometimes form a lake as the water level rises sufficiently to overcome a terrain barrier.
+      If the lake becomes sufficiently large (greater than the percentage of available surface area specified here) then it is considered to have become an inland sea and it is no longer necessary for the lake to rise until an outflow to be discovered (in the real world, surface evaporation replaces the outflow). 
+      Increasing this number may result in larger lakes, but the process of river generation can take considerably longer.
+    </dd>
+  
+    <dt>Change colours</dt>
+    <dd>
+      Click on these buttons to bring up a colour-picking dialog and change the colour for the selected class of terrain.
+      Each button displays the colour currently selected for that class.
+      Obvious things you might want to do are to change the shoreline colour to the same colour as the low level terrain (I mean, those beaches are pretty absurdly <em>wide</em> otherwise), change the orange highlands to a more mountainous grey, or perhaps (like the author) you lean toward an apocalyptic &quot;lava world&quot; with red rivers and oceans, black shorelines and ash-grey terrain.
+      Unfortunately this latter case really needs the ability to select ambient shading for some terrain types (everything is diffuse currently) so that lava rivers and oceans can glow nicely on the dark side.
+    </dd>
+  
+    <dt>Regenerate</dt>
+    <dd>
+      Click this button to regenerate the planet/terrain area <em>without changing the random seeds</em>.
+    </dd>
+  
+    <dt>Regenerate with new rivers seed</dt>
+    <dd>
+      Click this button to increment the river generation seed by one and regenerate.
+      This gets you the same landscape with a different river network.
+    </dd>
+  
+    <dt>Regenerate with new perturbations seed</dt>
+    <dd>
+      Click this button increment the perturbation seed by one and regenerate.
+      This will get you a completely different terrain.
+      (The river network will be different too, although it's seed won't have changed).
+    </dd>
+  
+  </dl>  
+</p>
+
+<h3>Save tab</h3>
+
+<p>
+  <dl>
+
+    <dt>Add atmosphere</dt>
+    <dd>
+      This tick-box causes additional POV-Ray directives to be emitted to render a thin atmosphere.
+    </dd>
+  
+    <dt>Sea object</dt>
+    <dd>
+      This tick-box causes a single sphere to generated for the oceans <em>instead</em> of numerous individual triangles.
+    </dd>
+
+    <dt>Base filename</dt>
+    <dd>
+      Enter the filename root to be used here.
+      Two files will be generated, one with &quot;.pov&quot; appended, and one with &quot;.inc&quot; appended.
+      The .inc file actually contains the object (using POV-Rays's <code>mesh2</code> format), plus any other spheres generated due to the options above.
+      The .pov just includes the .inc and adds a camera and light source and was primarily intended for testing:
+      the expectation is that users will generally import the .inc into their own scenes, probably wrapping the include in a POV-Ray <code>union</code> with embedded translate/scale/rotate directives).
+    </dd>
+
+    <dt>Save (POV-Ray)</dt>
+    <dd>
+      Click this button to create the POV-Ray files.
+      This can take quite a long time so the progress bar is used to track the completed percentage.
+    </dd>
+
+    <dt>
+
+  </dl>
+</p>
+
+<h3>Render tab</h3>
+
+<p>
+  Options for OpenGL rendering appear on this tab.
+  Currently the only option is a tickbox to select wireframe rendering.
+</p>
+
+<h3>About tab</h3>
+
+<p>
+  This tab displays information about the software (in particular the version number) and its license.
+</p>
+
+<h3>Display area</h3>
+
+<p>
+  The central area displays the current (most recently generated) model.
+  The (badly named) &quot;elevation&quot; slider controls the latitude of the camera (when viewing a sphere-based object), and the elevation (as in azimuth-elevation) of the camera when viewing a planar based terrain area.  
+  Note that in the latter case the bottom half of the slider places the camera below base ground level/sea level, which results in little being seen due to back-face culling.
+  The &quot;spin rate&quot; controls the rate at which the object is rotated (the increment is currently frame-by-frame and <em>not</em> compensated for actual elapsed time between frame updates).
+  The display area update rate is clamped to 100Hz, although this will typically only be reached at the lowest levels of subdivision.
+</p>
+
+<h2>License</h2>
+
+<p>
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+</p>
+
+<p>
+  The full license can be also viewed on fracplanet's &quot;About&quot; tab.
+</p>
+
+
+</body>

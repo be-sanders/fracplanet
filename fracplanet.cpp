@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   "Fracplanet" is an interactive tool for generating fractal planets and terrains.
   It can output the generated meshes to files suitable for use by POV-Ray.
 
-  \todo For new features to be added, se the TODO file.
+  \todo For new features to be added, see the TODO file.
  */
 
 #include <qapplication.h>

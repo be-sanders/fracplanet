@@ -1,0 +1,44 @@
+BODY 
+{
+  background-color: #ffffff; 
+  color: #000000;
+}
+
+H1, H2, H3 
+{
+  font-family: sans-serif; 
+  border-bottom: thin #888888 solid;
+  background-color: #dddddd;
+}
+
+H1 
+{
+  font-size: 200%;
+  margin-left: 0.125in;
+}
+
+H2 
+{
+  font-size: 150%; 
+  margin-left: 0.25in; 
+} 
+
+H3 
+{
+  font-size: 125%; 
+  margin-left: 0.375in; 
+}
+
+P,DL
+{
+  margin-left: 0.375in; 
+}
+
+DT
+{
+  font-weight: bolder;
+}
+
+
+
+

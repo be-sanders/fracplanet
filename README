@@ -40,10 +40,12 @@ or install where you like.
 
 USING
 =====
-After changing ANY of the terrain generation parameters, you must hit "regenerate" to create and display a new model.
-This keeps the random seeds for terrain and river generation the same.
-There are a couple of extra buttons which also change the random seed for the terrain or river network before regenerating,
-Most of the parameter entry fields have tooltips on them which gives an idea of what they're about.
+User documentation is contained in fracplanet.htm
+If you just want to dive in all you need to know is this:
+  After changing ANY of the terrain generation parameters, you must hit "regenerate" to create and display a new model.
+  This keeps the random seeds for terrain and river generation the same.
+  There are a couple of extra buttons which also change the random seed for the terrain or river network before regenerating,
+  Most of the parameter entry fields have tooltips on them which give an idea of what they're about.
 
 PERFORMANCE
 ===========
@@ -60,6 +62,7 @@ Doing
   make install
 will attempt to install the executable in /usr/local/bin
 
+fracplanet.htm and fracplanet.css should probably be put somewhere too.
 
 BUILDING CODE DOCUMENTATION
 ===========================
