@@ -48,6 +48,7 @@ FracplanetMain::FracplanetMain(QWidget* parent)
 
   viewer=new TriangleMeshViewer(0,&parameters_render);     // Viewer will be a top-level-window
   viewer->resize(512,512);
+  viewer->move(384,64);  // Moves view away from controls on most window managers
 
   regenerate(); 
 
