@@ -79,6 +79,11 @@ class Vertex
       assert(c<2);
       _colour[c]=col;
     }
+  void colour(uint c,const FloatRGB& col)
+    {
+      assert(c<2);
+      _colour[c]=ByteRGB(col);
+    }
 };
 
 

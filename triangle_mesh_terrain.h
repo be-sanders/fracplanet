@@ -46,7 +46,7 @@ class TriangleMeshTerrain : virtual TriangleMesh
 
   void do_terrain(const ParametersTerrain& parameters);
 
-  virtual void write_povray(const ParametersSave& param) const
+  virtual void write_povray(const ParametersSave& param,const ParametersTerrain& parameters_terrain) const
     =0;
 };
 
@@ -57,7 +57,7 @@ class TriangleMeshTerrainPlanet : public TriangleMeshSubdividedIcosahedron, virt
   TriangleMeshTerrainPlanet(const ParametersTerrain& param,Progress* progress);
   virtual ~TriangleMeshTerrainPlanet()
     {}
-  virtual void write_povray(const ParametersSave& param) const;
+  virtual void write_povray(const ParametersSave& param,const ParametersTerrain& parameters_terrain) const;
 };
 
 class TriangleMeshTerrainFlat : public TriangleMeshFlatTriangle, virtual public TriangleMeshTerrain
@@ -67,7 +67,7 @@ class TriangleMeshTerrainFlat : public TriangleMeshFlatTriangle, virtual public 
   virtual ~TriangleMeshTerrainFlat()
     {}
 
-  virtual void write_povray(const ParametersSave& param) const;
+  virtual void write_povray(const ParametersSave& param,const ParametersTerrain& parameters_terrain) const;
 };
 
 

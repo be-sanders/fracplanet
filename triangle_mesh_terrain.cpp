@@ -17,6 +17,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "triangle_mesh_terrain.h"
 
+#include <sstream>
+
 void TriangleMeshTerrain::do_sea_level(const ParametersTerrain& /*parameters*/)
 {
   // Introduce sea level  
@@ -252,15 +254,15 @@ void TriangleMeshTerrain::do_colours(const ParametersTerrain& parameters)
 	step++;
 	progress_step((100*step)/steps);      
 
-	vertex(triangle(i).vertex(0)).colour(1,ByteRGB(0,0,192));
-	vertex(triangle(i).vertex(1)).colour(1,ByteRGB(0,0,192));
-	vertex(triangle(i).vertex(2)).colour(1,ByteRGB(0,0,192));
+	vertex(triangle(i).vertex(0)).colour(1,parameters.colour_ocean);
+	vertex(triangle(i).vertex(1)).colour(1,parameters.colour_ocean);
+	vertex(triangle(i).vertex(2)).colour(1,parameters.colour_ocean);
 
 	// For debugging, set the colour0 of those triangles to red
 
-	vertex(triangle(i).vertex(0)).colour(0,ByteRGB(255,255,255));
-	vertex(triangle(i).vertex(1)).colour(0,ByteRGB(255,255,255));
-	vertex(triangle(i).vertex(2)).colour(0,ByteRGB(255,255,255));
+	vertex(triangle(i).vertex(0)).colour(0,ByteRGB(255,0,0));
+	vertex(triangle(i).vertex(1)).colour(0,ByteRGB(255,0,0));
+	vertex(triangle(i).vertex(2)).colour(0,ByteRGB(255,0,0));
       }
     
     const float treeline=0.25;
@@ -289,24 +291,24 @@ void TriangleMeshTerrain::do_colours(const ParametersTerrain& parameters)
 
 	if (normalised_height>snowline_here)
 	  {
-	    vertex(i).colour(0,ByteRGB(255,255,255));
+	    vertex(i).colour(0,parameters.colour_snow);
 	  }
 	else if (is_river)
 	  {
-	    vertex(i).colour(0,ByteRGB(0,0,255));
+	    vertex(i).colour(0,parameters.colour_river);
 	  }
 	else if (normalised_height<beachline)
 	  {
-	    vertex(i).colour(0,ByteRGB(255,255,0));
+	    vertex(i).colour(0,parameters.colour_shoreline);
 	  }
 	else if (normalised_height<treeline)
 	  {
 	    const float blend=normalised_height/treeline;
-	    vertex(i).colour(0,ByteRGB(blend*FloatRGB(1.0,0.5,0.0)+(1.0-blend)*FloatRGB(0.0,1.0,0.0)));
+	    vertex(i).colour(0,blend*parameters.colour_high+(1.0-blend)*parameters.colour_low);
 	  }
 	else
 	  {
-	    vertex(i).colour(0,ByteRGB(255,128,0));
+	    vertex(i).colour(0,parameters.colour_high);
 	  }
       }
   }
@@ -331,12 +333,19 @@ TriangleMeshTerrainPlanet::TriangleMeshTerrainPlanet(const ParametersTerrain& pa
   do_terrain(parameters);
 }
 
-void TriangleMeshTerrainPlanet::write_povray(const ParametersSave& param) const
+void TriangleMeshTerrainPlanet::write_povray(const ParametersSave& param,const ParametersTerrain& parameters_terrain) const
 {
+  const bool save_pov_mode=POVMode::pov_mode();
+  POVMode::pov_mode(true);
+
   std::string header;
   
   if (param.sea_object)
-    header+="sphere {<0.0,0.0,0.0>,1.0 pigment{rgb <0.0,0.0,0.75>}}\n";
+    {
+      std::ostringstream colour_ocean;
+      colour_ocean << parameters_terrain.colour_ocean;
+      header+="sphere {<0.0,0.0,0.0>,1.0 pigment{rgb "+colour_ocean.str()+"}}\n";
+    }
   
   if (param.atmosphere)
     {
@@ -345,6 +354,8 @@ void TriangleMeshTerrainPlanet::write_povray(const ParametersSave& param) const
     }
   
   TriangleMesh::write_povray(param.basename,header,param.sea_object);
+
+  POVMode::pov_mode(save_pov_mode);
 }
 
 TriangleMeshTerrainFlat::TriangleMeshTerrainFlat(const ParametersTerrain& parameters,Progress* progress)
@@ -357,14 +368,18 @@ TriangleMeshTerrainFlat::TriangleMeshTerrainFlat(const ParametersTerrain& parame
   do_terrain(parameters);
 }
 
-void TriangleMeshTerrainFlat::write_povray(const ParametersSave& param) const
+void TriangleMeshTerrainFlat::write_povray(const ParametersSave& param,const ParametersTerrain& parameters_terrain) const
 {
-  //! \todo Emit sensible objects for sea and atmosphere when saving flat terrain as POV
+  const bool save_pov_mode=POVMode::pov_mode();
+  POVMode::pov_mode(true);
+
   std::string header;
   
   if (param.sea_object)
     {
-      header+="plane {<0.0,1.0,0.0>,0.0 pigment{rgb <0.0,0.0,0.75>}}\n";
+      std::ostringstream colour_ocean;
+      colour_ocean << parameters_terrain.colour_ocean;
+      header+="plane {<0.0,1.0,0.0>,0.0 pigment{rgb "+colour_ocean.str()+"}}\n";
     }
   
   if (param.atmosphere)
@@ -374,5 +389,7 @@ void TriangleMeshTerrainFlat::write_povray(const ParametersSave& param) const
     }
   
   TriangleMesh::write_povray(param.basename,header,param.sea_object);
+
+  POVMode::pov_mode(save_pov_mode);
 }
 

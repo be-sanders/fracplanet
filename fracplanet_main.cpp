@@ -110,5 +110,5 @@ void FracplanetMain::regenerate()
 
 void FracplanetMain::save()
 {
-  mesh->write_povray(parameters_save);
+  mesh->write_povray(parameters_save,parameters_terrain);
 }

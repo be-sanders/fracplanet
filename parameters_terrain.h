@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "useful.h"
 #include "xyz.h"
+#include "rgb.h"
 
 //! Aggregates controllable parameters for all things related to terrain generation.
 /*! \todo Add these to ParametersTerrain (and ControlTerrain):  float treeline;  float beachline;
@@ -79,26 +80,15 @@ public:
    */
   float lake_becomes_sea;
 
+  FloatRGB colour_ocean;
+  FloatRGB colour_river;
+  FloatRGB colour_shoreline;
+  FloatRGB colour_low;
+  FloatRGB colour_high;
+  FloatRGB colour_snow;
+
   //! Constructor sets up some hopefully sensible defaults.
-  /*! \todo: Might be better (more portable) to use QTime::currentTime () for random seeds.
-   */
-  ParametersTerrain()
-    :object_type(ObjectTypePlanet)
-    ,subdivisions_seed(time(0))
-    ,subdivisions(5)
-    ,subdivisions_unperturbed(1)
-    ,variation(0.0,0.0,0.125)
-    ,base_height(0)
-    ,power_law(1.5)
-    ,snowline_equator(0.8)
-    ,snowline_pole(-0.1)
-    ,snowline_power_law(1.0)
-    ,snowline_slope_effect(1.0)
-    ,snowline_glacier_effect(0.1)
-    ,rivers(0)
-    ,rivers_seed(time(0))
-    ,lake_becomes_sea(0.05)
-  {}
+  ParametersTerrain();
 };
 
 
