@@ -211,7 +211,7 @@ void TriangleMeshViewerDisplay::initializeGL()
 
   // Set up simple lighting
   GLfloat white_light[]={1.0,1.0,1.0,1.0};
-  GLfloat light_position[]={2.0,1.0,3.0,0.0};  // Seems to be relative to the camera
+  GLfloat light_position[]={3.0,1.0,2.0,0.0};  // Seems to be relative to the camera
   
   glShadeModel(GL_FLAT);
   glLightfv(GL_LIGHT0,GL_POSITION,light_position);

@@ -1,5 +1,6 @@
 From release 0.0.3:
  - Bump version number to 0.0.4-devel
+ - Support emissive oceans and rivers
  - Fix .inc filename bug (spurious ")
  - Update docs
 

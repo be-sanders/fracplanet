@@ -346,22 +346,29 @@ void TriangleMeshTerrainPlanet::write_povray(const ParametersSave& param,const P
   const bool save_pov_mode=POVMode::pov_mode();
   POVMode::pov_mode(true);
 
-  std::string header;
+  std::stringstream header;
   
   if (param.sea_object)
     {
-      std::ostringstream colour_ocean;
-      colour_ocean << parameters_terrain.colour_ocean;
-      header+="sphere {<0.0,0.0,0.0>,1.0 pigment{rgb "+colour_ocean.str()+"}}\n";
+      header 
+	<< "sphere {<0.0,0.0,0.0>,1.0 pigment{rgb "
+	<< parameters_terrain.colour_ocean
+	<< "} finish {ambient " 
+	<< emissive() 
+	<< " diffuse " 
+	<< 1.0f-emissive() 
+	<< "}}\n";
     }
   
   if (param.atmosphere)
     {
-      header+="sphere {<0.0,0.0,0.0>,1.025 hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <1.0,1.0,1.0> extinction 1}}}}\n";
-      header+="sphere {<0.0,0.0,0.0>,1.05  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
+      header
+	<< "sphere {<0.0,0.0,0.0>,1.025 hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <1.0,1.0,1.0> extinction 1}}}}\n";
+      header
+	<< "sphere {<0.0,0.0,0.0>,1.05  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
     }
   
-  TriangleMesh::write_povray(param.basename,header,param.sea_object);
+  TriangleMesh::write_povray(param.basename,header.str(),param.sea_object);
 
   POVMode::pov_mode(save_pov_mode);
 }
@@ -381,22 +388,29 @@ void TriangleMeshTerrainFlat::write_povray(const ParametersSave& param,const Par
   const bool save_pov_mode=POVMode::pov_mode();
   POVMode::pov_mode(true);
 
-  std::string header;
+  std::ostringstream header;
   
   if (param.sea_object)
     {
-      std::ostringstream colour_ocean;
-      colour_ocean << parameters_terrain.colour_ocean;
-      header+="plane {<0.0,1.0,0.0>,0.0 pigment{rgb "+colour_ocean.str()+"}}\n";
+      header
+	<< "plane {<0.0,1.0,0.0>,0.0 pigment{rgb "
+	<< parameters_terrain.colour_ocean
+	<< "} finish {ambient " 
+	<< emissive() 
+	<< " diffuse " 
+	<< 1.0f-emissive() 
+	<< "}}\n";
     }
   
   if (param.atmosphere)
     {
-      header+="plane {<0.0,1.0,0.0>,0.05 hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <1.0,1.0,1.0> extinction 1}}}}\n";
-      header+="plane {<0.0,1.0,0.0>,0.1  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
+      header
+	<< "plane {<0.0,1.0,0.0>,0.05 hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <1.0,1.0,1.0> extinction 1}}}}\n";
+      header
+	<< "plane {<0.0,1.0,0.0>,0.1  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
     }
   
-  TriangleMesh::write_povray(param.basename,header,param.sea_object);
+  TriangleMesh::write_povray(param.basename,header.str(),param.sea_object);
 
   POVMode::pov_mode(save_pov_mode);
 }

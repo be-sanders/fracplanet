@@ -231,7 +231,7 @@ void TriangleMesh::write_povray(const std::string& fname_base,const std::string&
       }
     out << "}\n";
 
-    // Output the vertex colours
+    // Output the vertex colours, and handle emission
     // If exclude_alternate_colour is true, don't output the alternate colours
     out << "texture_list {" << vertices()+(exclude_alternate_colour ? 0 : vertices()) << "\n";
     
@@ -240,8 +240,13 @@ void TriangleMesh::write_povray(const std::string& fname_base,const std::string&
 	{
 	  step++;
 	  progress_step((100*step)/steps);
-	  
-	  out << "texture{pigment{rgb " << FloatRGB(vertex(v).colour(c)) << "}}\n";
+
+	  out << "texture{pigment{rgb " << FloatRGB(vertex(v).colour(c)) << "}";
+	  if (emissive()!=0.0f && vertex(v).emissive(c))
+	    {
+	      out << " finish{ambient " << emissive() << " diffuse " << 1.0f-emissive() << "}";
+	    }
+	  out << "}\n";
 	}
     
     out << "}\n";
