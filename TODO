@@ -5,3 +5,5 @@
 - Add Unix "man" page.
 - Improve code documentation.
 - Move terrain computation and save into separate threads so interface isn't locked.
+- Permit specification of ambient colour components (for planets with glowing red lava).
+
