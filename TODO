@@ -1,4 +1,4 @@
-- Make flight control with big models less sluggish
+- man page
 - Render tab setting to hide fly mode instructions
 - Make more keys do stuff in fly mode
 - Rethink tabbed GUI (needs doing if we are to add more parameters).

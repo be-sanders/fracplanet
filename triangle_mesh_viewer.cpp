@@ -81,10 +81,11 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
 	  this,SLOT(fly())
 	  );
 
-  timer=new QTimer(this);
-  
+  clock=new QTime();
+  clock->start();
+
+  timer=new QTimer(this);  
   connect(timer,SIGNAL(timeout()),this,SLOT(tick()));
-  
   timer->start(static_cast<int>(ceil(1000.0f/parameters->fps_target)));
   
   setMouseTracking(true);  // To get moves regardless of button state
@@ -93,7 +94,9 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
 }
 
 TriangleMeshViewer::~TriangleMeshViewer()
-{}
+{
+  delete clock;
+}
 
 void TriangleMeshViewer::keyPressEvent(QKeyEvent* e)
 {
@@ -224,6 +227,8 @@ void TriangleMeshViewer::unfly()
 
 void TriangleMeshViewer::tick()
 {
+  const float dt=0.001f*clock->restart();
+
   camera_roll_rate=0.0f;
   if (keypressed_arrow_left || keypressed_mouse_left) camera_roll_rate+=0.25f;
   if (keypressed_arrow_right || keypressed_mouse_right) camera_roll_rate-=0.25f;
@@ -231,24 +236,21 @@ void TriangleMeshViewer::tick()
   if (keypressed_arrow_up) camera_velocity+=120.0f*(0.03125f/480.0f);
   if (keypressed_arrow_down) camera_velocity-=120.0f*(0.03125f/480.0f);
   
-
   //! \todo Replace cheesy rotation hacks with proper rotation matrices
-
-  const float kt=1.0f/parameters->fps_target;
 
   XYZ camera_right=(camera_forward*camera_up).normalised();
 
-  const XYZ camera_right_rolled=camera_right+(kt*camera_roll_rate)*camera_up;
-  const XYZ camera_up_rolled=camera_up-(kt*camera_roll_rate)*camera_right;
+  const XYZ camera_right_rolled=camera_right+(dt*camera_roll_rate)*camera_up;
+  const XYZ camera_up_rolled=camera_up-(dt*camera_roll_rate)*camera_right;
 
   camera_right=camera_right_rolled.normalised();
   camera_up=camera_up_rolled.normalised();
 
-  camera_forward=(camera_forward+kt*camera_yaw_rate*camera_right+kt*camera_pitch_rate*camera_up).normalised();
+  camera_forward=(camera_forward+dt*camera_yaw_rate*camera_right+dt*camera_pitch_rate*camera_up).normalised();
   camera_up=(camera_right*camera_forward).normalised();
 
-  camera_position+=(kt*camera_velocity)*camera_forward;
-  object_rotation+=object_spinrate*kt;
+  camera_position+=(dt*camera_velocity)*camera_forward;
+  object_rotation+=object_spinrate*dt;
 
   if (display->isVisible())
     {

@@ -51,7 +51,7 @@ public:
     :wireframe(false)
     ,display_list(false)
     ,ambient(0.1f)
-    ,fps_target(100.0)
+    ,fps_target(75.0f)
     ,notify(0)
   {}
 

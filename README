@@ -34,6 +34,7 @@ BUILDING
 Either use the traditional
  ./configure
  make
+(NB THe configure script is NOT autoconf generated)
 
 Or just have both done for you by running 
   ./BUILD

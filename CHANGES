@@ -1,5 +1,4 @@
 From release 0.0.3:
- - Slider control of ambient
  - Bump version number to 0.1.0-devel
  - Support emissive oceans and rivers (including POV save)
  - Fix .inc filename bug (spurious ")
@@ -8,6 +7,8 @@ From release 0.0.3:
  - Don't burn CPU when OpenGL area not visible.
  - Crude flight-simulator mode
  - Save uses Qt file-picker dialog
+ - Slider control of ambient
+ - Amount of movement independent of FPS rate.
 
 From release 0.0.1:
  - Bump version number to 0.0.3 (0.0.2 omitted docs)

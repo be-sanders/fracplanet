@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qgroupbox.h>
 #include <qgrid.h>
 #include <qpushbutton.h>
+#include <qdatetime.h>
 #include <qtimer.h>
 #include <qlabel.h>
 
@@ -59,6 +60,9 @@ class TriangleMeshViewer : public QGrid
 
   //! Timer for driving animation.
   QTimer* timer;
+
+  //! Time for animation progress
+  QTime* clock;
 
   //! Label and box around the elevation slider.
   QGroupBox* tilt_box;

@@ -169,7 +169,11 @@ and <code>-fn <em>font</em></code>.
     <dd>
       Click on these buttons to bring up a colour-picking dialog and change the colour for the selected class of terrain.
       Each button displays the colour currently selected for that class.
-      Obvious things you might want to do are to change the shoreline colour to the same colour as the low level terrain (I mean, those beaches are pretty absurdly <em>wide</em> otherwise), change the orange highlands to a more mountainous grey, or perhaps (like the author) you lean toward an apocalyptic &quot;lava world&quot; with red rivers and oceans (use emission to make them glow), black shorelines and ash-grey terrain.
+      Obvious things you might want to do are to change the shoreline colour to 
+      the same colour as the low level terrain (those beaches are pretty absurdly <em>wide</em> otherwise), 
+      change the orange highlands to a more mountainous grey, or perhaps (like the author) you lean toward
+      an apocalyptic &quot;lava world&quot; with red rivers and oceans (use emission to make them glow), 
+      black shorelines and ash-grey terrain.
     </dd>
   
     <dt>Regenerate</dt>
@@ -258,10 +262,12 @@ and <code>-fn <em>font</em></code>.
 
 <p>
   The central area displays the current (most recently generated) model.
-  The (badly named) &quot;elevation&quot; slider controls the latitude of the camera (when viewing a sphere-based object), and the elevation (as in azimuth-elevation) of the camera when viewing a planar based terrain area.  
+  It is hidden when terrain is being regenerated.
+  The (badly named) &quot;tilt&quot; slider controls the latitude of the camera (when viewing a sphere-based object), and the elevation (as in azimuth-elevation) of the camera when viewing a planar based terrain area.  
   Note that in the latter case the bottom half of the slider places the camera below base ground level/sea level, which results in little being seen due to back-face culling.
-  The &quot;spin rate&quot; controls the rate at which the object is rotated (the increment is currently frame-by-frame and <em>not</em> compensated for actual elapsed time between frame updates).
-  The display area update rate is clamped to 100Hz, although this will typically only be reached at the lowest levels of subdivision.
+  The &quot;spin rate&quot; controls the rate at which the object is rotated.
+  The display area update rate is clamped to 75Hz, although this will typically
+  only be reached at the lowest levels of subdivision.
 </p>
 
 <h2>License</h2>
@@ -285,6 +291,5 @@ and <code>-fn <em>font</em></code>.
 <p>
   The full license can be also viewed on fracplanet's &quot;About&quot; tab.
 </p>
-
 
 </body>
