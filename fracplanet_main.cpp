@@ -45,7 +45,7 @@ FracplanetMain::FracplanetMain(QWidget* parent)
   progress_bar=new QProgressBar(progress_box);
 
   viewer=new TriangleMeshViewer(0,&parameters_render);     // Viewer will be a top-level-window
-  viewer->resize(640,640);
+  viewer->resize(512,512);
 
   regenerate(); 
 

@@ -1,4 +1,5 @@
 From release 0.0.3:
+ - Slider control of ambient
  - Bump version number to 0.1.0-devel
  - Support emissive oceans and rivers (including POV save)
  - Fix .inc filename bug (spurious ")

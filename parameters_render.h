@@ -37,6 +37,9 @@ public:
   //! Render via display list
   bool display_list;
 
+  //! Amount of global ambient illumination (0-1)
+  float ambient;
+
   //! Target frame rate
   float fps_target;
   
@@ -47,6 +50,7 @@ public:
   ParametersRender()
     :wireframe(false)
     ,display_list(false)
+    ,ambient(0.1f)
     ,fps_target(100.0)
     ,notify(0)
   {}

@@ -231,14 +231,21 @@ and <code>-fn <em>font</em></code>.
 <h3>Render tab</h3>
 
 <p>
-  Options for OpenGL rendering appear on this tab, and the frame rate is also displayed.
-  Currently the only options are a tickbox to select wireframe rendering,
-  and another to select display-list rendering (the default is immediate mode).
-  Display list rendering is generally but not always faster (depends on your OpenGL implementation and graphics drivers).
-  The main reason display list is not enabled by default is that the application may pause for a long time
-  while OpenGL processes a list when it is first rendered.
-  [However, I have since discovered that display list rendering works fantastically well
-  when running over a remote X link, so it might be worth reconsidering this.]
+  Options for OpenGL rendering appear on this tab.
+  Note that none of these make any difference to the underlying mesh or POV-Ray's rendering of saved meshes.
+  Currently the options are a tickbox to select wireframe rendering,
+  another to select display-list rendering (the default is immediate mode),
+  and a slider controlling the amount of ambient light.
+  The frame rate and current mesh size is also displayed.
+</p>
+
+<p>
+  Display list rendering is generally but not always faster
+  (depends on your OpenGL implementation and graphics drivers).
+  The main reason display list is not enabled by default is that
+  the application may pause for a long time while OpenGL processes the
+  list when it is first rendered; the amount of memory consumed by 
+  the display list could also be a problem for very large meshes.
 </p>
 
 <h3>About tab</h3>

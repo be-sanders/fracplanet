@@ -62,6 +62,14 @@ void TriangleMeshViewerDisplay::paintGL()
   glClearColor(0.0,0.0,0.0,1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  const float a=parameters->ambient;
+
+  GLfloat global_ambient[]={a,a,a,1.0};
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT,global_ambient);
+
+  GLfloat light_diffuse[]={1.0-a,1.0-a,1.0-a,1.0};
+  glLightfv(GL_LIGHT0,GL_DIFFUSE,light_diffuse);
+
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
@@ -215,12 +223,9 @@ void TriangleMeshViewerDisplay::initializeGL()
   // Switch depth-buffering on
   glEnable(GL_DEPTH_TEST);
 
-  GLfloat ambient_light[]={0.0,0.0,0.0,1.0};
-  GLfloat white_light[]={1.0,1.0,1.0,1.0};
+  // Basic lighting stuff (set ambient globally rather than in light)
   GLfloat black_light[]={0.0,0.0,0.0,1.0};
-
-  glLightfv(GL_LIGHT0,GL_DIFFUSE,white_light);
-  glLightfv(GL_LIGHT0,GL_AMBIENT,ambient_light);
+  glLightfv(GL_LIGHT0,GL_AMBIENT,black_light);
   glLightfv(GL_LIGHT0,GL_SPECULAR,black_light);
   glEnable(GL_LIGHT0);
   glEnable(GL_LIGHTING);
