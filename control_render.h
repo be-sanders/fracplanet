@@ -52,6 +52,7 @@ class ControlRender : public QVBox, public Notifiable
 
   QCheckBox* wireframe;
   QCheckBox* display_list;
+  QCheckBox* joystick_mouse;
   QSlider* ambient;
 
   QLabel* status;
@@ -66,6 +67,7 @@ class ControlRender : public QVBox, public Notifiable
     
   void setWireframe(int v);
   void setDisplayList(int v);
+  void setJoystickMouse(int v);
   void setAmbient(int v);
 };
 

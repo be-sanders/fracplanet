@@ -5,7 +5,7 @@ From release 0.0.3:
  - Update docs
  - Viewer to separate top-level.
  - Don't burn CPU when OpenGL area not visible.
- - Crude flight-simulator mode
+ - Crude flight-simulator mode.  Joystick-mouse selector.
  - Save uses Qt file-picker dialog
  - Slider control of ambient
  - Amount of movement independent of FPS rate.

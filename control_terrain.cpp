@@ -18,6 +18,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "control_terrain.h"
 
 #include "fracplanet_main.h"
+#include <qtabwidget.h>
+#include <qgrid.h>
 
 /*! Used when initialising colour-chooser buttons.
  */
@@ -37,7 +39,22 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
    ,parameters(param)
    ,regenerate_target(tgt)
 {
-  object_type_button_group=new QHButtonGroup(this);
+  QTabWidget* tabs=new QTabWidget(this);
+  tabs->setMinimumWidth(384);
+
+  QVBox*const tab_terrain=new QVBox(tabs);
+  tabs->addTab(tab_terrain,"Landscape");
+
+  QVBox*const tab_snow=new QVBox(tabs);
+  tabs->addTab(tab_snow,"Snow");
+
+  QVBox*const tab_rivers=new QVBox(tabs);
+  tabs->addTab(tab_rivers,"Rivers");
+
+  QVBox*const tab_colours=new QVBox(tabs);
+  tabs->addTab(tab_colours,"Colours");
+
+  object_type_button_group=new QHButtonGroup(tab_terrain);
   object_type_planet_button=new QRadioButton("Planet",object_type_button_group);
   object_type_terrain_button=new QRadioButton("Terrain",object_type_button_group);
 
@@ -56,10 +73,10 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  this,SLOT(setObjectType(int))
 	  );
 	  
-  grid=new QGrid(2,Qt::Horizontal,this);
+  QGrid*const grid_terrain=new QGrid(2,Qt::Horizontal,tab_terrain);
 
-  subdivisions_seed_label=new QLabel("Perturbation seed:",grid);
-  subdivisions_seed_spinbox=new QSpinBox(0xffffffff,0x7fffffff,1,grid);
+  subdivisions_seed_label=new QLabel("Perturbation seed:",grid_terrain);
+  subdivisions_seed_spinbox=new QSpinBox(0xffffffff,0x7fffffff,1,grid_terrain);
   subdivisions_seed_spinbox->setValue(parameters->subdivisions_seed);
   connect(
 	  subdivisions_seed_spinbox,SIGNAL(valueChanged(int)),
@@ -67,8 +84,8 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(subdivisions_seed_spinbox,"The random seed for vertex perturbations.");
 
-  subdivisions_label=new QLabel("Subdivisions:",grid);
-  subdivisions_spinbox=new QSpinBox(0,16,1,grid);
+  subdivisions_label=new QLabel("Subdivisions:",grid_terrain);
+  subdivisions_spinbox=new QSpinBox(0,16,1,grid_terrain);
   subdivisions_spinbox->setValue(parameters->subdivisions);
   connect(
 	  subdivisions_spinbox,SIGNAL(valueChanged(int)),
@@ -76,8 +93,8 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(subdivisions_spinbox,"The number of times the initial structure will be subdivided.  WARNING: INCREASE SLOWLY!");
 
-  subdivisions_unperturbed_label=new QLabel("Unperturbed:",grid);
-  subdivisions_unperturbed_spinbox=new QSpinBox(0,16,1,grid);
+  subdivisions_unperturbed_label=new QLabel("Unperturbed:",grid_terrain);
+  subdivisions_unperturbed_spinbox=new QSpinBox(0,16,1,grid_terrain);
   subdivisions_unperturbed_spinbox->setValue(parameters->subdivisions_unperturbed);
   connect(
 	  subdivisions_unperturbed_spinbox,SIGNAL(valueChanged(int)),
@@ -86,8 +103,8 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   QToolTip::add(subdivisions_unperturbed_spinbox,"The number of subdivisions which will be performed without perturbing vertices");
 
 
-  variation_vertical_label=new QLabel("Variation (vertical) (/1024):",grid);
-  variation_vertical_spinbox=new QSpinBox(0,256,1,grid);
+  variation_vertical_label=new QLabel("Variation (vertical) (/1024):",grid_terrain);
+  variation_vertical_spinbox=new QSpinBox(0,256,1,grid_terrain);
   variation_vertical_spinbox->setValue((int)(1024*parameters->variation.z));
   connect(
 	  variation_vertical_spinbox,SIGNAL(valueChanged(int)),
@@ -95,8 +112,8 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(variation_vertical_spinbox,"The magnitude of random height perturbations");
 
-  variation_horizontal_label=new QLabel("Variation (horizontal) (/1024):",grid);
-  variation_horizontal_spinbox=new QSpinBox(0,256,1,grid);
+  variation_horizontal_label=new QLabel("Variation (horizontal) (/1024):",grid_terrain);
+  variation_horizontal_spinbox=new QSpinBox(0,256,1,grid_terrain);
   variation_horizontal_spinbox->setValue((int)(1024*parameters->variation.x));
   connect(
 	  variation_horizontal_spinbox,SIGNAL(valueChanged(int)),
@@ -104,8 +121,8 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(variation_horizontal_spinbox,"The magnitude of random horizontal perturbations");
 
-  base_height_label=new QLabel("Base land height (%):",grid);
-  base_height_spinbox=new QSpinBox(-100,100,10,grid);
+  base_height_label=new QLabel("Base land height (%):",grid_terrain);
+  base_height_spinbox=new QSpinBox(-100,100,10,grid_terrain);
   base_height_spinbox->setValue((uint)(100.0*parameters->base_height));
   connect(
 	  base_height_spinbox,SIGNAL(valueChanged(int)),
@@ -113,8 +130,8 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(base_height_spinbox,"The initial height of land relative to sea-level");
 
-  power_law_label=new QLabel("Power law:",grid);
-  power_law_spinbox=new QSpinBox(1,10000,10,grid);
+  power_law_label=new QLabel("Power law:",grid_terrain);
+  power_law_spinbox=new QSpinBox(1,10000,10,grid_terrain);
   power_law_spinbox->setValue((int)(100*parameters->power_law));
   connect(
 	  power_law_spinbox,SIGNAL(valueChanged(int)),
@@ -122,9 +139,10 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(power_law_spinbox,"The power-law to be applied to elevations.");
 
+  QGrid*const grid_snow=new QGrid(2,Qt::Horizontal,tab_snow);
 
-  snowline_equator_label=new QLabel("Snowline at equator",grid);
-  snowline_equator_spinbox=new QSpinBox(-100,200,10,grid);
+  snowline_equator_label=new QLabel("Snowline at equator",grid_snow);
+  snowline_equator_spinbox=new QSpinBox(-100,200,10,grid_snow);
   snowline_equator_spinbox->setValue((int)(100*parameters->snowline_equator));
   connect(
 	  snowline_equator_spinbox,SIGNAL(valueChanged(int)),
@@ -132,8 +150,8 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(snowline_equator_spinbox,"Snowline on the equator (as a % of the maximum height)");
 
-  snowline_pole_label=new QLabel("Snowline at pole",grid);
-  snowline_pole_spinbox=new QSpinBox(-100,200,10,grid);
+  snowline_pole_label=new QLabel("Snowline at pole",grid_snow);
+  snowline_pole_spinbox=new QSpinBox(-100,200,10,grid_snow);
   snowline_pole_spinbox->setValue((int)(100*parameters->snowline_pole));
   connect(
 	  snowline_pole_spinbox,SIGNAL(valueChanged(int)),
@@ -141,8 +159,8 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(snowline_pole_spinbox,"Snowline at the poles (as a % of the maximum height)");
 
-  snowline_power_law_label=new QLabel("Snowline power law",grid);
-  snowline_power_law_spinbox=new QSpinBox(1,1000,10,grid);
+  snowline_power_law_label=new QLabel("Snowline power law",grid_snow);
+  snowline_power_law_spinbox=new QSpinBox(1,1000,10,grid_snow);
   snowline_power_law_spinbox->setValue((int)(100*parameters->snowline_power_law));
   connect(
 	  snowline_power_law_spinbox,SIGNAL(valueChanged(int)),
@@ -150,8 +168,8 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(snowline_power_law_spinbox,"Power law applied to snowline elevation.");
 
-  snowline_slope_effect_label=new QLabel("Snowline slope suppression",grid);
-  snowline_slope_effect_spinbox=new QSpinBox(0,10000,5,grid);
+  snowline_slope_effect_label=new QLabel("Snowline slope suppression",grid_snow);
+  snowline_slope_effect_spinbox=new QSpinBox(0,10000,5,grid_snow);
   snowline_slope_effect_spinbox->setValue((int)(100*parameters->snowline_slope_effect));
   connect(
 	  snowline_slope_effect_spinbox,SIGNAL(valueChanged(int)),
@@ -159,8 +177,8 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(snowline_slope_effect_spinbox,"Snow suppression on slopes.");
 
-  snowline_glacier_effect_label=new QLabel("Snowline glacier effect",grid);
-  snowline_glacier_effect_spinbox=new QSpinBox(-1000,1000,5,grid);
+  snowline_glacier_effect_label=new QLabel("Snowline glacier effect",grid_snow);
+  snowline_glacier_effect_spinbox=new QSpinBox(-1000,1000,5,grid_snow);
   snowline_glacier_effect_spinbox->setValue((int)(100*parameters->snowline_glacier_effect));
   connect(
 	  snowline_glacier_effect_spinbox,SIGNAL(valueChanged(int)),
@@ -168,8 +186,10 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(snowline_glacier_effect_spinbox,"Converts rivers to glaciers.");
 
-  rivers_label=new QLabel("Rivers:",grid);
-  rivers_spinbox=new QSpinBox(0,1000000,100,grid);
+  QGrid*const grid_rivers=new QGrid(2,Qt::Horizontal,tab_rivers);
+
+  rivers_label=new QLabel("Rivers:",grid_rivers);
+  rivers_spinbox=new QSpinBox(0,1000000,100,grid_rivers);
   rivers_spinbox->setValue(parameters->rivers);
   connect(
 	  rivers_spinbox,SIGNAL(valueChanged(int)),
@@ -177,8 +197,8 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(rivers_spinbox,"The number of rivers to be attempted to be generated");
 
-  rivers_seed_label=new QLabel("Rivers seed:",grid);
-  rivers_seed_spinbox=new QSpinBox(0xffffffff,0x7fffffff,1,grid);
+  rivers_seed_label=new QLabel("Rivers seed:",grid_rivers);
+  rivers_seed_spinbox=new QSpinBox(0xffffffff,0x7fffffff,1,grid_rivers);
   rivers_seed_spinbox->setValue(parameters->rivers_seed);
   connect(
 	  rivers_seed_spinbox,SIGNAL(valueChanged(int)),
@@ -186,8 +206,8 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(rivers_seed_spinbox,"The random seed for river generation.");
 
-  lake_becomes_sea_label=new QLabel("Lake becomes sea:",grid);
-  lake_becomes_sea_spinbox=new QSpinBox(1,100,1,grid);
+  lake_becomes_sea_label=new QLabel("Lake becomes sea:",grid_rivers);
+  lake_becomes_sea_spinbox=new QSpinBox(1,100,1,grid_rivers);
   lake_becomes_sea_spinbox->setValue((uint)(100.0*parameters->lake_becomes_sea));
   connect(
 	  lake_becomes_sea_spinbox,SIGNAL(valueChanged(int)),
@@ -195,8 +215,8 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(lake_becomes_sea_spinbox,"The percentage of planetary surface which must be covered by a lake for it to be considered a sea");
 
-  new QLabel("Oceans & rivers emissive",grid);
-  oceans_and_rivers_emissive_spinbox=new QSpinBox(0,100,10,grid);
+  new QLabel("Oceans & rivers emissive",grid_rivers);
+  oceans_and_rivers_emissive_spinbox=new QSpinBox(0,100,10,grid_rivers);
   oceans_and_rivers_emissive_spinbox->setValue((uint)(100.0*parameters->oceans_and_rivers_emissive));
   connect(
 	  oceans_and_rivers_emissive_spinbox,SIGNAL(valueChanged(int)),
@@ -204,40 +224,38 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(oceans_and_rivers_emissive_spinbox,"Percentage of ocean and river colour which is emissive");
  
-  colour_label=new QLabel("Change colours:",this);
-  colour_grid=new QGrid(3,Qt::Horizontal,this);
+  QGrid*const grid_colours=new QGrid(2,Qt::Horizontal,tab_colours);
   
-  colour_ocean_button=new QPushButton(build_icon_of_colour(parameters->colour_ocean),"Ocean",colour_grid);
+  colour_ocean_button=new QPushButton(build_icon_of_colour(parameters->colour_ocean),"Ocean",grid_colours);
   connect(
 	  colour_ocean_button,SIGNAL(clicked()),
 	  this,SLOT(pickColourOcean())
 	  );
-  colour_shoreline_button=new QPushButton(build_icon_of_colour(parameters->colour_shoreline),"Shore",colour_grid);
+  colour_shoreline_button=new QPushButton(build_icon_of_colour(parameters->colour_shoreline),"Shore",grid_colours);
   connect(
 	  colour_shoreline_button,SIGNAL(clicked()),
 	  this,SLOT(pickColourShoreline())
 	  );
-  colour_low_button=new QPushButton(build_icon_of_colour(parameters->colour_low),"Low",colour_grid);
-  connect(
-	  colour_low_button,SIGNAL(clicked()),
-	  this,SLOT(pickColourLow())
-	  );
-  colour_river_button=new QPushButton(build_icon_of_colour(parameters->colour_river),"River",colour_grid);
+  colour_river_button=new QPushButton(build_icon_of_colour(parameters->colour_river),"River",grid_colours);
   connect(
 	  colour_river_button,SIGNAL(clicked()),
 	  this,SLOT(pickColourRiver())
 	  );
-  colour_snow_button=new QPushButton(build_icon_of_colour(parameters->colour_snow),"Snow",colour_grid);
+  colour_low_button=new QPushButton(build_icon_of_colour(parameters->colour_low),"Low",grid_colours);
+  connect(
+	  colour_low_button,SIGNAL(clicked()),
+	  this,SLOT(pickColourLow())
+	  );
+  colour_snow_button=new QPushButton(build_icon_of_colour(parameters->colour_snow),"Snow",grid_colours);
   connect(
 	  colour_snow_button,SIGNAL(clicked()),
 	  this,SLOT(pickColourSnow())
 	  );
-  colour_high_button=new QPushButton(build_icon_of_colour(parameters->colour_high),"High",colour_grid);
+  colour_high_button=new QPushButton(build_icon_of_colour(parameters->colour_high),"High",grid_colours);
   connect(
 	  colour_high_button,SIGNAL(clicked()),
 	  this,SLOT(pickColourHigh())
 	  );
-
 
   regenerate_button=new QPushButton("Regenerate",this);
   connect(

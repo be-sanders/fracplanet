@@ -1,7 +1,7 @@
-- man page
+- "man" page instead/besides HTML
+- Built-in manual like evolvotron
 - Render tab setting to hide fly mode instructions
 - Make more keys do stuff in fly mode
-- Rethink tabbed GUI (needs doing if we are to add more parameters).
 - Ability to load/save planet parameters (simple keyword=value text file)
 - Console mode app: read parameters, generate planet.
 - Split up mesh file (3 parts: vertices, colours, meshing)
@@ -13,7 +13,6 @@
 - More feedback (progress bar?) when building display list
   (unfortunately a lot of the delay happens in OpenGL when the list is completed)
 - Borrow some improvements from sister evolvotron project
-- "man" page instead/besides HTML
 - Check for OpenGL errors
 - Add control over heights at which colours switch.
 - Improve code documentation.

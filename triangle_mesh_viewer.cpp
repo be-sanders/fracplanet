@@ -180,7 +180,7 @@ void TriangleMeshViewer::mouseMoveEvent(QMouseEvent* e)
   if (fly_mode)
     {
       camera_yaw_rate=4.0f*signedsquare(e->pos().x()/static_cast<float>(size().width())-0.5f);
-      camera_pitch_rate=4.0f*signedsquare(e->pos().y()/static_cast<float>(size().height())-0.5f);
+      camera_pitch_rate=(parameters->joystick_mouse ? 1.0f : -1.0f)*4.0f*signedsquare(e->pos().y()/static_cast<float>(size().height())-0.5f);
     }
   else
     {
@@ -230,8 +230,8 @@ void TriangleMeshViewer::tick()
   const float dt=0.001f*clock->restart();
 
   camera_roll_rate=0.0f;
-  if (keypressed_arrow_left || keypressed_mouse_left) camera_roll_rate+=0.25f;
-  if (keypressed_arrow_right || keypressed_mouse_right) camera_roll_rate-=0.25f;
+  if (keypressed_arrow_left || keypressed_mouse_left) camera_roll_rate+=0.5f;
+  if (keypressed_arrow_right || keypressed_mouse_right) camera_roll_rate-=0.5f;
 
   if (keypressed_arrow_up) camera_velocity+=120.0f*(0.03125f/480.0f);
   if (keypressed_arrow_down) camera_velocity-=120.0f*(0.03125f/480.0f);
