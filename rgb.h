@@ -31,6 +31,7 @@ class FloatRGB;
 //! Class to represent red-green-blue colours stored with 8-bit resolution.
 /*! Direct access to class members is permitted.
     This is intended as a minimal class for efficient storage of colours.
+    (However, padding means there is a wasted byte, so 
     For computations FloatRGB should be used.
  */
 class ByteRGB
@@ -81,7 +82,7 @@ class ByteRGB
       g-=v.g;
       b-=v.b;
     }
-};
+}; // Thought this might be needed to get size 4: '__attribute__((packed));' but it seems to be OK
 
 //! Class to represent red-green-blue colours stored to floating point accuracy.
 /*! Direct access to class members is permitted.

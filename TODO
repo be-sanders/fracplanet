@@ -1,3 +1,6 @@
+- Abandon ByteRGB class as it takes 4 bytes not 3.
+  Replace with explicit uchars in Vertex, which is the only place which really uses them
+  Then would have space for some flags for e.g use emissive colour.
 - Fix river/lake hang for high subdivision levels
 - Borrow some improvements from sister evolvotron project
 - Add emissive option for oceans and rivers.

@@ -195,21 +195,16 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  );
   QToolTip::add(lake_becomes_sea_spinbox,"The percentage of planetary surface which must be covered by a lake for it to be considered a sea");
 
-  /*
-    {
-      //! \todo Reinstate emissive slider for next release
-      new QLabel("Emissive oceans & rivers",grid);
-      QHBox* oceans_and_rivers_emissive_box=new QHBox(grid);
-      new QLabel("0.0",oceans_and_rivers_emissive_box);
-      oceans_and_rivers_emissive_slider=new QSlider(0,100,10,(uint)(100.0*parameters->oceans_and_rivers_emissive),Qt::Horizontal,oceans_and_rivers_emissive_box);
-      new QLabel("1.0",oceans_and_rivers_emissive_box);
-      connect(
-	      oceans_and_rivers_emissive_slider,SIGNAL(valueChanged(int)),
-	      this,SLOT(setOceansAndRiversEmissive(int))
-	      );
-    }
-  */
-
+  new QLabel("Emissive oceans & rivers",grid);
+  QHBox* oceans_and_rivers_emissive_box=new QHBox(grid);
+  new QLabel("0.0",oceans_and_rivers_emissive_box);
+  oceans_and_rivers_emissive_slider=new QSlider(0,100,10,(uint)(100.0*parameters->oceans_and_rivers_emissive),Qt::Horizontal,oceans_and_rivers_emissive_box);
+  new QLabel("1.0",oceans_and_rivers_emissive_box);
+  connect(
+	  oceans_and_rivers_emissive_slider,SIGNAL(valueChanged(int)),
+	  this,SLOT(setOceansAndRiversEmissive(int))
+	  );
+ 
   colour_label=new QLabel("Change colours:",this);
   colour_grid=new QGrid(3,Qt::Horizontal,this);
   

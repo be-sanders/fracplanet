@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //! Class to store vertex state information
 /*! There is no direct access to members.
   Should probably be a protected member class of TriangleMesh.
+  sizeof(Vertex) should ideally be 3*4+3*4+2*3=30 but sizeof(ByteRGB) is 4 not 3 so reports 32.
  */
 class Vertex
 {
@@ -42,6 +43,9 @@ class Vertex
 
   //! Colours at vertex (could be a different colour in different triangles).
   ByteRGB _colour[2];
+
+  //! Flag that this vertex should use emissive shading
+  uchar _emissive;
  public:
 
   //! Constructor.  NB No default values set.

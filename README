@@ -99,3 +99,6 @@ Do
   make distclean
 to clean up qmake generated makefiles; useful after changing the .pro file.
 
+THANKS
+======
+Tobias Klausmann - a bug report
