@@ -69,11 +69,11 @@ executable.path = /usr/local/bin
 executable.files = fracplanet 
 
 #######################################
-# Make a tgz
+# Make a .tar.gz
 #
-tgz.target = fracplanet.tgz
+tgz.target = fracplanet.tar.gz
 tgz.depends = README BUILD LICENSE TODO CHANGES fracplanet.pro doxygen.cfg $$HEADERS $$SOURCES
-tgz.commands = tar cvfz fracplanet.tgz README BUILD LICENSE TODO CHANGES fracplanet.pro doxygen.cfg $$HEADERS $$SOURCES 
+tgz.commands = tar cvfz fracplanet.tar.gz README BUILD LICENSE TODO CHANGES fracplanet.pro doxygen.cfg $$HEADERS $$SOURCES 
 QMAKE_EXTRA_UNIX_TARGETS += tgz
 
 #####################################

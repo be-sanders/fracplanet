@@ -5,6 +5,7 @@ From release 0.0.0.0:
  - Move hardwired colours into ParametersTerrain class (in anticipation of control from GUI).
  - Add colour picking to GUI.
  - Bump version number to 0.0.1 (appears only in control_about.cpp)
+ - Generated .pov file correctly includes basename.inc (was always including terrain.inc before).
 
  
 

@@ -349,8 +349,8 @@ void TriangleMeshTerrainPlanet::write_povray(const ParametersSave& param,const P
   
   if (param.atmosphere)
     {
-      header+="sphere {<0.0,0.0,0.0>,1.05 hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <1.0,1.0,1.0> extinction 1}}}}\n";
-      header+="sphere {<0.0,0.0,0.0>,1.1  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
+      header+="sphere {<0.0,0.0,0.0>,1.025 hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <1.0,1.0,1.0> extinction 1}}}}\n";
+      header+="sphere {<0.0,0.0,0.0>,1.05  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
     }
   
   TriangleMesh::write_povray(param.basename,header,param.sea_object);

@@ -206,7 +206,7 @@ void TriangleMesh::write_povray(const std::string& fname_base,const std::string&
     out << "#include \"colors.inc\"\n";
     out << "camera {perspective location <0,1,-4.5> look_at <0,0,0> angle 45}\n";
     out << "light_source {<100,100,-100> color White}\n";
-    out << "#include \"terrain.inc\"\n";
+    out << "#include \""+fname_base+"\".inc\"\n";
   }
 
   {
