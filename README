@@ -4,7 +4,8 @@ ABOUT
 Software to generate random planets and terrain with oceans, mountains, icecaps and rivers.
 Parameters are specified interactively and the results displayed using OpenGL.
 The generated objects can be dumped in Pov-Ray format.
-Coded using C++ and STL.  Uses Qt and OpenGL libraries.  Should work on any platform with these available.
+Coded using C++ and STL.  Uses Qt and OpenGL libraries.  
+Should build and work on any platform with these available.
 
 LICENSE
 =======
@@ -26,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 BUILDING
 ========
-This has only been tested on RH8.0.
+This has only been tested on RH8 and RH9
 
 You should just be able to do
 
@@ -42,38 +43,49 @@ USING
 =====
 User documentation is contained in fracplanet.htm
 If you just want to dive in all you need to know is this:
-  After changing ANY of the terrain generation parameters, you must hit "regenerate" to create and display a new model.
+  After changing ANY of the terrain generation parameters, you must 
+  hit "regenerate" to create and display a new model.
   This keeps the random seeds for terrain and river generation the same.
-  There are a couple of extra buttons which also change the random seed for the terrain or river network before regenerating,
-  Most of the parameter entry fields have tooltips on them which give an idea of what they're about.
+  There are a couple of extra buttons which also change the random seed 
+  for the terrain or river network before regenerating,
+  Most of the parameter entry fields have tooltips on them which 
+  give an idea of what they're about.
 
 PERFORMANCE
 ===========
-The biggest factor influencing performance (both generation and display) is the degree of subdivision.
-At subdivision level 8 (for a planet) around 200MB of memory is required.
-On a 2.4GHz machine with a GeForce4 and the Nvidia OpenGL drivers display rates start to suffer around subdivision level 7.
+The biggest factor influencing performance (both generation and 
+display) is the degree of subdivision.  At subdivision level 8 
+(for a planet) around 200MB of memory is required.  Subdivision level 9 
+is not very well tested and appears to have some problems (see BUGS file).
+On a 2.4GHz machine with a GeForce4 and the Nvidia OpenGL drivers display 
+rates start to suffer around subdivision level 7.
 
-When generating many rivers at high levels of subdivision, the river generation progress bar may stall for long periods 
+When generating many rivers at high levels of subdivision, the 
+river generation progress bar may stall for long periods 
 (this is generally due to a large lake being formed somewhere).
 
 INSTALL
 =======
 Doing 
   make install
-will attempt to install the executable in /usr/local/bin
-
-fracplanet.htm and fracplanet.css should probably be put somewhere too.
+will attempt to install the executable in 
+  /usr/local/bin
+and some HTML user documentation (fracplanet.htm and fracplanet.css ) in 
+  /usr/local/share/doc/fracplanet
 
 BUILDING CODE DOCUMENTATION
 ===========================
-If you have doxygen (and graphviz) and want to build the documentation subdirectory too, execute 
+If you have doxygen (and graphviz) and want to build the code documentation
+subdirectory too, execute 
   make doc
 
 RAY TRACING OUTPUT
 ==================
-Once you have run fracplanet and saved a planet/landscape (as e.g terrain.pov and terrain.inc), do e.g
+Once you have run fracplanet and saved a planet/landscape 
+(as e.g terrain.pov and terrain.inc), do e.g
   povray -Q9 -geometry 768x576 terrain.pov
-Expect to get a lot of "determinant too small" messages, especially when using high degrees of subdivision.
+Expect to get a lot of "determinant too small" messages, 
+especially when using high degrees of subdivision.
 
 CLEANING UP
 ===========
@@ -83,4 +95,7 @@ which deletes everything except the doc directory.
 Do 
   make realclean
 to get rid of everything including the doc directory.
+Do
+  make distclean
+to clean up qmake generated makefiles; useful after changing the .pro file.
 

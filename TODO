@@ -1,7 +1,8 @@
 - Fix river/lake hang for high subdivision levels
 - Borrow some improvements from sister evolvotron project
-- Check for OpenGL errors
 - Add emissive option for oceans and rivers.
+- "man" page instead/besides HTML
+- Check for OpenGL errors
 - Add control over heights at which colours switch.
 - Figure out how to build RPMs.
 - Add "flight simulator" mode for getting in closer to terrain.

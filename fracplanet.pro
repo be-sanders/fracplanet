@@ -4,6 +4,8 @@ TEMPLATE = app
 CONFIG+= qt opengl release
 
 ##################
+# Build options
+
 # Better optimisations than qmake defaults IF you have the right processor.
 # The -mfpmath=sse -msse2 options (apparently NOT implied by -march alone)
 # seem to be needed to generate SSE instructions on the authors setup.
@@ -14,6 +16,16 @@ CONFIG+= qt opengl release
 #QMAKE_CXXFLAGS_RELEASE += -march=pentium4 -mfpmath=sse -msse2 -O3 -ffast-math -funroll-loops -fomit-frame-pointer
 #
 # On a P3 try -msse instead of -msse2 ?
+
+#######################################
+# Install targets
+
+INSTALLS += executable documentation
+executable.path = /usr/local/bin
+executable.files = fracplanet 
+documentation.path = /usr/local/share/doc/fracplanet
+documentation.files = fracplanet.htm fracplanet.css
+
 
 # Input
 HEADERS += \
@@ -84,13 +96,6 @@ VERSION=$$VERSION_NUMBER
 #
 QMAKE_CXXFLAGS_RELEASE += -DNDEBUG
 QMAKE_CFLAGS_RELEASE += -DNDEBUG
-
-#######################################
-# Install targets
-#
-INSTALLS += executable
-executable.path = /usr/local/bin
-executable.files = fracplanet 
 
 ######################################
 # Other stuff:
