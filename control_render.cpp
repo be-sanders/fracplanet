@@ -29,6 +29,14 @@ ControlRender::ControlRender(QWidget* parent,ParametersRender* param)
 	  this,SLOT(setWireframe(int))
 	  );
 
+  display_list=new QCheckBox("Display list",this);
+  display_list->setChecked(parameters->display_list);
+  QToolTip::add(display_list,"Selects OpenGL rendering via display_list");
+  connect(
+	  display_list,SIGNAL(stateChanged(int)),
+	  this,SLOT(setDisplayList(int))
+	  );
+
   padding=new QVBox(this);
   setStretchFactor(padding,1);
 }

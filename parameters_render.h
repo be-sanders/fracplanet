@@ -32,9 +32,13 @@ public:
   //! Flag selecting OpenGL wireframe rendering.
   bool wireframe;
 
+  //! Render via display list
+  bool display_list;
+
   //! Constructor.
   ParametersRender()
     :wireframe(false)
+    ,display_list(false)
   {}
 
   //! Destructor.

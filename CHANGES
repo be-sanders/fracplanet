@@ -1,3 +1,9 @@
+From release 0.0.1:
+ - Bump version number to "development for 0.0.2"  ***CHANGE FOR RELEASE***
+ - Add fracplanet.htm, fracplanet.css user documentation.
+ - Minor cosmetic changes to code.
+ - Tweak doxygen.cfg 
+
 From release 0.0.0:
  - CHANGES file added.
  - lake_becomes_sea initialisation changed from 5 to 0.05 (so displays "5" on controls instead of "100").
@@ -6,10 +12,4 @@ From release 0.0.0:
  - Add colour picking to GUI.
  - Bump version number to 0.0.1 (appears only in control_about.cpp)
  - Generated .pov file correctly includes basename.inc (was always including terrain.inc before).
-
-From release 0.0.1:
- - Bump version number to 0.0.2
- - Add fracplanet.htm, fracplanet.css user documentation.
- - Minor cosmetic changes to code.
- - Tweak doxygen.cfg 
 

@@ -1,3 +1,4 @@
+- Add emissive option for oceans and rivers.
 - Add control over heights at which colours switch.
 - Figure out how to build RPMs.
 - Add "flight simulator" mode for getting in closer to terrain.
@@ -6,4 +7,5 @@
 - Improve code documentation.
 - Move terrain computation and save into separate threads so interface isn't locked.
 - Permit specification of ambient colour components (for planets with glowing red lava).
-
+- Rethink GUI.  Make terrain display take up most of main window, with menus to access control dialogs.
+- Use Qt file dialog for save.

@@ -83,13 +83,19 @@ public:
   /*! When lakes (produced during the river-growing step) cover this fraction of the available terrain they become seas and no-longer need to find a drain.
    */
   float lake_becomes_sea;
+  
+  //! Amount of emissive colour for oceans and rivers.
+  float oceans_and_rivers_emissive;
 
+  //@{
+  //! Colour for a terrain type.
   FloatRGB colour_ocean;
   FloatRGB colour_river;
   FloatRGB colour_shoreline;
   FloatRGB colour_low;
   FloatRGB colour_high;
   FloatRGB colour_snow;
+  //@}
 
   //! Constructor sets up some hopefully sensible defaults.
   ParametersTerrain();

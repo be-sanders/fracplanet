@@ -42,8 +42,12 @@ class TriangleMeshViewerDisplay : public QGLWidget
  protected:
   //! The mesh being displayed.
   const TriangleMesh* mesh;
+
   //! Pointer to the rendering parameters.
   const ParametersRender* parameters;
+
+  //! GL display list index
+  uint gl_display_list_index;
 
   //! Timer for driving frames.
   QTimer* timer;

@@ -3,6 +3,19 @@ TEMPLATE = app
 # append debug or release
 CONFIG+= qt opengl release
 
+##################
+# Better optimisations than qmake defaults IF you have the right processor.
+# The -mfpmath=sse -msse2 options (apparently NOT implied by -march alone)
+# seem to be needed to generate SSE instructions on the authors setup.
+# The larger inline limit helps with template generated code.
+# There is a nice summary of gcc optimisation options at http://freshmeat.net/articles/view/730/
+#
+# Uncomment BOTH of the next two lines on a P4 system:
+QMAKE_CXXFLAGS_RELEASE -= -march=i386 -O2
+QMAKE_CXXFLAGS_RELEASE += -march=pentium4 -mfpmath=sse -msse2 -O3 -ffast-math -funroll-loops -finline-limit=4000 -fomit-frame-pointer
+#
+# On a P3 try -msse instead of -msse2 ?
+
 # Input
 HEADERS += \
            control_about.h \

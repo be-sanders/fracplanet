@@ -51,16 +51,23 @@ class ControlRender : public QVBox
   ParametersRender*const parameters;
 
   QCheckBox* wireframe;
+  QCheckBox* display_list;
 
   QVBox* padding;
  public:
   ControlRender(QWidget* parent,ParametersRender* param);
   
   public slots:
-    void setWireframe(int v)
-  {
-    parameters->wireframe=(v==2);
-  }
+    
+  void setWireframe(int v)
+    {
+      parameters->wireframe=(v==2);
+    }
+
+  void setDisplayList(int v)
+    {
+      parameters->display_list=(v==2);
+    }
 };
 
 #endif

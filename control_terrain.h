@@ -113,6 +113,8 @@ class ControlTerrain : public QVBox
   QPushButton* colour_snow_button;
   QPushButton* colour_high_button;
 
+  QSlider* oceans_and_rivers_emissive_slider;
+
   QPushButton* regenerate_button;
   QPushButton* regenerate_with_new_seed_button;
   QPushButton* regenerate_rivers_with_new_seed_button;
@@ -197,6 +199,10 @@ class ControlTerrain : public QVBox
   void setLakeBecomesSea(int v)
     {
       parameters->lake_becomes_sea=v/100.0;
+    }
+  void setOceansAndRiversEmissive(int v)
+    {
+      parameters->oceans_and_rivers_emissive=v/100.0;
     }
   void pickColourOcean()
     {

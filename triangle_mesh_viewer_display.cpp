@@ -37,11 +37,21 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const Param
   
   // Set timer to tick at 100Hz (like we'll ever be able to render that fast :^)
   timer->start(10);
+
+  // Zero is not a valid value according to red book
+  gl_display_list_index=0;
 }
 
 void TriangleMeshViewerDisplay::set_mesh(const TriangleMesh* m)
 {
   mesh=m;
+
+  // If there is a display list allocated for the current mesh, delete it.
+  if (gl_display_list_index!=0)
+    {
+      glDeleteLists(gl_display_list_index,1);
+      gl_display_list_index=0;
+    }  
 }
 
 void TriangleMeshViewerDisplay::paintGL()
@@ -56,21 +66,41 @@ void TriangleMeshViewerDisplay::paintGL()
   glRotatef((180.0/M_PI)*camera_azimuth,0.0,0.0,1.0);
 
   glPolygonMode(GL_FRONT,(parameters->wireframe ? GL_LINE : GL_FILL));
+  
+  if (parameters->display_list && gl_display_list_index!=0)
+    {
+      glCallList(gl_display_list_index);
+    }
+  else
+    {
+      bool building_display_list=(parameters->display_list && gl_display_list_index==0);
 
-  GLfloat default_material[3]={1.0,1.0,1.0};
-  glMaterialfv(GL_FRONT,GL_DIFFUSE,default_material);
+      if (building_display_list)
+	{
+	  gl_display_list_index=glGenLists(1);
+	  glNewList(gl_display_list_index,GL_COMPILE_AND_EXECUTE);
+	}
 
-  // Point GL at arrays of data
-  glVertexPointer(3,GL_FLOAT,sizeof(Vertex),&(mesh->vertex(0).position().x));
-  glNormalPointer(GL_FLOAT,sizeof(Vertex),&(mesh->vertex(0).normal().x));
-  glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(mesh->vertex(0).colour(0).r));
+      GLfloat default_material[3]={1.0,1.0,1.0};
+      glMaterialfv(GL_FRONT,GL_DIFFUSE,default_material);
 
-  // Draw the colour-zero triangles
-  glDrawElements(GL_TRIANGLES,3*mesh->triangles_of_colour0(),GL_UNSIGNED_INT,&(mesh->triangle(0).vertex(0)));
+      // Point GL at arrays of data
+      glVertexPointer(3,GL_FLOAT,sizeof(Vertex),&(mesh->vertex(0).position().x));
+      glNormalPointer(GL_FLOAT,sizeof(Vertex),&(mesh->vertex(0).normal().x));
+      glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(mesh->vertex(0).colour(0).r));
 
-  // Switch to alternate colour and draw the colour-one triangles
-  glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(mesh->vertex(0).colour(1).r));
-  glDrawElements(GL_TRIANGLES,3*mesh->triangles_of_colour1(),GL_UNSIGNED_INT,&(mesh->triangle(mesh->triangles_of_colour0()).vertex(0)));
+      // Draw the colour-zero triangles
+      glDrawElements(GL_TRIANGLES,3*mesh->triangles_of_colour0(),GL_UNSIGNED_INT,&(mesh->triangle(0).vertex(0)));
+
+      // Switch to alternate colour and draw the colour-one triangles
+      glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(mesh->vertex(0).colour(1).r));
+      glDrawElements(GL_TRIANGLES,3*mesh->triangles_of_colour1(),GL_UNSIGNED_INT,&(mesh->triangle(mesh->triangles_of_colour0()).vertex(0)));
+
+      if (building_display_list)
+	{
+	  glEndList();
+	}
+    }
 
   glFlush();
 }

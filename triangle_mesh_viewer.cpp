@@ -25,7 +25,7 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
 
   display=new TriangleMeshViewerDisplay(this,param,mesh);
 
-  elevation_box=new QGroupBox(1,Qt::Horizontal,"Elevation",this);
+  elevation_box=new QGroupBox(1,Qt::Horizontal,"Tilt",this);
   spinrate_box=new QGroupBox(1,Qt::Horizontal,"Spin Rate",this);
 
   elevation_slider=new QSlider(-80,80,10, 0,Qt::Vertical,elevation_box);
