@@ -85,6 +85,7 @@ void TriangleMeshViewerDisplay::paintGL()
 	{
 	  gl_display_list_index=glGenLists(1);
 	  glNewList(gl_display_list_index,GL_COMPILE_AND_EXECUTE);
+	  std::cerr << "Building display list...\n";
 	}
 
       GLfloat default_material[3]={1.0,1.0,1.0};
@@ -105,6 +106,7 @@ void TriangleMeshViewerDisplay::paintGL()
       if (building_display_list)
 	{
 	  glEndList();
+	  std::cerr << "...built display list\n";
 	}
     }
 
