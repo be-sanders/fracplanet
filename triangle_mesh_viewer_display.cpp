@@ -26,12 +26,15 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const Param
    ,frame(0)
    ,width(0)
    ,height(0)
+   ,frame_time()
    ,camera_elevation(0.0)
    ,camera_spin_rate(0.0)
    ,camera_azimuth(0.0)
    ,camera_distance(4.5)
 {
   timer=new QTimer(this);
+  
+  frame_time.start();
   
   connect(timer,SIGNAL(timeout()),this,SLOT(tick()));
   
@@ -103,6 +106,8 @@ void TriangleMeshViewerDisplay::paintGL()
     }
 
   glFlush();
+
+  std::cerr << "FPS: " << 1000.0/frame_time.restart() << "\n";
 }
 
 void TriangleMeshViewerDisplay::initializeGL()

@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qwidget.h>
 #include <qtimer.h>
 #include <qgl.h>
+#include <qdatetime.h>
 
 #include "useful.h"
 #include "random.h"
@@ -60,6 +61,9 @@ class TriangleMeshViewerDisplay : public QGLWidget
 
   //! Display area height.
   uint height;
+
+  //! Time frames for FPS measurement.
+  QTime frame_time;
 
   //@{
   //! Parameter of camera position.
