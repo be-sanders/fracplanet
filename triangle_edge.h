@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 /*! An edge is described by two vertices.
  These are ordered internally for more efficient sorting and comparison.
  This class is useful for, for example, discovering adjacent triangles through edges they have in common.
+NB There is no void constructor because the const vertices wouldn't be set.
  */
 class TriangleEdge
 {
@@ -40,11 +41,7 @@ class TriangleEdge
   const uint _vertex1;
 
  public:
-  
-  //! Constructor.
-  TriangleEdge()
-    {}
-  
+    
   //! Constructor.  Sorts arguments to ensure _vertex0<_vertex1
   TriangleEdge(uint v0,uint v1)
     :_vertex0(v0<v1 ? v0 : v1)
