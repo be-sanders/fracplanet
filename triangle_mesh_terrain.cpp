@@ -341,7 +341,7 @@ TriangleMeshTerrainPlanet::TriangleMeshTerrainPlanet(const ParametersTerrain& pa
   do_terrain(parameters);
 }
 
-void TriangleMeshTerrainPlanet::write_povray(const ParametersSave& param,const ParametersTerrain& parameters_terrain) const
+bool TriangleMeshTerrainPlanet::write_povray(const std::string& base_filename,const ParametersSave& param,const ParametersTerrain& parameters_terrain) const
 {
   const bool save_pov_mode=POVMode::pov_mode();
   POVMode::pov_mode(true);
@@ -368,9 +368,11 @@ void TriangleMeshTerrainPlanet::write_povray(const ParametersSave& param,const P
 	<< "sphere {<0.0,0.0,0.0>,1.05  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
     }
   
-  TriangleMesh::write_povray(param.basename,header.str(),param.sea_object);
+  bool ret=TriangleMesh::write_povray(base_filename,header.str(),param.sea_object);
 
   POVMode::pov_mode(save_pov_mode);
+
+  return ret;
 }
 
 TriangleMeshTerrainFlat::TriangleMeshTerrainFlat(const ParametersTerrain& parameters,Progress* progress)
@@ -383,7 +385,7 @@ TriangleMeshTerrainFlat::TriangleMeshTerrainFlat(const ParametersTerrain& parame
   do_terrain(parameters);
 }
 
-void TriangleMeshTerrainFlat::write_povray(const ParametersSave& param,const ParametersTerrain& parameters_terrain) const
+bool TriangleMeshTerrainFlat::write_povray(const std::string& base_filename,const ParametersSave& param,const ParametersTerrain& parameters_terrain) const
 {
   const bool save_pov_mode=POVMode::pov_mode();
   POVMode::pov_mode(true);
@@ -410,8 +412,10 @@ void TriangleMeshTerrainFlat::write_povray(const ParametersSave& param,const Par
 	<< "plane {<0.0,1.0,0.0>,0.1  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
     }
   
-  TriangleMesh::write_povray(param.basename,header.str(),param.sea_object);
+  const bool ret=TriangleMesh::write_povray(base_filename,header.str(),param.sea_object);
 
   POVMode::pov_mode(save_pov_mode);
+
+  return ret;
 }
 

@@ -16,7 +16,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "triangle_mesh.h"
+#include <qmessagebox.h>
+
 #include <fstream>
+#include <sstream>
 
 void TriangleMesh::progress_start(uint steps,const std::string& info) const
 {
@@ -179,7 +182,7 @@ void TriangleMesh::subdivide(uint subdivisions,uint flat_subdivisions,const XYZ&
     }
 }
 
-void TriangleMesh::write_povray(const std::string& fname_base,const std::string& header,bool exclude_alternate_colour) const
+bool TriangleMesh::write_povray(const std::string& fname_base,const std::string& header,bool exclude_alternate_colour) const
 {
   // \todo: No need to dump all vertices when not outputing all triangles.
 
@@ -193,98 +196,114 @@ void TriangleMesh::write_povray(const std::string& fname_base,const std::string&
   const uint steps=vertices()+vertices()+(exclude_alternate_colour ? 0 : vertices())+triangles_to_output;
   uint step=0;
 
-  progress_start(100,"Writing POV-Ray file");
+  progress_start(100,"Writing POV-Ray files");
 
   const bool save_pov_mode=POVMode::pov_mode();
   POVMode::pov_mode(true);
 
-  {
-    std::ofstream out((fname_base+std::string(".pov")).c_str());
-    
-    // Boilerplate for renderer
-    
-    out << "#include \"colors.inc\"\n";
-    out << "camera {perspective location <0,1,-4.5> look_at <0,0,0> angle 45}\n";
-    out << "light_source {<100,100,-100> color White}\n";
-    out << "#include \""+fname_base+".inc\"\n";
-  }
+  const std::string filename_pov=fname_base+".pov";
+  const std::string filename_inc=fname_base+".inc";
 
-  {
-    // Use POV's mesh2 object
-    std::ofstream out((fname_base+std::string(".inc")).c_str());
+  const uint last_separator=filename_inc.rfind('/');
+  const std::string filename_inc_relative_to_pov=
+    "./"
+    +(
+      last_separator==std::string::npos
+      ?
+      filename_inc
+      :
+      filename_inc.substr(last_separator+1)
+      );
 
-    out << header << "\n";
-    
-    out << "mesh2 {\n";
+  std::ofstream out_pov(filename_pov.c_str());
+  std::ofstream out_inc(filename_inc.c_str());
   
-    // Output all the vertex co-ordinates
-    out << "vertex_vectors {" << vertices() << ",\n";
-    
+  // Boilerplate for renderer    
+  out_pov << "#include \"colors.inc\"\n";
+  out_pov << "camera {perspective location <0,1,-4.5> look_at <0,0,0> angle 45}\n";
+  out_pov << "light_source {<100,100,-100> color White}\n";
+  out_pov << "#include \""+filename_inc_relative_to_pov+"\"\n";
+  
+  // Use POV's mesh2 object
+  
+  out_inc << header << "\n";
+  
+  out_inc << "mesh2 {\n";
+  
+  // Output all the vertex co-ordinates
+  out_inc << "vertex_vectors {" << vertices() << ",\n";
+  
+  for (uint v=0;v<vertices();v++)
+    {
+      step++;
+      progress_step((100*step)/steps);
+      
+      if (v!=0)
+	out_inc << ",";
+      out_inc << vertex(v).position() << "\n";
+    }
+  out_inc << "}\n";
+  
+  // Output the vertex colours, and handle emission
+  // If exclude_alternate_colour is true, don't output the alternate colours
+  out_inc << "texture_list {" << vertices()+(exclude_alternate_colour ? 0 : vertices()) << "\n";
+  
+  for (uint c=0;c<(exclude_alternate_colour ? 1 : 2);c++)
     for (uint v=0;v<vertices();v++)
       {
 	step++;
 	progress_step((100*step)/steps);
-
-	if (v!=0)
-	  out << ",";
-	out << vertex(v).position() << "\n";
+	
+	out_inc << "texture{pigment{rgb " << FloatRGB(vertex(v).colour(c)) << "}";
+	if (emissive()!=0.0f && vertex(v).emissive(c))
+	  {
+	    out_inc << " finish{ambient " << emissive() << " diffuse " << 1.0f-emissive() << "}";
+	  }
+	out_inc << "}\n";
       }
-    out << "}\n";
-
-    // Output the vertex colours, and handle emission
-    // If exclude_alternate_colour is true, don't output the alternate colours
-    out << "texture_list {" << vertices()+(exclude_alternate_colour ? 0 : vertices()) << "\n";
-    
-    for (uint c=0;c<(exclude_alternate_colour ? 1 : 2);c++)
-      for (uint v=0;v<vertices();v++)
-	{
-	  step++;
-	  progress_step((100*step)/steps);
-
-	  out << "texture{pigment{rgb " << FloatRGB(vertex(v).colour(c)) << "}";
-	  if (emissive()!=0.0f && vertex(v).emissive(c))
-	    {
-	      out << " finish{ambient " << emissive() << " diffuse " << 1.0f-emissive() << "}";
-	    }
-	  out << "}\n";
-	}
-    
-    out << "}\n";
-    
-    out << "face_indices {" << triangles_to_output << ",\n";
-    bool skip_initial_comma=true;
-    for (uint t=0;t<triangles_to_output;t++)
-      {
-	step++;
-	progress_step((100*step)/steps);
-
-	if (skip_initial_comma)
-	  skip_initial_comma=false;
-	else
-	  out << ",";
-
-	out 
-	  << "<" 
-	  << triangle(t).vertex(0) 
-	  << "," 
-	  << triangle(t).vertex(1) 
-	  << "," 
-	  << triangle(t).vertex(2) 
-	  << ">"; 
-
-	out << "," << triangle(t).vertex(0)+(t<triangles_of_colour0() ? 0 : vertices());
-	out << "," << triangle(t).vertex(1)+(t<triangles_of_colour0() ? 0 : vertices());
-	out << "," << triangle(t).vertex(2)+(t<triangles_of_colour0() ? 0 : vertices());
-	out << "\n";
-      }
-    out << "}\n";
-    
-    out << "}\n";
-  }
   
-  POVMode::pov_mode(save_pov_mode);
+  out_inc << "}\n";
+  
+  out_inc << "face_indices {" << triangles_to_output << ",\n";
+  bool skip_initial_comma=true;
+  for (uint t=0;t<triangles_to_output;t++)
+    {
+      step++;
+      progress_step((100*step)/steps);
+      
+      if (skip_initial_comma)
+	skip_initial_comma=false;
+      else
+	out_inc << ",";
+      
+      out_inc 
+	<< "<" 
+	<< triangle(t).vertex(0) 
+	<< "," 
+	<< triangle(t).vertex(1) 
+	<< "," 
+	<< triangle(t).vertex(2) 
+	<< ">"; 
+      
+      out_inc << "," << triangle(t).vertex(0)+(t<triangles_of_colour0() ? 0 : vertices());
+      out_inc << "," << triangle(t).vertex(1)+(t<triangles_of_colour0() ? 0 : vertices());
+      out_inc << "," << triangle(t).vertex(2)+(t<triangles_of_colour0() ? 0 : vertices());
+      out_inc << "\n";
+    }
+  out_inc << "}\n";
+  
+  out_inc << "}\n";
 
-  progress_complete("Wrote POV-Ray file");
+  out_pov.close();
+  out_inc.close();
+
+  const bool ok=(out_pov && out_inc);
+
+  POVMode::pov_mode(save_pov_mode);
+  
+  progress_complete(ok ? "Wrote POV-Ray files" : "Failed to write POV-Ray files");
+
+  return ok;
 }
 
 TriangleMeshFlatTriangle::TriangleMeshFlatTriangle(float z,uint seed,Progress* progress)

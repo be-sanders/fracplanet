@@ -8,6 +8,7 @@
 - Fix river/lake hang for high subdivision levels
 - Option to add Perlin noise to terrain (might make rivers meander more)
   Also completely noise generated terrain.
+  Also modify terrain colours
 - Continue GUI procesing when progressing.
 - More feedback (progress bar?) when building display list
   (unfortunately a lot of the delay happens in OpenGL when the list is completed)
@@ -16,5 +17,4 @@
 - Check for OpenGL errors
 - Add control over heights at which colours switch.
 - Improve code documentation.
-- Use Qt file dialog for save.
 - Clouds.

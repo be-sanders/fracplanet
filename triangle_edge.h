@@ -64,15 +64,6 @@ class TriangleEdge
   //! Accessor.
   const uint vertex1() const
     {return _vertex1;}
-
- private:
-  //! Constructor.
-  /* Actually, this form should never be used, hence private
-   */
-  TriangleEdge()
-    :_vertex0(0)
-    ,_vertex1(0)
-    {}
 };
 
 //! Comparison operator, required to build ordered STL data-structures.

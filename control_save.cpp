@@ -39,16 +39,8 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
 	  this,SLOT(setSeaSphere(int))
 	  );
 
-  basename_box=new QVBox(this);
-  basename_label=new QLabel("Base filename:",basename_box);
-  basename_edit=new QLineEdit(parameters->basename.c_str(),basename_box);
-  QToolTip::add(basename_edit,"Base name for save: <basename>.pov and <basename>.inc files will be generated");
-  connect(basename_edit,SIGNAL(textChanged(const QString&)),
-	  this,SLOT(setBasename(const QString&))
-	  );
-
   save=new QPushButton("Save (POV-Ray)",this);
-  QToolTip::add(save,"Press here to save object for POV-Ray");
+  QToolTip::add(save,"Press to save object for POV-Ray");
   connect(
 	  save,SIGNAL(clicked()),
 	  save_target,SLOT(save())

@@ -7,6 +7,7 @@ From release 0.0.3:
  - Viewer to separate top-level.
  - Don't burn CPU when OpenGL area not visible.
  - Crude flight-simulator mode
+ - Save uses Qt file-picker dialog
 
 From release 0.0.1:
  - Bump version number to 0.0.3 (0.0.2 omitted docs)

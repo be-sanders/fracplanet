@@ -240,8 +240,8 @@ public:
   //! Perform a number of subdivisions, possibly some unperturbed ("flat"), and halving the perturbation variation each iteration.
   void subdivide(uint subdivisions,uint flat_subdivisions,const XYZ& variation);
 
-  //! Dump the mesh to files in a form suitable for use by POVRay.
-  void write_povray(const std::string& fname_base,const std::string& header,bool exclude_alternate_colour) const;
+  //! Dump the mesh to files in a form suitable for use by POVRay.  Returns false if fails.
+  bool write_povray(const std::string& fname_base,const std::string& header,bool exclude_alternate_colour) const;
 };
 
 //! A single triangle lying in the z-plane.

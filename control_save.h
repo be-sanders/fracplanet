@@ -55,10 +55,6 @@ class ControlSave : public QVBox
   QCheckBox* atmosphere_checkbox;
   QCheckBox* sea_object_checkbox;
 
-  QVBox* basename_box;
-  QLabel* basename_label;
-  QLineEdit* basename_edit;
-
   QPushButton* save;
 
   QVBox* padding;
@@ -76,10 +72,6 @@ class ControlSave : public QVBox
   void setSeaSphere(int v)
     {
       parameters->sea_object=(v==2);
-    }
-  void setBasename(const QString& s)
-    {
-      parameters->basename=s.local8Bit();
     }
 };
 

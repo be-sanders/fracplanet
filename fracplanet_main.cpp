@@ -19,6 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <qapplication.h>
 #include <qcursor.h>
+#include <qfiledialog.h>
+#include <qmessagebox.h>
 
 FracplanetMain::FracplanetMain(QWidget* parent)
   :QHBox(parent)
@@ -123,5 +125,26 @@ void FracplanetMain::regenerate()
 
 void FracplanetMain::save()
 {
-  mesh->write_povray(parameters_save,parameters_terrain);
+  
+  QString selected_filename=QFileDialog::getSaveFileName(".","POV-Ray (*.pov *.inc)",this,"Save object","Fracplanet: a .pov AND .inc file will be written");
+  if (selected_filename.isEmpty())
+    {
+      QMessageBox::critical(this,"Fracplanet","No file specified\nNothing saved");
+    }
+  else
+    {
+      if (selected_filename.upper().endsWith(".POV") || selected_filename.upper().endsWith(".INC"))
+	{
+	  const std::string base_filename(selected_filename.left(selected_filename.length()-4).local8Bit());
+	  const bool ok=mesh->write_povray(base_filename,parameters_save,parameters_terrain);
+	  if (!ok) 
+	    {
+	      QMessageBox::critical(this,"Fracplanet","Errors ocurred while the files were being written.");
+	    }
+	}
+      else
+	{
+	  QMessageBox::critical(this,"Fracplanet","File selected must have .pov or .inc suffix.");
+	}
+    }
 }
