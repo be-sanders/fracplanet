@@ -30,21 +30,16 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const Param
    ,width(0)
    ,height(0)
    ,frame_time()
-   ,camera_elevation(0.0)
-   ,camera_spin_rate(0.0)
-   ,camera_azimuth(0.0)
-   ,camera_distance(4.5)
+   ,camera_position(-4.5f,0.0f,0.0f)
+   ,camera_lookat(0.0f,0.0f,0.0f)
+   ,camera_up(0.0f,0.0f,1.0f)
+   ,object_tilt(0.0f)
+   ,object_rotation(0.0f)
 {
   setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding,1,1));
 
-  timer=new QTimer(this);
-  
   frame_time.start();
   frame_time_reported.start();
-
-  connect(timer,SIGNAL(timeout()),this,SLOT(tick()));
-  
-  timer->start(static_cast<int>(ceil(1000.0f/parameters->fps_target)));
 
   // Zero is not a valid value according to red book, so use it to designate unset
   gl_display_list_index=0;
@@ -68,10 +63,15 @@ void TriangleMeshViewerDisplay::paintGL()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glLoadIdentity();
-  gluLookAt(0.0,-camera_distance*cos(camera_elevation),camera_distance*sin(camera_elevation), 0.0,0.0,0.0, 0.0,0.0,1.0);
+  gluLookAt(
+	    camera_position.x,camera_position.y,camera_position.z,
+	    camera_lookat.x  ,camera_lookat.y  ,camera_lookat.z,
+	    camera_up.x      ,camera_up.y      ,camera_up.z
+	    );
 
   glMatrixMode(GL_MODELVIEW);
-  glRotatef((180.0/M_PI)*camera_azimuth,0.0,0.0,1.0);
+  glRotatef((180.0/M_PI)*object_tilt,0.0,1.0,0.0);
+  glRotatef((180.0/M_PI)*object_rotation,0.0,0.0,1.0);
 
   glPolygonMode(GL_FRONT,(parameters->wireframe ? GL_LINE : GL_FILL));
   
@@ -244,7 +244,7 @@ void TriangleMeshViewerDisplay::resizeGL(int w,int h)
   glViewport(0,0,(GLint)w,(GLint)h);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-
+  
   // View angle is specified in vertical direction, but we need to exaggerate it if image is taller than wide.
   const float view_angle_degrees=minimum(90.0,width>height ? 30.0 : 30.0*height/width);
 
@@ -255,19 +255,17 @@ void TriangleMeshViewerDisplay::resizeGL(int w,int h)
   updateGL();
 }
 
-void TriangleMeshViewerDisplay::tick()
+void TriangleMeshViewerDisplay::draw_frame(const XYZ& p,const XYZ& l,const XYZ& u,float r,float t)
 {
   frame++;
-  camera_azimuth+=0.01*camera_spin_rate;
+
+  camera_position=p;
+  camera_lookat=l;
+  camera_up=u;
+  object_rotation=r;
+  object_tilt=t;
+
   updateGL();
 }
 
-void TriangleMeshViewerDisplay::setElevation(int e)
-{
-  camera_elevation=e*(-M_PI/180.0);
-}
 
-void TriangleMeshViewerDisplay::setSpinRate(int s)
-{
-  camera_spin_rate=s*(-M_PI/180.0);
-}

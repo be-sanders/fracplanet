@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qgroupbox.h>
 #include <qgrid.h>
 #include <qpushbutton.h>
+#include <qtimer.h>
 
 #include "useful.h"
 #include "random.h"
@@ -49,14 +50,20 @@ class TriangleMeshViewer : public QGrid
   Q_OBJECT;
 
  protected:
+  //! Pointer to the rendering parameters.
+  const ParametersRender* parameters;
+
   //! The actual rendering area.
   TriangleMeshViewerDisplay* display;
 
+  //! Timer for driving animation.
+  QTimer* timer;
+
   //! Label and box around the elevation slider.
-  QGroupBox* elevation_box;
+  QGroupBox* tilt_box;
   
   //! Elevation slider.
-  QSlider* elevation_slider;
+  QSlider* tilt_slider;
 
   //! Fly button
   QPushButton* fly_button;
@@ -66,6 +73,21 @@ class TriangleMeshViewer : public QGrid
 
   //! Spin rate slider.
   QSlider* spinrate_slider;
+
+  //@{
+  //! Parameter of camera position.
+  XYZ camera_position;
+  XYZ camera_forward;
+  XYZ camera_up;
+  float camera_velocity;
+  //@}
+
+  //@{
+  //! Parameters of object
+  float object_tilt;
+  float object_rotation;
+  float object_spinrate;
+  //@}
   
   //! Whether in fly mode
   bool fly_mode;
@@ -76,15 +98,26 @@ class TriangleMeshViewer : public QGrid
 
   virtual ~TriangleMeshViewer();
 
-  //! Interested in some key presses
-  void keyPressEvent(QKeyEvent* e);
-  
   //! Sets the TriangleMesh to be displayed.
   void set_mesh(const TriangleMesh* m);
 
+ protected:
+  //! Interested in some key presses
+  void keyPressEvent(QKeyEvent* e);
+
+  //! Interested in mouse position
+  void mouseMoveEvent(QMouseEvent* e);
+  
+  
  public slots:
   void fly();
   void unfly();
+
+  void set_tilt(int v);
+  void set_spinrate(int v);
+  
+ private slots:
+  void tick();
 };
 
 #endif

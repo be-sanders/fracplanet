@@ -41,7 +41,6 @@ class TriangleEdge
   const uint _vertex1;
 
  public:
-    
   //! Constructor.  Sorts arguments to ensure _vertex0<_vertex1
   TriangleEdge(uint v0,uint v1)
     :_vertex0(v0<v1 ? v0 : v1)
@@ -65,6 +64,15 @@ class TriangleEdge
   //! Accessor.
   const uint vertex1() const
     {return _vertex1;}
+
+ private:
+  //! Constructor.
+  /* Actually, this form should never be used, hence private
+   */
+  TriangleEdge()
+    :_vertex0(0)
+    ,_vertex1(0)
+    {}
 };
 
 //! Comparison operator, required to build ordered STL data-structures.

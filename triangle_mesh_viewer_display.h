@@ -24,7 +24,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define _triangle_mesh_viewer_display_h_
 
 #include <qwidget.h>
-#include <qtimer.h>
 #include <qgl.h>
 #include <qdatetime.h>
 
@@ -52,9 +51,6 @@ class TriangleMeshViewerDisplay : public QGLWidget
   //! GL display list index
   uint gl_display_list_index;
 
-  //! Timer for driving frames.
-  QTimer* timer;
-
   //! Frame count.
   uint frame;
   
@@ -75,10 +71,15 @@ class TriangleMeshViewerDisplay : public QGLWidget
 
   //@{
   //! Parameter of camera position.
-  float camera_elevation;
-  float camera_spin_rate;
-  float camera_azimuth;
-  float camera_distance;
+  XYZ camera_position;
+  XYZ camera_lookat;
+  XYZ camera_up;
+  //@}
+
+  //@{
+  //! Parameters of object
+  float object_tilt;
+  float object_rotation;
   //@}
 
  public:
@@ -88,7 +89,7 @@ class TriangleMeshViewerDisplay : public QGLWidget
   //! Set the mesh being rendered.
   void set_mesh(const TriangleMesh* m);
 
-  //! Called to repaint GL area.  (Driven by updateGL in tick() slot).
+  //! Called to repaint GL area.
   virtual void paintGL();
 
   //! Set up OpenGL.
@@ -98,17 +99,9 @@ class TriangleMeshViewerDisplay : public QGLWidget
   virtual void resizeGL(int w,int h);
   
   public slots:
-
-  //! Signalled from elevation slider.
-  void setElevation(int);
-
-  //! Signalled from spinrate slider.
-  void setSpinRate(int);
   
-  private slots:
-  
-  //! Driven by timer.
-  void tick();  
+  //! Called to redisplay scene
+    void draw_frame(const XYZ& p,const XYZ& l,const XYZ& u,float r,float t);
 };
 
 #endif
