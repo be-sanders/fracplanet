@@ -72,10 +72,9 @@ executable.files = fracplanet
 # Make a tgz
 #
 tgz.target = fracplanet.tgz
-tgz.depends = README BUILD LICENSE TODO fracplanet.pro doxygen.cfg $$HEADERS $$SOURCES
-tgz.commands = tar cvfz fracplanet.tgz README BUILD LICENSE TODO fracplanet.pro doxygen.cfg $$HEADERS $$SOURCES 
+tgz.depends = README BUILD LICENSE TODO CHANGES fracplanet.pro doxygen.cfg $$HEADERS $$SOURCES
+tgz.commands = tar cvfz fracplanet.tgz README BUILD LICENSE TODO CHANGES fracplanet.pro doxygen.cfg $$HEADERS $$SOURCES 
 QMAKE_EXTRA_UNIX_TARGETS += tgz
-
 
 #####################################
 # Stuff to drive doxygen

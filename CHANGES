@@ -1,0 +1,6 @@
+From release 0.0.0.0:
+ - CHANGES file added.
+ - lake_becomes_sea initialisation changed from 5 to 0.05 (so displays "5" on controls instead of "100").
+
+
+

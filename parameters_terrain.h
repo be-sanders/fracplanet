@@ -97,7 +97,7 @@ public:
     ,snowline_glacier_effect(0.1)
     ,rivers(0)
     ,rivers_seed(time(0))
-    ,lake_becomes_sea(5)
+    ,lake_becomes_sea(0.05)
   {}
 };
 
