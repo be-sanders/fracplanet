@@ -237,6 +237,8 @@ and <code>-fn <em>font</em></code>.
   Display list rendering is generally but not always faster (depends on your OpenGL implementation and graphics drivers).
   The main reason display list is not enabled by default is that the application may pause for a long time
   while OpenGL processes a list when it is first rendered.
+  [However, I have since discovered that display list rendering works fantastically well
+  when running over a remote X link, so it might be worth reconsidering this.]
 </p>
 
 <h3>About tab</h3>

@@ -37,7 +37,7 @@ contains(CPU, p3 ){
 
 contains(CPU, xp ){
   QMAKE_CXXFLAGS_RELEASE -= -march=i386 -mcpu=i686
-  QMAKE_CXXFLAGS_RELEASE += -march=athalon-xp -mfpmath=sse -msse
+  QMAKE_CXXFLAGS_RELEASE += -march=athlon-xp -mfpmath=sse -msse
 }
 
 ###################################

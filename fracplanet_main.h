@@ -80,6 +80,7 @@ protected:
 
  public:
   FracplanetMain(QWidget* parent);
+  virtual ~FracplanetMain();
 
   virtual void progress_start(uint target,const std::string&);
   virtual void progress_step(uint step);

@@ -44,11 +44,19 @@ FracplanetMain::FracplanetMain(QWidget* parent)
   progress_label=new QLabel(progress_box);
   progress_bar=new QProgressBar(progress_box);
 
-  viewer=new TriangleMeshViewer(this,&parameters_render);    
-  setStretchFactor(viewer,2);
+  viewer=new TriangleMeshViewer(0,&parameters_render);     // Viewer will be a top-level-window
+  viewer->resize(640,640);
 
-  regenerate();  
+  regenerate(); 
+
+  raise();   // On app start-up the control panel is the most important thing (regenerate raises the viewer window).
 }
+
+FracplanetMain::~FracplanetMain()
+{
+  delete viewer;
+}
+
 
 void FracplanetMain::progress_start(uint target,const std::string& info)
 {
@@ -83,6 +91,8 @@ void FracplanetMain::progress_complete(const std::string& info)
 
 void FracplanetMain::regenerate()
 {
+  viewer->hide();
+
   delete mesh;
 
   // There are some issues with type here:
@@ -106,6 +116,9 @@ void FracplanetMain::regenerate()
 	break;
       }
     }
+
+  viewer->showNormal();
+  viewer->raise();
 }
 
 void FracplanetMain::save()

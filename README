@@ -31,8 +31,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 BUILDING
 ========
-This has only been tested on RedHat8 and 9
-
 Either use the traditional
  ./configure
  make
@@ -50,6 +48,8 @@ This will give you a "fracplanet" executable which you can run with
   ./fracplanet
 or install where you like. 
 
+[The author tests on RedHat8 & 9, and Debian testing (sarge).]
+
 BUILD OPTIONS
 =============
 There are already some generally effective overrides for 
@@ -61,10 +61,10 @@ you rebuild to make sure Makefiles are rebuilt.
 The easiest way to get some additional CPU-specific optimisations
 is to use the configuration option:
   ./configure <cpu>
-where <cpu> is p3,p4 or xp as appropriate e.g ./configure p4
+where <cpu> is "p3", "p4" or "xp" as appropriate e.g "./configure p4"
 and rebuild from clean (again, "make distclean" is a good idea).
-Note that the ./BUILD script doesn't support this option; you have 
-to use configure and make. 
+I've no idea how much benefit these provide.
+You can also use these with the ./BUILD script e.g "./BUILD p4"
 
 USAGE
 =====
@@ -99,6 +99,7 @@ will attempt to install the executable in
   /usr/local/bin
 and some HTML user documentation (fracplanet.htm and fracplanet.css ) in 
   /usr/local/share/doc/fracplanet
+Obviously you'll probably need to be root for this stage.
 
 RAY TRACING OUTPUT
 ==================
@@ -107,6 +108,12 @@ Once you have run fracplanet and saved a planet/landscape
   povray -Q9 -geometry 768x576 terrain.pov
 Expect to get a lot of "determinant too small" messages, 
 especially when using high degrees of subdivision.
+It takes POVRay a LOT longer to read large models than
+to render them, so make the most of it once it's loaded
+and use POVRay's animation capabilities to the max.
+
+[Note: the author has only tested with povray 1.5; if there
+are any problems with the new 1.6 please let me know].
 
 BUILDING CODE DOCUMENTATION
 ===========================
@@ -117,3 +124,4 @@ subdirectory too, execute
 THANKS
 ======
 Tobias Klausmann - a bug report
+Frank Plohmann - feedback
