@@ -233,9 +233,8 @@ bool TriangleMesh::write_povray(const std::string& fname_base,const std::string&
   std::ofstream out_inc(filename_inc.c_str());
   
   // Boilerplate for renderer    
-  out_pov << "#include \"colors.inc\"\n";
   out_pov << "camera {perspective location <0,1,-4.5> look_at <0,0,0> angle 45}\n";
-  out_pov << "light_source {<100,100,-100> color White}\n";
+  out_pov << "light_source {<100,100,-100> color rgb <1.0,1.0,1.0>}\n";
   out_pov << "#include \""+filename_inc_relative_to_pov+"\"\n";
   
   // Use POV's mesh2 object

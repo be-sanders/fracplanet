@@ -77,12 +77,11 @@ void FracplanetMain::progress_start(uint target,const std::string& info)
   progress_was_stalled=false;
   progress_info=info;
   progress_dialog->reset();
-  progress_dialog->setTotalSteps(target);
-  progress_dialog->setProgress(0);
+  progress_dialog->setTotalSteps(target+1);   // Not sure why, but  +1 seems to avoid the progress bar dropping back to the start on completion
   progress_dialog->setLabelText(progress_info.c_str());
   progress_dialog->show();
 
-  last_step=(uint)-1;
+  last_step=-1;
   
   QApplication::setOverrideCursor(Qt::WaitCursor);  
 
@@ -124,8 +123,6 @@ void FracplanetMain::progress_complete(const std::string& info)
   if (startup) return;
 
   progress_dialog->setLabelText(info.c_str());
-  progress_dialog->reset();
-  //progress_dialog->hide();  // Flashes on and off too much so leave it to end to hide.
 
   last_step=(uint)-1;
 
@@ -162,14 +159,14 @@ void FracplanetMain::regenerate()
       }
     }
 
+  progress_dialog.reset(0);
+
   viewer->showNormal();
   viewer->raise();
-  progress_dialog.reset(0);
 }
 
 void FracplanetMain::save()
 {
-  
   QString selected_filename=QFileDialog::getSaveFileName(".","POV-Ray (*.pov *.inc)",this,"Save object","Fracplanet: a .pov AND .inc file will be written");
   if (selected_filename.isEmpty())
     {
@@ -180,7 +177,14 @@ void FracplanetMain::save()
       if (selected_filename.upper().endsWith(".POV") || selected_filename.upper().endsWith(".INC"))
 	{
 	  const std::string base_filename(selected_filename.left(selected_filename.length()-4).local8Bit());
+	  viewer->hide();
 	  const bool ok=mesh->write_povray(base_filename,parameters_save,parameters_terrain);
+	  
+	  progress_dialog.reset(0);
+
+	  viewer->showNormal();
+	  viewer->raise();
+
 	  if (!ok) 
 	    {
 	      QMessageBox::critical(this,"Fracplanet","Errors ocurred while the files were being written.");
@@ -191,4 +195,5 @@ void FracplanetMain::save()
 	  QMessageBox::critical(this,"Fracplanet","File selected must have .pov or .inc suffix.");
 	}
     }
+  
 }

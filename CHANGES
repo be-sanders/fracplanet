@@ -7,6 +7,7 @@ From release 0.1.0:
  - River generation faster and more reliable.
  - Subdivision enumerated as 1...levels in progress dialog (not from zero)
  - Improvements to river generation memory usage.
+ - Saved povray file no longer needs colors.inc
 
 From release 0.0.3:
  - Bump version number to 0.1.0

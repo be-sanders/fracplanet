@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Execute this to package up fracplanet as a .tar.gz
 

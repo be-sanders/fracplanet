@@ -1,3 +1,4 @@
+- Clean up progress stuff; push steps->% (and manage rate) into progress API.
 - std::auto_ptr sucks; use something better from boost
 - Add perturbation decay rate for subdivision too.
 - Noise perturbation in X&Y too; would break up subdivision ridge artefacts
