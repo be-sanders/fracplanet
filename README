@@ -1,0 +1,67 @@
+ABOUT
+=====
+[This was the original "Project Purpose and Summarization" for sourceforge.]
+Software to generate random planets and terrain with oceans, mountains, icecaps and rivers.
+Parameters are specified interactively and the results displayed using OpenGL.
+The generated objects can be dumped in Pov-Ray format.
+Coded using C++ and STL.  Uses Qt and OpenGL libraries.  Should work on any platform with these available.
+
+LICENSE
+=======
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+[The license should be in the LICENSE file in this directory]
+
+BUILDING
+========
+This has only been tested on RH8.0.
+
+You should just be able to do
+
+  ./BUILD
+
+(All this does is a qmake followed by a make!)
+
+This will give you a "fracplanet" executable which you can run with
+  ./fracplanet
+or install where you like.
+
+INSTALL
+=======
+Doing 
+  make install
+will attempt to install the executable in /usr/local/bin
+
+
+BUILDING CODE DOCUMENTATION
+===========================
+If you have doxygen (and graphviz) and want to build the documentation subdirectory too, execute 
+  make doc
+
+RAY TRACING OUTPUT
+==================
+Once you have run fracplanet and saved a planet/landscape (as e.g terrain.pov and terrain.inc), do e.g
+  povray -Q9 -geometry 768x576 terrain.pov
+Expect to get a lot of "determinant too small" messages, especially when using high degrees of subdivision.
+
+CLEANING UP
+===========
+To clean up this directory, do
+  make clean
+which deletes everything except the doc directory.
+Do 
+  make realclean
+to get rid of everything including the doc directory.
+

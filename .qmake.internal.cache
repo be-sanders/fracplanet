@@ -1,0 +1,35 @@
+[check]
+QMAKE_CACHE_VERSION = 1.03a
+QMAKE_ABSOLUTE_SOURCE_PATH = 
+MOC_DIR = 
+UI_DIR = 
+UI_HEADERS_DIR = 
+UI_SOURCES_DIR = 
+[depend]
+fracplanet.cpp = useful.h random.h geometry_viewer.h triangles_object.h xyz.h rgb.h
+geometry_viewer.cpp = geometry_viewer.h useful.h random.h triangles_object.h xyz.h rgb.h
+geometry_viewer.h = useful.h random.h triangles_object.h xyz.h rgb.h
+random.cpp = 
+random.h = useful.h
+rgb.cpp = 
+rgb.h = useful.h
+triangles_object.cpp = triangles_object.h useful.h random.h xyz.h rgb.h
+triangles_object.h = useful.h random.h xyz.h rgb.h
+useful.cpp = 
+useful.h = 
+xyz.cpp = 
+xyz.h = useful.h random.h
+[mocable]
+geometry_viewer.h = moc_geometry_viewer.cpp
+random.h = *qmake_ignore*
+rgb.h = *qmake_ignore*
+triangles_object.h = *qmake_ignore*
+useful.h = *qmake_ignore*
+xyz.h = *qmake_ignore*
+fracplanet.cpp = *qmake_ignore*
+geometry_viewer.cpp = *qmake_ignore*
+random.cpp = *qmake_ignore*
+rgb.cpp = *qmake_ignore*
+triangles_object.cpp = *qmake_ignore*
+useful.cpp = *qmake_ignore*
+xyz.cpp = *qmake_ignore*
