@@ -282,10 +282,10 @@ and <code>-fn <em>font</em></code>.
   Currently the options are a tickbox to select wireframe rendering,
   another to select display-list rendering (the default is immediate mode),
   another to select joystick mode for the mouse in flight mode
-  (this simply affects whether pulling the mouse down the screen flys you in that
+  (this simply affects whether pulling the mouse down the screen flies you in that
   direction, or whether it's more like an aircraft joystick and pitches you up instead)
   and a slider controlling the amount of ambient light.
-  The frame rate and current mesh size is also displayed.
+  The frame rate and current mesh size (number of triangles and vertices) is also displayed.
 </p>
 
 <p>
@@ -313,6 +313,16 @@ and <code>-fn <em>font</em></code>.
   The &quot;spin rate&quot; controls the rate at which the object is rotated.
   The display area update rate is clamped to 75Hz, although this will typically
   only be reached at the lowest levels of subdivision.
+</p>
+
+<p>
+Hitting the &quot;Fly&quot; button puts you into free-flight mode.
+Pitch and yaw are controlled by the mouse position relative to the window centre
+(if the pitch control feels backwards, change mouse-Y behaviour on the render tab).
+Roll is controlled by left/right mouse buttons, or the left/right arrow keys.
+Speed is controlled by the mouse wheel or the up/down arrow keys.
+There is a summary of this displayed at the bottom of the window.
+Hit Esc to return to the usual viewing mode.
 </p>
 
 <h2>License</h2>
