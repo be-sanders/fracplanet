@@ -40,7 +40,7 @@ int main(int argc,char* argv[])
 {
   QApplication app(argc,argv);
 
-  FracplanetMain*const main_widget=new FracplanetMain(0);
+  FracplanetMain*const main_widget=new FracplanetMain(0,&app);
 
   app.setMainWidget(main_widget);
   main_widget->show();

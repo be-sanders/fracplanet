@@ -153,7 +153,7 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   QToolTip::add(noise_terms_spinbox,"Number of terms in added Perlin noise");
 
   noise_frequency_label=new QLabel("Noise frequency",grid_terrain_noise);
-  noise_frequency_spinbox=new QSpinBox(0,1000,10,grid_terrain_noise);
+  noise_frequency_spinbox=new QSpinBox(0,10000,10,grid_terrain_noise);
   noise_frequency_spinbox->setValue(static_cast<int>(100*parameters->noise_frequency));
   connect(
 	  noise_frequency_spinbox,SIGNAL(valueChanged(int)),

@@ -23,10 +23,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qmessagebox.h>
 #include <qeventloop.h>
 
-FracplanetMain::FracplanetMain(QWidget* parent)
+FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app)
   :QHBox(parent)
+   ,application(app)
    ,mesh(0)
    ,last_step(0)
+   ,progress_was_stalled(false)
    ,startup(true)
 {
   vbox=new QVBox(this);
@@ -43,11 +45,6 @@ FracplanetMain::FracplanetMain(QWidget* parent)
   tab->addTab(control_save,"Save");
   tab->addTab(control_render,"Render");
   tab->addTab(control_about,"About");
-
-  progress_dialog=new QProgressDialog("Progress","Cancel",100,this,0,true);
-  progress_dialog->setCancelButton(0);
-  progress_dialog->setAutoClose(false); // Avoid it flashing on and off
-  progress_dialog->setMinimumDuration(0);
 
   viewer=new TriangleMeshViewer(0,&parameters_render);     // Viewer will be a top-level-window
   viewer->resize(512,512);
@@ -69,26 +66,57 @@ void FracplanetMain::progress_start(uint target,const std::string& info)
 {
   if (startup) return;
 
+  if (!progress_dialog.get())
+    {
+      progress_dialog=std::auto_ptr<QProgressDialog>(new QProgressDialog("Progress","Cancel",100,this,0,true));
+      progress_dialog->setCancelButton(0);  // Cancel not supported
+      progress_dialog->setAutoClose(false); // Avoid it flashing on and off
+      progress_dialog->setMinimumDuration(0);
+    }
+
+  progress_was_stalled=false;
+  progress_info=info;
   progress_dialog->reset();
   progress_dialog->setTotalSteps(target);
-  progress_dialog->setLabelText(info.c_str());
+  progress_dialog->setProgress(0);
+  progress_dialog->setLabelText(progress_info.c_str());
   progress_dialog->show();
 
   last_step=(uint)-1;
   
   QApplication::setOverrideCursor(Qt::WaitCursor);  
+
+  application->processEvents();
+}
+
+void FracplanetMain::progress_stall(const std::string& reason)
+{
+  progress_was_stalled=true;
+  progress_dialog->setLabelText(reason.c_str());
+  application->processEvents();
 }
 
 void FracplanetMain::progress_step(uint step)
 {
   if (startup) return;
 
+  if (progress_was_stalled) 
+    {
+      progress_dialog->setLabelText(progress_info);
+      progress_was_stalled=false;
+      application->processEvents();
+    }
+      
   // We might be called lots of times with the same step.  Don't know if Qt handles this efficiently so check for it ourselves.
   if (step!=last_step)
     {
       progress_dialog->setProgress(step);
       last_step=step;
+      application->processEvents();
     }
+
+  // TODO: Probably better to base call to processEvents() on time since we last called it.
+  // (certainly calling it every step is a bad idea)
 }
 
 void FracplanetMain::progress_complete(const std::string& info)
@@ -102,6 +130,8 @@ void FracplanetMain::progress_complete(const std::string& info)
   last_step=(uint)-1;
 
   QApplication::restoreOverrideCursor();
+
+  application->processEvents();
 }
 
 void FracplanetMain::regenerate()
@@ -134,7 +164,7 @@ void FracplanetMain::regenerate()
 
   viewer->showNormal();
   viewer->raise();
-  progress_dialog->hide();
+  progress_dialog.reset(0);
 }
 
 void FracplanetMain::save()

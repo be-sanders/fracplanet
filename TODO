@@ -1,3 +1,6 @@
+- std::auto_ptr sucks; use something better from boost
+- Add perturbation decay rate for subdivision too.
+- Noise perturbation in X&Y too; would break up subdivision ridge artefacts
 - "man" page instead/besides HTML
 - Built-in manual like evolvotron
 - Render tab setting to hide fly mode instructions

@@ -88,6 +88,9 @@ protected:
   void progress_start(uint steps,const std::string& info) const;
 
   //! Convenience wrapper with null test.
+  void progress_stall(const std::string& reason) const;
+
+  //! Convenience wrapper with null test.
   void progress_step(uint step) const;
 
   //! Convenience wrapper with null test.
@@ -235,7 +238,7 @@ public:
   void compute_vertex_normals();
 
   //! Perform a single subdivision pass with perturbations up to the specified size
-  void subdivide(const XYZ& variation,uint level);
+  void subdivide(const XYZ& variation,uint level,uint levels);
   
   //! Perform a number of subdivisions, possibly some unperturbed ("flat"), and halving the perturbation variation each iteration.
   void subdivide(uint subdivisions,uint flat_subdivisions,const XYZ& variation);

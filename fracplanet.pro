@@ -1,7 +1,7 @@
 TEMPLATE = app
 
 # append debug or release
-CONFIG+= qt opengl release
+CONFIG+= qt opengl debug # release
 
 #######################################
 # Installation 

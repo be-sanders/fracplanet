@@ -25,6 +25,10 @@ void TriangleMesh::progress_start(uint steps,const std::string& info) const
 {
   if (_progress) _progress->progress_start(steps,info);
 }
+void TriangleMesh::progress_stall(const std::string& reason) const
+{
+  if (_progress) _progress->progress_stall(reason);
+}
 void TriangleMesh::progress_step(uint step) const
 {
   if (_progress) _progress->progress_step(step);
@@ -87,14 +91,18 @@ void TriangleMesh::compute_vertex_normals()
 
 /*! level parameter is just for progress information
  */
-void TriangleMesh::subdivide(const XYZ& variation,uint level)
+void TriangleMesh::subdivide(const XYZ& variation,uint level,uint levels)
 {
   const uint steps=vertices()+triangles();
   uint step=0;
 
   {
     std::ostringstream msg;
-    msg << "Subdivision level " << level;
+    msg 
+      << "Subdivision level " 
+      << 1+level  // Display 1...levels inclusive
+      << " of "
+      << levels;
     progress_start(100,msg.str());
   }
   
@@ -182,9 +190,9 @@ void TriangleMesh::subdivide(uint subdivisions,uint flat_subdivisions,const XYZ&
   for (uint s=0;s<subdivisions;s++)
     {
       if (s<flat_subdivisions)
-	subdivide(XYZ(0.0,0.0,0.0),s);
+	subdivide(XYZ(0.0,0.0,0.0),s,subdivisions);
       else
-	subdivide(variation/(1<<s),s);
+	subdivide(variation/(1<<s),s,subdivisions);
     }
 }
 

@@ -1,13 +1,11 @@
-- River generation may get stuck at high subdivisioon levels (>=9)
-  Suspect precision problems with height calculation.
-  On the other hand, sometimes it just takes a LONG time.
-  Too long; needs investigating; seems to be something to do with false
-  exits from lakes... the lake then has to be flooded again slightly higher
-  to discover an alternative exit.
+- River generation can be VERY slow (especially at high levels of subdivision)
+  due to the time taken to fill up large lakes (just like in the real world,
+  strangely enough :^): raising the water level slightly to the level of a
+  potential outflow currently necessitates adjusting the height of all the
+  points in the lake, which takes a long time with big lakes.  The progress
+  dialog gives a bit more feedback about this now.  It WILL complete;
+  just give it time.
 
-- If the viewer is maximised, then hidden and reshown by terrain regeneration,
-  it seems to be impossible to un-maximise it (needs testing on more recent Qt/
-  metacity than RH8).
+- Flat terrain mostly disappears when viewed from beneath due
+  to back-face culling.
 
-- Terrain Terrain (mostly) diappears when viewed from beneath.
-  Nothing wrong with back-face culling, would be better to restrict tilt range.
