@@ -303,15 +303,16 @@ and <code>-fn <em>font</em></code>.
   This tab displays information about the software (in particular the version number) and its license.
 </p>
 
-<h3>Display area</h3>
+<h3>Display window</h3>
 
 <p>
-  The central area displays the current (most recently generated) model.
-  It is hidden when terrain is being regenerated.
+  The display window, when shown, shows the current
+  (most recently generated) terrain model.
+  It is hidden when terrain is being regenerated or saved.
   The (badly named) &quot;tilt&quot; slider controls the latitude of the camera (when viewing a sphere-based object), and the elevation (as in azimuth-elevation) of the camera when viewing a planar based terrain area.  
   Note that in the latter case the bottom half of the slider places the camera below base ground level/sea level, which results in little being seen due to back-face culling.
   The &quot;spin rate&quot; controls the rate at which the object is rotated.
-  The display area update rate is clamped to 75Hz, although this will typically
+  The display window update rate is clamped to 75Hz, although this will typically
   only be reached at the lowest levels of subdivision.
 </p>
 
