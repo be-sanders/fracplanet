@@ -9,3 +9,6 @@
 - Permit specification of ambient colour components (for planets with glowing red lava).
 - Rethink GUI.  Make terrain display take up most of main window, with menus to access control dialogs.
 - Use Qt file dialog for save.
+- Render parameter fps_target should have dynamic effect, add controls etc
+
+

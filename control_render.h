@@ -42,7 +42,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "parameters_render.h"
 
 //! Encapsulates GUI elements for controlling OpenGL rendering.
-class ControlRender : public QVBox
+class ControlRender : public QVBox, public Notifiable
 {
  private:
   Q_OBJECT;
@@ -53,9 +53,13 @@ class ControlRender : public QVBox
   QCheckBox* wireframe;
   QCheckBox* display_list;
 
+  QLabel* status;
+
   QVBox* padding;
  public:
   ControlRender(QWidget* parent,ParametersRender* param);
+
+  virtual void notify(const std::string& message);
   
   public slots:
     
@@ -63,7 +67,7 @@ class ControlRender : public QVBox
     {
       parameters->wireframe=(v==2);
     }
-
+  
   void setDisplayList(int v)
     {
       parameters->display_list=(v==2);

@@ -28,6 +28,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qgl.h>
 #include <qdatetime.h>
 
+#include <deque>
+
 #include "useful.h"
 #include "random.h"
 
@@ -64,6 +66,12 @@ class TriangleMeshViewerDisplay : public QGLWidget
 
   //! Time frames for FPS measurement.
   QTime frame_time;
+  
+  //! Time since FPS last reported.
+  QTime frame_time_reported;
+
+  //! Queue of frame times to average.
+  std::deque<uint> frame_times;
 
   //@{
   //! Parameter of camera position.

@@ -25,6 +25,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "useful.h"
 
+class Notifiable;
+
 //! Aggregates controllable parameters for all things related to OpenGL rendering.
 class ParametersRender
 {
@@ -35,15 +37,32 @@ public:
   //! Render via display list
   bool display_list;
 
+  //! Target frame rate
+  float fps_target;
+  
+  //! Place to send status reports
+  Notifiable* notify;
+
   //! Constructor.
   ParametersRender()
     :wireframe(false)
     ,display_list(false)
+    ,fps_target(100.0)
+    ,notify(0)
   {}
 
   //! Destructor.
   ~ParametersRender()
     {}
+};
+
+// Abstract mixin class for classes with a report(const std::string&) method.
+class Notifiable
+{
+ public:
+
+  virtual void notify(const std::string&)
+    =0;
 };
 
 #endif

@@ -18,6 +18,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "triangle_mesh_viewer_display.h"
 
 #include <iostream>
+#include <sstream>
+#include <iomanip>
+#include <numeric>
 
 TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const ParametersRender* param,const TriangleMesh* m)
   :QGLWidget(parent)
@@ -35,13 +38,13 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const Param
   timer=new QTimer(this);
   
   frame_time.start();
-  
+  frame_time_reported.start();
+
   connect(timer,SIGNAL(timeout()),this,SLOT(tick()));
   
-  // Set timer to tick at 100Hz (like we'll ever be able to render that fast :^)
-  timer->start(10);
+  timer->start(static_cast<int>(ceil(1000.0f/parameters->fps_target)));
 
-  // Zero is not a valid value according to red book
+  // Zero is not a valid value according to red book, so use it to designate unset
   gl_display_list_index=0;
 }
 
@@ -107,7 +110,33 @@ void TriangleMeshViewerDisplay::paintGL()
 
   glFlush();
 
-  std::cerr << "FPS: " << 1000.0/frame_time.restart() << "\n";
+  // Get time taken since last frame
+  const uint dt=frame_time.restart();
+
+  // Save it in the queue
+  frame_times.push_back(dt);
+
+  // Keep last 10 frame times
+  while (frame_times.size()>10) frame_times.pop_front();
+
+  // Only update frame time a couple of times a second to reduce flashing
+  if (parameters->notify && frame_time_reported.elapsed()>500)
+  {    
+    const float average_time=std::accumulate(frame_times.begin(),frame_times.end(),0)/static_cast<float>(frame_times.size());
+   
+    const float fps=1000.0/average_time;
+
+    std::ostringstream report;
+    report.setf(std::ios::fixed);
+    report.precision(1);
+    
+    report << "Triangles: " << mesh->triangles() << "\n";
+    report << "Vertices : " << mesh->vertices() << "\n";
+    report << "FPS (av) : " << fps << "\n";
+    
+    parameters->notify->notify(report.str());
+    frame_time_reported.restart();
+  }
 }
 
 void TriangleMeshViewerDisplay::initializeGL()
