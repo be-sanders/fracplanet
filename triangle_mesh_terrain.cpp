@@ -335,8 +335,8 @@ void TriangleMeshTerrain::do_terrain(const ParametersTerrain& parameters)
 
 TriangleMeshTerrainPlanet::TriangleMeshTerrainPlanet(const ParametersTerrain& parameters,Progress* progress)
   :TriangleMesh(progress)
-  ,TriangleMeshSubdividedIcosahedron(1.0+parameters.variation.z*parameters.base_height,parameters.subdivisions,parameters.subdivisions_unperturbed,parameters.subdivisions_seed,parameters.variation,progress)
   ,TriangleMeshTerrain(progress)
+  ,TriangleMeshSubdividedIcosahedron(1.0+parameters.variation.z*parameters.base_height,parameters.subdivisions,parameters.subdivisions_unperturbed,parameters.subdivisions_seed,parameters.variation,progress)
 {
   do_terrain(parameters);
 }
@@ -377,8 +377,8 @@ bool TriangleMeshTerrainPlanet::write_povray(const std::string& base_filename,co
 
 TriangleMeshTerrainFlat::TriangleMeshTerrainFlat(const ParametersTerrain& parameters,Progress* progress)
   :TriangleMesh(progress)
-  ,TriangleMeshFlatTriangle(parameters.variation.z*parameters.base_height,parameters.subdivisions_seed,progress)
   ,TriangleMeshTerrain(progress)
+  ,TriangleMeshFlatTriangle(parameters.variation.z*parameters.base_height,parameters.subdivisions_seed,progress)
 {
   subdivide(parameters.subdivisions,parameters.subdivisions_unperturbed,parameters.variation);
 
