@@ -62,14 +62,18 @@ void TriangleMeshViewerDisplay::paintGL()
   glClearColor(0.0,0.0,0.0,1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+
   gluLookAt(
 	    camera_position.x,camera_position.y,camera_position.z,
 	    camera_lookat.x  ,camera_lookat.y  ,camera_lookat.z,
 	    camera_up.x      ,camera_up.y      ,camera_up.z
 	    );
 
-  glMatrixMode(GL_MODELVIEW);
+  GLfloat light_position[]={-2.0,-3.0,1.0,0.0};  
+  glLightfv(GL_LIGHT0,GL_POSITION,light_position);
+
   glRotatef((180.0/M_PI)*object_tilt,0.0,1.0,0.0);
   glRotatef((180.0/M_PI)*object_rotation,0.0,0.0,1.0);
 
@@ -211,16 +215,15 @@ void TriangleMeshViewerDisplay::initializeGL()
   // Switch depth-buffering on
   glEnable(GL_DEPTH_TEST);
 
-  // Set up simple lighting
+  GLfloat ambient_light[]={0.0,0.0,0.0,1.0};
   GLfloat white_light[]={1.0,1.0,1.0,1.0};
-  GLfloat light_position[]={3.0,1.0,2.0,0.0};  // Seems to be relative to the camera
-  
-  glShadeModel(GL_FLAT);
-  glLightfv(GL_LIGHT0,GL_POSITION,light_position);
-  glLightfv(GL_LIGHT0,GL_DIFFUSE,white_light);
+  GLfloat black_light[]={0.0,0.0,0.0,1.0};
 
-  glEnable(GL_LIGHTING);
+  glLightfv(GL_LIGHT0,GL_DIFFUSE,white_light);
+  glLightfv(GL_LIGHT0,GL_AMBIENT,ambient_light);
+  glLightfv(GL_LIGHT0,GL_SPECULAR,black_light);
   glEnable(GL_LIGHT0);
+  glEnable(GL_LIGHTING);
 
   // Do smooth shading 'cos colours are specified at vertices
   glShadeModel(GL_SMOOTH);
@@ -246,9 +249,9 @@ void TriangleMeshViewerDisplay::resizeGL(int w,int h)
   glLoadIdentity();
   
   // View angle is specified in vertical direction, but we need to exaggerate it if image is taller than wide.
-  const float view_angle_degrees=minimum(90.0,width>height ? 30.0 : 30.0*height/width);
+  const float view_angle_degrees=minimum(90.0,width>height ? 45.0 : 45.0*height/width);
 
-  gluPerspective(view_angle_degrees,(float)width/(float)height,0.1,10.0);
+  gluPerspective(view_angle_degrees,(float)width/(float)height,0.01,10.0);  // Was 0.1 (too far); 0.001 gives artefacts
 
   glMatrixMode(GL_MODELVIEW);
 

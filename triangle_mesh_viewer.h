@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qgrid.h>
 #include <qpushbutton.h>
 #include <qtimer.h>
+#include <qlabel.h>
 
 #include "useful.h"
 #include "random.h"
@@ -74,12 +75,18 @@ class TriangleMeshViewer : public QGrid
   //! Spin rate slider.
   QSlider* spinrate_slider;
 
+  //! Display speed etc
+  QLabel* fly_info;
+
   //@{
   //! Parameter of camera position.
   XYZ camera_position;
   XYZ camera_forward;
   XYZ camera_up;
   float camera_velocity;
+  float camera_yaw_rate;
+  float camera_pitch_rate;
+  float camera_roll_rate;
   //@}
 
   //@{
@@ -89,6 +96,16 @@ class TriangleMeshViewer : public QGrid
   float object_spinrate;
   //@}
   
+  //@{
+  //! Key state
+  bool keypressed_arrow_left;
+  bool keypressed_arrow_right;
+  bool keypressed_arrow_up;
+  bool keypressed_arrow_down;
+  bool keypressed_mouse_left;
+  bool keypressed_mouse_right;
+  //@}
+
   //! Whether in fly mode
   bool fly_mode;
 
@@ -105,10 +122,21 @@ class TriangleMeshViewer : public QGrid
   //! Interested in some key presses
   void keyPressEvent(QKeyEvent* e);
 
-  //! Interested in mouse position
+  //! Interested in some key state
+  void keyReleaseEvent(QKeyEvent* e);
+
+  //! Interested in mouse clicks for steering
+  void mousePressEvent(QMouseEvent* e);
+
+  //! Interested in some button state
+  void mouseReleaseEvent(QMouseEvent* e);
+  
+  //! Interested in mouse position for steering
   void mouseMoveEvent(QMouseEvent* e);
-  
-  
+
+  //! Interested in wheel for speed
+  void wheelEvent(QWheelEvent* e);
+
  public slots:
   void fly();
   void unfly();

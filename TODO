@@ -1,3 +1,6 @@
+- Make flight control with big models less sluggish
+- Render tab setting to hide fly mode instructions
+- Make more keys do stuff in fly mode
 - Rethink tabbed GUI (needs doing if we are to add more parameters).
 - Ability to load/save planet parameters (simple keyword=value text file)
 - Console mode app: read parameters, generate planet.
@@ -12,7 +15,6 @@
 - "man" page instead/besides HTML
 - Check for OpenGL errors
 - Add control over heights at which colours switch.
-- Add "flight simulator" mode for getting in closer to terrain.
 - Improve code documentation.
 - Use Qt file dialog for save.
 - Clouds.
