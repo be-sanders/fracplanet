@@ -32,6 +32,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qradiobutton.h>
 #include <qhbuttongroup.h>
 #include <qslider.h>
+#include <qcolordialog.h>
+#include <qiconset.h>
 
 #include "useful.h"
 #include "parameters_terrain.h"
@@ -41,6 +43,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class FracplanetMain;
 
 //! Encapsulates controls for setting terrain generation parameters
+/*! \todo: Way too much stuff in this classes .h file. Shift it to the .cpp!
+ */
 class ControlTerrain : public QVBox
 {
  private:
@@ -95,11 +99,23 @@ class ControlTerrain : public QVBox
   QLabel* lake_becomes_sea_label;
   QSpinBox* lake_becomes_sea_spinbox;
 
+  QLabel* colour_label;
+  QGrid* colour_grid;
+  QPushButton* colour_ocean_button;
+  QPushButton* colour_shoreline_button;
+  QPushButton* colour_low_button;
+  QPushButton* colour_river_button;
+  QPushButton* colour_snow_button;
+  QPushButton* colour_high_button;
+
   QPushButton* regenerate_button;
   QPushButton* regenerate_with_new_seed_button;
   QPushButton* regenerate_rivers_with_new_seed_button;
 
   QVBox* padding;
+
+  //! Utility function to build a small Qt icon of the specified colour.
+  static QIconSet build_icon_of_colour(const FloatRGB& col);
 
  public:
   ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTerrain* param);
@@ -176,6 +192,46 @@ class ControlTerrain : public QVBox
   void setLakeBecomesSea(int v)
     {
       parameters->lake_becomes_sea=v/100.0;
+    }
+  void pickColourOcean()
+    {
+      emit pickColour(colour_ocean_button,parameters->colour_ocean);
+    }
+  void pickColourShoreline()
+    {
+      emit pickColour(colour_shoreline_button,parameters->colour_shoreline);
+    }
+  void pickColourLow()
+    {
+      emit pickColour(colour_low_button,parameters->colour_low);
+    }
+  void pickColourRiver()
+    {
+      emit pickColour(colour_river_button,parameters->colour_river);
+    }
+  void pickColourSnow()
+    {
+      emit pickColour(colour_snow_button,parameters->colour_snow);
+    }
+  void pickColourHigh()
+    {
+      emit pickColour(colour_high_button,parameters->colour_high);
+    }
+
+  //! Use Qt's colour-picking dialog to replace the referenced colour
+  void pickColour(QPushButton* button,FloatRGB& colour)
+    {
+      const ByteRGB col_old(colour);
+      QColor qcol_old(col_old.r,col_old.g,col_old.b);
+      QColor qcol_new=QColorDialog::getColor(qcol_old,this);
+      if (qcol_new.isValid())
+	{
+	  colour=FloatRGB(ByteRGB(qcol_new.red(),qcol_new.green(),qcol_new.blue()));
+	  
+	  QPixmap pmap(16,16);
+	  pmap.fill(qcol_new);
+	  button->setIconSet(QIconSet(pmap));
+	}
     }
 
   void regenerate_rivers_with_new_seed();

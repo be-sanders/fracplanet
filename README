@@ -38,6 +38,22 @@ This will give you a "fracplanet" executable which you can run with
   ./fracplanet
 or install where you like.
 
+USING
+=====
+After changing ANY of the terrain generation parameters, you must hit "regenerate" to create and display a new model.
+This keeps the random seeds for terrain and river generation the same.
+There are a couple of extra buttons which also change the random seed for the terrain or river network before regenerating,
+Most of the parameter entry fields have tooltips on them which gives an idea of what they're about.
+
+PERFORMANCE
+===========
+The biggest factor influencing performance (both generation and display) is the degree of subdivision.
+At subdivision level 8 (for a planet) around 200MB of memory is required.
+On a 2.4GHz machine with a GeForce4 and the Nvidia OpenGL drivers display rates start to suffer around subdivision level 7.
+
+When generating many rivers at high levels of subdivision, the river generation progress bar may stall for long periods 
+(this is generally due to a large lake being formed somewhere).
+
 INSTALL
 =======
 Doing 

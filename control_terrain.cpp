@@ -19,6 +19,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "fracplanet_main.h"
 
+/*! Used when initialising colour-chooser buttons.
+ */
+QIconSet ControlTerrain::build_icon_of_colour(const FloatRGB& col)
+{
+  QPixmap pmap(16,16);
+
+  const ByteRGB bcol(col);
+  pmap.fill(QColor(bcol.r,bcol.g,bcol.b));
+  return QIconSet(pmap);
+}
+
 /*! Lots of tedious code to instantiate controls and wire things up.
  */
 ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTerrain*const param)
@@ -91,7 +102,7 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  variation_horizontal_spinbox,SIGNAL(valueChanged(int)),
 	  this,SLOT(setVariationHorizontal(int))
 	  );
-  QToolTip::add(variation_horizontal_spinbox,"The magnitude of random height perturbations");
+  QToolTip::add(variation_horizontal_spinbox,"The magnitude of random horizontal perturbations");
 
   base_height_label=new QLabel("Base land height (%):",grid);
   base_height_spinbox=new QSpinBox(-100,100,10,grid);
@@ -183,6 +194,41 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  this,SLOT(setLakeBecomesSea(int))
 	  );
   QToolTip::add(lake_becomes_sea_spinbox,"The percentage of planetary surface which must be covered by a lake for it to be considered a sea");
+
+  colour_label=new QLabel("Change colours:",this);
+  colour_grid=new QGrid(3,Qt::Horizontal,this);
+  
+  colour_ocean_button=new QPushButton(build_icon_of_colour(parameters->colour_ocean),"Ocean",colour_grid);
+  connect(
+	  colour_ocean_button,SIGNAL(clicked()),
+	  this,SLOT(pickColourOcean())
+	  );
+  colour_shoreline_button=new QPushButton(build_icon_of_colour(parameters->colour_shoreline),"Shore",colour_grid);
+  connect(
+	  colour_shoreline_button,SIGNAL(clicked()),
+	  this,SLOT(pickColourShoreline())
+	  );
+  colour_low_button=new QPushButton(build_icon_of_colour(parameters->colour_low),"Low",colour_grid);
+  connect(
+	  colour_low_button,SIGNAL(clicked()),
+	  this,SLOT(pickColourLow())
+	  );
+  colour_river_button=new QPushButton(build_icon_of_colour(parameters->colour_river),"River",colour_grid);
+  connect(
+	  colour_river_button,SIGNAL(clicked()),
+	  this,SLOT(pickColourRiver())
+	  );
+  colour_snow_button=new QPushButton(build_icon_of_colour(parameters->colour_snow),"Snow",colour_grid);
+  connect(
+	  colour_snow_button,SIGNAL(clicked()),
+	  this,SLOT(pickColourSnow())
+	  );
+  colour_high_button=new QPushButton(build_icon_of_colour(parameters->colour_high),"High",colour_grid);
+  connect(
+	  colour_high_button,SIGNAL(clicked()),
+	  this,SLOT(pickColourHigh())
+	  );
+
 
   regenerate_button=new QPushButton("Regenerate",this);
   connect(

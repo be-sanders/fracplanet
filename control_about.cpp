@@ -21,7 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ControlAbout::ControlAbout(QWidget* parent)
   :QVBox(parent)
 {
-  label=new QLabel("\nFracplanet\n\nAuthor\ntimday@timday.com\n\nProject page\nhttp://fracplanet.sourceforge.net\n\nLicense",this);
+  label=new QLabel("\nFracplanet 0.0.1\n\nAuthor\ntimday@timday.com\n\nHome page\nhttp://fracplanet.sourceforge.net\n\nProject page\nhttp://sourceforge.net/projects/fracplanet\n\nLicense:",this);
+  //label=new QLabel("Fracplanet 0.0.1",this);
   label->setAlignment(Qt::AlignHCenter|label->alignment());
 
   license=new QTextEdit(this);
