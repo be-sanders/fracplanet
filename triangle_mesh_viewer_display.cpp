@@ -30,10 +30,10 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const Param
    ,width(0)
    ,height(0)
    ,frame_time()
-   ,camera_position(-4.5f,0.0f,0.0f)
+   ,camera_position(-3.0f,0.0f,0.0f)
    ,camera_lookat(0.0f,0.0f,0.0f)
    ,camera_up(0.0f,0.0f,1.0f)
-   ,object_tilt(0.0f)
+   ,object_tilt(-30.0f*M_PI/180.0f)
    ,object_rotation(0.0f)
 {
   setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding,1,1));
