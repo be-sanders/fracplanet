@@ -1,8 +1,11 @@
 From release 0.0.1:
  - Bump version number to "development for 0.0.2"  ***CHANGE FOR RELEASE***
  - Add fracplanet.htm, fracplanet.css user documentation.
- - Minor cosmetic changes to code.
+ - Minor changes to code (compiles on RH9)
  - Tweak doxygen.cfg 
+ - Display list option
+ - Frame rate display
+ - VERSION and mktgz done evolvotron style
 
 From release 0.0.0:
  - CHANGES file added.

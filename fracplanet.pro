@@ -7,12 +7,11 @@ CONFIG+= qt opengl release
 # Better optimisations than qmake defaults IF you have the right processor.
 # The -mfpmath=sse -msse2 options (apparently NOT implied by -march alone)
 # seem to be needed to generate SSE instructions on the authors setup.
-# The larger inline limit helps with template generated code.
 # There is a nice summary of gcc optimisation options at http://freshmeat.net/articles/view/730/
 #
 # Uncomment BOTH of the next two lines on a P4 system:
 #QMAKE_CXXFLAGS_RELEASE -= -march=i386 -O2
-#QMAKE_CXXFLAGS_RELEASE += -march=pentium4 -mfpmath=sse -msse2 -O3 -ffast-math -funroll-loops -finline-limit=4000 -fomit-frame-pointer
+#QMAKE_CXXFLAGS_RELEASE += -march=pentium4 -mfpmath=sse -msse2 -O3 -ffast-math -funroll-loops -fomit-frame-pointer
 #
 # On a P3 try -msse instead of -msse2 ?
 
@@ -69,6 +68,18 @@ SOURCES += \
            xyz.cpp
 
 #######################################
+# Version numbering.  This is ENTIRELY controlled by what is echoed by the VERSION script
+#
+VERSION_NUMBER = $${system(./VERSION)}
+QMAKE_CXXFLAGS_RELEASE += '-DFRACPLANET_VERSION="$$VERSION_NUMBER"'
+QMAKE_CXXFLAGS_DEBUG   += '-DFRACPLANET_VERSION="$$VERSION_NUMBER"'
+QMAKE_CXXFLAGS_RELEASE += '-DFRACPLANET_BUILD="$$VERSION_NUMBER (release build)"'
+QMAKE_CXXFLAGS_DEBUG   += '-DFRACPLANET_BUILD="$$VERSION_NUMBER (debug build)"'
+
+# qmake's library code can use this too (but only for shared libraries which we don't use)
+VERSION=$$VERSION_NUMBER
+
+#######################################
 # Disable assertions in release version
 #
 QMAKE_CXXFLAGS_RELEASE += -DNDEBUG
@@ -84,16 +95,8 @@ executable.files = fracplanet
 ######################################
 # Other stuff:
 # Disable implicit cast from QString to char*
-                                                                                QMAKE_CXXFLAGS_RELEASE += -DQT_NO_ASCII_CAST
+QMAKE_CXXFLAGS_RELEASE += -DQT_NO_ASCII_CAST
 QMAKE_CXXFLAGS_DEBUG += -DQT_NO_ASCII_CAST
-
-#######################################
-# Make a .tar.gz
-#
-tgz.target = fracplanet.tar.gz
-tgz.depends = README BUILD LICENSE TODO CHANGES fracplanet.pro doxygen.cfg fracplanet.htm fracplanet.css $$HEADERS $$SOURCES
-tgz.commands = tar cvfz fracplanet.tar.gz README BUILD LICENSE TODO CHANGES fracplanet.htm fracplanet.css fracplanet.pro doxygen.cfg $$HEADERS $$SOURCES 
-QMAKE_EXTRA_UNIX_TARGETS += tgz
 
 #####################################
 # Stuff to drive doxygen
