@@ -1,18 +1,22 @@
+- Ability to load/save planet parameters (simple keyword=value text file)
+- Console mode app: read parameters, generate planet.
+- Split up mesh file (3 parts: vertices, colours, meshing)
 - Fix river/lake hang for high subdivision levels
-- Option to add Perlin noise (might make rivers meander more)
-- More feedback when building display list
+- Option to add Perlin noise to terrain (might make rivers meander more)
+  Also completely noise generated terrain.
+- Continue GUI procesing when progressing.
+- More feedback (progress bar?) when building display list
+  (unfortunately a lot of the delay happens in OpenGL when the list is completed)
 - Borrow some improvements from sister evolvotron project
 - "man" page instead/besides HTML
 - Check for OpenGL errors
 - Add control over heights at which colours switch.
 - Add "flight simulator" mode for getting in closer to terrain.
 - Improve code documentation.
-- Move terrain computation and save into separate threads so interface isn't locked.
-  Or completely change GUI: make OpenGL area a separate window which goes away while
+- New GUI: make OpenGL area a separate window which goes away while
   recalculating.  Parameters still in a tabbed dialog, but replaced by nothing but
   progress meter while recalculating ?
 - Rethink GUI.  Make terrain display take up most of main window
   (or be separate window, disappearing when not rendering?), with menus to access control dialogs.
 - Use Qt file dialog for save.
 - Clouds.
-
