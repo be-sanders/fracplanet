@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qslider.h>
 #include <qgroupbox.h>
 #include <qgrid.h>
+#include <qpushbutton.h>
 
 #include "useful.h"
 #include "random.h"
@@ -44,6 +45,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 class TriangleMeshViewer : public QGrid
 {
+ private:
+  Q_OBJECT;
+
  protected:
   //! The actual rendering area.
   TriangleMeshViewerDisplay* display;
@@ -53,6 +57,9 @@ class TriangleMeshViewer : public QGrid
   
   //! Elevation slider.
   QSlider* elevation_slider;
+
+  //! Fly button
+  QPushButton* fly_button;
   
   //! Label and box arond the spin-rate slider.
   QGroupBox* spinrate_box;
@@ -60,12 +67,24 @@ class TriangleMeshViewer : public QGrid
   //! Spin rate slider.
   QSlider* spinrate_slider;
   
+  //! Whether in fly mode
+  bool fly_mode;
+
  public:
   //! Constructor.
   TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const TriangleMesh* m=0);
 
+  virtual ~TriangleMeshViewer();
+
+  //! Interested in some key presses
+  void keyPressEvent(QKeyEvent* e);
+  
   //! Sets the TriangleMesh to be displayed.
   void set_mesh(const TriangleMesh* m);
+
+ public slots:
+  void fly();
+  void unfly();
 };
 
 #endif

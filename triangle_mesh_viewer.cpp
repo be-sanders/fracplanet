@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const TriangleMesh* mesh)
   :QGrid(2,Qt::Horizontal,parent)
+   ,fly_mode(false)
 {
   setSpacing(5);
 
@@ -30,6 +31,8 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
 
   elevation_slider=new QSlider(-80,80,10, 0,Qt::Vertical,elevation_box);
   spinrate_slider =new QSlider(-80,80,10, 0,Qt::Horizontal,spinrate_box);
+
+  fly_button=new QPushButton("Fly",this);
 
   elevation_slider->setTickInterval(10);
   spinrate_slider->setTickInterval(10);
@@ -48,10 +51,45 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
 	  spinrate_slider,SIGNAL(valueChanged(int)),
 	  display,SLOT(setSpinRate(int))
 	  );
+  connect(
+	  fly_button,SIGNAL(clicked()),
+	  this,SLOT(fly())
+	  );
+}
+
+TriangleMeshViewer::~TriangleMeshViewer()
+{}
+
+void TriangleMeshViewer::keyPressEvent(QKeyEvent* e)
+{
+  if (fly_mode && e->key()==Qt::Key_Escape)
+    {
+      unfly();
+    }
 }
 
 void TriangleMeshViewer::set_mesh(const TriangleMesh* m)
 {
+  if (fly_mode) unfly();
   display->set_mesh(m);
 }
 
+void TriangleMeshViewer::fly()
+{
+  fly_mode=true;
+  elevation_slider->setValue(0);
+  spinrate_slider->setValue(0);
+  elevation_box->hide();
+  spinrate_box->hide();
+  fly_button->hide();
+  display->updateGeometry();
+}
+
+void TriangleMeshViewer::unfly()
+{
+  fly_mode=false;
+  elevation_box->show();
+  spinrate_box->show();
+  fly_button->show();
+  display->updateGeometry();
+}

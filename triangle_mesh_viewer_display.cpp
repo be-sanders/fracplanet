@@ -35,6 +35,8 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const Param
    ,camera_azimuth(0.0)
    ,camera_distance(4.5)
 {
+  setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding,1,1));
+
   timer=new QTimer(this);
   
   frame_time.start();
