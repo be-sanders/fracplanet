@@ -1,3 +1,4 @@
+- Rethink tabbed GUI (needs doing if we are to add more parameters).
 - Ability to load/save planet parameters (simple keyword=value text file)
 - Console mode app: read parameters, generate planet.
 - Split up mesh file (3 parts: vertices, colours, meshing)
@@ -13,10 +14,5 @@
 - Add control over heights at which colours switch.
 - Add "flight simulator" mode for getting in closer to terrain.
 - Improve code documentation.
-- New GUI: make OpenGL area a separate window which goes away while
-  recalculating.  Parameters still in a tabbed dialog, but replaced by nothing but
-  progress meter while recalculating ?
-- Rethink GUI.  Make terrain display take up most of main window
-  (or be separate window, disappearing when not rendering?), with menus to access control dialogs.
 - Use Qt file dialog for save.
 - Clouds.

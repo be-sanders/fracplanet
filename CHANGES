@@ -3,6 +3,7 @@ From release 0.0.3:
  - Support emissive oceans and rivers (including POV save)
  - Fix .inc filename bug (spurious ")
  - Update docs
+ - Viewer to separate top-level.
 
 From release 0.0.1:
  - Bump version number to 0.0.3 (0.0.2 omitted docs)

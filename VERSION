@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Script to echo the current version number.
 # THIS IS THE ONLY PLACE A VERSION NUMBER SHOULD BE SPECIFIED
