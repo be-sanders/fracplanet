@@ -6,7 +6,7 @@ VERSION=`./VERSION`
 
 cd ..
 
-FILES_MISC=`ls fracplanet/{README,BUILD,LICENSE,TODO,CHANGES,VERSION,configure,doxygen.cfg,mktgz}`
+FILES_MISC=`ls fracplanet/{README,BUILD,LICENSE,TODO,CHANGES,VERSION,configure,doxygen.cfg,mktgz,fracplanet.css,fracplanet.htm}`
 
 FILES_H=`find fracplanet -name moc -prune -o -name '*.h' -print`
 FILES_CPP=`find fracplanet -name moc -prune -o -name '*.cpp' -print`
