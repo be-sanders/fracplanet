@@ -32,7 +32,7 @@ QIconSet ControlTerrain::build_icon_of_colour(const FloatRGB& col)
 
 /*! Lots of tedious code to instantiate controls and wire things up.
  */
-ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTerrain*const param)
+ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTerrain* param)
   :QVBox(parent)
    ,parameters(param)
    ,regenerate_target(tgt)

@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+
+/*! \file
+  \brief Interface for class ParametersSave.
+*/
+
 #ifndef _parameters_save_h_
 #define _parameters_save_h_
 
@@ -24,14 +29,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class ParametersSave
 {
  public:
+  //! Whether to emit an atmosphere object to POV file.
   bool atmosphere;
+
+  //! Whether to emit a single sea-level object to POV file.
   bool sea_object;
+  
+  //! Base filename for save.
   std::string basename;
 
+  //! Constructor.
   ParametersSave()
     :atmosphere(false)
     ,sea_object(true)
     ,basename("terrain")
+    {}
+
+  //! Destructor.
+  ~ParametersSave()
     {}
 };
 

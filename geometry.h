@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+
+/*! \file
+  \brief Interface for class Geometry and derived classes.
+*/
+
 #ifndef _geometry_h_
 #define _geometry_h_
 
@@ -157,9 +162,12 @@ class GeometryFlat : public Geometry
 class GeometrySpherical : public Geometry
 {
  public:
+  //! Constructor.
   GeometrySpherical(uint seed)
     :Geometry(seed)
     {}
+
+  //! Destructor.
   virtual ~GeometrySpherical()
     {}
 
@@ -176,7 +184,7 @@ class GeometrySpherical : public Geometry
       p*=((1.0+h)/m);
     }
 
-  //! 
+  //! Don't just take the mid-point of the straight-line path through the sphere's surface: must work relative to the sphere's surface.
   virtual const XYZ midpoint(const XYZ& v0,const XYZ& v1) const
     {
       const float h0=v0.magnitude();

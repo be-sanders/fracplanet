@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+
+/*! \file
+  \brief Interface for class TriangleEdge.
+*/
+
 #ifndef _triangle_edge_h_
 #define _triangle_edge_h_
 
@@ -28,24 +33,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class TriangleEdge
 {
  protected:
+  //! One vertex of the edge.  This should always be the lesser valued index.
   const uint _vertex0;
+
+  //! The other vertex of the edge.  This should always be the greater valued index.
   const uint _vertex1;
+
  public:
+  
+  //! Constructor.
   TriangleEdge()
     {}
+  
+  //! Constructor.  Sorts arguments to ensure _vertex0<_vertex1
   TriangleEdge(uint v0,uint v1)
     :_vertex0(v0<v1 ? v0 : v1)
     ,_vertex1(v0>v1 ? v0 : v1)
     {}
+
+  //! Copy constructor.
   TriangleEdge(const TriangleEdge& e)
     :_vertex0(e._vertex0)
     ,_vertex1(e._vertex1)
     {}
+
+  //! Destructor.
   ~TriangleEdge()
     {}
 
+  //! Accessor.
   const uint vertex0() const
     {return _vertex0;}
+
+  //! Accessor.
   const uint vertex1() const
     {return _vertex1;}
 };

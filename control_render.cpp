@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "control_render.h"
 
-ControlRender::ControlRender(QWidget* parent,ParametersRender*const param)
+ControlRender::ControlRender(QWidget* parent,ParametersRender* param)
   :QVBox(parent)
    ,parameters(param)
 {

@@ -17,6 +17,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /* Copyright (C) 1998,1999 T Day */
 
+/*! \file
+  \brief Interface for class ByteRGB and class FloatRGB.
+*/
+
 #ifndef _image_rgb_h_
 #define _image_rgb_h_
 
@@ -32,9 +36,12 @@ class FloatRGB;
 class ByteRGB
 {
  public:
+  //@{
+  //! Colour component.
   uchar r;
   uchar g;
   uchar b;
+  //@}
 
   //! Null constructor.
   /* NB There are no default values.
@@ -55,6 +62,7 @@ class ByteRGB
   //! Convert from FloatRGB.
   explicit ByteRGB(const FloatRGB&);
 
+  //! Destructor.
   ~ByteRGB()
     {}
 
@@ -81,9 +89,12 @@ class ByteRGB
 class FloatRGB
 {
 public:
+  //@{
+  //! Colour component
   float r;
   float g;
   float b;
+  //@}
 
   //! Null constructor.
   /* NB There are no default values.

@@ -15,13 +15,18 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+
+/*! \file
+  \brief Interface for class Progress.
+*/
+
 #ifndef _progress_h_
 #define _progress_h_
 
 #include "useful.h"
 
 //! Mix-in class for call-backs from long operations.
-/*! Use these to drive progress bars 
+/*! Use concrete implementations of these methods to drive progress bars.
  */
 class Progress
 {

@@ -11,5 +11,5 @@ From release 0.0.1:
  - Bump version number to 0.0.2
  - Add fracplanet.htm, fracplanet.css user documentation.
  - Minor cosmetic changes to code.
- 
+ - Tweak doxygen.cfg 
 

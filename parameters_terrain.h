@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+
+/*! \file
+  \brief Interface for class ParametersTerrain.
+*/
+
 #ifndef _parameters_terrain_h_
 #define _parameters_terrain_h_
 
@@ -22,10 +27,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "xyz.h"
 #include "rgb.h"
 
-//! Aggregates controllable parameters for all things related to terrain generation.
+//! This class aggregates the controllable parameters for all things related to terrain generation.
 /*! \todo Add these to ParametersTerrain (and ControlTerrain):  float treeline;  float beachline;
 */
-
 class ParametersTerrain
 {
 public:

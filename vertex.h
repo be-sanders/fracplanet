@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+
+/*! \file
+  \brief Interface for class Vertex.
+*/
+
 #ifndef _vertex_h_
 #define _vertex_h_
 
@@ -29,13 +34,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class Vertex
 {
  protected:
+  //! Position of vertex.
   XYZ _position;
+
+  //! Normal at vertex (for smooth shading).
   XYZ _normal;
+
+  //! Colours at vertex (could be a different colour in different triangles).
   ByteRGB _colour[2];
  public:
+
+  //! Constructor.  NB No default values set.
   Vertex()
     {}
 
+  //! Copy constructor.
   Vertex(const Vertex& v)
     :_position(v._position)
     ,_normal(v._normal)
@@ -44,6 +57,7 @@ class Vertex
       _colour[1]=v._colour[1];
     }
 
+  //! Construct from position only.
   explicit Vertex(const XYZ& p)
     :_position(p)
     ,_normal(0.0,0.0,0.0)
@@ -52,33 +66,45 @@ class Vertex
       _colour[1]=ByteRGB(0,0,0);
     }
 
+  //! Accessor.
   const XYZ& position() const
     {
       return _position;
     }
+
+  //! Accessor.
   const XYZ& normal() const
     {
       return _normal;
     }
+
+  //! Accessor.
   const ByteRGB& colour(uint c) const
     {
       assert(c<2);
       return _colour[c];
     }
 
+  //! Accessor.
   void position(const XYZ& p)
     {
       _position=p;
     }
+
+  //! Accessor.
   void normal(const XYZ& n)
     {
       _normal=n;
     }
+
+  //! Accessor.
   void colour(uint c,const ByteRGB& col)
     {
       assert(c<2);
       _colour[c]=col;
     }
+
+  //! Accessor.
   void colour(uint c,const FloatRGB& col)
     {
       assert(c<2);

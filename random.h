@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+
+/*! \file
+  \brief Interface for class Random and derived classes.
+*/
+
 #ifndef _random_h_
 #define _random_h_
 
@@ -24,11 +29,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class Random
 {
 protected:
+  //! Current state of random number generator.
   uint current;
 public:
 
+  //! Constructor.  Argument is seed for random number generator.
   Random(uint s=0)
-    :current(s){}
+    :current(s)
+    {}
+
+  //! Destructor.
   virtual ~Random()
     {}
   
@@ -53,28 +63,37 @@ protected:
     {current=current*1103515245+12345;return (current&0x7fffffff);}
 
 public:
+  // Constructor.  Argument is seed value.
   Random01(uint s=0)
     :Random(s){}
+
+  //! Destructor.
   virtual ~Random01()
     {}
   
+  // Return random number in the range [0,1).
   virtual double operator()()
     {return ((1.0/2147483648.0)*next());}
 };
 
 //! Return negative-exponentially distributed random numbers.
+/*! \todo Since RandomNegExp can't be considered IS-A Random01, maybe it shouldn't be derived from it.
+ */
 class RandomNegExp : public Random01
 {
 protected:
   double mean;
 public:
   
-  //! Construct generator of numbers with mean value m.
+  //! Construct generator of numbers with mean value m, seed value s.
   RandomNegExp(double m,uint s=0)
     :Random01(s),mean(m){}
+
+  //! Destructor.
   virtual ~RandomNegExp()
     {}
   
+  //! Return negative-ecponentially distributed random number.
   virtual double operator()()
     {return -mean*log(1.0-Random01::operator()());}  
 };

@@ -17,6 +17,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /* Copyright (C) 1998,1999,2000 T Day */
 
+/*! \file
+  \brief All our favourite little helpers.
+*/
+
 #ifndef _useful_h_
 #define _useful_h_
 

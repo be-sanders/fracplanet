@@ -15,6 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+
+/*! \file
+  \brief Interface for class ParametersRender.
+*/
+
 #ifndef _parameters_render_h_
 #define _parameters_render_h_
 
@@ -24,11 +29,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class ParametersRender
 {
 public:
+  //! Flag selecting OpenGL wireframe rendering.
   bool wireframe;
 
+  //! Constructor.
   ParametersRender()
     :wireframe(false)
   {}
+
+  //! Destructor.
+  ~ParametersRender()
+    {}
 };
 
 #endif
