@@ -21,9 +21,10 @@ qmake --version
 echo
 echo "Your gcc version is (unless qmake is set up to use a different one):"
 gcc --version
- 
+
+VERSION_NUMBER=`./VERSION` 
 echo "Running qmake..."
 
-qmake "CPU=$1" fracplanet.pro
+qmake "CPU=$1" "VERSION_NUMBER=$VERSION_NUMBER" fracplanet.pro
 
 echo "...configuration completed - ready to do 'make' now"
