@@ -1,7 +1,8 @@
-- Clean up progress stuff; push steps->% (and manage rate) into progress API.
+- Clean up progress stuff; push steps->% (rate management) into progress API.
 - std::auto_ptr sucks; use something better from boost
 - Add perturbation decay rate for subdivision too.
-- Noise perturbation in X&Y too; would break up subdivision ridge artefacts
+- Noise perturbation in X&Y too;
+  might help break up subdivision ridge artefacts
 - "man" page instead/besides HTML
 - Built-in manual like evolvotron
 - Render tab setting to hide fly mode instructions
@@ -20,4 +21,9 @@
 - Check for OpenGL errors
 - Add control over heights at which colours switch.
 - Improve code documentation.
-- Clouds.
+- Cloud layer (as polygon mesh).
+- Save/load parameters.
+- Ice packs.
+- Seasonal variations.  Save sequence of models for Pov.
+- Are we 64bit ready ?  Subdivision level 12,13,14 here we come...
+

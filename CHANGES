@@ -1,3 +1,6 @@
+From release 0.2.0:
+ - Bump version number to 0.2.1-dev
+
 From release 0.1.0:
  - Bump version number to 0.2.0
  - Progress dialog separated and better behaved
