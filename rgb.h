@@ -26,15 +26,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "useful.h"
 
-class FloatRGB;
+class FloatRGBA;
 
 //! Class to represent red-green-blue colours stored with 8-bit resolution.
 /*! Direct access to class members is permitted.
     This is intended as a minimal class for efficient storage of colours.
-    (However, padding means there is a wasted byte, so 
-    For computations FloatRGB should be used.
+    (However, padding means there is a wasted byte if we just want RGB so we
+    might as well have an alpha channel).
+    For computations FloatRGBA should be used.
  */
-class ByteRGB
+class ByteRGBA
 {
  public:
   //@{
@@ -42,52 +43,61 @@ class ByteRGB
   uchar r;
   uchar g;
   uchar b;
+  uchar a;
   //@}
 
   //! Null constructor.
   /* NB There are no default values.
    */
-  ByteRGB()
+  ByteRGBA()
     {}
 
   //! Copy constructor.
-  ByteRGB(const ByteRGB& c)
-    :r(c.r),g(c.g),b(c.b)
+  ByteRGBA(const ByteRGBA& c)
+    :r(c.r)
+    ,g(c.g)
+    ,b(c.b)
+    ,a(c.a)
     {}
 
   //! Initialise from separate components.
-  ByteRGB(uchar vr,uchar vg,uchar vb)
-    :r(vr),g(vg),b(vb)
+  ByteRGBA(uchar vr,uchar vg,uchar vb,uchar va)
+    :r(vr)
+    ,g(vg)
+    ,b(vb)
+    ,a(va)
     {}
 
   //! Convert from FloatRGB.
-  explicit ByteRGB(const FloatRGB&);
+  explicit ByteRGBA(const FloatRGBA&);
 
-  //! Destructor.
-  ~ByteRGB()
-    {}
+  // Don't bother with destructor for inline things.
+  //~ByteRGBA()
+  //  {}
 
   //! Colour addition.
-  void operator+=(const ByteRGB& v)
+  void operator+=(const ByteRGBA& v)
     {
       r+=v.r;
       g+=v.g;
       b+=v.b;
+      a+=v.a;
     }
   
   //! Colour subtraction.
-  void operator-=(const ByteRGB& v)
+  void operator-=(const ByteRGBA& v)
     {
       r-=v.r;
       g-=v.g;
       b-=v.b;
+      a-=v.a;
     }
 }; // Thought this might be needed to get size 4: '__attribute__((packed));' but it seems to be OK
 
 //! Class to represent red-green-blue colours stored to floating point accuracy.
 /*! Direct access to class members is permitted.
  */
-class FloatRGB
+class FloatRGBA
 {
 public:
   //@{
@@ -95,54 +105,62 @@ public:
   float r;
   float g;
   float b;
+  float a;
   //@}
 
   //! Null constructor.
   /* NB There are no default values.
    */
-  FloatRGB()
+  FloatRGBA()
     {}
 
   //! Copy constructor.
-  FloatRGB(const FloatRGB& c)
-    :r(c.r),g(c.g),b(c.b)
+  FloatRGBA(const FloatRGBA& c)
+    :r(c.r),g(c.g),b(c.b),a(c.a)
     {}
 
   //! Initialise from separate components.
-  FloatRGB(float vr,float vg,float vb)
-    :r(vr),g(vg),b(vb){}
+  FloatRGBA(float vr,float vg,float vb,float va)
+    :r(vr),g(vg),b(vb),a(va){}
 
-  //! Initialise from ByteRGB.
+  //! Initialise from ByteRGBA.
   /*! Byte values [0,255] are normalised to [0.0,1.0]
    */
-  FloatRGB(const ByteRGB& c)
-    :r(c.r/255.0),g(c.g/255.0),b(c.b/255.0){}
+  FloatRGBA(const ByteRGBA& c)
+    :r(c.r/255.0)
+    ,g(c.g/255.0)
+    ,b(c.b/255.0)
+    ,a(c.a/255.0)
+    {}
 
-  ~FloatRGB()
+  ~FloatRGBA()
     {}
 
   //! Colour addition.
-  void operator+=(const FloatRGB& v)
+  void operator+=(const FloatRGBA& v)
     {
       r+=v.r;
       g+=v.g;
       b+=v.b;
+      a+=v.a;
     }
 
   //! Colour subtraction.
-  void operator-=(const FloatRGB& v)
+  void operator-=(const FloatRGBA& v)
     {
       r-=v.r;
       g-=v.g;
       b-=v.b;
+      a-=v.a;
     }
 
   //! Colour multiplication by another colour (componentwise).
-  void operator*=(const FloatRGB& v)
+  void operator*=(const FloatRGBA& v)
     {
       r*=v.r;
       g*=v.g;
       b*=v.b;
+      a*=v.a;
     }
 
   //! Colour multiplication by a scalar.
@@ -151,6 +169,7 @@ public:
       r*=k;
       g*=k;
       b*=k;
+      a*=k;
     }
 
   //! Output method.
@@ -158,95 +177,104 @@ public:
 };
 
 //! Colour equality operator.
-inline bool operator==(const FloatRGB& a,const FloatRGB& b)
+inline bool operator==(const FloatRGBA& a,const FloatRGBA& b)
 {
-  return (a.r==b.r && a.g==b.g && a.b==b.b);
+  return (a.r==b.r && a.g==b.g && a.b==b.b && a.a==b.a);
 }
 
 //! Colour inequality operator.
-inline bool operator!=(const FloatRGB& a,const FloatRGB& b)
+inline bool operator!=(const FloatRGBA& a,const FloatRGBA& b)
 {
-  return (a.r!=b.r || a.g!=b.g || a.b!=b.b);
+  return (a.r!=b.r || a.g!=b.g || a.b!=b.b || a.a!=b.a);
 }
 
 //! Colour addition operator.
-inline FloatRGB operator+(const FloatRGB& a,const FloatRGB& b)
+inline FloatRGBA operator+(const FloatRGBA& a,const FloatRGBA& b)
 {
-  return FloatRGB
+  return FloatRGBA
     (
      a.r+b.r,
      a.g+b.g,
-     a.b+b.b
+     a.b+b.b,
+     a.a+b.a
      );
 }
 
 //! Colour negation operator.
-inline FloatRGB operator-(const FloatRGB& c)
+inline FloatRGBA operator-(const FloatRGBA& c)
 {
-  return FloatRGB
+  return FloatRGBA
     (
      -c.r,
      -c.g,
-     -c.b
+     -c.b,
+     -c.a
      );
 }
 
 //! Colour subtraction operator.
-inline FloatRGB operator-(const FloatRGB& a,const FloatRGB& b)
+inline FloatRGBA operator-(const FloatRGBA& a,const FloatRGBA& b)
 {
-  return FloatRGB
+  return FloatRGBA
     (
      a.r-b.r,
      a.g-b.g,
-     a.b-b.b
+     a.b-b.b,
+     a.a-b.a
      );
 }
 
 //! Colour multiplication-by-scalar operator.
-inline FloatRGB operator*(float k,const FloatRGB& c)
+inline FloatRGBA operator*(float k,const FloatRGBA& c)
 {
-  return FloatRGB
+  return FloatRGBA
     (
      k*c.r,
      k*c.g,
-     k*c.b
+     k*c.b,
+     k*c.a
      );
 }
 
 //! Colour multiplication-by-scalar operator.
-inline FloatRGB operator*(const FloatRGB& c,float k)
+inline FloatRGBA operator*(const FloatRGBA& c,float k)
 {
-  return FloatRGB
+  return FloatRGBA
     (
      k*c.r,
      k*c.g,
-     k*c.b
+     k*c.b,
+     k*c.a
      );
 }
 
 //! Colour multiplication operator.
 /*! Componentwise multiplication.
  */
-inline FloatRGB operator*(const FloatRGB& a,const FloatRGB& b)
+inline FloatRGBA operator*(const FloatRGBA& a,const FloatRGBA& b)
 {
-  return FloatRGB
+  return FloatRGBA
     (
      a.r*b.r,
      a.g*b.g,
-     a.b*b.b
+     a.b*b.b,
+     a.a*b.a
      );
 }
 
-inline std::ostream& operator<<(std::ostream& out,const FloatRGB& c)
+inline std::ostream& operator<<(std::ostream& out,const FloatRGBA& c)
 {
   return c.write(out);
 }
 
-//! Construct ByteRGB from FloatRGB
+//! Construct ByteRGBA from FloatRGBA
 /*! Components in the range [0.0,1.0] are scaled to [0,255].
  */
-inline ByteRGB::ByteRGB(const FloatRGB& c)
-:r((uchar)(255.0*c.r)),g((uchar)(255.0*c.g)),b((uchar)(255.0*c.b))
+inline ByteRGBA::ByteRGBA(const FloatRGBA& c)
+  :r((uchar)(255.0*c.r))
+  ,g((uchar)(255.0*c.g))
+  ,b((uchar)(255.0*c.b))
+  ,a((uchar)(255.0*c.a))
 {}
 
 #endif

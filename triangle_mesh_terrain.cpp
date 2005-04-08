@@ -344,9 +344,9 @@ void TriangleMeshTerrain::do_colours(const ParametersTerrain& parameters)
 	}
       
       // For debugging, set the colour0 of those triangles to red
-      vertex(triangle(i).vertex(0)).colour(0,ByteRGB(255,0,0));
-      vertex(triangle(i).vertex(1)).colour(0,ByteRGB(255,0,0));
-      vertex(triangle(i).vertex(2)).colour(0,ByteRGB(255,0,0));
+      vertex(triangle(i).vertex(0)).colour(0,ByteRGBA(255,0,0,255));
+      vertex(triangle(i).vertex(1)).colour(0,ByteRGBA(255,0,0,255));
+      vertex(triangle(i).vertex(2)).colour(0,ByteRGBA(255,0,0,255));
     }
   
   const float treeline=0.25;

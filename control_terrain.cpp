@@ -23,11 +23,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 /*! Used when initialising colour-chooser buttons.
  */
-QIconSet ControlTerrain::build_icon_of_colour(const FloatRGB& col)
+QIconSet ControlTerrain::build_icon_of_colour(const FloatRGBA& col)
 {
   QPixmap pmap(16,16);
 
-  const ByteRGB bcol(col);
+  const ByteRGBA bcol(col);
   pmap.fill(QColor(bcol.r,bcol.g,bcol.b));
   return QIconSet(pmap);
 }
@@ -36,8 +36,8 @@ QIconSet ControlTerrain::build_icon_of_colour(const FloatRGB& col)
  */
 ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTerrain* param)
   :QVBox(parent)
-   ,parameters(param)
-   ,regenerate_target(tgt)
+  ,parameters(param)
+  ,regenerate_target(tgt)
 {
   QTabWidget* tabs=new QTabWidget(this);      // Top level tab widget
   tabs->setMinimumWidth(384);

@@ -41,15 +41,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   \brief Interface for class TriangleMesh.
 */
 
-//! Contains vertices and triangles of a triangle mesh.  Abstract base class because specific classes must specify a geometry.
-/*! Not as general-purpose as it might be due to constraints imposed by OpenGL.
-  In particular, Triangle can have no attributes (e.g normal, colour) if a single OpenGL call is to be made to draw all triangles,
-  so this information is entirely associated with Vertex.
-  Two colours can be associated with each vertex (required for fracplanet application to obtain sharp coastlines)
-  , and it it a requirement for subclasses to sort triangles so that all those before _triangle_switch_colour use vertex colour index 0,
-  , and those afterwards vertex colour index 1.
-  \todo The geometry() method is a mess.  It would surely be better to have a Geometry* in the base class passed in via the constructor.
- */
+//! Contains vertices and triangles of a triangle mesh.  
+/*! Abstract base class because specific classes must specify a geometry.
+  Not as general-purpose as it might be due to constraints imposed by OpenGL.
+  In particular, Triangle can have no attributes (e.g normal, colour) if a single 
+  OpenGL call is to be made to draw all triangles, so this information is entirely associated with Vertex.
+  Two colours can be associated with each vertex 
+  (required for fracplanet application to obtain sharp coastlines),
+  and it it a requirement for subclasses to sort triangles so that all 
+  those before _triangle_switch_colour use vertex colour index 0,
+  and those afterwards vertex colour index 1.
+  \todo The geometry() method is a mess.  
+  It would surely be better to have a Geometry* in the base class passed in via the constructor.
+*/
 class TriangleMesh
 {
 protected:
@@ -70,13 +74,13 @@ protected:
     {
       return _vertex[i];
     }
-
+  
   //! Accessor.
   Triangle& triangle(uint i)
     {
       return _triangle[i];
     }
-
+  
   //! Access the geometry of this class (needed to abstract concepts like "mid-point" and "height").
   virtual const Geometry& geometry() const
     =0;

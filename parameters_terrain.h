@@ -101,19 +101,16 @@ public:
 
   //@{
   //! Colour for a terrain type.
-  FloatRGB colour_ocean;
-  FloatRGB colour_river;
-  FloatRGB colour_shoreline;
-  FloatRGB colour_low;
-  FloatRGB colour_high;
-  FloatRGB colour_snow;
+  FloatRGBA colour_ocean;
+  FloatRGBA colour_river;
+  FloatRGBA colour_shoreline;
+  FloatRGBA colour_low;
+  FloatRGBA colour_high;
+  FloatRGBA colour_snow;
   //@}
 
   //! Constructor sets up some hopefully sensible defaults.
   ParametersTerrain();
 };
-
-
-
 
 #endif

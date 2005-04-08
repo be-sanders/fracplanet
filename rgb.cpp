@@ -23,12 +23,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 /*! State of pov_mode() determines output format
  */
-std::ostream& FloatRGB::write(std::ostream& out) const
+std::ostream& FloatRGBA::write(std::ostream& out) const
 {
-  if (POVMode::pov_mode())
-    return out << "<" << r << "," << g << "," << b << ">";
+  if (POVMode::pov_mode())  
+    return out << "<" << r << "," << g << "," << b << ">"; //! \todo Probably need something for alpha here
   else
-    return out << r << " " << g << " " << b;
+    return out << r << " " << g << " " << b << " " << a;
 }
 
 

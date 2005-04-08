@@ -267,7 +267,7 @@ bool TriangleMesh::write_povray(const std::string& fname_base,const std::string&
 	step++;
 	progress_step((100*step)/steps);
 	
-	out_inc << "texture{pigment{rgb " << FloatRGB(vertex(v).colour(c)) << "}";
+	out_inc << "texture{pigment{rgb " << FloatRGBA(vertex(v).colour(c)) << "}";
 	if (emissive()!=0.0f && vertex(v).emissive(c))
 	  {
 	    out_inc << " finish{ambient " << emissive() << " diffuse " << 1.0f-emissive() << "}";

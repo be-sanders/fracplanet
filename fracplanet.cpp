@@ -45,7 +45,7 @@ int main(int argc,char* argv[])
   app.setMainWidget(main_widget);
   main_widget->show();
 
-  std::cerr << "sizeof(ByteRGB) is " << sizeof(ByteRGB) << " (3 is good)\n";  
+  std::cerr << "sizeof(ByteRGBA) is " << sizeof(ByteRGBA) << " (4 is good)\n";  
   std::cerr << "sizeof(Vertex) is " << sizeof(Vertex) << " (32 is good)\n";
 
   //  std::cerr << "GL Extensions are :\n\"" << glGetString(GL_EXTENSIONS) << "\"\n";

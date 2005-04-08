@@ -127,7 +127,7 @@ class ControlTerrain : public QVBox
   QVBox* padding;
 
   //! Utility function to build a small Qt icon of the specified colour.
-  static QIconSet build_icon_of_colour(const FloatRGB& col);
+  static QIconSet build_icon_of_colour(const FloatRGBA& col);
 
  public:
   ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTerrain* param);
@@ -251,14 +251,14 @@ class ControlTerrain : public QVBox
     }
 
   //! Use Qt's colour-picking dialog to replace the referenced colour
-  void pickColour(QPushButton* button,FloatRGB& colour)
+  void pickColour(QPushButton* button,FloatRGBA& colour)
     {
-      const ByteRGB col_old(colour);
+      const ByteRGBA col_old(colour);
       QColor qcol_old(col_old.r,col_old.g,col_old.b);
       QColor qcol_new=QColorDialog::getColor(qcol_old,this);
       if (qcol_new.isValid())
 	{
-	  colour=FloatRGB(ByteRGB(qcol_new.red(),qcol_new.green(),qcol_new.blue()));
+	  colour=FloatRGBA(ByteRGBA(qcol_new.red(),qcol_new.green(),qcol_new.blue(),255));
 	  
 	  QPixmap pmap(16,16);
 	  pmap.fill(qcol_new);

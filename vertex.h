@@ -42,7 +42,7 @@ class Vertex
   XYZ _normal;
 
   //! Colours at vertex (could be a different colour in different triangles).
-  ByteRGB _colour[2];
+  ByteRGBA _colour[2];
 
   //! Flag that this vertex should use emissive shading (could be different in different triangles).
   bool _emissive[2];
@@ -72,8 +72,8 @@ class Vertex
     :_position(p)
     ,_normal(0.0,0.0,0.0)
     {
-      _colour[0]=ByteRGB(0,0,0);
-      _colour[1]=ByteRGB(0,0,0);
+      _colour[0]=ByteRGBA(0,0,0,255);
+      _colour[1]=ByteRGBA(0,0,0,255);
       _emissive[0]=false;
       _emissive[1]=false;
     }
@@ -91,7 +91,7 @@ class Vertex
     }
 
   //! Accessor.
-  const ByteRGB& colour(uint c) const
+  const ByteRGBA& colour(uint c) const
     {
       assert(c<2);
       return _colour[c];
@@ -117,17 +117,17 @@ class Vertex
     }
 
   //! Accessor.
-  void colour(uint c,const ByteRGB& col)
+  void colour(uint c,const ByteRGBA& col)
     {
       assert(c<2);
       _colour[c]=col;
     }
 
   //! Accessor.
-  void colour(uint c,const FloatRGB& col)
+  void colour(uint c,const FloatRGBA& col)
     {
       assert(c<2);
-      _colour[c]=ByteRGB(col);
+      _colour[c]=ByteRGBA(col);
     }
 
   //! Accessor.

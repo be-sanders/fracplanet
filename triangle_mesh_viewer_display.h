@@ -101,7 +101,7 @@ class TriangleMeshViewerDisplay : public QGLWidget
   public slots:
   
   //! Called to redisplay scene
-    void draw_frame(const XYZ& p,const XYZ& l,const XYZ& u,float r,float t);
+  void draw_frame(const XYZ& p,const XYZ& l,const XYZ& u,float r,float t);
 };
 
 #endif
