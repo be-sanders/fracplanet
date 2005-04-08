@@ -327,21 +327,22 @@ void TriangleMeshTerrain::do_colours(const ParametersTerrain& parameters)
   progress_start(100,"Colouring");
   
   // Colour any triangles which need colouring (ie just sea)
+  ByteRGBA colour_ocean(parameters.colour_ocean);
+  ByteRGBA colour_river(parameters.colour_river);
+  if (parameters.oceans_and_rivers_emissive>0.0f)
+    {
+      colour_ocean.a=0;
+      colour_river.a=0;
+    }
+
   for (uint i=triangles_of_colour0();i!=triangles();i++)
     {
       step++;
-      progress_step((100*step)/steps);      
+      progress_step((100*step)/steps);
       
-      vertex(triangle(i).vertex(0)).colour(1,parameters.colour_ocean);
-      vertex(triangle(i).vertex(1)).colour(1,parameters.colour_ocean);
-      vertex(triangle(i).vertex(2)).colour(1,parameters.colour_ocean);
-      
-      if (parameters.oceans_and_rivers_emissive>0.0f)
-	{
-	  vertex(triangle(i).vertex(0)).emissive(1,true);
-	  vertex(triangle(i).vertex(1)).emissive(1,true);
-	  vertex(triangle(i).vertex(2)).emissive(1,true);
-	}
+      vertex(triangle(i).vertex(0)).colour(1,colour_ocean);
+      vertex(triangle(i).vertex(1)).colour(1,colour_ocean);
+      vertex(triangle(i).vertex(2)).colour(1,colour_ocean);
       
       // For debugging, set the colour0 of those triangles to red
       vertex(triangle(i).vertex(0)).colour(0,ByteRGBA(255,0,0,255));
@@ -380,7 +381,6 @@ void TriangleMeshTerrain::do_colours(const ParametersTerrain& parameters)
       else if (is_river)
 	{
 	  vertex(i).colour(0,parameters.colour_river);
-	  vertex(i).emissive(0,true);
 	}
       else if (normalised_height<beachline)
 	{

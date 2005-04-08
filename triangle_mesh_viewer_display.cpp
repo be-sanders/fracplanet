@@ -127,9 +127,10 @@ void TriangleMeshViewerDisplay::paintGL()
 
 	  glDisable(GL_COLOR_MATERIAL);
 	}
-      else
+      else // implies mesh->emissive()>0.0
 	{
-	  // If there could be emissive vertices, we need to do things the hard way.	  
+	  // If there could be emissive vertices, we need to do things the hard way
+	  // using immediate mode.  Maybe the display list capture will help.
 
 	  const float k=1.0f/255.0f;
 	  const float em=k*(     mesh->emissive());
@@ -147,7 +148,7 @@ void TriangleMeshViewerDisplay::paintGL()
 		  
 		  GLfloat c_ad[3];
 		  GLfloat c_em[3];
-		  if (v.emissive(c))
+		  if (v.colour(c).a==0)  // Zero alpha used to imply emissive vertex colour
 		    {
 		      c_ad[0]=v.colour(c).r*ad;
 		      c_ad[1]=v.colour(c).g*ad;
