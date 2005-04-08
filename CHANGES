@@ -1,5 +1,7 @@
 From release 0.2.0:
  - Bump version number to 0.2.1-dev
+ - Different flat terrain types 
+ - Internal changes (RGB to RGBA, overload alpha for emission)
 
 From release 0.1.0:
  - Bump version number to 0.2.0

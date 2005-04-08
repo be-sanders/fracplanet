@@ -28,16 +28,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qlabel.h>
 #include <qgroupbox.h>
 #include <qcheckbox.h>
-#include <qpushbutton.h>
 #include <qprogressbar.h>
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qtooltip.h>
-#include <qradiobutton.h>
 #include <qhbuttongroup.h>
 #include <qslider.h>
 #include <qcolordialog.h>
 #include <qiconset.h>
+#include <qcombobox.h>
+#include <qpushbutton.h>
 
 #include "useful.h"
 #include "parameters_terrain.h"
@@ -61,9 +61,7 @@ class ControlTerrain : public QVBox
   //! Requests to regenerate terrain are forwarded to the top level GUI widget.
   FracplanetMain* regenerate_target;
 
-  QHButtonGroup* object_type_button_group;
-  QRadioButton* object_type_planet_button;
-  QRadioButton* object_type_terrain_button;
+  QComboBox* object_type_combo_box;
 
   QLabel* base_height_label;
   QSpinBox* base_height_spinbox;
@@ -138,11 +136,7 @@ class ControlTerrain : public QVBox
 
   void setObjectType(int id)
     {
-      switch (id)
-	{
-	case 0: parameters->object_type=ParametersTerrain::ObjectTypePlanet;break;
-	case 1: parameters->object_type=ParametersTerrain::ObjectTypeTerrain;break;
-	}
+      parameters->object_type=static_cast<ParametersTerrain::ObjectType>(id);
     }
   void setTerrainSeed(int v)
     {

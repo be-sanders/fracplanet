@@ -66,22 +66,16 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   QVBox*const tab_colours=new QVBox(tabs);
   tabs->addTab(tab_colours,"Colours");
 
-  object_type_button_group=new QHButtonGroup(tab_terrain_basics);
-  object_type_planet_button=new QRadioButton("Planet",object_type_button_group);
-  object_type_terrain_button=new QRadioButton("Terrain area",object_type_button_group);
+  QComboBox* object_type_combo_box=new QComboBox(false,tab_terrain_basics);
+  object_type_combo_box->insertItem("Generate Planet",  ParametersTerrain::ObjectTypePlanet);
+  object_type_combo_box->insertItem("Generate Triangular Area",ParametersTerrain::ObjectTypeFlatTriangle);
+  object_type_combo_box->insertItem("Generate Square Area",  ParametersTerrain::ObjectTypeFlatSquare);
+  object_type_combo_box->insertItem("Generate Hexagonal Area", ParametersTerrain::ObjectTypeFlatHexagon);
 
-  switch (parameters->object_type)
-    {
-    case ParametersTerrain::ObjectTypePlanet:
-      object_type_planet_button->setChecked(true);
-      break;
-    case ParametersTerrain::ObjectTypeTerrain:
-      object_type_terrain_button->setChecked(true);
-      break;
-    }
+  object_type_combo_box->setCurrentItem(parameters->object_type);
 
   connect(
-	  object_type_button_group,SIGNAL(pressed(int)),
+	  object_type_combo_box,SIGNAL(activated(int)),
 	  this,SLOT(setObjectType(int))
 	  );
 	  

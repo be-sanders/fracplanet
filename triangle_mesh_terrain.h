@@ -95,7 +95,7 @@ class TriangleMeshTerrainPlanet : public TriangleMeshSubdividedIcosahedron, virt
 };
 
 //! Class constructing specific case of a flat-base terrain area.
-class TriangleMeshTerrainFlat : public TriangleMeshFlatTriangle, virtual public TriangleMeshTerrain
+class TriangleMeshTerrainFlat : public TriangleMeshFlat, virtual public TriangleMeshTerrain
 {
  public:
   //! Constructor.

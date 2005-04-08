@@ -35,7 +35,14 @@ class ParametersTerrain
 public:
   
   //! What kind of object will be generated.
-  typedef enum {ObjectTypePlanet,ObjectTypeTerrain} ObjectType;
+  typedef enum
+    {
+      ObjectTypePlanet,
+      ObjectTypeFlatTriangle,
+      ObjectTypeFlatSquare,
+      ObjectTypeFlatHexagon
+    }
+  ObjectType;
   ObjectType object_type;
   
   //! Random seed for subdivision and noise.

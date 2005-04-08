@@ -252,17 +252,18 @@ public:
 };
 
 //! A single triangle lying in the z-plane.
-class TriangleMeshFlatTriangle : virtual public TriangleMesh
+class TriangleMeshFlat : virtual public TriangleMesh
 {
  protected:
   //! The specifc geometry for this mesh.
   GeometryFlat _geometry;
  public:
+
   //! Constructor.
-  TriangleMeshFlatTriangle(float z,uint seed,Progress* progress);
+  TriangleMeshFlat(ParametersTerrain::ObjectType obj,float z,uint seed,Progress* progress);
 
   //! Destructor.
-  virtual ~TriangleMeshFlatTriangle()
+  virtual ~TriangleMeshFlat()
     {}  
 
   //! Returns the specific geometry.

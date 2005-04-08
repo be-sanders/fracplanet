@@ -150,7 +150,7 @@ void FracplanetMain::regenerate()
 	viewer->set_mesh(it);
 	break;
       }
-    case ParametersTerrain::ObjectTypeTerrain:
+    default:
       {
 	TriangleMeshTerrainFlat* it=new TriangleMeshTerrainFlat(parameters_terrain,this);
 	mesh=it;

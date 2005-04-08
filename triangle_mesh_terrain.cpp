@@ -456,7 +456,7 @@ bool TriangleMeshTerrainPlanet::write_povray(const std::string& base_filename,co
 TriangleMeshTerrainFlat::TriangleMeshTerrainFlat(const ParametersTerrain& parameters,Progress* progress)
   :TriangleMesh(progress)
   ,TriangleMeshTerrain(progress)
-  ,TriangleMeshFlatTriangle(parameters.variation.z*parameters.base_height,parameters.terrain_seed,progress)
+  ,TriangleMeshFlat(parameters.object_type,parameters.variation.z*parameters.base_height,parameters.terrain_seed,progress)
 {
   subdivide(parameters.subdivisions,parameters.subdivisions_unperturbed,parameters.variation);
 

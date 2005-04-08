@@ -319,20 +319,47 @@ bool TriangleMesh::write_povray(const std::string& fname_base,const std::string&
   return ok;
 }
 
-TriangleMeshFlatTriangle::TriangleMeshFlatTriangle(float z,uint seed,Progress* progress)
+TriangleMeshFlat::TriangleMeshFlat(ParametersTerrain::ObjectType obj,float z,uint seed,Progress* progress)
 :TriangleMesh(progress)
  ,_geometry(seed)
 {
-  add_vertex(Vertex(XYZ(0.0,0.0,z)));
-
-  for (uint i=0;i<6;i++)
+  switch(obj)
     {
-      add_vertex(Vertex(XYZ(cos(i*M_PI/3.0),sin(i*M_PI/3.0),z)));
-    }
+    case ParametersTerrain::ObjectTypeFlatTriangle:
+      for (uint i=0;i<3;i++)
+	{
+	  add_vertex(Vertex(XYZ(cos(i*2.0*M_PI/3.0),sin(i*2.0*M_PI/3.0),z)));
+	}
+      add_triangle(Triangle(0,1,2));
+      break;
+      
+    case ParametersTerrain::ObjectTypeFlatSquare:
+      add_vertex(Vertex(XYZ(0.0,0.0,z)));
+      
+      for (uint i=0;i<4;i++)
+	{
+	  add_vertex(Vertex(XYZ(cos(i*M_PI/2.0),sin(i*M_PI/2.0),z)));
+	}
+      for (uint i=0;i<4;i++)
+	{
+	  add_triangle(Triangle(0,1+i,1+(i+1)%4));
+	}
 
-  for (uint i=0;i<6;i++)
-    {
-      add_triangle(Triangle(0,1+i,1+(i+1)%6));
+      break;
+
+    case ParametersTerrain::ObjectTypeFlatHexagon:
+    default:      
+      add_vertex(Vertex(XYZ(0.0,0.0,z)));
+      for (uint i=0;i<6;i++)
+	{
+	  add_vertex(Vertex(XYZ(cos(i*M_PI/3.0),sin(i*M_PI/3.0),z)));
+	}
+      
+      for (uint i=0;i<6;i++)
+	{
+	  add_triangle(Triangle(0,1+i,1+(i+1)%6));
+	}
+      break;
     }
 }
 
