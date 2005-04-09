@@ -1,4 +1,7 @@
 - Add export to wavefront .obj format and try importing to blender.
+- Terrain patches but with planetary geometry (ie curvature).
+  This would give a sensible horizon when near the centre of the patch.
+- Control over treeline and shoreline heights (these are hardwired currently).
 - Clean up progress stuff; push steps->% (rate management) into progress API.
 - std::auto_ptr sucks; use something better from boost
 - Add perturbation decay rate for subdivision too.
@@ -30,3 +33,4 @@
 - Put ONLY the terrain data in the .inc file; rest in .pov or a different .inc
 - Split up mesh file (3 parts: vertices, colours, meshing)
 - Alternative output formats.
+- Ringworld and Dyson sphere/hollow-Earth starting geometries for fun.

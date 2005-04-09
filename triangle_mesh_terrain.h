@@ -24,16 +24,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define _triangle_mesh_terrain_h_
 
 #include "triangle_mesh.h"
+#include "parameters_terrain.h"
 
 //! This class holds all the terrain-related methods.  
 /*! It's intended to be used as a "mix-in", adding terrain generating 
   functionality to terrain objects subclassed from simpler geometries.
-  \todo Multiple inheritance pretty yucky.  Switch to a "Factory" pattern.
+  \todo Ugh!!!  This is really yucky use of multiple inheritance.  Switch to a "Factory" pattern.
  */
 class TriangleMeshTerrain : virtual TriangleMesh
 {
  protected:
-  //! Indices of the set of triangle with all vertices at sea-level
+  //! Indices of the set of triangles with all vertices at sea-level
   std::set<uint> sea_triangles;  
 
   //! Indices of the set of vertices comprising the river network
@@ -57,6 +58,9 @@ class TriangleMeshTerrain : virtual TriangleMesh
   //! Final colouration pass.
   void do_colours(const ParametersTerrain& parameters);
 
+  //! Invokes all the above steps (sea-level through final colouring) on a pre-subdivided triangle mesh.
+  void do_terrain(const ParametersTerrain& parameters);
+
  public:
   //! Constructor.
   TriangleMeshTerrain(Progress* progress)
@@ -67,9 +71,6 @@ class TriangleMeshTerrain : virtual TriangleMesh
   //! Destructor.
   virtual ~TriangleMeshTerrain()
     {}
-
-  //! Apply rules for sea-level through final colouring to a pre-subdivided triangle mesh.
-  void do_terrain(const ParametersTerrain& parameters);
 
   //! Dump the model as a POV scene.
   /*! Virtual method because spherical and flat terrains need e.g different sea-level planes and atmosphere layers.

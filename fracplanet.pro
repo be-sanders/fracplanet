@@ -53,6 +53,8 @@ HEADERS += \
            geometry.h \
            license.h \
            noise.h \
+           parameters.h \
+           parameters_cloud.h \
            parameters_render.h \
            parameters_save.h \
            parameters_terrain.h \
@@ -80,6 +82,8 @@ SOURCES += \
            geometry.cpp \
            license.cpp \
            noise.cpp \
+           parameters.cpp \
+           parameters_cloud.cpp \
            parameters_render.cpp \
            parameters_save.cpp \
            parameters_terrain.cpp \
