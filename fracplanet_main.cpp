@@ -26,7 +26,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app)
   :QHBox(parent)
    ,application(app)
-   ,mesh(0)
    ,last_step(0)
    ,progress_was_stalled(false)
    ,startup(true)
@@ -46,7 +45,7 @@ FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app)
   tab->addTab(control_render,"Render");
   tab->addTab(control_about,"About");
 
-  viewer=new TriangleMeshViewer(0,&parameters_render);     // Viewer will be a top-level-window
+  viewer=new TriangleMeshViewer(0,&parameters_render,std::vector<const TriangleMesh*>());     // Viewer will be a top-level-window
   viewer->resize(512,512);
   viewer->move(384,64);  // Moves view away from controls on most window managers
 
@@ -115,7 +114,7 @@ void FracplanetMain::progress_step(uint step)
     }
 
   // TODO: Probably better to base call to processEvents() on time since we last called it.
-  // (certainly calling it every step is a bad idea)
+  // (but certainly calling it every step is a bad idea: really slows app down)
 }
 
 void FracplanetMain::progress_complete(const std::string& info)
@@ -131,34 +130,43 @@ void FracplanetMain::progress_complete(const std::string& info)
   application->processEvents();
 }
 
-void FracplanetMain::regenerate()
+void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or clouds
 {
   viewer->hide();
 
-  delete mesh;
+  while (!mesh_terrain.empty()) 
+    {
+      delete mesh_terrain.back();
+      mesh_terrain.pop_back();
+      mesh_triangles.pop_back();
+    }
+
+  viewer->set_mesh(mesh_triangles);
 
   // There are some issues with type here:
   // We need to keep hold of a pointer to TriangleMeshTerrain so we can call its write_povray method
-  //  but the triangle viewer needs the TriangleMesh.
+  // but the triangle viewer needs the TriangleMesh.
   // So we end up with code like this to avoid a premature downcast.
   switch (parameters_terrain.object_type)
     {
     case ParametersTerrain::ObjectTypePlanet:
       {
-	TriangleMeshTerrainPlanet* it=new TriangleMeshTerrainPlanet(parameters_terrain,this);
-	mesh=it;
-	viewer->set_mesh(it);
+	TriangleMeshTerrainPlanet*const it=new TriangleMeshTerrainPlanet(parameters_terrain,this);
+	mesh_terrain.push_back(it);
+	mesh_triangles.push_back(it);
+	viewer->set_mesh(mesh_triangles);
 	break;
       }
     default:
       {
-	TriangleMeshTerrainFlat* it=new TriangleMeshTerrainFlat(parameters_terrain,this);
-	mesh=it;
-	viewer->set_mesh(it);
+	TriangleMeshTerrainFlat*const it=new TriangleMeshTerrainFlat(parameters_terrain,this);
+	mesh_terrain.push_back(it);
+	mesh_triangles.push_back(it);
+	viewer->set_mesh(mesh_triangles);
 	break;
       }
     }
-
+  
   progress_dialog.reset(0);
 
   viewer->showNormal();
@@ -178,7 +186,7 @@ void FracplanetMain::save()
 	{
 	  const std::string base_filename(selected_filename.left(selected_filename.length()-4).local8Bit());
 	  viewer->hide();
-	  const bool ok=mesh->write_povray(base_filename,parameters_save,parameters_terrain);
+	  const bool ok=mesh_terrain[0]->write_povray(base_filename,parameters_save,parameters_terrain);
 	  
 	  progress_dialog.reset(0);
 

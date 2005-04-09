@@ -34,6 +34,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qtimer.h>
 #include <qlabel.h>
 
+#include <vector>
+
 #include "useful.h"
 #include "random.h"
 
@@ -115,12 +117,12 @@ class TriangleMeshViewer : public QGrid
 
  public:
   //! Constructor.
-  TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const TriangleMesh* m=0);
+  TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
 
   virtual ~TriangleMeshViewer();
 
   //! Sets the TriangleMesh to be displayed.
-  void set_mesh(const TriangleMesh* m);
+  void set_mesh(const std::vector<const TriangleMesh*>& m);
 
  protected:
   //! Interested in some key presses

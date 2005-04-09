@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <sstream>
 #include <qcursor.h>
 
-TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const TriangleMesh* mesh)
+TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& mesh)
   :QGrid(2,Qt::Horizontal,parent)
   ,parameters(param)
   ,camera_position(-3.0f,0.0f,0.0f)
@@ -188,7 +188,7 @@ void TriangleMeshViewer::mouseMoveEvent(QMouseEvent* e)
     }
 }
 
-void TriangleMeshViewer::set_mesh(const TriangleMesh* m)
+void TriangleMeshViewer::set_mesh(const std::vector<const TriangleMesh*>& m)
 {
   if (fly_mode) unfly();
   display->set_mesh(m);

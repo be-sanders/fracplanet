@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <iomanip>
 #include <numeric>
 
-TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const ParametersRender* param,const TriangleMesh* m)
+TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& m)
   :QGLWidget(parent)
    ,mesh(m)
    ,parameters(param)
@@ -45,7 +45,7 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const Param
   gl_display_list_index=0;
 }
 
-void TriangleMeshViewerDisplay::set_mesh(const TriangleMesh* m)
+void TriangleMeshViewerDisplay::set_mesh(const std::vector<const TriangleMesh*>& m)
 {
   mesh=m;
 
@@ -107,75 +107,80 @@ void TriangleMeshViewerDisplay::paintGL()
       glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,default_material_white);
       glMaterialfv(GL_FRONT,GL_EMISSION,default_material_black);
 
-      if (mesh->emissive()==0.0f)
+      for (uint m=0;m<mesh.size();m++)
 	{
-	  // Use "Color Material" mode 'cos everything is the same material.... just change the colour
-	  glEnable(GL_COLOR_MATERIAL);
-	  glColorMaterial(GL_FRONT,GL_AMBIENT_AND_DIFFUSE);
+	  const TriangleMesh*const it=mesh[m];
 
-	  // Point GL at arrays of data
-	  glVertexPointer(3,GL_FLOAT,sizeof(Vertex),&(mesh->vertex(0).position().x));
-	  glNormalPointer(GL_FLOAT,sizeof(Vertex),&(mesh->vertex(0).normal().x));
-	  glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(mesh->vertex(0).colour(0).r));
-
-	  // Draw the colour-zero triangles
-	  glDrawElements(GL_TRIANGLES,3*mesh->triangles_of_colour0(),GL_UNSIGNED_INT,&(mesh->triangle(0).vertex(0)));
-
-	  // Switch to alternate colour and draw the colour-one triangles
-	  glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(mesh->vertex(0).colour(1).r));
-	  glDrawElements(GL_TRIANGLES,3*mesh->triangles_of_colour1(),GL_UNSIGNED_INT,&(mesh->triangle(mesh->triangles_of_colour0()).vertex(0)));
-
-	  glDisable(GL_COLOR_MATERIAL);
-	}
-      else // implies mesh->emissive()>0.0
-	{
-	  // If there could be emissive vertices, we need to do things the hard way
-	  // using immediate mode.  Maybe the display list capture will help.
-
-	  const float k=1.0f/255.0f;
-	  const float em=k*(     mesh->emissive());
-	  const float ad=k*(1.0f-mesh->emissive());
-
-	  glBegin(GL_TRIANGLES);
-	  for (unsigned int t=0;t<mesh->triangles();t++)
+	  if (it->emissive()==0.0f)
 	    {
-	      const uint c=(t<mesh->triangles_of_colour0() ? 0 : 1);
+	      // Use "Color Material" mode 'cos everything is the same material.... just change the colour
+	      glEnable(GL_COLOR_MATERIAL);
+	      glColorMaterial(GL_FRONT,GL_AMBIENT_AND_DIFFUSE);
 
-	      for (uint i=0;i<3;i++)
-		{
-		  const uint vn=mesh->triangle(t).vertex(i);
-		  const Vertex& v=mesh->vertex(vn);
-		  
-		  GLfloat c_ad[3];
-		  GLfloat c_em[3];
-		  if (v.colour(c).a==0)  // Zero alpha used to imply emissive vertex colour
-		    {
-		      c_ad[0]=v.colour(c).r*ad;
-		      c_ad[1]=v.colour(c).g*ad;
-		      c_ad[2]=v.colour(c).b*ad;
-		      c_em[0]=v.colour(c).r*em;
-		      c_em[1]=v.colour(c).g*em;
-		      c_em[2]=v.colour(c).b*em;
-		    }
-		  else
-		    {
-		      c_ad[0]=v.colour(c).r*k;
-		      c_ad[1]=v.colour(c).g*k;
-		      c_ad[2]=v.colour(c).b*k;
-		      c_em[0]=0.0f;
-		      c_em[1]=0.0f;
-		      c_em[2]=0.0f;
-		    }
+	      // Point GL at arrays of data
+	      glVertexPointer(3,GL_FLOAT,sizeof(Vertex),&(it->vertex(0).position().x));
+	      glNormalPointer(GL_FLOAT,sizeof(Vertex),&(it->vertex(0).normal().x));
+	      glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(it->vertex(0).colour(0).r));
 
-		  glNormal3fv(&(v.normal().x));
-		  glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,c_ad);
-		  glMaterialfv(GL_FRONT,GL_EMISSION,c_em);
-		  glVertex3fv(&(v.position().x));
-		}
+	      // Draw the colour-zero triangles
+	      glDrawElements(GL_TRIANGLES,3*it->triangles_of_colour0(),GL_UNSIGNED_INT,&(it->triangle(0).vertex(0)));
+
+	      // Switch to alternate colour and draw the colour-one triangles
+	      glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(it->vertex(0).colour(1).r));
+	      glDrawElements(GL_TRIANGLES,3*it->triangles_of_colour1(),GL_UNSIGNED_INT,&(it->triangle(it->triangles_of_colour0()).vertex(0)));
+
+	      glDisable(GL_COLOR_MATERIAL);
 	    }
-	  glEnd();
-	}
+	  else // implies mesh[m]->emissive()>0.0
+	    {
+	      // If there could be emissive vertices, we need to do things the hard way
+	      // using immediate mode.  Maybe the display list capture will help.
 
+	      const float k=1.0f/255.0f;
+	      const float em=k*(     it->emissive());
+	      const float ad=k*(1.0f-it->emissive());
+
+	      glBegin(GL_TRIANGLES);
+	      for (unsigned int t=0;t<it->triangles();t++)
+		{
+		  const uint c=(t<it->triangles_of_colour0() ? 0 : 1);
+
+		  for (uint i=0;i<3;i++)
+		    {
+		      const uint vn=it->triangle(t).vertex(i);
+		      const Vertex& v=it->vertex(vn);
+		  
+		      GLfloat c_ad[3];
+		      GLfloat c_em[3];
+		      if (v.colour(c).a==0)  // Zero alpha used to imply emissive vertex colour
+			{
+			  c_ad[0]=v.colour(c).r*ad;
+			  c_ad[1]=v.colour(c).g*ad;
+			  c_ad[2]=v.colour(c).b*ad;
+			  c_em[0]=v.colour(c).r*em;
+			  c_em[1]=v.colour(c).g*em;
+			  c_em[2]=v.colour(c).b*em;
+			}
+		      else
+			{
+			  c_ad[0]=v.colour(c).r*k;
+			  c_ad[1]=v.colour(c).g*k;
+			  c_ad[2]=v.colour(c).b*k;
+			  c_em[0]=0.0f;
+			  c_em[1]=0.0f;
+			  c_em[2]=0.0f;
+			}
+
+		      glNormal3fv(&(v.normal().x));
+		      glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,c_ad);
+		      glMaterialfv(GL_FRONT,GL_EMISSION,c_em);
+		      glVertex3fv(&(v.position().x));
+		    }
+		}
+	      glEnd();
+	    }
+	}
+      
       if (building_display_list)
 	{
 	  glEndList();
@@ -205,8 +210,15 @@ void TriangleMeshViewerDisplay::paintGL()
     report.setf(std::ios::fixed);
     report.precision(1);
     
-    report << "Triangles: " << mesh->triangles() << "\n";
-    report << "Vertices : " << mesh->vertices() << "\n";
+    uint n_triangles=0;
+    uint n_vertices=0;
+    for (uint m=0;m<mesh.size();m++)
+      {
+	n_triangles+=mesh[m]->triangles();
+	n_vertices+=mesh[m]->vertices();
+      }
+    report << "Triangles: " << n_triangles << "\n";
+    report << "Vertices : " << n_vertices << "\n";
     report << "FPS (av) : " << fps << "\n";
     
     parameters->notify->notify(report.str());

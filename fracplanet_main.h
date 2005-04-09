@@ -35,6 +35,7 @@ extern "C"
 #include <qprogressdialog.h>
 
 #include <iostream>
+#include <vector>
 
 #include "useful.h"
 #include "random.h"
@@ -58,15 +59,21 @@ class FracplanetMain : public QHBox , public Progress
 protected:
   QApplication*const application;
 
-  //! The mesh being rendered.
-  TriangleMeshTerrain* mesh;
+  //! A collection of meshes being rendered.
+  /* This is the owner.
+     First element is ground, second is sky (if any).
+   */
+  std::vector<const TriangleMeshTerrain*> mesh_terrain;
+
+  //! Downcast version for use by mesh viewer.
+  std::vector<const TriangleMesh*> mesh_triangles;
 
   ParametersTerrain parameters_terrain;
   ParametersSave parameters_save;
   ParametersRender parameters_render;
-
+  
   QVBox* vbox;
-
+  
   ControlRender* control_render;
   ControlSave* control_save;
   ControlTerrain* control_terrain;
@@ -86,17 +93,17 @@ protected:
  public:
   FracplanetMain(QWidget* parent,QApplication* app);
   virtual ~FracplanetMain();
-
+  
   virtual void progress_start(uint target,const std::string&);
   virtual void progress_stall(const std::string& reason);
   virtual void progress_step(uint step);
   virtual void progress_complete(const std::string&);
   
-  public slots:
-
-  //! Invoked by ControlTerrain to generate a new TriangleMesh.
+ public slots:
+    
+  //! Invoked by ControlTerrain to generate new TriangleMesh.
   void regenerate();
-
+  
   //! Invoked by ControlSave to save to file.
   void save();
 };

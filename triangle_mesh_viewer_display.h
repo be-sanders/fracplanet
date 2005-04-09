@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qdatetime.h>
 
 #include <deque>
+#include <vector>
 
 #include "useful.h"
 #include "random.h"
@@ -42,8 +43,10 @@ class TriangleMeshViewerDisplay : public QGLWidget
   Q_OBJECT;
   
  protected:
-  //! The mesh being displayed.
-  const TriangleMesh* mesh;
+  //! The meshes being displayed.
+  /*! NB NOT owned here
+   */
+  std::vector<const TriangleMesh*> mesh;
 
   //! Pointer to the rendering parameters.
   const ParametersRender* parameters;
@@ -84,10 +87,10 @@ class TriangleMeshViewerDisplay : public QGLWidget
 
  public:
   //! Constructor.
-  TriangleMeshViewerDisplay(QWidget* parent,const ParametersRender* param,const TriangleMesh* m=0);
+  TriangleMeshViewerDisplay(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
 
   //! Set the mesh being rendered.
-  void set_mesh(const TriangleMesh* m);
+  void set_mesh(const std::vector<const TriangleMesh*>& m);
 
   //! Called to repaint GL area.
   virtual void paintGL();
