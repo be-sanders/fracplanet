@@ -1,3 +1,4 @@
+- Add export to wavefront .obj format and try importing to blender.
 - Clean up progress stuff; push steps->% (rate management) into progress API.
 - std::auto_ptr sucks; use something better from boost
 - Add perturbation decay rate for subdivision too.
@@ -23,9 +24,9 @@
 - Cloud layer (as polygon mesh).
 - Save/load parameters.  Automatic mode (load parameters, generate model, exit).
 - Ice packs.
-- Seasonal variations.  Save sequence of models for Pov.
-- Are we 64bit ready ?  Subdivision level 12,13,14 here we come...
-- Other initial shapes (triangle, square, rectangle).  Radio buttons to pull-down.
+- Seasonal variations.
+- Ability to save sequences of models (probably by offline generation for parameter file load)
+- Are we 64bit ready ?  Onwards to subdivision level 12,13,14...
 - Put ONLY the terrain data in the .inc file; rest in .pov or a different .inc
 - Split up mesh file (3 parts: vertices, colours, meshing)
 - Alternative output formats.
