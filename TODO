@@ -1,5 +1,8 @@
 - Mail http://objects.povworld.org/links7.html.  Also links at main POV site.
+
 - Add export to wavefront .obj format and try importing to blender.
+  Seems to be the best bet amongst the built-in blender import formats.
+  Test it deals with materials etc first.
 Output:
  c_interp on
  d_interp on
@@ -9,9 +12,9 @@ Output:
  f .//. .//. .//. referencing 1-based vertex and vertex normal indices
 Will probably have to generate a fixed number of materials
 (blends between the standard colours) and map each vertex to the nearest one.
-Alternative export formats ? NFF too simple.
-Oho... apparently blender supports VRML.
 
+- End abuse of alpha as flag; just use it as the emissive quantity.
+  Mesh then gets a flag for meaning of alpha channels.
 - Terrain patches but with planetary geometry (ie curvature).
   This would give a sensible horizon when near the centre of the patch.
 - Control over treeline and shoreline heights (these are hardwired currently).

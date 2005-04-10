@@ -96,8 +96,9 @@ display) is the degree of subdivision.  For 9 subdivisions
 needs just over a gigabyte.  Needless to say, if it starts swapping,
 it's not pretty.
 On a 2.4GHz machine with a GeForce4 (well, an "MX") and the Nvidia OpenGL
-drivers display rates start to suffer around subdivision level 7.
-I'd be interested to hear how the 6800 series cards handle 20000000 triangles.
+drivers display rates start to suffer around subdivision level 7 (for planets).
+A 5200 will get to the next level.  I'd be interested to hear how the 6800
+series cards handle 20000000 triangles.
 See the BUGS file for other issues.
 
 INSTALL

@@ -153,7 +153,6 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
 	TriangleMeshTerrainPlanet*const it=new TriangleMeshTerrainPlanet(parameters_terrain,this);
 	mesh_terrain=it;
 	mesh_triangles.push_back(it);
-	viewer->set_mesh(mesh_triangles);
 	break;
       }
     default:
@@ -161,13 +160,30 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
 	TriangleMeshTerrainFlat*const it=new TriangleMeshTerrainFlat(parameters_terrain,this);
 	mesh_terrain=it;
 	mesh_triangles.push_back(it);
-	viewer->set_mesh(mesh_triangles);
+	break;
+      }
+    }
+  switch (parameters_cloud.object_type)
+    {
+    case ParametersCloud::ObjectTypePlanet:
+      {
+	TriangleMeshCloudPlanet*const it=new TriangleMeshCloudPlanet(parameters_cloud,this);
+	mesh_cloud=it;
+	mesh_triangles.push_back(it);
+	break;
+      }
+    default:
+      {
+	TriangleMeshCloudFlat*const it=new TriangleMeshCloudFlat(parameters_cloud,this);
+	mesh_cloud=it;
+	mesh_triangles.push_back(it);
 	break;
       }
     }
   
   progress_dialog.reset(0);
 
+  viewer->set_mesh(mesh_triangles);
   viewer->showNormal();
   viewer->raise();
 }
@@ -202,5 +218,4 @@ void FracplanetMain::save()
 	  QMessageBox::critical(this,"Fracplanet","File selected must have .pov or .inc suffix.");
 	}
     }
-  
 }

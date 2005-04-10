@@ -68,7 +68,10 @@ protected:
 
   //! The emission level for vertices with the _emissive flag set
   float _emissive;
-  
+
+  //! Pointer to the progress object to which progress reports should be made.
+  Progress*const _progress;
+    
   //! Accessor.
   Vertex& vertex(uint i)
     {
@@ -85,9 +88,6 @@ protected:
   virtual const Geometry& geometry() const
     =0;
 
-  //! Pointer to the progress object to which progress reports should be made.
-  Progress*const _progress;
-  
   //! Convenience wrapper with null test.
   void progress_start(uint steps,const std::string& info) const;
 
@@ -102,23 +102,10 @@ protected:
 
 public:
   //! Constructor.
-  TriangleMesh(Progress* progress)
-    :_emissive(0.0)
-    ,_progress(progress)
-    {}
-
-  //! Copy constructor.
-  TriangleMesh(const TriangleMesh& mesh)
-    :_vertex(mesh._vertex)
-    ,_triangle(mesh._triangle)
-    ,_triangle_switch_colour(0)
-    ,_emissive(mesh._emissive)
-    ,_progress(mesh._progress)
-    {}
+  TriangleMesh(Progress* progress);
   
   //! Destructor.
-  virtual ~TriangleMesh()
-    {}
+  virtual ~TriangleMesh();
 
   //! Accessor
   void set_emissive(float e)

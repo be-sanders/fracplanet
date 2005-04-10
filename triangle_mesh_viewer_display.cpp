@@ -85,8 +85,12 @@ void TriangleMeshViewerDisplay::paintGL()
   glRotatef((180.0/M_PI)*object_tilt,0.0,1.0,0.0);
   glRotatef((180.0/M_PI)*object_rotation,0.0,0.0,1.0);
 
-  glPolygonMode(GL_FRONT,(parameters->wireframe ? GL_LINE : GL_FILL));
-  
+  glPolygonMode(GL_FRONT_AND_BACK,(parameters->wireframe ? GL_LINE : GL_FILL));
+
+  glFrontFace(GL_CCW);
+  glCullFace(GL_BACK);
+  glEnable(GL_CULL_FACE);   //! \todo Decide what to do about clouds and backface culling (either way will have problems).
+
   if (parameters->display_list && gl_display_list_index!=0)
     {
       glCallList(gl_display_list_index);
@@ -104,23 +108,33 @@ void TriangleMeshViewerDisplay::paintGL()
 
       GLfloat default_material_white[3]={1.0f,1.0f,1.0f};
       GLfloat default_material_black[3]={0.0f,0.0f,0.0f};
-      glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,default_material_white);
-      glMaterialfv(GL_FRONT,GL_EMISSION,default_material_black);
+      glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,default_material_white);
+      glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,default_material_black);
 
       for (uint m=0;m<mesh.size();m++)
 	{
 	  const TriangleMesh*const it=mesh[m];
+	  if (it==0) continue;
 
 	  if (it->emissive()==0.0f)
 	    {
+	      if (m) // Switch blending on for non-emissive meshes after the first
+		{
+		  glEnable(GL_BLEND);
+		  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+		}
+	      else glDisable(GL_BLEND);
+	 
 	      // Use "Color Material" mode 'cos everything is the same material.... just change the colour
 	      glEnable(GL_COLOR_MATERIAL);
-	      glColorMaterial(GL_FRONT,GL_AMBIENT_AND_DIFFUSE);
+	      glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
 
 	      // Point GL at arrays of data
 	      glVertexPointer(3,GL_FLOAT,sizeof(Vertex),&(it->vertex(0).position().x));
 	      glNormalPointer(GL_FLOAT,sizeof(Vertex),&(it->vertex(0).normal().x));
-	      glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(it->vertex(0).colour(0).r));
+
+	      // For a second mesh, use alpha (actually could use it for the first mesh but maybe it's more efficient not to).
+	      glColorPointer((m==0 ? 3 : 4),GL_UNSIGNED_BYTE,sizeof(Vertex),&(it->vertex(0).colour(0).r));
 
 	      // Draw the colour-zero triangles
 	      glDrawElements(GL_TRIANGLES,3*it->triangles_of_colour0(),GL_UNSIGNED_INT,&(it->triangle(0).vertex(0)));
@@ -133,6 +147,9 @@ void TriangleMeshViewerDisplay::paintGL()
 	    }
 	  else // implies mesh[m]->emissive()>0.0
 	    {
+	      // We abuse alpha for emission, so no blending
+	      glDisable(GL_BLEND);
+	      
 	      // If there could be emissive vertices, we need to do things the hard way
 	      // using immediate mode.  Maybe the display list capture will help.
 
@@ -172,8 +189,8 @@ void TriangleMeshViewerDisplay::paintGL()
 			}
 
 		      glNormal3fv(&(v.normal().x));
-		      glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,c_ad);
-		      glMaterialfv(GL_FRONT,GL_EMISSION,c_em);
+		      glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,c_ad);
+		      glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,c_em);
 		      glVertex3fv(&(v.position().x));
 		    }
 		}
@@ -214,8 +231,11 @@ void TriangleMeshViewerDisplay::paintGL()
     uint n_vertices=0;
     for (uint m=0;m<mesh.size();m++)
       {
-	n_triangles+=mesh[m]->triangles();
-	n_vertices+=mesh[m]->vertices();
+	if (mesh[m])
+	  {
+	    n_triangles+=mesh[m]->triangles();
+	    n_vertices+=mesh[m]->vertices();
+	  }
       }
     report << "Triangles: " << n_triangles << "\n";
     report << "Vertices : " << n_vertices << "\n";
@@ -245,11 +265,6 @@ void TriangleMeshViewerDisplay::initializeGL()
 
   // Do smooth shading 'cos colours are specified at vertices
   glShadeModel(GL_SMOOTH);
-
-  // Don't waste time on back-facers
-  glFrontFace(GL_CCW);
-  glCullFace(GL_BACK);
-  glEnable(GL_CULL_FACE);
 
   // Use arrays of data
   glEnableClientState(GL_VERTEX_ARRAY);

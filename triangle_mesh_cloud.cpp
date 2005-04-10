@@ -18,18 +18,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "triangle_mesh_cloud.h"
 #include "noise.h"
 
-TriangleMeshCloudPlanet::TriangleMeshCloudPlanet(const ParametersTerrain& parameters,Progress* progress)
+TriangleMeshCloud::TriangleMeshCloud(Progress* progress)
+  :TriangleMesh(progress)
+{}
+
+TriangleMeshCloud::~TriangleMeshCloud()
+{}
+
+
+TriangleMeshCloudPlanet::TriangleMeshCloudPlanet(const ParametersCloud& parameters,Progress* progress)
   :TriangleMesh(progress)
   ,TriangleMeshCloud(progress)
-  ,TriangleMeshSubdividedIcosahedron(1.0+parameters.height,parameters.subdivisions,parameters.subdivisions,parameters.seed,progress)
+  ,TriangleMeshSubdividedIcosahedron(1.0+parameters.cloudbase,parameters.subdivisions,parameters.subdivisions,parameters.seed,XYZ(0.0,0.0,0.0),progress)
 {
+  _triangle_switch_colour=triangles();
+  for (uint v=0;v<vertices();v++)
+    vertex(v).colour(0,ByteRGBA(255,255,255,192));
 }
 
 TriangleMeshCloudFlat::TriangleMeshCloudFlat(const ParametersCloud& parameters,Progress* progress)
   :TriangleMesh(progress)
   ,TriangleMeshCloud(progress)
-  ,TriangleMeshFlat(parameters.object_type,parameters.height,parameters.seed,progress)
+  ,TriangleMeshFlat(parameters.object_type,parameters.cloudbase,parameters.seed,progress)
 {
-  subdivide(parameters.subdivisions,parameters.subdivisions,parameters.variation);
+  subdivide(parameters.subdivisions,parameters.subdivisions,XYZ(0.0,0.0,0.0));
+  _triangle_switch_colour=triangles();
+  for (uint v=0;v<vertices();v++)
+    vertex(v).colour(0,ByteRGBA(255,255,255,192));
 }
 

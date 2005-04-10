@@ -20,6 +20,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <sstream>
 
+TriangleMeshTerrain::TriangleMeshTerrain(Progress* progress)
+  :TriangleMesh(progress)
+  ,max_height(0.0)
+{}
+
+TriangleMeshTerrain::~TriangleMeshTerrain()
+{}
+
+
 void TriangleMeshTerrain::do_noise(const ParametersTerrain& parameters)
 {
   if (parameters.noise_terms==0 || parameters.noise_amplitude==0) return;

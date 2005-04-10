@@ -63,14 +63,10 @@ class TriangleMeshTerrain : virtual TriangleMesh
 
  public:
   //! Constructor.
-  TriangleMeshTerrain(Progress* progress)
-    :TriangleMesh(progress)
-    ,max_height(0.0)
-    {}
+  TriangleMeshTerrain(Progress* progress);
 
   //! Destructor.
-  virtual ~TriangleMeshTerrain()
-    {}
+  virtual ~TriangleMeshTerrain();
 
   //! Dump the model as a POV scene.
   /*! Virtual method because spherical and flat terrains need e.g different sea-level planes and atmosphere layers.

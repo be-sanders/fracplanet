@@ -64,6 +64,7 @@ HEADERS += \
            rgb.h \
            triangle.h \
            triangle_mesh.h \
+           triangle_mesh_cloud.h \
            triangle_mesh_terrain.h \
            triangle_mesh_viewer.h \
            triangle_mesh_viewer_display.h \
@@ -93,6 +94,7 @@ SOURCES += \
            rgb.cpp \
            triangle.cpp \
            triangle_mesh.cpp \
+           triangle_mesh_cloud.cpp \
            triangle_mesh_terrain.cpp \
            triangle_mesh_viewer.cpp \
            triangle_mesh_viewer_display.cpp \

@@ -37,13 +37,10 @@ class TriangleMeshCloud : virtual TriangleMesh
  public:
   
   //! Constructor.
-  TriangleMeshCloud(Progress* progress)
-    :TriangleMesh(progress)
-    {}
-  
+  TriangleMeshCloud(Progress* progress);
+
   //! Destructor.
-  virtual ~TriangleMeshCloud()
-    {}
+    virtual ~TriangleMeshCloud();
 };
 
 //! Class constructing specific case of a planetary cloud.

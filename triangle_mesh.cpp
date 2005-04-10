@@ -21,6 +21,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <fstream>
 #include <sstream>
 
+TriangleMesh::TriangleMesh(Progress* progress)
+  :_emissive(0.0)
+  ,_progress(progress)
+{}
+  
+TriangleMesh::~TriangleMesh()
+{}
+
 void TriangleMesh::progress_start(uint steps,const std::string& info) const
 {
   if (_progress) _progress->progress_start(steps,info);
