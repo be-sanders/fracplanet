@@ -49,6 +49,7 @@ extern "C"
 #include "control_about.h"
 
 #include "triangle_mesh_terrain.h"
+#include "triangle_mesh_cloud.h"
 #include "triangle_mesh_viewer.h"
 
 //! Top level GUI component for fracplanet application: contains parameter controls and viewing area
@@ -58,17 +59,18 @@ class FracplanetMain : public QHBox , public Progress
   Q_OBJECT
 protected:
   QApplication*const application;
+  
+  //! Owned terrain.
+  const TriangleMeshTerrain* mesh_terrain;
 
-  //! A collection of meshes being rendered.
-  /* This is the owner.
-     First element is ground, second is sky (if any).
-   */
-  std::vector<const TriangleMeshTerrain*> mesh_terrain;
+  //! Owned clouds, if any.
+  const TriangleMeshCloud* mesh_cloud;
 
   //! Downcast version for use by mesh viewer.
   std::vector<const TriangleMesh*> mesh_triangles;
 
   ParametersTerrain parameters_terrain;
+  ParametersCloud parameters_cloud;
   ParametersSave parameters_save;
   ParametersRender parameters_render;
   

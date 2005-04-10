@@ -39,7 +39,6 @@ class TriangleMeshCloud : virtual TriangleMesh
   //! Constructor.
   TriangleMeshCloud(Progress* progress)
     :TriangleMesh(progress)
-    ,max_height(0.0)
     {}
   
   //! Destructor.

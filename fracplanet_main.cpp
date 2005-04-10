@@ -26,6 +26,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app)
   :QHBox(parent)
    ,application(app)
+   ,mesh_terrain(0)
+   ,mesh_cloud(0)
    ,last_step(0)
    ,progress_was_stalled(false)
    ,startup(true)
@@ -134,12 +136,9 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
 {
   viewer->hide();
 
-  while (!mesh_terrain.empty()) 
-    {
-      delete mesh_terrain.back();
-      mesh_terrain.pop_back();
-      mesh_triangles.pop_back();
-    }
+  delete mesh_terrain;
+  delete mesh_cloud;
+  mesh_triangles.clear();
 
   viewer->set_mesh(mesh_triangles);
 
@@ -152,7 +151,7 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
     case ParametersTerrain::ObjectTypePlanet:
       {
 	TriangleMeshTerrainPlanet*const it=new TriangleMeshTerrainPlanet(parameters_terrain,this);
-	mesh_terrain.push_back(it);
+	mesh_terrain=it;
 	mesh_triangles.push_back(it);
 	viewer->set_mesh(mesh_triangles);
 	break;
@@ -160,7 +159,7 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
     default:
       {
 	TriangleMeshTerrainFlat*const it=new TriangleMeshTerrainFlat(parameters_terrain,this);
-	mesh_terrain.push_back(it);
+	mesh_terrain=it;
 	mesh_triangles.push_back(it);
 	viewer->set_mesh(mesh_triangles);
 	break;
@@ -186,7 +185,7 @@ void FracplanetMain::save()
 	{
 	  const std::string base_filename(selected_filename.left(selected_filename.length()-4).local8Bit());
 	  viewer->hide();
-	  const bool ok=mesh_terrain[0]->write_povray(base_filename,parameters_save,parameters_terrain);
+	  const bool ok=mesh_terrain->write_povray(base_filename,parameters_save,parameters_terrain);
 	  
 	  progress_dialog.reset(0);
 
