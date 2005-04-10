@@ -9,3 +9,7 @@
 - Flat terrain mostly disappears when viewed from beneath due
   to back-face culling.
 
+- In fly mode, if you fly under the cloud layer, it disappears.
+  (Backface culling causes this, but without it weird things happen
+  around the planet periphery when you view it from a distance.
+  Fix involves changing culling state when you're below cloud altitude).

@@ -123,7 +123,10 @@ void TriangleMeshViewerDisplay::paintGL()
 		  glEnable(GL_BLEND);
 		  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 		}
-	      else glDisable(GL_BLEND);
+	      else
+		{
+		  glDisable(GL_BLEND);
+		}
 	 
 	      // Use "Color Material" mode 'cos everything is the same material.... just change the colour
 	      glEnable(GL_COLOR_MATERIAL);

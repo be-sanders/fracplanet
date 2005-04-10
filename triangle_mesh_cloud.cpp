@@ -32,6 +32,7 @@ TriangleMeshCloudPlanet::TriangleMeshCloudPlanet(const ParametersCloud& paramete
   ,TriangleMeshSubdividedIcosahedron(1.0+parameters.cloudbase,parameters.subdivisions,parameters.subdivisions,parameters.seed,XYZ(0.0,0.0,0.0),progress)
 {
   _triangle_switch_colour=triangles();
+  compute_vertex_normals();
   for (uint v=0;v<vertices();v++)
     vertex(v).colour(0,ByteRGBA(255,255,255,192));
 }
@@ -42,6 +43,7 @@ TriangleMeshCloudFlat::TriangleMeshCloudFlat(const ParametersCloud& parameters,P
   ,TriangleMeshFlat(parameters.object_type,parameters.cloudbase,parameters.seed,progress)
 {
   subdivide(parameters.subdivisions,parameters.subdivisions,XYZ(0.0,0.0,0.0));
+  compute_vertex_normals();
   _triangle_switch_colour=triangles();
   for (uint v=0;v<vertices();v++)
     vertex(v).colour(0,ByteRGBA(255,255,255,192));
