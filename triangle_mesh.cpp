@@ -22,8 +22,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <sstream>
 
 TriangleMesh::TriangleMesh(Progress* progress)
-  :_emissive(0.0)
-  ,_progress(progress)
+  :_triangle_switch_colour(0)
+   ,_emissive(0.0)
+   ,_progress(progress)
 {}
   
 TriangleMesh::~TriangleMesh()

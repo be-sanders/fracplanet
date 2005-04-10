@@ -25,16 +25,40 @@ TriangleMeshCloud::TriangleMeshCloud(Progress* progress)
 TriangleMeshCloud::~TriangleMeshCloud()
 {}
 
+void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
+{
+  compute_vertex_normals();
+
+  progress_start(100,"Cloud colouring");
+
+  //! \todo Wire up terms, decay and base fequency and thresholds
+  MultiscaleNoise noise(parameters.seed,6,0.5);
+  for (uint i=0;i<vertices();i++)
+    {
+      progress_step((100*i)/vertices());
+
+      const float v=0.5+0.5*noise(4.0f*vertex(i).position());
+      const float v_min=0.5f;
+      const float v_max=0.6f;
+      const float v_k=1.0f/(v_max-v_min);
+      const float vs=std::min(1.0f,std::max(0.0f,(v-v_min)*v_k));
+
+      vertex(i).colour(0,ByteRGBA(255,255,255,static_cast<uint>(255.0*vs)));
+
+      // Set other colour (unused) to red for debug
+      vertex(i).colour(1,ByteRGBA(255,0,0,255));
+    }
+  progress_complete("Cloud colouring completed");
+
+  _triangle_switch_colour=triangles();
+}
 
 TriangleMeshCloudPlanet::TriangleMeshCloudPlanet(const ParametersCloud& parameters,Progress* progress)
   :TriangleMesh(progress)
   ,TriangleMeshCloud(progress)
   ,TriangleMeshSubdividedIcosahedron(1.0+parameters.cloudbase,parameters.subdivisions,parameters.subdivisions,parameters.seed,XYZ(0.0,0.0,0.0),progress)
 {
-  _triangle_switch_colour=triangles();
-  compute_vertex_normals();
-  for (uint v=0;v<vertices();v++)
-    vertex(v).colour(0,ByteRGBA(255,255,255,192));
+  do_cloud(parameters);
 }
 
 TriangleMeshCloudFlat::TriangleMeshCloudFlat(const ParametersCloud& parameters,Progress* progress)
@@ -43,9 +67,6 @@ TriangleMeshCloudFlat::TriangleMeshCloudFlat(const ParametersCloud& parameters,P
   ,TriangleMeshFlat(parameters.object_type,parameters.cloudbase,parameters.seed,progress)
 {
   subdivide(parameters.subdivisions,parameters.subdivisions,XYZ(0.0,0.0,0.0));
-  compute_vertex_normals();
-  _triangle_switch_colour=triangles();
-  for (uint v=0;v<vertices();v++)
-    vertex(v).colour(0,ByteRGBA(255,255,255,192));
+  do_cloud(parameters);
 }
 

@@ -87,10 +87,9 @@ void TriangleMeshViewerDisplay::paintGL()
 
   glPolygonMode(GL_FRONT_AND_BACK,(parameters->wireframe ? GL_LINE : GL_FILL));
 
+  glEnable(GL_CULL_FACE);
   glFrontFace(GL_CCW);
-  glCullFace(GL_BACK);
-  glEnable(GL_CULL_FACE);   //! \todo Decide what to do about clouds and backface culling (either way will have problems).
-
+  
   if (parameters->display_list && gl_display_list_index!=0)
     {
       glCallList(gl_display_list_index);
@@ -116,88 +115,105 @@ void TriangleMeshViewerDisplay::paintGL()
 	  const TriangleMesh*const it=mesh[m];
 	  if (it==0) continue;
 
-	  if (it->emissive()==0.0f)
+	  // Meshes after the first are rendered twice: first the backfacing polys then the front facing.
+	  // This solves the problem of either clouds disappearing when we're under them (with backface culling)
+	  // or weird stuff around the periphery when culling is on.
+	  // It's quite an expensive solution!  
+	  const uint passes=(m==0 ? 1 : 2);
+	  for (uint pass=0;pass<passes;pass++)
 	    {
-	      if (m) // Switch blending on for non-emissive meshes after the first
+	      if (passes==2 && pass==0)
 		{
-		  glEnable(GL_BLEND);
-		  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+		  glCullFace(GL_FRONT);
 		}
 	      else
 		{
-		  glDisable(GL_BLEND);
+		  glCullFace(GL_BACK);
 		}
-	 
-	      // Use "Color Material" mode 'cos everything is the same material.... just change the colour
-	      glEnable(GL_COLOR_MATERIAL);
-	      glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
 
-	      // Point GL at arrays of data
-	      glVertexPointer(3,GL_FLOAT,sizeof(Vertex),&(it->vertex(0).position().x));
-	      glNormalPointer(GL_FLOAT,sizeof(Vertex),&(it->vertex(0).normal().x));
-
-	      // For a second mesh, use alpha (actually could use it for the first mesh but maybe it's more efficient not to).
-	      glColorPointer((m==0 ? 3 : 4),GL_UNSIGNED_BYTE,sizeof(Vertex),&(it->vertex(0).colour(0).r));
-
-	      // Draw the colour-zero triangles
-	      glDrawElements(GL_TRIANGLES,3*it->triangles_of_colour0(),GL_UNSIGNED_INT,&(it->triangle(0).vertex(0)));
-
-	      // Switch to alternate colour and draw the colour-one triangles
-	      glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(it->vertex(0).colour(1).r));
-	      glDrawElements(GL_TRIANGLES,3*it->triangles_of_colour1(),GL_UNSIGNED_INT,&(it->triangle(it->triangles_of_colour0()).vertex(0)));
-
-	      glDisable(GL_COLOR_MATERIAL);
-	    }
-	  else // implies mesh[m]->emissive()>0.0
-	    {
-	      // We abuse alpha for emission, so no blending
-	      glDisable(GL_BLEND);
-	      
-	      // If there could be emissive vertices, we need to do things the hard way
-	      // using immediate mode.  Maybe the display list capture will help.
-
-	      const float k=1.0f/255.0f;
-	      const float em=k*(     it->emissive());
-	      const float ad=k*(1.0f-it->emissive());
-
-	      glBegin(GL_TRIANGLES);
-	      for (unsigned int t=0;t<it->triangles();t++)
+	      if (it->emissive()==0.0f)
 		{
-		  const uint c=(t<it->triangles_of_colour0() ? 0 : 1);
-
-		  for (uint i=0;i<3;i++)
+		  if (m) // Switch blending on for non-emissive meshes after the first
 		    {
-		      const uint vn=it->triangle(t).vertex(i);
-		      const Vertex& v=it->vertex(vn);
-		  
-		      GLfloat c_ad[3];
-		      GLfloat c_em[3];
-		      if (v.colour(c).a==0)  // Zero alpha used to imply emissive vertex colour
-			{
-			  c_ad[0]=v.colour(c).r*ad;
-			  c_ad[1]=v.colour(c).g*ad;
-			  c_ad[2]=v.colour(c).b*ad;
-			  c_em[0]=v.colour(c).r*em;
-			  c_em[1]=v.colour(c).g*em;
-			  c_em[2]=v.colour(c).b*em;
-			}
-		      else
-			{
-			  c_ad[0]=v.colour(c).r*k;
-			  c_ad[1]=v.colour(c).g*k;
-			  c_ad[2]=v.colour(c).b*k;
-			  c_em[0]=0.0f;
-			  c_em[1]=0.0f;
-			  c_em[2]=0.0f;
-			}
-
-		      glNormal3fv(&(v.normal().x));
-		      glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,c_ad);
-		      glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,c_em);
-		      glVertex3fv(&(v.position().x));
+		      glEnable(GL_BLEND);
+		      glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 		    }
+		  else
+		    {
+		      glDisable(GL_BLEND);
+		    }
+		  
+		  // Use "Color Material" mode 'cos everything is the same material.... just change the colour
+		  glEnable(GL_COLOR_MATERIAL);
+		  glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
+		  
+		  // Point GL at arrays of data
+		  glVertexPointer(3,GL_FLOAT,sizeof(Vertex),&(it->vertex(0).position().x));
+		  glNormalPointer(GL_FLOAT,sizeof(Vertex),&(it->vertex(0).normal().x));
+		  
+		  // For a second mesh, use alpha (actually could use it for the first mesh but maybe it's more efficient not to).
+		  glColorPointer((m==0 ? 3 : 4),GL_UNSIGNED_BYTE,sizeof(Vertex),&(it->vertex(0).colour(0).r));
+		  
+		  // Draw the colour-zero triangles
+		  glDrawElements(GL_TRIANGLES,3*it->triangles_of_colour0(),GL_UNSIGNED_INT,&(it->triangle(0).vertex(0)));
+		  
+		  // Switch to alternate colour and draw the colour-one triangles
+		  glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(it->vertex(0).colour(1).r));
+		  glDrawElements(GL_TRIANGLES,3*it->triangles_of_colour1(),GL_UNSIGNED_INT,&(it->triangle(it->triangles_of_colour0()).vertex(0)));
+		  
+		  glDisable(GL_COLOR_MATERIAL);
 		}
-	      glEnd();
+	      else // implies mesh[m]->emissive()>0.0
+		{
+		  // We abuse alpha for emission, so no blending
+		  glDisable(GL_BLEND);
+		  
+		  // If there could be emissive vertices, we need to do things the hard way
+		  // using immediate mode.  Maybe the display list capture will help.
+		  
+		  const float k=1.0f/255.0f;
+		  const float em=k*(     it->emissive());
+		  const float ad=k*(1.0f-it->emissive());
+		  
+		  glBegin(GL_TRIANGLES);
+		  for (unsigned int t=0;t<it->triangles();t++)
+		    {
+		      const uint c=(t<it->triangles_of_colour0() ? 0 : 1);
+		      
+		      for (uint i=0;i<3;i++)
+			{
+			  const uint vn=it->triangle(t).vertex(i);
+			  const Vertex& v=it->vertex(vn);
+			  
+			  GLfloat c_ad[3];
+			  GLfloat c_em[3];
+			  if (v.colour(c).a==0)  // Zero alpha used to imply emissive vertex colour
+			    {
+			      c_ad[0]=v.colour(c).r*ad;
+			      c_ad[1]=v.colour(c).g*ad;
+			      c_ad[2]=v.colour(c).b*ad;
+			      c_em[0]=v.colour(c).r*em;
+			      c_em[1]=v.colour(c).g*em;
+			      c_em[2]=v.colour(c).b*em;
+			    }
+			  else
+			    {
+			      c_ad[0]=v.colour(c).r*k;
+			      c_ad[1]=v.colour(c).g*k;
+			      c_ad[2]=v.colour(c).b*k;
+			      c_em[0]=0.0f;
+			      c_em[1]=0.0f;
+			      c_em[2]=0.0f;
+			    }
+			  
+			  glNormal3fv(&(v.normal().x));
+			  glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,c_ad);
+			  glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,c_em);
+			  glVertex3fv(&(v.position().x));
+			}
+		    }
+		  glEnd();
+		}
 	    }
 	}
       
