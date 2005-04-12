@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "triangle_mesh_cloud.h"
 #include "noise.h"
+#include "matrix34.h"
 
 TriangleMeshCloud::TriangleMeshCloud(Progress* progress)
   :TriangleMesh(progress)
@@ -50,6 +51,50 @@ void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
     }
   progress_complete("Cloud colouring completed");
 
+  // TODO: Eliminate all-transparent triangles & unused vertices.
+  // Leave if nothing left
+
+  // TODO: Bias weather into temperate bands (maybe not)
+
+  progress_start(100,"Weather systems");
+
+  Random01 r01(parameters.seed);
+  const uint steps=100*vertices();
+  uint step=0;
+  for (uint i=0;i<100;i++) // Number of twisters parameter
+    {
+      const uint random_vertex=static_cast<uint>(r01()*vertices());
+      const XYZ position(vertex(random_vertex).position());
+      const XYZ axis(geometry().up(position));
+
+      // Rotate opposite direction in other hemisphere
+      const float strength=r01()*(position.z<0.0 ? -M_PI : M_PI);
+
+      for (uint j=0;j<vertices();j++)
+	{
+	  progress_step((100*step)/steps);
+	  step++;
+      
+	  const XYZ p(vertex(j).position());
+	  const XYZ pn=geometry().up(p);
+	  const float pna=pn%axis;
+
+	  if (pna>0.0f)  // Don't create same feature on other side of planet (actually the distance would be big so could drop this)
+	    {
+	      const float distance=(p-position).magnitude();
+	      const float rotation_angle=strength*exp(-10.0*distance);
+	      
+	      // Now rotate p about axis through position by the rotation angle
+	      vertex(j).position
+		(
+		 Matrix34RotateAboutAxisThrough(axis,rotation_angle,position)*p
+		 );
+	    }
+	}
+    }
+
+  progress_complete("Weather systems completed");
+  
   _triangle_switch_colour=triangles();
 }
 

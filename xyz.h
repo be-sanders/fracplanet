@@ -35,6 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class XYZ
 {
  public:
+  
   float x;
   float y;
   float z;
@@ -56,6 +57,21 @@ class XYZ
   //! Destructor.
   ~XYZ()
     {}
+
+  typedef float XYZ::* ElementPtr;
+  static ElementPtr element_table[3];
+
+  //! Access by number
+  const float& element(uint e) const
+    {
+      return this->*(element_table[e]);
+    }
+
+  //! Access by number
+  float& element(uint e)
+    {
+      return this->*(element_table[e]);
+    }
 
   //! Multiply by scalar.
   void operator*=(float k)
@@ -126,6 +142,7 @@ class XYZ
 
   //! Write the vector.
   std::ostream& write(std::ostream&) const;
+
 };
 
 //! Cross product.

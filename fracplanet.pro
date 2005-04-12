@@ -1,7 +1,7 @@
 TEMPLATE = app
 
 # append debug or release
-CONFIG+= qt opengl debug # release
+CONFIG+= qt opengl release
 
 #######################################
 # Installation 
@@ -52,6 +52,8 @@ HEADERS += \
            fracplanet_main.h \
            geometry.h \
            license.h \
+           matrix33.h \
+           matrix34.h \
            noise.h \
            parameters.h \
            parameters_cloud.h \
@@ -82,6 +84,8 @@ SOURCES += \
            fracplanet_main.cpp \
            geometry.cpp \
            license.cpp \
+           matrix33.cpp \
+           matrix34.cpp \
            noise.cpp \
            parameters.cpp \
            parameters_cloud.cpp \

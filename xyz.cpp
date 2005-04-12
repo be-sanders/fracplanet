@@ -20,6 +20,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "pov_mode.h"
 #include <iostream>
 
+/*! Table so we can look up by element number.
+ */
+XYZ::ElementPtr XYZ::element_table[3]={&XYZ::x,&XYZ::y,&XYZ::z};
+
 /*! Usually just outputs whitespace-separated co-ordinates.
   If POV-Ray mode is enabled, then "<>" bracketed, comma-separated co-ordinates are output with the Y and Z co-ordinates exchanged
   to (assuming we have been working in a right-handed co-ordinate system with z up) obtain left-handed co-ordinates with y up. 

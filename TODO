@@ -13,6 +13,8 @@ Output:
 Will probably have to generate a fixed number of materials
 (blends between the standard colours) and map each vertex to the nearest one.
 
+- Shadows of clouds on ground (probably needs some OpenGL extension).
+- Optimise matix33 inversion
 - End abuse of alpha as flag; just use it as the emissive quantity.
   Mesh then gets a flag for meaning of alpha channels.
 - Terrain patches but with planetary geometry (ie curvature).
