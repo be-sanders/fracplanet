@@ -85,6 +85,8 @@ void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
 	      const float rotation_angle=strength*exp(-10.0*distance);
 	      
 	      // Now rotate p about axis through position by the rotation angle
+	      // TODO: Optimise.  axis and position is the same for all points; we're constantly recomputing the basis change matrices.
+	      // Create a stateful version of Matrix34RotateAboutAxisThrough.
 	      vertex(j).position
 		(
 		 Matrix34RotateAboutAxisThrough(axis,rotation_angle,position)*p
