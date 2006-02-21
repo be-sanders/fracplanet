@@ -126,6 +126,9 @@ class ControlTerrain : public QVBox
   QPushButton* colour_high_button;
   QPushButton* colour_cloud_button;
 
+  QCheckBox* clouds_subdivisions_unlock_checkbox;
+  QSpinBox* clouds_subdivisions_spinbox;
+
   QPushButton* regenerate_button;
   QPushButton* regenerate_with_new_terrain_seed_button;
   QPushButton* regenerate_with_new_rivers_seed_button;
@@ -152,9 +155,13 @@ class ControlTerrain : public QVBox
     {
       parameters_terrain->seed=v;
     }
-  void setSubdivisions(int v)
+  void setTerrainSubdivisions(int v)
     {
       parameters_terrain->subdivisions=v;
+    }
+  void setCloudSubdivisions(int v)
+    {
+      parameters_cloud->subdivisions=v;
     }
   void setSubdivisionsUnperturbed(int v)
     {
@@ -256,6 +263,25 @@ class ControlTerrain : public QVBox
   void pickColourCloud()
     {
       emit pickColour(colour_cloud_button,parameters_cloud->colour);
+    }
+  void setCloudsSubdivisionsUnlocked(bool f)
+    {
+      if (f)
+	{
+	  disconnect(
+		     subdivisions_spinbox,SIGNAL(valueChanged(int)),
+		     clouds_subdivisions_spinbox,SLOT(setValue(int))
+		     );
+	}
+      else
+	{
+	  clouds_subdivisions_spinbox->setValue(parameters_terrain->subdivisions);
+	  connect(
+		  subdivisions_spinbox,SIGNAL(valueChanged(int)),
+		  clouds_subdivisions_spinbox,SLOT(setValue(int))
+		  );
+		  
+	}
     }
 
   //! Use Qt's colour-picking dialog to replace the referenced colour

@@ -111,7 +111,7 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   subdivisions_spinbox->setValue(parameters_terrain->subdivisions);
   connect(
 	  subdivisions_spinbox,SIGNAL(valueChanged(int)),
-	  this,SLOT(setSubdivisions(int))
+	  this,SLOT(setTerrainSubdivisions(int))
 	  );
   QToolTip::add(subdivisions_spinbox,"The number of times the initial structure will be subdivided.\nWARNING: EACH STEP QUADRUPLES THE MEMORY REQUIREMENT!");
 
@@ -315,6 +315,28 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 
   QGrid*const grid_clouds=new QGrid(2,Qt::Horizontal,tab_clouds);
 
+  clouds_subdivisions_unlock_checkbox=new QCheckBox("Subdivisions ",grid_clouds);
+  clouds_subdivisions_unlock_checkbox->setChecked(false);
+  QToolTip::add(clouds_subdivisions_unlock_checkbox,"Enable explicit control of cloud subdivisons, otherwise cloud mesh will always be subdivided by the same amount as the terrain");
+  connect(clouds_subdivisions_unlock_checkbox,SIGNAL(toggled(bool)),
+	  this,SLOT(setCloudsSubdivisionsUnlocked(bool))
+	  );
+
+  clouds_subdivisions_spinbox=new QSpinBox(0,16,1,grid_clouds);
+  clouds_subdivisions_spinbox->setValue(parameters_cloud->subdivisions);
+  connect(
+	  clouds_subdivisions_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setCloudSubdivisions(int))
+	  );
+  QToolTip::add(clouds_subdivisions_spinbox,"The number of times the initial structure will be subdivided.\nWARNING: EACH STEP QUADRUPLES THE MEMORY REQUIREMENT!");
+
+  clouds_subdivisions_spinbox->setEnabled(clouds_subdivisions_unlock_checkbox->isChecked());
+  connect(
+	  clouds_subdivisions_unlock_checkbox,SIGNAL(toggled(bool)),
+	  clouds_subdivisions_spinbox,SLOT(setEnabled(bool))
+	  );
+  setCloudsSubdivisionsUnlocked(clouds_subdivisions_unlock_checkbox->isChecked());
+
   clouds_seed_label=new QLabel("Clouds seed:",grid_clouds);
   clouds_seed_spinbox=new QSpinBox(0xffffffff,0x7fffffff,1,grid_clouds);
   clouds_seed_spinbox->setValue(parameters_cloud->seed);
@@ -326,6 +348,7 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  this,SLOT(pickColourCloud())
 	  );
 
+  // Wiring to disable all cloud controls 
   grid_clouds->setEnabled(parameters_cloud->enabled);
   connect(
 	  clouds_checkbox,SIGNAL(toggled(bool)),
