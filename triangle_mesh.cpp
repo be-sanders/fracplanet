@@ -328,13 +328,13 @@ bool TriangleMesh::write_povray(const std::string& fname_base,const std::string&
   return ok;
 }
 
-TriangleMeshFlat::TriangleMeshFlat(ParametersTerrain::ObjectType obj,float z,uint seed,Progress* progress)
+TriangleMeshFlat::TriangleMeshFlat(Parameters::ObjectType obj,float z,uint seed,Progress* progress)
 :TriangleMesh(progress)
  ,_geometry(seed)
 {
   switch(obj)
     {
-    case ParametersTerrain::ObjectTypeFlatTriangle:
+    case Parameters::ObjectTypeFlatTriangle:
       for (uint i=0;i<3;i++)
 	{
 	  add_vertex(Vertex(XYZ(cos(i*2.0*M_PI/3.0),sin(i*2.0*M_PI/3.0),z)));
@@ -342,7 +342,7 @@ TriangleMeshFlat::TriangleMeshFlat(ParametersTerrain::ObjectType obj,float z,uin
       add_triangle(Triangle(0,1,2));
       break;
       
-    case ParametersTerrain::ObjectTypeFlatSquare:
+    case Parameters::ObjectTypeFlatSquare:
       add_vertex(Vertex(XYZ(0.0,0.0,z)));
       
       for (uint i=0;i<4;i++)
@@ -356,7 +356,7 @@ TriangleMeshFlat::TriangleMeshFlat(ParametersTerrain::ObjectType obj,float z,uin
 
       break;
 
-    case ParametersTerrain::ObjectTypeFlatHexagon:
+    case Parameters::ObjectTypeFlatHexagon:
     default:      
       add_vertex(Vertex(XYZ(0.0,0.0,z)));
       for (uint i=0;i<6;i++)

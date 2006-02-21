@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2005 Tim Day
+// Copyright (C) 2005,2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -32,6 +32,8 @@ void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
 
   progress_start(100,"Cloud colouring");
 
+  const ByteRGBA c(parameters.colour);
+
   //! \todo Wire up terms, decay and base fequency and thresholds
   MultiscaleNoise noise(parameters.seed,6,0.5);
   for (uint i=0;i<vertices();i++)
@@ -44,7 +46,7 @@ void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
       const float v_k=1.0f/(v_max-v_min);
       const float vs=std::min(1.0f,std::max(0.0f,(v-v_min)*v_k));
 
-      vertex(i).colour(0,ByteRGBA(255,255,255,static_cast<uint>(255.0*vs)));
+      vertex(i).colour(0,ByteRGBA(c.r,c.g,c.b,static_cast<uint>(255.0*vs)));
 
       // Set other colour (unused) to red for debug
       vertex(i).colour(1,ByteRGBA(255,0,0,255));

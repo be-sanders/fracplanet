@@ -33,20 +33,20 @@ ControlRender::ControlRender(QWidget* parent,ParametersRender* param)
 	  this,SLOT(setWireframe(int))
 	  );
 
-  display_list=new QCheckBox("Display list",this);
-  display_list->setChecked(parameters->display_list);
-  QToolTip::add(display_list,"Selects OpenGL rendering via display_list");
-  connect(
-	  display_list,SIGNAL(stateChanged(int)),
-	  this,SLOT(setDisplayList(int))
-	  );
-
   joystick_mouse=new QCheckBox("Joystick mouse-Y (fly mode)",this);
   joystick_mouse->setChecked(parameters->joystick_mouse);
   QToolTip::add(joystick_mouse,"Mouse y-axis functions as joystick in fly mode:\nmouse moved down/pulled-back pitches up.");
   connect(
 	  joystick_mouse,SIGNAL(stateChanged(int)),
 	  this,SLOT(setJoystickMouse(int))
+	  );
+
+  display_list=new QCheckBox("Display list",this);
+  display_list->setChecked(parameters->display_list);
+  QToolTip::add(display_list,"Use OpenGL display lists; CAUTION: unstable on many platforms");
+  connect(
+	  display_list,SIGNAL(stateChanged(int)),
+	  this,SLOT(setDisplayList(int))
 	  );
 
   QGroupBox* ambient_box=new QGroupBox(3,Qt::Horizontal,"Ambient",this);

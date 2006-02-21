@@ -19,4 +19,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Parameters::Parameters()
   :object_type(ObjectTypePlanet)
+   ,seed(time(0))
+   ,subdivisions(5)
 {}

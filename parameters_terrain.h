@@ -34,12 +34,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class ParametersTerrain : public Parameters
 {
 public:
-    
-  //! Random seed for subdivision and noise.
-  uint terrain_seed;
-
-  //! Number of subdivisions.
-  uint subdivisions;
 
   //! Numer of subdivisions (at the top level) which will be unperturbed
   uint subdivisions_unperturbed;

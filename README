@@ -39,7 +39,7 @@ Either use the traditional
 Or just have both done for you by running 
   ./BUILD
 (which also adds $QTDIR/bin to the PATH while running the above commands;
-this may be useful on distros which don't have qmake in the default
+this may be useful on the many distros which don't have qmake in the default
 user path).
 
 NB In either case you do almost certainly DO need your QTDIR 
@@ -50,6 +50,11 @@ This will give you a "fracplanet" executable which you can run with
 or install where you like. 
 
 [The author primarily uses Debian Sarge these days].
+
+[Selden E Ball Jr reports that "FracPlanet v0.2 builds and runs
+with no errors under the current version of Cygwin for Windows. 
+Of course, the appropriate optional software development subsets
+have to be installed."]
 
 BUILD OPTIONS
 =============
@@ -138,3 +143,5 @@ For bug reports, feedback and patches:
   Frank Plohmann 
   Steve Roylance 
   Leon Brooks 
+  Selden E Ball Jr
+

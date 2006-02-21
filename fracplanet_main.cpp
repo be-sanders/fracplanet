@@ -35,7 +35,7 @@ FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app)
   vbox=new QVBox(this);
   setStretchFactor(vbox,1);
 
-  control_terrain=new ControlTerrain(this,this,&parameters_terrain);
+  control_terrain=new ControlTerrain(this,this,&parameters_terrain,&parameters_cloud);
   control_save=new ControlSave(this,this,&parameters_save);
   control_render=new ControlRender(this,&parameters_render);
   control_about=new ControlAbout(this);
@@ -148,7 +148,7 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
   // So we end up with code like this to avoid a premature downcast.
   switch (parameters_terrain.object_type)
     {
-    case ParametersTerrain::ObjectTypePlanet:
+    case Parameters::ObjectTypePlanet:
       {
 	TriangleMeshTerrainPlanet*const it=new TriangleMeshTerrainPlanet(parameters_terrain,this);
 	mesh_terrain=it;
@@ -163,22 +163,26 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
 	break;
       }
     }
-  switch (parameters_cloud.object_type)
+
+  if (parameters_cloud.enabled)
     {
-    case ParametersCloud::ObjectTypePlanet:
-      {
-	TriangleMeshCloudPlanet*const it=new TriangleMeshCloudPlanet(parameters_cloud,this);
-	mesh_cloud=it;
-	mesh_triangles.push_back(it);
-	break;
-      }
-    default:
-      {
-	TriangleMeshCloudFlat*const it=new TriangleMeshCloudFlat(parameters_cloud,this);
-	mesh_cloud=it;
-	mesh_triangles.push_back(it);
-	break;
-      }
+      switch (parameters_cloud.object_type)
+	{
+	case Parameters::ObjectTypePlanet:
+	  {
+	    TriangleMeshCloudPlanet*const it=new TriangleMeshCloudPlanet(parameters_cloud,this);
+	    mesh_cloud=it;
+	    mesh_triangles.push_back(it);
+	    break;
+	  }
+	default:
+	  {
+	    TriangleMeshCloudFlat*const it=new TriangleMeshCloudFlat(parameters_cloud,this);
+	    mesh_cloud=it;
+	    mesh_triangles.push_back(it);
+	    break;
+	  }
+	}
     }
   
   progress_dialog.reset(0);

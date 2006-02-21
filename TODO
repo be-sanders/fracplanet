@@ -1,5 +1,8 @@
 - Mail http://objects.povworld.org/links7.html.  Also links at main POV site.
 
+- Option to save a raster map (cylindrical projection for spheres)
+  for terrain colours, heights, and specular (mainly for sea... and snow ?)
+
 - Add export to wavefront .obj format and try importing to blender.
   Seems to be the best bet amongst the built-in blender import formats.
   Test it deals with materials etc first.

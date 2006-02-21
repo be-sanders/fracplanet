@@ -41,6 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "useful.h"
 #include "parameters_terrain.h"
+#include "parameters_cloud.h"
 
 #include <iostream>
 
@@ -55,8 +56,11 @@ class ControlTerrain : public QVBox
   Q_OBJECT;
  protected:
 
-  //! Pointer to the parameters we control.
-  ParametersTerrain*const parameters;
+  //! Pointer to the terrain parameters we control.
+  ParametersTerrain*const parameters_terrain;
+
+  //! Pointer to the cloud parameters we control.
+  ParametersCloud*const parameters_cloud;
 
   //! Requests to regenerate terrain are forwarded to the top level GUI widget.
   FracplanetMain* regenerate_target;
@@ -110,6 +114,9 @@ class ControlTerrain : public QVBox
 
   QSpinBox* oceans_and_rivers_emissive_spinbox;
 
+  QLabel* clouds_seed_label;
+  QSpinBox* clouds_seed_spinbox;
+
   QLabel* colour_label;
   QPushButton* colour_ocean_button;
   QPushButton* colour_shoreline_button;
@@ -117,10 +124,12 @@ class ControlTerrain : public QVBox
   QPushButton* colour_river_button;
   QPushButton* colour_snow_button;
   QPushButton* colour_high_button;
+  QPushButton* colour_cloud_button;
 
   QPushButton* regenerate_button;
-  QPushButton* regenerate_with_new_seed_button;
-  QPushButton* regenerate_rivers_with_new_seed_button;
+  QPushButton* regenerate_with_new_terrain_seed_button;
+  QPushButton* regenerate_with_new_rivers_seed_button;
+  QPushButton* regenerate_with_new_clouds_seed_button;
 
   QVBox* padding;
 
@@ -128,7 +137,7 @@ class ControlTerrain : public QVBox
   static QIconSet build_icon_of_colour(const FloatRGBA& col);
 
  public:
-  ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTerrain* param);
+  ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTerrain* param_terrain,ParametersCloud* param_cloud);
   virtual ~ControlTerrain()
     {}
 
@@ -136,134 +145,130 @@ class ControlTerrain : public QVBox
 
   void setObjectType(int id)
     {
-      parameters->object_type=static_cast<ParametersTerrain::ObjectType>(id);
+      parameters_terrain->object_type=static_cast<Parameters::ObjectType>(id);
+      parameters_cloud->object_type=static_cast<Parameters::ObjectType>(id);
     }
   void setTerrainSeed(int v)
     {
-      parameters->terrain_seed=v;
+      parameters_terrain->seed=v;
     }
   void setSubdivisions(int v)
     {
-      parameters->subdivisions=v;
+      parameters_terrain->subdivisions=v;
     }
   void setSubdivisionsUnperturbed(int v)
     {
-      parameters->subdivisions_unperturbed=v;
+      parameters_terrain->subdivisions_unperturbed=v;
     }
   void setVariationVertical(int v)
     {
-      parameters->variation.z=v/100.0;
+      parameters_terrain->variation.z=v/100.0;
     }
   void setVariationHorizontal(int v)
     {
-      parameters->variation.x=v/100.0;
-      parameters->variation.y=v/100.0;
+      parameters_terrain->variation.x=v/100.0;
+      parameters_terrain->variation.y=v/100.0;
     }
   void setNoiseTerms(int v)
     {
-      parameters->noise_terms=v;
+      parameters_terrain->noise_terms=v;
     }
   void setNoiseFrequency(int v)
     {
-      parameters->noise_frequency=v/100.0;
+      parameters_terrain->noise_frequency=v/100.0;
     }
   void setNoiseAmplitude(int v)
     {
-      parameters->noise_amplitude=v/100.0;
+      parameters_terrain->noise_amplitude=v/100.0;
     }
   void setNoiseAmplitudeDecay(int v)
     {
-      parameters->noise_amplitude_decay=v/100.0;
+      parameters_terrain->noise_amplitude_decay=v/100.0;
     }
   void setBaseHeight(int v)
     {
-      parameters->base_height=v/100.0;
+      parameters_terrain->base_height=v/100.0;
     }
   void setPowerLaw(int v)
     {
-      parameters->power_law=v/100.0;
+      parameters_terrain->power_law=v/100.0;
     }
   void setSnowlineEquator(int v)
     {
-      parameters->snowline_equator=v/100.0;
+      parameters_terrain->snowline_equator=v/100.0;
     }
   void setSnowlinePole(int v)
     {
-      parameters->snowline_pole=v/100.0;
+      parameters_terrain->snowline_pole=v/100.0;
     }
   void setSnowlinePowerLaw(int v)
     {
-      parameters->snowline_power_law=v/100.0;
+      parameters_terrain->snowline_power_law=v/100.0;
     }
   void setSnowlineSlopeEffect(int v)
     {
-      parameters->snowline_slope_effect=v/100.0;
+      parameters_terrain->snowline_slope_effect=v/100.0;
     }
   void setSnowlineGlacierEffect(int v)
     {
-      parameters->snowline_glacier_effect=v/100.0;
+      parameters_terrain->snowline_glacier_effect=v/100.0;
     }
   void setRivers(int v)
     {
-      parameters->rivers=v;
+      parameters_terrain->rivers=v;
     }
   void setRiversSeed(int v)
     {
-      parameters->rivers_seed=v;
+      parameters_terrain->rivers_seed=v;
     }
   void setLakeBecomesSea(int v)
     {
-      parameters->lake_becomes_sea=v/100.0;
+      parameters_terrain->lake_becomes_sea=v/100.0;
     }
   void setOceansAndRiversEmissive(int v)
     {
-      parameters->oceans_and_rivers_emissive=v/100.0;
+      parameters_terrain->oceans_and_rivers_emissive=v/100.0;
     }
   void pickColourOcean()
     {
-      emit pickColour(colour_ocean_button,parameters->colour_ocean);
+      emit pickColour(colour_ocean_button,parameters_terrain->colour_ocean);
     }
   void pickColourShoreline()
     {
-      emit pickColour(colour_shoreline_button,parameters->colour_shoreline);
+      emit pickColour(colour_shoreline_button,parameters_terrain->colour_shoreline);
     }
   void pickColourLow()
     {
-      emit pickColour(colour_low_button,parameters->colour_low);
+      emit pickColour(colour_low_button,parameters_terrain->colour_low);
     }
   void pickColourRiver()
     {
-      emit pickColour(colour_river_button,parameters->colour_river);
+      emit pickColour(colour_river_button,parameters_terrain->colour_river);
     }
   void pickColourSnow()
     {
-      emit pickColour(colour_snow_button,parameters->colour_snow);
+      emit pickColour(colour_snow_button,parameters_terrain->colour_snow);
     }
   void pickColourHigh()
     {
-      emit pickColour(colour_high_button,parameters->colour_high);
+      emit pickColour(colour_high_button,parameters_terrain->colour_high);
+    }
+  void pickColourCloud()
+    {
+      emit pickColour(colour_cloud_button,parameters_cloud->colour);
     }
 
   //! Use Qt's colour-picking dialog to replace the referenced colour
-  void pickColour(QPushButton* button,FloatRGBA& colour)
+  void pickColour(QPushButton* button,FloatRGBA& colour);
+
+  void setCloudsEnabled(bool f)
     {
-      const ByteRGBA col_old(colour);
-      QColor qcol_old(col_old.r,col_old.g,col_old.b);
-      QColor qcol_new=QColorDialog::getColor(qcol_old,this);
-      if (qcol_new.isValid())
-	{
-	  colour=FloatRGBA(ByteRGBA(qcol_new.red(),qcol_new.green(),qcol_new.blue(),255));
-	  
-	  QPixmap pmap(16,16);
-	  pmap.fill(qcol_new);
-	  button->setIconSet(QIconSet(pmap));
-	}
+      parameters_cloud->enabled=f;
     }
 
-  void regenerate_rivers_with_new_seed();
-  void regenerate_with_new_seed();
+  void regenerate_with_new_terrain_seed();
+  void regenerate_with_new_rivers_seed();
+  void regenerate_with_new_clouds_seed();
 };
-
-
 
 #endif

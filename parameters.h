@@ -40,7 +40,14 @@ class Parameters
     }
   ObjectType;
 
+  //! Kind of object.
   ObjectType object_type;
+
+  //! Random seed for subdivision and noise.
+  uint seed;
+
+  //! Number of subdivisions.
+  uint subdivisions;
 
   //! Constructor sets up some hopefully sensible defaults.
   Parameters();

@@ -32,15 +32,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class ParametersCloud : public Parameters
 {
 public:
+
+  //! Whether clouds will be generated.
+  bool enabled;
     
-  //! Random seed for subdivision and noise.
-  uint seed;
-
-  //! Number of subdivisions.
-  uint subdivisions;
-
   //! Height of base of clouds
   float cloudbase;
+
+  //! Colour for clouds
+  FloatRGBA colour;
 
   //! Constructor sets up some hopefully sensible defaults.
   ParametersCloud();

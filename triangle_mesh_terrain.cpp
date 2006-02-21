@@ -38,7 +38,7 @@ void TriangleMeshTerrain::do_noise(const ParametersTerrain& parameters)
 
   progress_start(100,"Noise");
 
-  MultiscaleNoise noise(parameters.terrain_seed,parameters.noise_terms,parameters.noise_amplitude_decay);
+  MultiscaleNoise noise(parameters.seed,parameters.noise_terms,parameters.noise_amplitude_decay);
   for (uint i=0;i<vertices();i++)
     {
       step++;
@@ -423,7 +423,7 @@ void TriangleMeshTerrain::do_terrain(const ParametersTerrain& parameters)
 TriangleMeshTerrainPlanet::TriangleMeshTerrainPlanet(const ParametersTerrain& parameters,Progress* progress)
   :TriangleMesh(progress)
   ,TriangleMeshTerrain(progress)
-  ,TriangleMeshSubdividedIcosahedron(1.0+parameters.variation.z*parameters.base_height,parameters.subdivisions,parameters.subdivisions_unperturbed,parameters.terrain_seed,parameters.variation,progress)
+  ,TriangleMeshSubdividedIcosahedron(1.0+parameters.variation.z*parameters.base_height,parameters.subdivisions,parameters.subdivisions_unperturbed,parameters.seed,parameters.variation,progress)
 {
   do_terrain(parameters);
 }
@@ -465,7 +465,7 @@ bool TriangleMeshTerrainPlanet::write_povray(const std::string& base_filename,co
 TriangleMeshTerrainFlat::TriangleMeshTerrainFlat(const ParametersTerrain& parameters,Progress* progress)
   :TriangleMesh(progress)
   ,TriangleMeshTerrain(progress)
-  ,TriangleMeshFlat(parameters.object_type,parameters.variation.z*parameters.base_height,parameters.terrain_seed,progress)
+  ,TriangleMeshFlat(parameters.object_type,parameters.variation.z*parameters.base_height,parameters.seed,progress)
 {
   subdivide(parameters.subdivisions,parameters.subdivisions_unperturbed,parameters.variation);
 

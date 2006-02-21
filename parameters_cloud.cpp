@@ -21,8 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 ParametersCloud::ParametersCloud()
   :Parameters()
-  ,seed(time(0))
-  ,subdivisions(7)
-  ,cloudbase(0.1)
+   ,enabled(false)
+   ,cloudbase(0.1)
+   ,colour(1.0,1.0,1.0,1.0)
 {}
 

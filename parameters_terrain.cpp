@@ -22,8 +22,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 ParametersTerrain::ParametersTerrain()
   :Parameters()
-   ,terrain_seed(time(0))
-   ,subdivisions(5)
    ,subdivisions_unperturbed(1)
    ,variation(0.0,0.0,0.125)
    ,noise_terms(0)

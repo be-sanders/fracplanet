@@ -259,7 +259,6 @@ void TriangleMeshViewer::tick()
 
   std::ostringstream msg;
   msg << "Velocity: " << camera_velocity << "  Roll rate:" << camera_roll_rate << "\n";
-  msg << "Exit flight: Esc  Speed: up/down keys or mouse wheel  Roll: left/right keys or mouse buttons";
   fly_info->setText(msg.str().c_str());
 }
 
