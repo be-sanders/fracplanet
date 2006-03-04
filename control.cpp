@@ -16,34 +16,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-/*! \file
-  \brief Interface for class ParametersCloud.
-*/
+#include "control.h"
 
-#ifndef _parameters_cloud_h_
-#define _parameters_cloud_h_
+Control::Control(QWidget* parent)
+  :QVBox(parent)
+{}
 
-#include "useful.h"
-#include "xyz.h"
-#include "rgb.h"
-#include "parameters.h"
-
-//! This class aggregates the controllable parameters for all things related to cloud generation.
-class ParametersCloud : public Parameters
-{
-public:
-
-  //! Whether clouds will be generated.
-  bool enabled;
-    
-  //! Height of base of clouds
-  float cloudbase;
-
-  //! Colour for clouds
-  FloatRGBA colour;
-
-  //! Constructor sets up some hopefully sensible defaults.
-  ParametersCloud();
-};
-
-#endif
+Control::~Control()
+{}

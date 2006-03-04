@@ -45,6 +45,7 @@ contains(CPU, xp ){
 # Input files
 
 HEADERS += \
+           control.h \
            control_about.h \
            control_render.h \
            control_save.h \
@@ -76,6 +77,7 @@ HEADERS += \
            xyz.h
 
 SOURCES += \
+           control.h \
            control_about.cpp \
            control_render.cpp \
            control_save.cpp \

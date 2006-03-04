@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -15,11 +15,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-#include "control_terrain.h"
 
-#include "fracplanet_main.h"
 #include <qtabwidget.h>
 #include <qgrid.h>
+
+#include "control_terrain.h"
+#include "fracplanet_main.h"
 
 /*! Used when initialising colour-chooser buttons.
  */
@@ -35,7 +36,7 @@ QIconSet ControlTerrain::build_icon_of_colour(const FloatRGBA& col)
 /*! Lots of tedious code to instantiate controls and wire things up.
  */
 ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTerrain* param_terrain,ParametersCloud* param_cloud)
-  :QVBox(parent)
+  :Control(parent)
   ,parameters_terrain(param_terrain)
   ,parameters_cloud(param_cloud)
   ,regenerate_target(tgt)
@@ -317,7 +318,7 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 
   clouds_subdivisions_unlock_checkbox=new QCheckBox("Subdivisions ",grid_clouds);
   clouds_subdivisions_unlock_checkbox->setChecked(false);
-  QToolTip::add(clouds_subdivisions_unlock_checkbox,"Enable explicit control of cloud subdivisons, otherwise cloud mesh will always be subdivided by the same amount as the terrain");
+  QToolTip::add(clouds_subdivisions_unlock_checkbox,"Enable explicit control of cloud subdivisons.\nWhen disabled, the cloud mesh will be subdivided by the same amount as the terrain");
   connect(clouds_subdivisions_unlock_checkbox,SIGNAL(toggled(bool)),
 	  this,SLOT(setCloudsSubdivisionsUnlocked(bool))
 	  );

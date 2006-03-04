@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2005,2006 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -63,7 +63,7 @@ void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
   Random01 r01(parameters.seed);
   const uint steps=100*vertices();
   uint step=0;
-  for (uint i=0;i<100;i++) // Number of twisters parameter
+  for (uint i=0;i<0;i++) // Number of twisters parameter
     {
       const uint random_vertex=static_cast<uint>(r01()*vertices());
       const XYZ position(vertex(random_vertex).position());
