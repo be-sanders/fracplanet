@@ -23,16 +23,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _control_h_
 #define _control_h_
 
+#include <qiconset.h>
+#include <qpushbutton.h>
 #include <qvbox.h>
 
 #include "useful.h"
+#include "rgb.h"
 
 //! Base class for other controls; useful for shared stuff.
 class Control : public QVBox
 {
  public:
+
   Control(QWidget* parent);
   virtual ~Control();
+
+  //! Use Qt's colour-picking dialog to replace the referenced colour
+  void pickColour(QPushButton* button,FloatRGBA& colour);
+
+ protected:
+
+  //! Utility function to build a small Qt icon of the specified colour.
+  static QIconSet build_icon_of_colour(const FloatRGBA& col);
 };
 
 #endif

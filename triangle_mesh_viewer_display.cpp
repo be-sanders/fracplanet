@@ -59,7 +59,7 @@ void TriangleMeshViewerDisplay::set_mesh(const std::vector<const TriangleMesh*>&
 
 void TriangleMeshViewerDisplay::paintGL()
 {
-  glClearColor(0.0,0.0,0.0,1.0);
+  glClearColor(parameters->background_colour.r,parameters->background_colour.g,parameters->background_colour.b,1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   const float a=parameters->ambient;
@@ -267,7 +267,7 @@ void TriangleMeshViewerDisplay::paintGL()
 
 void TriangleMeshViewerDisplay::initializeGL()
 {
-  glClearColor(0.0,0.0,0.0,1.0);
+  glClearColor(parameters->background_colour.r,parameters->background_colour.g,parameters->background_colour.b,1.0);
 
   std::cerr << "Double buffering " << (doubleBuffer() ? "ON" : "OFF") << "\n";
   std::cerr << "Auto Buffer Swap " << (autoBufferSwap() ? "ON" : "OFF") << "\n";

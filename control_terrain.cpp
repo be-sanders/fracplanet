@@ -22,17 +22,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "control_terrain.h"
 #include "fracplanet_main.h"
 
-/*! Used when initialising colour-chooser buttons.
- */
-QIconSet ControlTerrain::build_icon_of_colour(const FloatRGBA& col)
-{
-  QPixmap pmap(16,16);
-
-  const ByteRGBA bcol(col);
-  pmap.fill(QColor(bcol.r,bcol.g,bcol.b));
-  return QIconSet(pmap);
-}
-
 /*! Lots of tedious code to instantiate controls and wire things up.
  */
 ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTerrain* param_terrain,ParametersCloud* param_cloud)
@@ -394,21 +383,6 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
     );
 
   setStretchFactor(padding,1);
-}
-
-void ControlTerrain::pickColour(QPushButton* button,FloatRGBA& colour)
-{
-  const ByteRGBA col_old(colour);
-  QColor qcol_old(col_old.r,col_old.g,col_old.b);
-  QColor qcol_new=QColorDialog::getColor(qcol_old,this);
-  if (qcol_new.isValid())
-    {
-      colour=FloatRGBA(ByteRGBA(qcol_new.red(),qcol_new.green(),qcol_new.blue(),255));
-      
-      QPixmap pmap(16,16);
-      pmap.fill(qcol_new);
-      button->setIconSet(QIconSet(pmap));
-    }
 }
 
 void ControlTerrain::regenerate_with_new_terrain_seed()

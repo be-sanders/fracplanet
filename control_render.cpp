@@ -50,6 +50,11 @@ ControlRender::ControlRender(QWidget* parent,ParametersRender* param)
 	  this,SLOT(setDisplayList(int))
 	  );
 
+  background_colour_button=new QPushButton(build_icon_of_colour(parameters->background_colour),"Background colour",this);
+  connect(background_colour_button,SIGNAL(clicked()),
+	  this,SLOT(pickBackgroundColour())
+	  );
+	  
   QGroupBox* ambient_box=new QGroupBox(3,Qt::Horizontal,"Ambient",this);
   new QLabel("0.0",ambient_box);
   ambient=new QSlider(0,100,10,10,Qt::Horizontal,ambient_box);
@@ -66,6 +71,9 @@ ControlRender::ControlRender(QWidget* parent,ParametersRender* param)
   padding=new QVBox(this);
   setStretchFactor(padding,1);
 }
+
+ControlRender::~ControlRender()
+{}
 
 void ControlRender::notify(const std::string& message)
 {
@@ -90,4 +98,9 @@ void ControlRender::setJoystickMouse(int v)
 void ControlRender::setAmbient(int v)
 {
   parameters->ambient=v/100.0f;
+}
+
+void ControlRender::pickBackgroundColour()
+{
+  emit pickColour(background_colour_button,parameters->background_colour);
 }

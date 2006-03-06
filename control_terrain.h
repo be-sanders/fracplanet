@@ -24,7 +24,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define _control_terrain_h_
 
 #include <qhbox.h>
-#include <qvbox.h>
 #include <qlabel.h>
 #include <qgroupbox.h>
 #include <qcheckbox.h>
@@ -34,8 +33,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qtooltip.h>
 #include <qhbuttongroup.h>
 #include <qslider.h>
-#include <qcolordialog.h>
-#include <qiconset.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
 
@@ -137,9 +134,6 @@ class ControlTerrain : public Control
   QPushButton* regenerate_with_new_clouds_seed_button;
 
   QVBox* padding;
-
-  //! Utility function to build a small Qt icon of the specified colour.
-  static QIconSet build_icon_of_colour(const FloatRGBA& col);
 
  public:
   ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTerrain* param_terrain,ParametersCloud* param_cloud);
@@ -285,9 +279,6 @@ class ControlTerrain : public Control
 		  
 	}
     }
-
-  //! Use Qt's colour-picking dialog to replace the referenced colour
-  void pickColour(QPushButton* button,FloatRGBA& colour);
 
   void setCloudsEnabled(bool f)
     {

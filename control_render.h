@@ -58,8 +58,11 @@ class ControlRender : public Control, public Notifiable
   QLabel* status;
 
   QVBox* padding;
+
  public:
+
   ControlRender(QWidget* parent,ParametersRender* param);
+  ~ControlRender();
 
   virtual void notify(const std::string& message);
   
@@ -69,6 +72,12 @@ class ControlRender : public Control, public Notifiable
   void setDisplayList(int v);
   void setJoystickMouse(int v);
   void setAmbient(int v);
+
+  void pickBackgroundColour();
+
+ private:
+
+  QPushButton* background_colour_button;
 };
 
 #endif

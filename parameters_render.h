@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define _parameters_render_h_
 
 #include "useful.h"
+#include "rgb.h"
 
 class Notifiable;
 
@@ -43,6 +44,9 @@ public:
   //! Amount of global ambient illumination (0-1)
   float ambient;
 
+  //! Background colour
+  FloatRGBA background_colour;
+
   //! Target frame rate
   float fps_target;
   
@@ -55,6 +59,8 @@ public:
     ,display_list(false)
     ,joystick_mouse(true)
     ,ambient(0.1f)
+
+    ,background_colour(0.0f,0.0f,1.0f,0.0f)
     ,fps_target(75.0f)
     ,notify(0)
   {}
@@ -62,6 +68,7 @@ public:
   //! Destructor.
   ~ParametersRender()
     {}
+  
 };
 
 // Abstract mixin class for classes with a report(const std::string&) method.
