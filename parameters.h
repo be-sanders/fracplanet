@@ -34,9 +34,9 @@ class Parameters
   typedef enum
     {
       ObjectTypePlanet,
+      ObjectTypeFlatHexagon,
       ObjectTypeFlatTriangle,
-      ObjectTypeFlatSquare,
-      ObjectTypeFlatHexagon
+      ObjectTypeFlatSquare
     }
   ObjectType;
 

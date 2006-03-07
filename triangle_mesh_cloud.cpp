@@ -63,7 +63,7 @@ void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
   Random01 r01(parameters.seed);
   const uint steps=100*vertices();
   uint step=0;
-  for (uint i=0;i<0;i++) // Number of twisters parameter
+  if (false) //for (uint i=0;i<0;i++) // Number of twisters parameter
     {
       const uint random_vertex=static_cast<uint>(r01()*vertices());
       const XYZ position(vertex(random_vertex).position());

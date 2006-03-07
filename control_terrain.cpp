@@ -62,9 +62,9 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 
   QComboBox* object_type_combo_box=new QComboBox(false,tab_terrain_basics);
   object_type_combo_box->insertItem("Generate Planet",  Parameters::ObjectTypePlanet);
+  object_type_combo_box->insertItem("Generate Hexagonal Area", Parameters::ObjectTypeFlatHexagon);
   object_type_combo_box->insertItem("Generate Triangular Area",Parameters::ObjectTypeFlatTriangle);
   object_type_combo_box->insertItem("Generate Square Area",  Parameters::ObjectTypeFlatSquare);
-  object_type_combo_box->insertItem("Generate Hexagonal Area", Parameters::ObjectTypeFlatHexagon);
 
   object_type_combo_box->setCurrentItem(parameters_terrain->object_type);
 
