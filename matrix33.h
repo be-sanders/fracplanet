@@ -148,6 +148,32 @@ class Matrix33Identity : public Matrix33
     }
 };
 
+class Matrix33RotateAboutX : public Matrix33
+{
+ public:
+  Matrix33RotateAboutX(float angle)
+    {
+      const float ca=cos(angle);
+      const float sa=sin(angle);
+      basis[0]=XYZ(1.0f,0.0f,0.0f);
+      basis[1]=XYZ(0.0f, ca,  sa);
+      basis[2]=XYZ(0.0f,-sa,  ca);
+    }
+};
+
+class Matrix33RotateAboutY : public Matrix33
+{
+ public:
+  Matrix33RotateAboutY(float angle)
+    {
+      const float ca=cos(angle);
+      const float sa=sin(angle);
+      basis[0]=XYZ(ca,  0.0f,-sa);
+      basis[1]=XYZ(0.0f,1.0f,0.0f);
+      basis[2]=XYZ(sa  ,0.0f,ca);
+    }
+};
+
 class Matrix33RotateAboutZ : public Matrix33
 {
  public:

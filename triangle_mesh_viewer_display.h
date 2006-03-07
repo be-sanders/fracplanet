@@ -85,6 +85,9 @@ class TriangleMeshViewerDisplay : public QGLWidget
   float object_rotation;
   //@}
 
+  //! Compute background colour from render parameters and camera height
+  const FloatRGBA background_colour() const;
+
  public:
   //! Constructor.
   TriangleMeshViewerDisplay(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);

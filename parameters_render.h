@@ -24,9 +24,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define _parameters_render_h_
 
 #include "useful.h"
+
+#include "notifiable.h"
 #include "rgb.h"
 
-class Notifiable;
 
 //! Aggregates controllable parameters for all things related to OpenGL rendering.
 class ParametersRender
@@ -44,8 +45,11 @@ public:
   //! Amount of global ambient illumination (0-1)
   float ambient;
 
-  //! Background colour
-  FloatRGBA background_colour;
+  //! Background colour at low altitude
+  FloatRGBA background_colour_low;
+
+  //! Background colour at high altitude
+  FloatRGBA background_colour_high;
 
   //! Target frame rate
   float fps_target;
@@ -59,8 +63,8 @@ public:
     ,display_list(false)
     ,joystick_mouse(true)
     ,ambient(0.1f)
-
-    ,background_colour(0.0f,0.0f,1.0f,0.0f)
+    ,background_colour_low(0.0f,0.0f,1.0f,0.0f)
+    ,background_colour_high(0.0f,0.0f,0.0f,0.0f)
     ,fps_target(75.0f)
     ,notify(0)
   {}
@@ -69,15 +73,6 @@ public:
   ~ParametersRender()
     {}
   
-};
-
-// Abstract mixin class for classes with a report(const std::string&) method.
-class Notifiable
-{
- public:
-
-  virtual void notify(const std::string&)
-    =0;
 };
 
 #endif

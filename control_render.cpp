@@ -50,9 +50,16 @@ ControlRender::ControlRender(QWidget* parent,ParametersRender* param)
 	  this,SLOT(setDisplayList(int))
 	  );
 
-  background_colour_button=new QPushButton(build_icon_of_colour(parameters->background_colour),"Background colour",this);
-  connect(background_colour_button,SIGNAL(clicked()),
-	  this,SLOT(pickBackgroundColour())
+  background_colour_low_button=new QPushButton(build_icon_of_colour(parameters->background_colour_low),"Background colour (low altitude)",this);
+  QToolTip::add(background_colour_low_button,"Colour used in display area when the camera is low.");
+  connect(background_colour_low_button,SIGNAL(clicked()),
+	  this,SLOT(pickBackgroundColourLow())
+	  );
+
+  background_colour_high_button=new QPushButton(build_icon_of_colour(parameters->background_colour_high),"Background colour (high altitude)",this);
+  QToolTip::add(background_colour_high_button,"Colour used in display area when the camera is high.");
+  connect(background_colour_high_button,SIGNAL(clicked()),
+	  this,SLOT(pickBackgroundColourHigh())
 	  );
 	  
   QGroupBox* ambient_box=new QGroupBox(3,Qt::Horizontal,"Ambient",this);
@@ -100,7 +107,12 @@ void ControlRender::setAmbient(int v)
   parameters->ambient=v/100.0f;
 }
 
-void ControlRender::pickBackgroundColour()
+void ControlRender::pickBackgroundColourLow()
 {
-  emit pickColour(background_colour_button,parameters->background_colour);
+  emit pickColour(background_colour_low_button,parameters->background_colour_low);
+}
+
+void ControlRender::pickBackgroundColourHigh()
+{
+  emit pickColour(background_colour_high_button,parameters->background_colour_high);
 }

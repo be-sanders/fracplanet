@@ -16,8 +16,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "triangle_mesh_viewer.h"
+
 #include <sstream>
 #include <qcursor.h>
+#include <qtooltip.h>
 
 TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& mesh)
   :QGrid(2,Qt::Horizontal,parent)
@@ -51,6 +53,7 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
   spinrate_slider =new QSlider(-80,80,10, 0,Qt::Horizontal,spinrate_box);
 
   fly_button=new QPushButton("Fly",this);
+  QToolTip::add(fly_button,"While flying:\nEsc will return to normal view.\nMouse controls pitch and yaw.\nLeft and right mouse buttons (or left/right arrow keys) control roll.\nMouse wheel (or up/down arrow keys) control speed.");
 
   tilt_slider->setTickInterval(10);
   spinrate_slider->setTickInterval(10);

@@ -39,6 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "useful.h"
 #include "control.h"
+#include "notifiable.h"
 #include "parameters_render.h"
 
 //! Encapsulates GUI elements for controlling OpenGL rendering.
@@ -73,11 +74,13 @@ class ControlRender : public Control, public Notifiable
   void setJoystickMouse(int v);
   void setAmbient(int v);
 
-  void pickBackgroundColour();
+  void pickBackgroundColourLow();
+  void pickBackgroundColourHigh();
 
  private:
 
-  QPushButton* background_colour_button;
+  QPushButton* background_colour_low_button;
+  QPushButton* background_colour_high_button;
 };
 
 #endif

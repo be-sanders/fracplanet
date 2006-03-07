@@ -22,6 +22,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <iomanip>
 #include <numeric>
 
+#include "matrix33.h"
+
 TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& m)
   :QGLWidget(parent)
    ,mesh(m)
@@ -57,9 +59,24 @@ void TriangleMeshViewerDisplay::set_mesh(const std::vector<const TriangleMesh*>&
     }  
 }
 
+const FloatRGBA TriangleMeshViewerDisplay::background_colour() const
+{
+  if (mesh.empty()) return FloatRGBA(0.0f,0.0f,0.0f,1.0f);
+
+  const XYZ relative_camera_position 
+    =Matrix33RotateAboutZ(-object_rotation)*Matrix33RotateAboutY(-object_tilt)*camera_position;
+
+  const float h = mesh[0]->geometry().height(relative_camera_position);
+  if (h<=0.0f) return parameters->background_colour_low;
+  else if (h>=1.0f) return parameters->background_colour_high;
+  else return parameters->background_colour_low+h*(parameters->background_colour_high-parameters->background_colour_low);
+}
+
+
 void TriangleMeshViewerDisplay::paintGL()
 {
-  glClearColor(parameters->background_colour.r,parameters->background_colour.g,parameters->background_colour.b,1.0);
+  const FloatRGBA bg=background_colour();
+  glClearColor(bg.r,bg.g,bg.b,1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   const float a=parameters->ambient;
@@ -267,7 +284,8 @@ void TriangleMeshViewerDisplay::paintGL()
 
 void TriangleMeshViewerDisplay::initializeGL()
 {
-  glClearColor(parameters->background_colour.r,parameters->background_colour.g,parameters->background_colour.b,1.0);
+  const FloatRGBA bg=background_colour();
+  glClearColor(bg.r,bg.g,bg.b,1.0);
 
   std::cerr << "Double buffering " << (doubleBuffer() ? "ON" : "OFF") << "\n";
   std::cerr << "Auto Buffer Swap " << (autoBufferSwap() ? "ON" : "OFF") << "\n";

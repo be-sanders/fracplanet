@@ -84,10 +84,6 @@ protected:
       return _triangle[i];
     }
   
-  //! Access the geometry of this class (needed to abstract concepts like "mid-point" and "height").
-  virtual const Geometry& geometry() const
-    =0;
-
   //! Convenience wrapper with null test.
   void progress_start(uint steps,const std::string& info) const;
 
@@ -142,6 +138,10 @@ public:
     {
       return _triangle[i];
     }
+
+  //! Access the geometry of this class (needed to abstract concepts like "mid-point" and "height").
+  virtual const Geometry& geometry() const
+    =0;
 
   //! Return height of a vertex.
   const float vertex_height(uint i) const

@@ -114,31 +114,31 @@ class GeometryFlat : public Geometry
   //! The mid-point between two points is simply their average.
   virtual const XYZ midpoint(const XYZ& v0,const XYZ& v1) const
     {
-      return 0.5*(v0+v1);
+      return 0.5f*(v0+v1);
     }
 
   //! This doesn't really mean anything here, so return zero, which would correspond to the equator of a spherical geometry.
   virtual const float normalised_latitude(const XYZ&) const
     {
-      return 0.0;
+      return 0.0f;
     }
   
   //! Returns unit z vector.  (Up is the same everywhere in this geometry).
   virtual const XYZ up(const XYZ&) const
     {
-      return XYZ(0.0,0.0,1.0);
+      return XYZ(0.0f,0.0f,1.0f);
     }
 
   //! Returns unit y vector.  (North is the same everywhere in this geometry).
   virtual const XYZ north(const XYZ&) const
     {
-      return XYZ(0.0,1.0,0.0);
+      return XYZ(0.0f,1.0f,0.0f);
     }
 
   //! Returns unit x vector.  (East is the same everywhere in this geometry).
   virtual const XYZ east(const XYZ&) const
     {
-      return XYZ(1.0,0.0,0.0);
+      return XYZ(1.0f,0.0f,0.0f);
     }
 
   //! Add a random variation to a point.
@@ -154,7 +154,7 @@ class GeometryFlat : public Geometry
   //! Returns zero.  Heights are stored exactly once assigned so no need for non-zero epsilon.
   virtual const float epsilon() const
     {
-      return 0.0;  // No need 'cos heights are stored exactly
+      return 0.0f;  // No need 'cos heights are stored exactly
     }
 };
 
@@ -174,14 +174,14 @@ class GeometrySpherical : public Geometry
   //! Height is relative to the surface of the unit radius sphere.
   virtual const float height(const XYZ& p) const
     {
-      return p.magnitude()-1.0;
+      return p.magnitude()-1.0f;
     }
 
   //! The height set is relative to the surface of the unit radius sphere.
   virtual void set_height(XYZ& p,float h) const
     {
       const float m=p.magnitude();
-      p*=((1.0+h)/m);
+      p*=((1.0f+h)/m);
     }
 
   //! Don't just take the mid-point of the straight-line path through the sphere's surface: must work relative to the sphere's surface.
@@ -189,9 +189,9 @@ class GeometrySpherical : public Geometry
     {
       const float h0=v0.magnitude();
       const float h1=v1.magnitude();
-      const float h_av=0.5*(h0+h1);
+      const float h_av=0.5f*(h0+h1);
 
-      const XYZ m(0.5*(v0+v1));
+      const XYZ m(0.5f*(v0+v1));
       return (h_av/m.magnitude())*m;
     } 
   
@@ -212,8 +212,8 @@ class GeometrySpherical : public Geometry
    */
   virtual const XYZ north(const XYZ& p) const
     {
-      if (p.x==0.0 && p.y==0.0)
-	return XYZ(0.0,0.0,0.0);
+      if (p.x==0.0f && p.y==0.0f)
+	return XYZ(0.0f,0.0f,0.0f);
       else
 	return (up(p)*east(p)).normalised();
     }  
@@ -223,10 +223,10 @@ class GeometrySpherical : public Geometry
    */
   virtual const XYZ east(const XYZ& p) const
     {
-      if (p.x==0.0 && p.y==0.0)
-	return XYZ(0.0,0.0,0.0);
+      if (p.x==0.0f && p.y==0.0f)
+	return XYZ(0.0f,0.0f,0.0f);
       else
-	return (XYZ(0.0,0.0,1.0)*up(p)).normalised();
+	return (XYZ(0.0f,0.0f,1.0f)*up(p)).normalised();
     }
 
   //! Add a random variation to a point.
@@ -245,7 +245,7 @@ class GeometrySpherical : public Geometry
   //! This needs to return something small for the lake flooding algorithm to work.
   virtual const float epsilon() const
     {
-      return 0.000001;
+      return 0.000001f;
     }
 };
 

@@ -56,6 +56,7 @@ HEADERS += \
            matrix33.h \
            matrix34.h \
            noise.h \
+           notifiable.h \
            parameters.h \
            parameters_cloud.h \
            parameters_render.h \
@@ -89,6 +90,7 @@ SOURCES += \
            matrix33.cpp \
            matrix34.cpp \
            noise.cpp \
+           notifiable.cpp \
            parameters.cpp \
            parameters_cloud.cpp \
            parameters_render.cpp \
