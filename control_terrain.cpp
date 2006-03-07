@@ -60,7 +60,6 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   QVBox* tab_clouds=new QVBox(tabs);
   tabs->addTab(tab_clouds,"Clouds");
 
-
   QComboBox* object_type_combo_box=new QComboBox(false,tab_terrain_basics);
   object_type_combo_box->insertItem("Generate Planet",  Parameters::ObjectTypePlanet);
   object_type_combo_box->insertItem("Generate Triangular Area",Parameters::ObjectTypeFlatTriangle);
@@ -331,7 +330,16 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   clouds_seed_spinbox=new QSpinBox(0xffffffff,0x7fffffff,1,grid_clouds);
   clouds_seed_spinbox->setValue(parameters_cloud->seed);
   QToolTip::add(clouds_seed_spinbox,"Random seed for cloud generation");
-  
+
+  new QLabel("Cloud height",grid_clouds);
+  QSpinBox* clouds_height_spinbox=new QSpinBox(1,100,1,grid_clouds);
+  clouds_height_spinbox->setValue(static_cast<int>(parameters_cloud->cloudbase*100.0f));
+  QToolTip::add(clouds_height_spinbox,"Altitude of cloud layer");
+  connect(
+	  clouds_height_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setCloudbase(int))
+	  );
+
   colour_cloud_button=new QPushButton(build_icon_of_colour(parameters_cloud->colour),"Cloud colour",tab_clouds);
   connect(
 	  colour_cloud_button,SIGNAL(clicked()),

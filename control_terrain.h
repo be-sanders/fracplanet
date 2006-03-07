@@ -284,6 +284,10 @@ class ControlTerrain : public Control
     {
       parameters_cloud->enabled=f;
     }
+  void setCloudbase(int v)
+    {
+      parameters_cloud->cloudbase=v/100.0f;
+    }
 
   void regenerate_with_new_terrain_seed();
   void regenerate_with_new_rivers_seed();

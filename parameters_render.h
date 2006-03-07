@@ -28,7 +28,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "notifiable.h"
 #include "rgb.h"
 
-
 //! Aggregates controllable parameters for all things related to OpenGL rendering.
 class ParametersRender
 {
