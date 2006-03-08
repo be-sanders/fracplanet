@@ -4,7 +4,7 @@ BODY
   color: #000000;
 }
 
-H1, H2, H3 
+H1, H2, H3, H4
 {
   font-family: sans-serif; 
   border-bottom: thin #888888 solid;
@@ -29,16 +29,18 @@ H3
   margin-left: 0.375in; 
 }
 
+H4
+{
+  font-size: 110%; 
+  margin-left: 0.5in; 
+}
+
 P,DL
 {
-  margin-left: 0.375in; 
+  margin-left: 0.5in; 
 }
 
 DT
 {
   font-weight: bolder;
 }
-
-
-
-

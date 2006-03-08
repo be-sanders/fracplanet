@@ -45,31 +45,33 @@ and <code>-fn <em>font</em></code>.
 <p>
   Note that none of the parameters adjustable on this tab have any effect on the displayed model until one of 
   the &quot;Regenerate&quot; buttons is pressed.  This tab is further subdivided into sub-tabs
-  (&quot;Terrain&quot;, &quot;Snow&quot;, &quot;Rivers&quot;, &quot;Colours&quot;).
+  (&quot;Terrain&quot;, &quot;Snow&quot;, &quot;Rivers&quot;, &quot;Colours&quot;, &quot;Clouds&quot;).
+</p>
+
+<h4>Terrain</h4>
+  
+<p>
+  This tab is even further subdivided (&quot;Basics&quot;, &quot;Subdivision&quot; and &quot;Noise&quot;).
 
   <dl>
-
-    <dt>Starting geometry</dt>
+    <dt>Starting geometry: Generate...</dt>
     <dd>
       A pull-down menu (or &quot;combo-box&quot) selects the initial geometry which will be &quot;fractalized&quot.
       Planet creates planets by subdividing an icosahedron.
       The other terrain area type create planar terrain areas by subdividing one or more triangles.
       Note that the square type doesn't produce very good results because the triangles it uses aren't equilateral.
     </dd>
-
     <dt>Base land height</dt>
     <dd>
       This expresses the initial height of the terrain (relative to the sea level) as a percentage of the vertical maximum perturbation size.
       Negative values produce (on average) more ocean than land, positive values produce more land than ocean. 
     </dd>
-  
-    <dt>Perturbation seed</dt>
+    <dt>Terrain random seed</dt>
     <dd>
       Specifies the random number generator seed used when creating terrain.
       Regenerating without changing this value will produce the same terrain, allowing the user to play with subdivision levels, colours etc while still retaining the same basic pattern of oceans and continents. 
       The value is initially set to the system time on application start-up.
     </dd>
-
     <dt>Power law</dt>
     <dd>
       A power law applied to all above-sea-level heights after terrain generation.
@@ -77,21 +79,18 @@ and <code>-fn <em>font</em></code>.
       Values above 100 flatten low terrain, tending to produce smooth plains surrounding spiky mountains.
       Values below 100 flatten high terrain, tending to produce smooth highlands surrounded by steep cliffs.
     </dd>
-  
     <dt>Subdivisions</dt>
     <dd>
       The number of subdivisions of the initial structure.
       Each successive level of subdivision increases the number of triangles by a factor of four, so users should increase this parameter with caution.
       This has a major impact on the amount of memory consumed, the frame rate and the responsiveness of the application.
     </dd>
-  
     <dt>Unperturbed subdivisions</dt>
     <dd>
       Specifies the number of the subdivisions which will be performed <em>without</em> random perturbation of the vertices.
       Lower numbers (0, 1) produce a few large continents.
       Higher values produce many small islands.
     </dd>
-  
     <dt>Vertical perturbation</dt>
     <dd>
       Specifies the maximum size of vertical perturbations at the first level of subdivision.
@@ -100,7 +99,6 @@ and <code>-fn <em>font</em></code>.
       and the number here is divided by 100 so if you specify a vertical variation of 12 you could get mountains which are on the order of 12 percent of the planet's radius high, or larger if subsequent perturbations accumulate upwards at a point (of course suppressing initial large perturbations using the &quot;Unperturbed&quot; parameter will tend to reduce this).
       This is of course a ridiculous height for mountains on anything but an asteroid, but using realistic values will just produce very boring looking planets. 
     </dd>
-  
     <dt>Horizontal perturbation</dt>
     <dd>
       Specifies the maximum size of horizontal perturbations at the first level of subdivision.
@@ -108,52 +106,54 @@ and <code>-fn <em>font</em></code>.
       Beware of making this value too large as it can produce overhanging/self-intersecting terrain,
       on the other hand small values can be useful for breaking up obvious artifacts of the initial geometry.
     </dd>
-
     <dt>Noise terms</dt>
     <dd>
-    Number of terms in a Perlin noise function added to the terrain heights.
-    Each subsequent term doubles the frequency.
-    The best way to get an appreciation of the qualitative differences between Perlin noise and
-    subdivision-perturbation  is to reduce &quot;Vertical perturbation&quot; (on the &quot;Subdivision&quot; tab)
-    to zero and increase the number of noise terms.
+      Number of terms in a Perlin noise function added to the terrain heights.
+      Each subsequent term doubles the frequency.
+      The best way to get an appreciation of the qualitative differences between Perlin noise and
+      subdivision-perturbation is to reduce &quot;Vertical perturbation&quot; (on the &quot;Subdivision&quot; tab)
+      to zero and increase the number of noise terms.
     </dd>
-
     <dt>Noise frequency<dt>
     <dd>
-    Frequency of 1st noise term.
-    100 gives a scale on the order of the terrain radius.
-    Subsequent terms double the frequency (and therefore halve their length scale).
+      Frequency of 1st noise term.
+      100 gives a scale on the order of the terrain radius.
+      Subsequent terms double the frequency (and therefore halve their length scale).
     </dd>
-
     <dt>Noise amplitude<dt>
     <dd>
-    Amplitude of 1st noise term, as a percentage of the nominal object radius.
+      Amplitude of 1st noise term, as a percentage of the nominal object radius.
     </dd>
-
     <dt>Noise amplitude decay rate<dt>
     <dd>
-    The amplitude of subsequent noise terms decays to this percentage of the amplitude of the previous term.
-    Fifty percent does the classic fractal thing of scaling perturbation size with length scale.
-    Increasing it slightly (to e.g sixty percent) has the interesting effect of making rivers meander more
-    as small-scale variations now have a bigger effect on local gradients than large scale features.
+      The amplitude of subsequent noise terms decays to this percentage of the amplitude of the previous term.
+      Fifty percent does the classic fractal thing of scaling perturbation size with length scale.
+      Increasing it slightly (to e.g sixty percent) has the interesting effect of making rivers meander more
+      as small-scale variations now have a bigger effect on local gradients than large scale features.
     </dd>
-        
+  </dl>
+</p>
+
+<h4>Snow</h4>
+
+<p>
+  <dl>
     <dt>Snowline at equator</dt>
     <dd>
-      The nominal height of the snowline at the equator of a planet (and everywhere on a flat-based terrain area), expressed as a percentage of the maximum height of the terrain.
+      The nominal height of the snowline at the equator of a planet (and everywhere on a flat-based terrain area),
+      expressed as a percentage of the maximum height of the terrain.
     </dd>
-  
     <dt>Snowline at pole</dt>
     <dd>
-      The nominal height of the snowline at the poles of a planet (unused for a flat-based terrain area), expressed as a percentage of the maximum height of the terrain.
+      The nominal height of the snowline at the poles of a planet (unused for a flat-based terrain area),
+      expressed as a percentage of the maximum height of the terrain.
     </dd>
-  
     <dt>Snowline power law</dt>
     <dd>
-      Tweaking this parameter lets you control whether the snowline remains high up and only plunges downward towards the poles, or whether it only quickly rises near the equator.
+      Tweaking this parameter lets you control whether the snowline remains high up and only plunges
+      downward towards the poles, or whether it only quickly rises near the equator.
       Experiment, it has a fairly subtle effect.
     </dd>
-  
     <dt>Snowline slope suppression</dt>
     <dd>
       The larger this value is, the harder it is for snow to stick to steep slopes 
@@ -161,7 +161,6 @@ and <code>-fn <em>font</em></code>.
       This breaks up the snowline quite nicely, as it otherwise tends to stop at 
       an artificially uniform height (reduce this parameter to zero to see what I mean).
     </dd>
-  
     <dt>Snowline glacier effect</dt>
     <dd>
       If this parameter is positive, rivers tend to form glaciers and you 
@@ -169,7 +168,13 @@ and <code>-fn <em>font</em></code>.
       If this parameter is negative rivers find it harder to freeze and 
       you will see them running through snowy areas and forming un-frozen lakes.
     </dd>
-  
+  </dl>
+</p>
+
+<h4>Rivers</h4>
+
+<p>
+  <dl>  
     <dt>Rivers</dt>
     <dd>
       Specifies the number of rivers to be generated.
@@ -182,13 +187,11 @@ and <code>-fn <em>font</em></code>.
       which produced nice solid edged rivers (like the oceans are)
       but since they weren't flat it wasn't ideal either.
     </dd>
-  
     <dt>Rivers seed</dt>
     <dd>
       Random number seed for river generation.
       If you change this, but not the perturbation seed, you can get a different river network on the same terrain.
     </dd>
-  
     <dt>Lake becomes sea</dt>
     <dd>
       As a river is flowed across a terrain, it will sometimes form a lake as the water
@@ -199,15 +202,13 @@ and <code>-fn <em>font</em></code>.
       Increasing this number may result in larger lakes, but the process of river generation can 
       take considerably longer.
     </dd>
+  </dl>
+</p>
 
-    <dt>Oceans and rivers emissive</dt>
-    <dd>
-      Sets the emission (also called &quot;glow&quot;) of lakes and rivers, on a scale of 0-100.
-      This is mainly to facilitate glowing lava planets.
-      Note that for terrain generated with emission non-zero, 
-      an alternative OpenGL rendering path must be used which may be a little slower.
-    </dd>
-  
+<h4>Colours</h4>
+
+<p>
+  <dl>
     <dt>Change colours</dt>
     <dd>
       Click on these buttons to bring up a colour-picking dialog and change the colour for the selected class of terrain.
@@ -218,25 +219,40 @@ and <code>-fn <em>font</em></code>.
       an apocalyptic &quot;lava world&quot; with red rivers and oceans (use emission to make them glow), 
       black shorelines and ash-grey terrain.
     </dd>
+    <dt>Oceans and rivers emissive</dt>
+    <dd>
+      Sets the emission (also called &quot;glow&quot;) of lakes and rivers, on a scale of 0-100.
+      This is mainly to facilitate glowing lava planets.
+      Note that for terrain generated with emission non-zero, 
+      an alternative OpenGL rendering path must be used which may be a little slower.
+    </dd>
+  </dl>
+</p>
+
+<h4>Other &quot;Create&quot; tab controls</h4>  
   
+<p>
+  <dl>
     <dt>Regenerate</dt>
     <dd>
       Click this button to regenerate the planet/terrain area <em>without changing the random seeds</em>.
     </dd>
-  
     <dt>Regenerate with new rivers seed</dt>
     <dd>
       Click this button to increment the river generation seed by one and regenerate.
       This gets you the same landscape with a different river network.
     </dd>
-  
-    <dt>Regenerate with new perturbations seed</dt>
+    <dt>Regenerate with new terrain seed</dt>
     <dd>
-      Click this button increment the perturbation seed by one and regenerate.
+      Click this button increment the terrain seed by one and regenerate.
       This will get you a completely different terrain.
-      (The river network will be different too, although it's seed won't have changed).
+      (The river network will be different too, although it's seed won't have changed, as the rivers flow over the tarrain differently).
     </dd>
-  
+    <dt>Regenerate with new clouds seed</dt>
+    <dd>
+      Click this button increment the clouds seed by one and regenerate.
+      This will get you a different cloud layer.
+    </dd>
   </dl>  
 </p>
 
@@ -284,8 +300,9 @@ and <code>-fn <em>font</em></code>.
   another to select display-list rendering (the default is immediate mode),
   another to select joystick mode for the mouse in flight mode
   (this simply affects whether pulling the mouse down the screen flies you in that
-  direction, or whether it's more like an aircraft joystick and pitches you up instead)
-  and a slider controlling the amount of ambient light.
+  direction, or whether it's more like an aircraft joystick and pitches you up instead),
+  a slider controlling the amount of ambient light and two colour-picking buttons to select the
+  viewing area's background colour at high and low altitude.
   The frame rate and current mesh size (number of triangles and vertices) is also displayed.
 </p>
 
@@ -294,8 +311,8 @@ and <code>-fn <em>font</em></code>.
   (depends on your OpenGL implementation and graphics drivers).
   The main reason display list is not enabled by default is that
   the application may pause for a long time while OpenGL processes the
-  list when it is first rendered; the amount of memory consumed by 
-  the display list could also be a problem for very large meshes.
+  list when it is first rendered; the amount of additional memory
+  consumed by the display list is also a problem for very large meshes.  
 </p>
 
 <h3>About tab</h3>
@@ -310,21 +327,22 @@ and <code>-fn <em>font</em></code>.
   The display window, when shown, shows the current
   (most recently generated) terrain model.
   It is hidden when terrain is being regenerated or saved.
-  The (badly named) &quot;tilt&quot; slider controls the latitude of the camera (when viewing a sphere-based object), and the elevation (as in azimuth-elevation) of the camera when viewing a planar based terrain area.  
-  Note that in the latter case the bottom half of the slider places the camera below base ground level/sea level, which results in little being seen due to back-face culling.
+  The (badly named) &quot;tilt&quot; slider controls the latitude of the camera (when viewing a sphere-based object), 
+  and the elevation (as in azimuth-elevation) of the camera when viewing a planar based terrain area.  
+  Note that in the latter case the bottom half of the slider places the camera below base ground level/sea level, 
+  which results in little being seen due to back-face culling.
   The &quot;spin rate&quot; controls the rate at which the object is rotated.
   The display window update rate is clamped to 75Hz, although this will typically
   only be reached at the lowest levels of subdivision.
 </p>
 
 <p>
-Hitting the &quot;Fly&quot; button puts you into free-flight mode.
-Pitch and yaw are controlled by the mouse position relative to the window centre
-(if the pitch control feels backwards, change mouse-Y behaviour on the render tab).
-Roll is controlled by left/right mouse buttons, or the left/right arrow keys.
-Speed is controlled by the mouse wheel or the up/down arrow keys.
-There is a summary of this displayed at the bottom of the window.
-Hit Esc to return to the usual viewing mode.
+  Hitting the &quot;Fly&quot; button puts you into free-flight mode.
+  Pitch and yaw are controlled by the mouse position relative to the window centre
+  (if the pitch control feels backwards, invert mouse-Y behaviour on the render tab).
+  Roll is controlled by left/right mouse buttons, or the left/right arrow keys.
+  Speed is controlled by the mouse wheel or the up/down arrow keys.
+  Hit Esc to return to the normal viewing mode.
 </p>
 
 <h2>License</h2>
