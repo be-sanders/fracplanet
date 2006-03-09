@@ -3,6 +3,7 @@
 - Option to save a raster map (cylindrical projection for spheres)
   for terrain colours, heights, and specular (mainly for sea... and snow ?)
 
+-----
 - Add export to wavefront .obj format and try importing to blender.
   Seems to be the best bet amongst the built-in blender import formats.
   Test it deals with materials etc first.
@@ -16,6 +17,10 @@ Output:
 Will probably have to generate a fixed number of materials
 (blends between the standard colours) and map each vertex to the nearest one.
 
+ALTERNATIVELY: Just dump the model to a complete blender python script.
+The question is does Blender support per-vertex colours ?  Experiment.
+
+-----
 - Shadows of clouds on ground (probably needs some OpenGL extension).
 - Optimise matix33 inversion
 - End abuse of alpha as flag; just use it as the emissive quantity.
