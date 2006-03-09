@@ -1,7 +1,10 @@
 From release 0.2.0:
- - Bump version number to 0.2.1-dev
+ - Bump version number to 0.3.0-dev
  - Different flat terrain types 
  - Internal changes (RGB to RGBA, overload alpha for emission)
+ - Built in docs
+ - Cloud layer
+ - Render (OpenGL) background colour control
 
 From release 0.1.0:
  - Bump version number to 0.2.0
