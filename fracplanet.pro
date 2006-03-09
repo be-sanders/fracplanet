@@ -50,6 +50,7 @@ HEADERS += \
            control_render.h \
            control_save.h \
            control_terrain.h \
+           dialog_documentation.h \
            fracplanet_main.h \
            geometry.h \
            license.h \
@@ -83,6 +84,7 @@ SOURCES += \
            control_render.cpp \
            control_save.cpp \
            control_terrain.cpp \
+           dialog_documentation.cpp \
            fracplanet.cpp \
            fracplanet_main.cpp \
            geometry.cpp \

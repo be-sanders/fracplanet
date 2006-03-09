@@ -34,7 +34,7 @@ BUILDING
 Either use the traditional
  ./configure
  make
-(NB THe configure script is NOT autoconf generated)
+(NB The configure script is NOT autoconf generated)
 
 Or just have both done for you by running 
   ./BUILD
@@ -48,6 +48,9 @@ environment variable to be correctly defined.
 This will give you a "fracplanet" executable which you can run with
   ./fracplanet
 or install where you like. 
+
+If you have xsltproc (and sed) installed then you should get a copy of the
+fracplanet.htm documentation built into the application.
 
 [The author primarily uses Debian Sarge these days].
 
@@ -128,7 +131,7 @@ to render them, so make the most of it once it's loaded
 and use POVRay's animation capabilities to the max.
 
 [Note: the author has only tested with povray 1.5; if there
-are any problems with the new 1.6 please let me know].
+are any problems with the newer 1.6 please let me know].
 
 BUILDING CODE DOCUMENTATION
 ===========================

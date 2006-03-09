@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -57,21 +57,10 @@ public:
   Notifiable* notify;
 
   //! Constructor.
-  ParametersRender()
-    :wireframe(false)
-    ,display_list(false)
-    ,joystick_mouse(true)
-    ,ambient(0.1f)
-    ,background_colour_low(0.0f,0.0f,1.0f,0.0f)
-    ,background_colour_high(0.0f,0.0f,0.0f,0.0f)
-    ,fps_target(75.0f)
-    ,notify(0)
-  {}
+  ParametersRender();
 
   //! Destructor.
-  ~ParametersRender()
-    {}
-  
+  ~ParametersRender();
 };
 
 #endif
