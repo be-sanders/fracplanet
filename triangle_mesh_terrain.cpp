@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "noise.h"
 
 #include <sstream>
+#include <fstream>
 
 TriangleMeshTerrain::TriangleMeshTerrain(Progress* progress)
   :TriangleMesh(progress)
@@ -428,16 +429,11 @@ TriangleMeshTerrainPlanet::TriangleMeshTerrainPlanet(const ParametersTerrain& pa
   do_terrain(parameters);
 }
 
-bool TriangleMeshTerrainPlanet::write_povray(const std::string& base_filename,const ParametersSave& param,const ParametersTerrain& parameters_terrain) const
+void TriangleMeshTerrainPlanet::write_povray(std::ofstream& out,const ParametersSave& param_save,const ParametersTerrain& parameters_terrain) const
 {
-  const bool save_pov_mode=POVMode::pov_mode();
-  POVMode::pov_mode(true);
-
-  std::stringstream header;
-  
-  if (param.sea_object)
+  if (param_save.sea_object)
     {
-      header 
+      out 
 	<< "sphere {<0.0,0.0,0.0>,1.0 pigment{rgb "
 	<< parameters_terrain.colour_ocean
 	<< "} finish {ambient " 
@@ -447,19 +443,14 @@ bool TriangleMeshTerrainPlanet::write_povray(const std::string& base_filename,co
 	<< "}}\n";
     }
   
-  if (param.atmosphere)
+  if (param_save.atmosphere)
     {
-      header
-	<< "sphere {<0.0,0.0,0.0>,1.025 hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <1.0,1.0,1.0> extinction 1}}}}\n";
-      header
+      out
+	<< "sphere {<0.0,0.0,0.0>,1.025 hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <1.0,1.0,1.0> extinction 1}}}}\n"
 	<< "sphere {<0.0,0.0,0.0>,1.05  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
     }
   
-  bool ret=TriangleMesh::write_povray(base_filename,header.str(),param.sea_object);
-
-  POVMode::pov_mode(save_pov_mode);
-
-  return ret;
+  TriangleMesh::write_povray(out,param_save.sea_object);
 }
 
 TriangleMeshTerrainFlat::TriangleMeshTerrainFlat(const ParametersTerrain& parameters,Progress* progress)
@@ -472,16 +463,11 @@ TriangleMeshTerrainFlat::TriangleMeshTerrainFlat(const ParametersTerrain& parame
   do_terrain(parameters);
 }
 
-bool TriangleMeshTerrainFlat::write_povray(const std::string& base_filename,const ParametersSave& param,const ParametersTerrain& parameters_terrain) const
+void TriangleMeshTerrainFlat::write_povray(std::ofstream& out,const ParametersSave& param_save,const ParametersTerrain& parameters_terrain) const
 {
-  const bool save_pov_mode=POVMode::pov_mode();
-  POVMode::pov_mode(true);
-
-  std::ostringstream header;
-  
-  if (param.sea_object)
+  if (param_save.sea_object)
     {
-      header
+      out
 	<< "plane {<0.0,1.0,0.0>,0.0 pigment{rgb "
 	<< parameters_terrain.colour_ocean
 	<< "} finish {ambient " 
@@ -491,18 +477,12 @@ bool TriangleMeshTerrainFlat::write_povray(const std::string& base_filename,cons
 	<< "}}\n";
     }
   
-  if (param.atmosphere)
+  if (param_save.atmosphere)
     {
-      header
-	<< "plane {<0.0,1.0,0.0>,0.05 hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <1.0,1.0,1.0> extinction 1}}}}\n";
-      header
+      out
+	<< "plane {<0.0,1.0,0.0>,0.05 hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <1.0,1.0,1.0> extinction 1}}}}\n"
 	<< "plane {<0.0,1.0,0.0>,0.1  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
     }
   
-  const bool ret=TriangleMesh::write_povray(base_filename,header.str(),param.sea_object);
-
-  POVMode::pov_mode(save_pov_mode);
-
-  return ret;
+  TriangleMesh::write_povray(out,param_save.sea_object);
 }
-

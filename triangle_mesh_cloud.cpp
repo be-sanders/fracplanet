@@ -26,6 +26,11 @@ TriangleMeshCloud::TriangleMeshCloud(Progress* progress)
 TriangleMeshCloud::~TriangleMeshCloud()
 {}
 
+void TriangleMeshCloud::write_povray(std::ofstream& out,const ParametersSave&,const ParametersCloud&) const
+{
+  TriangleMesh::write_povray(out,false);
+}
+
 void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
 {
   compute_vertex_normals();

@@ -71,7 +71,7 @@ class TriangleMeshTerrain : virtual TriangleMesh
   //! Dump the model as a POV scene.
   /*! Virtual method because spherical and flat terrains need e.g different sea-level planes and atmosphere layers.
    */
-  virtual bool write_povray(const std::string& base_filename,const ParametersSave& param,const ParametersTerrain& parameters_terrain) const
+  virtual void write_povray(std::ofstream& out,const ParametersSave&,const ParametersTerrain&) const
     =0;
 };
 
@@ -88,7 +88,7 @@ class TriangleMeshTerrainPlanet : public TriangleMeshSubdividedIcosahedron, virt
     {}
 
   //! Specifc dump-to-povray for planet terrain.
-  virtual bool write_povray(const std::string& base_filename,const ParametersSave& param,const ParametersTerrain& parameters_terrain) const;
+  virtual void write_povray(std::ofstream& out,const ParametersSave&,const ParametersTerrain&) const;
 };
 
 //! Class constructing specific case of a flat-base terrain area.
@@ -103,7 +103,7 @@ class TriangleMeshTerrainFlat : public TriangleMeshFlat, virtual public Triangle
     {}
 
   //! Specifc dump-to-povray for flat terrain area.
-  virtual bool write_povray(const std::string& base_filename,const ParametersSave& param,const ParametersTerrain& parameters_terrain) const;
+  virtual void write_povray(std::ofstream& out,const ParametersSave&,const ParametersTerrain&) const;
 };
 
 #endif

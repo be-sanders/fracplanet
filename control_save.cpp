@@ -31,7 +31,7 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
 	  this,SLOT(setAtmosphere(int))
 	  );
 
-  sea_object_checkbox=new QCheckBox("Sea object",this);
+  sea_object_checkbox=new QCheckBox("Sea as single object",this);
   sea_object_checkbox->setChecked(parameters->sea_object);  
   QToolTip::add(sea_object_checkbox,"Select to emit a single object (instead of multiple triangles) for the sea surface");
   connect(

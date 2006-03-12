@@ -42,7 +42,10 @@ class TriangleMeshCloud : virtual TriangleMesh
   TriangleMeshCloud(Progress* progress);
 
   //! Destructor.
-    virtual ~TriangleMeshCloud();
+  virtual ~TriangleMeshCloud();
+
+  //! Dump mesh to file
+  virtual void write_povray(std::ofstream& out,const ParametersSave&,const ParametersCloud&) const;
 };
 
 //! Class constructing specific case of a planetary cloud.

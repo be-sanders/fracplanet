@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,6 +22,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qeventloop.h>
+
+#include <fstream>
 
 FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app)
   :QHBox(parent)
@@ -203,15 +205,48 @@ void FracplanetMain::save()
     {
       if (selected_filename.upper().endsWith(".POV") || selected_filename.upper().endsWith(".INC"))
 	{
-	  const std::string base_filename(selected_filename.left(selected_filename.length()-4).local8Bit());
 	  viewer->hide();
-	  const bool ok=mesh_terrain->write_povray(base_filename,parameters_save,parameters_terrain);
+
+	  POVMode::pov_mode(true);
+
+	  const std::string filename_base(selected_filename.left(selected_filename.length()-4).local8Bit());
+	  const std::string filename_pov=filename_base+".pov";
+	  const std::string filename_inc=filename_base+".inc";
+	  
+	  const uint last_separator=filename_inc.rfind('/');
+	  const std::string filename_inc_relative_to_pov=
+	    "./"
+	    +(
+	      last_separator==std::string::npos
+	      ?
+	      filename_inc
+	      :
+	      filename_inc.substr(last_separator+1)
+	      );
+	  
+	  std::ofstream out_pov(filename_pov.c_str());
+	  std::ofstream out_inc(filename_inc.c_str());
+	  
+	  // Boilerplate for renderer    
+	  out_pov << "camera {perspective location <0,1,-4.5> look_at <0,0,0> angle 45}\n";
+	  out_pov << "light_source {<100,100,-100> color rgb <1.0,1.0,1.0>}\n";
+	  out_pov << "#include \""+filename_inc_relative_to_pov+"\"\n";
+	  
+	  mesh_terrain->write_povray(out_inc,parameters_save,parameters_terrain);
+	  if (mesh_cloud) mesh_cloud->write_povray(out_inc,parameters_save,parameters_cloud);
+	  
+	  out_pov.close();
+	  out_inc.close();
+
+	  POVMode::pov_mode(false);
+
+	  const bool ok=(out_pov && out_inc);
 	  
 	  progress_dialog.reset(0);
-
+	  
 	  viewer->showNormal();
 	  viewer->raise();
-
+	  
 	  if (!ok) 
 	    {
 	      QMessageBox::critical(this,"Fracplanet","Errors ocurred while the files were being written.");
