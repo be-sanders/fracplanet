@@ -27,9 +27,8 @@
 
 <p>
   Fracplanet has no command line arguments other than those intercepted and interpreted by Qt.
-These are pretty much what you'd expect most X11 applications to handle 
-e.g <code>-geometry <em>X</em>x<em>Y</em></code> 
-and <code>-fn <em>font</em></code>.
+  These are pretty much what you'd expect most X11 applications to handle 
+  e.g <code>-geometry <em>X</em>x<em>Y</em></code>.
 </p>
 
 <h2>GUI</h2>
@@ -223,6 +222,35 @@ and <code>-fn <em>font</em></code>.
     This is mainly to facilitate glowing lava planets.
     Note that for terrain generated with emission non-zero, 
     an alternative OpenGL rendering path must be used which may be a little slower.
+  </dd>
+</dl>
+
+<h4>Clouds</h4>
+
+<p>
+  The cloud layer, when generated, is a triangle mesh with variable
+  translucency at each vertex.
+  Note that it's <em>not</em> a texture in the normal sense.
+</p>
+
+<dl>
+  <dt>Clouds enabled</dt>
+  <dd>
+    Select the check box to trigger creation of a cloud layer.
+  </dd>
+  <dt>Subdivisions</dt>
+  <dd>
+    When left unchecked, the cloud layer will be subdivided
+    to the same degree as the terrain.
+    Check the box for explicit control of cloud layer subdivision.
+  </dd>
+  <dt>Clouds seed.</dt>
+  <dd>
+    Change this to get a different cloud pattern.
+  </dd>
+  <dt>Cloud height</dt>
+  <dd>
+    Change this to get adjust the height of the clouds above the terrain.
   </dd>
 </dl>
 

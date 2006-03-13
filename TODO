@@ -4,8 +4,14 @@
   for terrain colours, heights, and specular (mainly for sea... and snow ?)
 
 -----
+- Cloud controls.  Noise parameters and thresholds.
 - More control over cloud undersides, shadowing etc (c.f on/off in POVRay).
-- Shadows of clouds on ground in OpenGL.
+  (Add checkboxes to save dialog).
+  Maybe need better control over ambient, or actually use the ambient
+  parameter on the render tab (move to colours).  Then shadows
+  wouldn't be black; wouldn't get night-side though, without varying
+  ambient around sphere.
+- Shadows of clouds on ground in OpenGL (needs shaders, shadow buffers etc).
 - Optimise matix33 inversion
 - End abuse of alpha as flag; just use it as the emissive quantity.
   Mesh then gets a flag for meaning of alpha channels.
@@ -18,15 +24,11 @@
 - Noise perturbation in X&Y too;
   might help break up subdivision ridge artefacts
 - "man" page instead/besides HTML
-- Built-in manual like evolvotron
-- Render tab setting to hide fly mode instructions
 - Make more keys do stuff in fly mode
 - Ability to load/save planet parameters (simple keyword=value text file)
 - Console mode app: read parameters, generate planet.
 - Fix river/lake hang for high subdivision levels
-- Option to add Perlin noise to terrain (might make rivers meander more)
-  Also completely noise generated terrain.
-  Also modify terrain colours
+- Perlin noise to modify terrain colours.
 - Continue GUI procesing when progressing.
 - More feedback (progress bar?) when building display list
   (unfortunately a lot of the delay happens in OpenGL when the list is completed)
@@ -34,7 +36,6 @@
 - Check for OpenGL errors
 - Add control over heights at which colours switch.
 - Improve code documentation.
-- Cloud layer (as polygon mesh).
 - Save/load parameters.  Automatic mode (load parameters, generate model, exit).
 - Ice packs.
 - Seasonal variations.
