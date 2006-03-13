@@ -332,6 +332,20 @@ and <code>-fn <em>font</em></code>.
   Hit Esc to return to the normal viewing mode.
 </p>
 
+<h2>Ray tracing output</h2>
+
+<p>
+  To ray-trace a saved terrain (saved as terrain.pov and terrain.inc, say) do:<br/>
+   <code>povray -Q9 -geometry 768x576 terrain.pov</code>
+  Note that clouds, if generated, are output using POV-Ray's <code>double_illuminate</code>
+  and <code>no_shadow</code> declarations.
+  <code>double_illuminate</code> means that both sides of clouds are the same colour
+  (rather than the underside being black).
+  <code>no_shadow</code> means that the clouds cast no shadow on the ground
+  (where the clouds are solid, the shadows are completely black, which looks more unnatural than no shadows).
+  If desired, the declarations can be found at the end of the saved .inc file and simply edited out.
+</p>
+
 <h2>License</h2>
 
 <p>

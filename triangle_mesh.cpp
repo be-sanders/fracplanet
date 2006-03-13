@@ -205,7 +205,7 @@ void TriangleMesh::subdivide(uint subdivisions,uint flat_subdivisions,const XYZ&
     }
 }
 
-void TriangleMesh::write_povray(std::ofstream& out,bool exclude_alternate_colour) const
+void TriangleMesh::write_povray(std::ofstream& out,bool exclude_alternate_colour,bool double_illuminate,bool no_shadow) const
 {
   // \todo: No need to dump all vertices when not outputing all triangles.
 
@@ -249,7 +249,19 @@ void TriangleMesh::write_povray(std::ofstream& out,bool exclude_alternate_colour
 	step++;
 	progress_step((100*step)/steps);
 	
-	out << "texture{pigment{rgb " << FloatRGBA(vertex(v).colour(c)) << "}";
+	const FloatRGBA colour(vertex(v).colour(c));
+	if (colour.a==1.0f)
+	  {
+	    out << "texture{pigment{rgb <";
+	    out << colour.r << "," << colour.g << "," << colour.b;
+	    out << ">}";
+	  }
+	else
+	  {
+	    out << "texture{pigment{rgbf <";
+	    out << colour.r << "," << colour.g << "," << colour.b << "," << 1.0-colour.a;
+	    out << ">}";
+	  }
 	if (emissive()!=0.0f && vertex(v).colour(c).a==0)
 	  {
 	    out << " finish{ambient " << emissive() << " diffuse " << 1.0f-emissive() << "}";
@@ -285,7 +297,9 @@ void TriangleMesh::write_povray(std::ofstream& out,bool exclude_alternate_colour
       out << "," << triangle(t).vertex(2)+(t<triangles_of_colour0() ? 0 : vertices());
       out << "\n";
     }
-  out << "}\n";  
+  out << "}\n";
+  if (double_illuminate) out << "double_illuminate\n";
+  if (no_shadow) out << "no_shadow\n";
   out << "}\n";
 
   progress_complete("Wrote mesh to POV-Ray file");

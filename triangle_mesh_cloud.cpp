@@ -28,7 +28,9 @@ TriangleMeshCloud::~TriangleMeshCloud()
 
 void TriangleMeshCloud::write_povray(std::ofstream& out,const ParametersSave&,const ParametersCloud&) const
 {
-  TriangleMesh::write_povray(out,false);
+  // Double illuminate so underside of clouds is white.
+  // No-shadow so clouds don't cast crazy dark shadows.
+  TriangleMesh::write_povray(out,false,true,true);
 }
 
 void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)

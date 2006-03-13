@@ -450,7 +450,7 @@ void TriangleMeshTerrainPlanet::write_povray(std::ofstream& out,const Parameters
 	<< "sphere {<0.0,0.0,0.0>,1.05  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
     }
   
-  TriangleMesh::write_povray(out,param_save.sea_object);
+  TriangleMesh::write_povray(out,param_save.sea_object,false,false); // Don't double illuminate.  Don't no-shadow.
 }
 
 TriangleMeshTerrainFlat::TriangleMeshTerrainFlat(const ParametersTerrain& parameters,Progress* progress)
@@ -484,5 +484,5 @@ void TriangleMeshTerrainFlat::write_povray(std::ofstream& out,const ParametersSa
 	<< "plane {<0.0,1.0,0.0>,0.1  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
     }
   
-  TriangleMesh::write_povray(out,param_save.sea_object);
+  TriangleMesh::write_povray(out,param_save.sea_object,false,false); // Don't double illuminate.  Don't no-shadow.
 }

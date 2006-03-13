@@ -235,7 +235,7 @@ public:
   void subdivide(uint subdivisions,uint flat_subdivisions,const XYZ& variation);
 
   //! Dump the mesh to the file in a form suitable for use by POVRay.
-  void write_povray(std::ofstream& out,bool exclude_alternate_colour) const;
+  void write_povray(std::ofstream& out,bool exclude_alternate_colour,bool double_illuminate,bool no_shadow) const;
 };
 
 //! A single triangle lying in the z-plane.
