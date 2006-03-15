@@ -281,22 +281,30 @@
 
 <h3>Save tab</h3>
 
+<p>
+  There are currently two supported save formats; POV-Ray and Blender (under construction).
+  Strictly speaking it's Export which is provided, not save, as fracplanet's state cannot be restored.
+</p>
+
+<h4>POV-Ray</h4>
+
 <dl>
   <dt>Add atmosphere</dt>
   <dd>
-    This tick-box causes additional POV-Ray directives to be emitted to render a thin atmosphere.
+    This tick-box causes additional POV-Ray directives to be emitted to render a thin layer of atmosphere.
   </dd>
   <dt>Sea object</dt>
   <dd>
-    This tick-box causes a single sphere to generated for the oceans <em>instead</em> of numerous individual triangles.
+    This tick-box causes a single sphere or infinite plane to generated for the oceans <em>instead</em> of numerous individual triangles.
   </dd>
   <dt>Base filename</dt>
   <dd>
     Enter the filename root to be used here.
     Two files will be generated, one with &quot;.pov&quot; appended, and one with &quot;.inc&quot; appended.
-    The .inc file actually contains the object (using POV-Rays's <code>mesh2</code> format), plus any other spheres generated due to the options above.
+    The .inc file actually contains the object (using POV-Rays's <code>mesh2</code> format), plus any other objects generated due to the options above.
     The .pov just includes the .inc and adds a camera and light source and was primarily intended for testing:
-    the expectation is that users will generally import the .inc into their own scenes, probably wrapping the include in a POV-Ray <code>union</code> with embedded translate/scale/rotate directives).
+    the expectation is that users will generally include the .inc into their own scenes, probably wrapping it
+    in a POV-Ray <code>union</code> with embedded translate/scale/rotate directives).
   </dd>
   <dt>Save (POV-Ray)</dt>
   <dd>
@@ -305,11 +313,23 @@
   </dd>
 </dl>
 
+<h4>Blender</h4>
+
+<dl>
+  <dt>Save (Blender)</dt>
+  <dd>
+    Click this button to create a file which can be imported into Blender.
+    Note that the save file takes the form of a Python script (traditionally a <code>.py</code> file extension)
+    which can be executed by Blender to reconstruct the fracplanet model; an easy way to do this is to provide 
+    a <code>-P &lt;filename&gt;</code> command-line argument to Blender.
+  </dd>
+</dl>
+
 <h3>Render tab</h3>
 
 <p>
   Options for OpenGL rendering appear on this tab.
-  Note that none of these make any difference to the underlying mesh or POV-Ray's rendering of saved meshes.
+  Note that none of these currently makes any difference to the underlying mesh or POV-Ray's rendering of saved meshes.
   Currently the options are a tickbox to select wireframe rendering,
   another to select display-list rendering (the default is immediate mode),
   another to select joystick mode for the mouse in flight mode
@@ -360,11 +380,11 @@
   Hit Esc to return to the normal viewing mode.
 </p>
 
-<h2>Ray tracing output</h2>
+<h2>Ray-tracing with POV-Ray</h2>
 
 <p>
   To ray-trace a saved terrain (saved as terrain.pov and terrain.inc, say) do:<br/>
-   <code>povray -Q9 -geometry 768x576 terrain.pov</code>
+  <code>povray -Q9 -geometry 768x576 terrain.pov</code>
   Note that clouds, if generated, are output using POV-Ray's <code>double_illuminate</code>
   and <code>no_shadow</code> declarations.
   <code>double_illuminate</code> means that both sides of clouds are the same colour

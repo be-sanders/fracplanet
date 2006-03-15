@@ -17,6 +17,13 @@
     <xsl:apply-templates select="node()"/>
   </xsl:template>
 
+  <xsl:template match="h1">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+    <p>Version: <xsl:value-of select="$version"/></p>
+  </xsl:template>
+
   <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>

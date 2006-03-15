@@ -33,6 +33,11 @@ void TriangleMeshCloud::write_povray(std::ofstream& out,const ParametersSave&,co
   TriangleMesh::write_povray(out,false,true,true);
 }
 
+void TriangleMeshCloud::write_blender(std::ofstream& out,const ParametersSave&,const ParametersCloud&) const
+{
+  TriangleMesh::write_blender(out);
+}
+
 void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
 {
   compute_vertex_normals();

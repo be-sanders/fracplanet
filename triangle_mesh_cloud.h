@@ -44,9 +44,13 @@ class TriangleMeshCloud : virtual TriangleMesh
   //! Destructor.
   virtual ~TriangleMeshCloud();
 
-  //! Dump mesh to file
+  //! Dump mesh to file for POV-Ray
   virtual void write_povray(std::ofstream& out,const ParametersSave&,const ParametersCloud&) const;
+
+  //! Dump mesh to file for Blender
+  virtual void write_blender(std::ofstream& out,const ParametersSave&,const ParametersCloud&) const;
 };
+
 
 //! Class constructing specific case of a planetary cloud.
 class TriangleMeshCloudPlanet : public TriangleMeshSubdividedIcosahedron, virtual public TriangleMeshCloud

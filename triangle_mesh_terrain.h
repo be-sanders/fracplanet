@@ -73,6 +73,11 @@ class TriangleMeshTerrain : virtual TriangleMesh
    */
   virtual void write_povray(std::ofstream& out,const ParametersSave&,const ParametersTerrain&) const
     =0;
+
+  //! Dump the model for Blender.
+  /*! Unlike write_povray there are no specialisations for flat/spherical terrain.
+   */
+  virtual void write_blender(std::ofstream& out,const ParametersSave&,const ParametersTerrain&) const;
 };
 
 //! Class constructing specific case of a planetary terrain.

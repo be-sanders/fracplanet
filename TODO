@@ -4,6 +4,8 @@
   for terrain colours, heights, and specular (mainly for sea... and snow ?)
 
 -----
+- Ability to load/save fracplanet parameters (simple keyword=value text file)
+- Rename Save to Export.
 - Cloud controls.  Noise parameters and thresholds.
 - More control over cloud undersides, shadowing etc (c.f on/off in POVRay).
   (Add checkboxes to save dialog).
@@ -25,7 +27,6 @@
   might help break up subdivision ridge artefacts
 - "man" page instead/besides HTML
 - Make more keys do stuff in fly mode
-- Ability to load/save planet parameters (simple keyword=value text file)
 - Console mode app: read parameters, generate planet.
 - Fix river/lake hang for high subdivision levels
 - Perlin noise to modify terrain colours.

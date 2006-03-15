@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -236,6 +236,9 @@ public:
 
   //! Dump the mesh to the file in a form suitable for use by POVRay.
   void write_povray(std::ofstream& out,bool exclude_alternate_colour,bool double_illuminate,bool no_shadow) const;
+
+  //! Dump the mesh to the file in a form suitable for use by Blender.
+  void write_blender(std::ofstream& out) const;
 };
 
 //! A single triangle lying in the z-plane.

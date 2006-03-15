@@ -203,7 +203,11 @@ void FracplanetMain::save_pov()
     }
   else
     {
-      if (selected_filename.upper().endsWith(".POV") || selected_filename.upper().endsWith(".INC"))
+      if (!(selected_filename.upper().endsWith(".POV") || selected_filename.upper().endsWith(".INC")))
+	{
+	  QMessageBox::critical(this,"Fracplanet","File selected must have .pov or .inc suffix.");
+	}
+      else
 	{
 	  viewer->hide();
 
@@ -252,14 +256,44 @@ void FracplanetMain::save_pov()
 	      QMessageBox::critical(this,"Fracplanet","Errors ocurred while the files were being written.");
 	    }
 	}
-      else
-	{
-	  QMessageBox::critical(this,"Fracplanet","File selected must have .pov or .inc suffix.");
-	}
     }
 }
 
 void FracplanetMain::save_blender()
 {
-  QMessageBox::critical(this,"Fracplanet","Save for Blender not yet implemented.");
+  QString selected_filename=QFileDialog::getSaveFileName(".","Blender (*.py)",this,"Save object","Fracplanet");
+  if (selected_filename.isEmpty())
+    {
+      QMessageBox::critical(this,"Fracplanet","No file specified\nNothing saved");
+    }
+  else
+    {
+      viewer->hide();
+      
+      const std::string filename(selected_filename.local8Bit());
+	  
+      std::ofstream out(filename.c_str());
+      
+      // Boilerplate
+      out << "#!BPY\n\n";
+      out << "import Blender\n";
+      out << "from Blender import NMesh, Material\n";
+  
+      mesh_terrain->write_blender(out,parameters_save,parameters_terrain);
+      if (mesh_cloud) mesh_cloud->write_blender(out,parameters_save,parameters_cloud);
+	  
+      out.close();
+
+      POVMode::pov_mode(false);
+	  
+      progress_dialog.reset(0);
+      
+      viewer->showNormal();
+      viewer->raise();
+	  
+      if (!out) 
+	{
+	  QMessageBox::critical(this,"Fracplanet","Errors ocurred while the files were being written.");
+	}
+    }
 }

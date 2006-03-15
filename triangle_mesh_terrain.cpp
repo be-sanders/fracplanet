@@ -421,6 +421,12 @@ void TriangleMeshTerrain::do_terrain(const ParametersTerrain& parameters)
   set_emissive(parameters.oceans_and_rivers_emissive);
 }
 
+void TriangleMeshTerrain::write_blender(std::ofstream& out,const ParametersSave&,const ParametersTerrain&) const
+{
+  TriangleMesh::write_blender(out);
+}
+
+
 TriangleMeshTerrainPlanet::TriangleMeshTerrainPlanet(const ParametersTerrain& parameters,Progress* progress)
   :TriangleMesh(progress)
   ,TriangleMeshTerrain(progress)

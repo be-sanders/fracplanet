@@ -305,6 +305,13 @@ void TriangleMesh::write_povray(std::ofstream& out,bool exclude_alternate_colour
   progress_complete("Wrote mesh to POV-Ray file");
 }
 
+void TriangleMesh::write_blender(std::ofstream& out) const
+{
+  out << "# Not yet implemented\n";
+  std::cerr << "TriangleMesh::write_blender : not yet implemented\n";
+}
+
+
 TriangleMeshFlat::TriangleMeshFlat(Parameters::ObjectType obj,float z,uint seed,Progress* progress)
 :TriangleMesh(progress)
  ,_geometry(seed)
