@@ -194,7 +194,7 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
   viewer->raise();
 }
 
-void FracplanetMain::save()
+void FracplanetMain::save_pov()
 {
   QString selected_filename=QFileDialog::getSaveFileName(".","POV-Ray (*.pov *.inc)",this,"Save object","Fracplanet: a .pov AND .inc file will be written");
   if (selected_filename.isEmpty())
@@ -257,4 +257,9 @@ void FracplanetMain::save()
 	  QMessageBox::critical(this,"Fracplanet","File selected must have .pov or .inc suffix.");
 	}
     }
+}
+
+void FracplanetMain::save_blender()
+{
+  QMessageBox::critical(this,"Fracplanet","Save for Blender not yet implemented.");
 }

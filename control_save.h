@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,20 +22,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _control_save_h_
 #define _control_save_h_
 
-#include <qhbox.h>
 #include <qvbox.h>
-#include <qlabel.h>
-#include <qgroupbox.h>
-#include <qcheckbox.h>
-#include <qpushbutton.h>
-#include <qprogressbar.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
-#include <qgrid.h>
-#include <qtooltip.h>
-#include <qradiobutton.h>
-#include <qhbuttongroup.h>
-#include <qslider.h>
+#include <qwidget.h>
 
 #include "useful.h"
 #include "parameters_save.h"
@@ -49,30 +37,16 @@ class ControlSave : public QVBox
   Q_OBJECT
  
  protected:
-  //! Ther parameters set we control
+  //! The parameters set we control
   ParametersSave*const parameters;
   
-  QCheckBox* atmosphere_checkbox;
-  QCheckBox* sea_object_checkbox;
-
-  QPushButton* save;
-
-  QVBox* padding;
-
  public:
   ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersSave* param);
-  virtual ~ControlSave()
-    {}
+  virtual ~ControlSave();
 
   public slots:
-    void setAtmosphere(int v)
-    {
-      parameters->atmosphere=(v==2);
-    }
-  void setSeaSphere(int v)
-    {
-      parameters->sea_object=(v==2);
-    }
+   void setAtmosphere(int v);
+   void setSeaSphere(int v);
 };
 
 

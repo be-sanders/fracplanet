@@ -358,7 +358,7 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  colour_cloud_button,SLOT(setEnabled(bool))
 	  );
   
-  padding=new QVBox(this);	  
+  setStretchFactor(new QVBox(this),1);
  
   regenerate_button=new QPushButton("Regenerate",this);
   connect(
@@ -388,9 +388,9 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   connect(
 	  clouds_checkbox,SIGNAL(toggled(bool)),
 	  regenerate_with_new_clouds_seed_button,SLOT(setEnabled(bool))
-    );
+	  );
 
-  setStretchFactor(padding,1);
+  setStretchFactor(new QVBox(this),1);
 }
 
 void ControlTerrain::regenerate_with_new_terrain_seed()

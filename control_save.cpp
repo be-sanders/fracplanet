@@ -21,9 +21,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersSave* param)
   :QVBox(parent)
-   ,parameters(param)
+  ,parameters(param)
 {
-  atmosphere_checkbox=new QCheckBox("Add atmosphere",this);
+  QTabWidget*const tabs=new QTabWidget(this);
+  QVBox*const tab_pov=new QVBox(this);
+  tabs->addTab(tab_pov,"POV-Ray");
+
+  QCheckBox*const atmosphere_checkbox=new QCheckBox("Add atmosphere",tab_pov);
   atmosphere_checkbox->setChecked(parameters->atmosphere);
   QToolTip::add(atmosphere_checkbox,"Select to add an atmosphere");
   connect(
@@ -31,7 +35,7 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
 	  this,SLOT(setAtmosphere(int))
 	  );
 
-  sea_object_checkbox=new QCheckBox("Sea as single object",this);
+  QCheckBox*const sea_object_checkbox=new QCheckBox("Sea as single object",tab_pov);
   sea_object_checkbox->setChecked(parameters->sea_object);  
   QToolTip::add(sea_object_checkbox,"Select to emit a single object (instead of multiple triangles) for the sea surface");
   connect(
@@ -39,13 +43,41 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
 	  this,SLOT(setSeaSphere(int))
 	  );
 
-  save=new QPushButton("Save (POV-Ray)",this);
-  QToolTip::add(save,"Press to save object for POV-Ray");
+  setStretchFactor(new QVBox(tab_pov),1);
+
+  QPushButton*const save_pov=new QPushButton("Save (POV-Ray)",tab_pov);
+  QToolTip::add(save_pov,"Press to save object for POV-Ray");
   connect(
-	  save,SIGNAL(clicked()),
-	  save_target,SLOT(save())
+	  save_pov,SIGNAL(clicked()),
+	  save_target,SLOT(save_pov())
 	  );
 
-  padding=new QVBox(this);
-  setStretchFactor(padding,1);
+  setStretchFactor(new QVBox(tab_pov),1);
+
+  QVBox*const tab_blender=new QVBox(this);
+  tabs->addTab(tab_blender,"Blender");
+
+  setStretchFactor(new QVBox(tab_blender),1);
+
+  QPushButton*const save_blender=new QPushButton("Save (Blender)",tab_blender);
+  QToolTip::add(save_blender,"Press to save object for Blender");
+  connect(
+	  save_blender,SIGNAL(clicked()),
+	  save_target,SLOT(save_blender())
+	  );
+
+  setStretchFactor(new QVBox(tab_blender),1);
+}
+
+ControlSave::~ControlSave()
+{}
+
+void ControlSave::setAtmosphere(int v)
+{
+  parameters->atmosphere=(v==2);
+}
+
+void ControlSave::setSeaSphere(int v)
+{
+  parameters->sea_object=(v==2);
 }

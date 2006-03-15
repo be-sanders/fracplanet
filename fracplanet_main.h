@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -106,8 +106,11 @@ protected:
   //! Invoked by ControlTerrain to generate new TriangleMesh.
   void regenerate();
   
-  //! Invoked by ControlSave to save to file.
-  void save();
+  //! Invoked by ControlSave to save to file (POV-Ray format).
+  void save_pov();
+
+  //! Invoked by ControlSave to save to file (Blender format).
+  void save_blender();
 };
 
 #endif
