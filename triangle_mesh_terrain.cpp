@@ -441,7 +441,7 @@ void TriangleMeshTerrainPlanet::write_povray(std::ofstream& out,const Parameters
     {
       out 
 	<< "sphere {<0.0,0.0,0.0>,1.0 pigment{rgb "
-	<< parameters_terrain.colour_ocean
+	<< format_pov_rgb(parameters_terrain.colour_ocean)
 	<< "} finish {ambient " 
 	<< emissive() 
 	<< " diffuse " 
@@ -475,7 +475,7 @@ void TriangleMeshTerrainFlat::write_povray(std::ofstream& out,const ParametersSa
     {
       out
 	<< "plane {<0.0,1.0,0.0>,0.0 pigment{rgb "
-	<< parameters_terrain.colour_ocean
+	<< format_pov_rgb(parameters_terrain.colour_ocean)
 	<< "} finish {ambient " 
 	<< emissive() 
 	<< " diffuse " 

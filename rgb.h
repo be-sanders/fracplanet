@@ -176,6 +176,9 @@ public:
   std::ostream& write(std::ostream&) const;
 };
 
+const std::string format_pov_rgb(const FloatRGBA&);
+const std::string format_pov_rgbf(const FloatRGBA&);
+
 //! Colour equality operator.
 inline bool operator==(const FloatRGBA& a,const FloatRGBA& b)
 {

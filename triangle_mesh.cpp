@@ -235,7 +235,7 @@ void TriangleMesh::write_povray(std::ofstream& out,bool exclude_alternate_colour
       
       if (v!=0)
 	out << ",";
-      out << vertex(v).position() << "\n";
+      out << format_pov(vertex(v).position()) << "\n";
     }
   out << "}\n";
   
@@ -249,19 +249,12 @@ void TriangleMesh::write_povray(std::ofstream& out,bool exclude_alternate_colour
 	step++;
 	progress_step((100*step)/steps);
 	
+	out << "texture{pigment{";
 	const FloatRGBA colour(vertex(v).colour(c));
-	if (colour.a==1.0f)
-	  {
-	    out << "texture{pigment{rgb <";
-	    out << colour.r << "," << colour.g << "," << colour.b;
-	    out << ">}";
-	  }
-	else
-	  {
-	    out << "texture{pigment{rgbf <";
-	    out << colour.r << "," << colour.g << "," << colour.b << "," << 1.0-colour.a;
-	    out << ">}";
-	  }
+	if (colour.a==1.0f) out << "rgb " << format_pov_rgb(colour);
+	else out << "rgbf " << format_pov_rgbf(colour);
+	out << "}";
+
 	if (emissive()!=0.0f && vertex(v).colour(c).a==0)
 	  {
 	    out << " finish{ambient " << emissive() << " diffuse " << 1.0f-emissive() << "}";
@@ -307,10 +300,32 @@ void TriangleMesh::write_povray(std::ofstream& out,bool exclude_alternate_colour
 
 void TriangleMesh::write_blender(std::ofstream& out) const
 {
-  out << "# Not yet implemented\n";
-  std::cerr << "TriangleMesh::write_blender : not yet implemented\n";
-}
+  const uint steps=vertices()+triangles();
+  uint step=0;
+  progress_start(100,"Writing mesh to Blender file");
 
+  out << "m=NMesh.GetRaw()\n";
+  out << "\n";
+  out << "mat=Material.New()\n";
+  out << "mat.rgbCol=[1.0,1.0,1.0]\n";
+  out << "mat.mode=Material.Modes.VCOL_PAINT\n";
+  out << "\n";
+  out << "m.materials.append(mat)\n";
+  out << "m.hasVertexColours(1)\n";
+  out << "\n";
+
+  for (uint v=0;v<vertices();v++)
+    {
+      step++;
+      progress_step((100*step)/steps);      
+      out << "v(m," << format_comma(vertex(v).position()) << ")\n";
+    }
+
+  out << "NMesh.PutRaw(m,\"fracplanet.terrain\",1)\n";
+  out << "Blender.Redraw()\n";
+
+  progress_complete("Wrote mesh to Blender file");  
+}
 
 TriangleMeshFlat::TriangleMeshFlat(Parameters::ObjectType obj,float z,uint seed,Progress* progress)
 :TriangleMesh(progress)

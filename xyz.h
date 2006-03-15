@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "useful.h"
 #include "random.h"
-#include "pov_mode.h"
 
 //! Class to hold vectors in 3D cartesian co-ordinates.
 /*! Direct access to the x,y,z members is permitted.
@@ -142,7 +141,6 @@ class XYZ
 
   //! Write the vector.
   std::ostream& write(std::ostream&) const;
-
 };
 
 //! Cross product.
@@ -222,12 +220,13 @@ inline void XYZ::normalise()
 }
 
 //! Stream output operator.
-/*! Calls write(), which implements POV-Ray format output when required.
- */
 inline std::ostream& operator<<(std::ostream& out,const XYZ& v)
 {
   return v.write(out);
 }
+
+const std::string format_comma(const XYZ&);
+const std::string format_pov(const XYZ&);
 
 //! Generates a random point in the cube bounded by (0,0,0) and (1.0,1.0,1.0)
 class RandomXYZInUnitCube : public XYZ
@@ -263,7 +262,6 @@ class RandomXYZSphereNormal : public XYZ
  public:
   RandomXYZSphereNormal(Random01& rng);
 };
-
 
 #endif
 

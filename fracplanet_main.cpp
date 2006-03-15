@@ -211,8 +211,6 @@ void FracplanetMain::save_pov()
 	{
 	  viewer->hide();
 
-	  POVMode::pov_mode(true);
-
 	  const std::string filename_base(selected_filename.left(selected_filename.length()-4).local8Bit());
 	  const std::string filename_pov=filename_base+".pov";
 	  const std::string filename_inc=filename_base+".inc";
@@ -241,8 +239,6 @@ void FracplanetMain::save_pov()
 	  
 	  out_pov.close();
 	  out_inc.close();
-
-	  POVMode::pov_mode(false);
 
 	  const bool ok=(out_pov && out_inc);
 	  
@@ -278,14 +274,17 @@ void FracplanetMain::save_blender()
       out << "#!BPY\n\n";
       out << "import Blender\n";
       out << "from Blender import NMesh, Material\n";
-  
+      out << "\n";
+      out << "def v(mesh,x,y,z):\n";
+      out << "\tmesh.verts.append(NMesh.Vert(x,y,z))\n";
+      out << "\n";
+      out << "\n";
+	
       mesh_terrain->write_blender(out,parameters_save,parameters_terrain);
       if (mesh_cloud) mesh_cloud->write_blender(out,parameters_save,parameters_cloud);
 	  
       out.close();
 
-      POVMode::pov_mode(false);
-	  
       progress_dialog.reset(0);
       
       viewer->showNormal();

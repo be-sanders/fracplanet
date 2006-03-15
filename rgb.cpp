@@ -18,17 +18,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 /* Copyright (C) 1998 T Day */
 
 #include <iostream>
+#include <sstream>
+
 #include "rgb.h"
-#include "pov_mode.h"
 
 /*! State of pov_mode() determines output format
  */
 std::ostream& FloatRGBA::write(std::ostream& out) const
 {
-  if (POVMode::pov_mode())  
-    return out << "<" << r << "," << g << "," << b << ">"; //! \todo Probably need something for alpha here
-  else
-    return out << r << " " << g << " " << b << " " << a;
+  return out << r << " " << g << " " << b << " " << a;
 }
 
+const std::string format_pov_rgb(const FloatRGBA& c)
+{
+  std::ostringstream msg;
+  msg << "<" << c.r << "," << c.g << "," << c.b << ">";
+  return msg.str();
+}
 
+const std::string format_pov_rgbf(const FloatRGBA& c)
+{
+  std::ostringstream msg;
+  msg << "<" << c.r << "," << c.g << "," << c.b << "," << 1.0f-c.a << ">";
+  return msg.str();
+}

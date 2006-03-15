@@ -17,8 +17,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include "xyz.h"
-#include "pov_mode.h"
+
 #include <iostream>
+#include <sstream>
 
 /*! Table so we can look up by element number.
  */
@@ -30,10 +31,21 @@ XYZ::ElementPtr XYZ::element_table[3]={&XYZ::x,&XYZ::y,&XYZ::z};
  */
 std::ostream& XYZ::write(std::ostream& out) const
 {
-  if (POVMode::pov_mode())
-    return out << "<" << x << "," << z << "," << y << ">";
-  else
-    return out << x << " " << y << " " << z;
+  return out << x << " " << y << " " << z;
+}
+
+const std::string format_comma(const XYZ& v)
+{
+  std::ostringstream msg;
+  msg << v.x << "," << v.y << "," << v.z;
+  return msg.str();
+}
+
+const std::string format_pov(const XYZ& v)
+{
+  std::ostringstream msg;
+  msg << "<" << v.x << "," << v.z << "," << v.y << ">";
+  return msg.str();
 }
 
 RandomXYZInUnitCube::RandomXYZInUnitCube(Random01& rng)

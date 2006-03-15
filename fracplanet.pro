@@ -63,7 +63,6 @@ HEADERS += \
            parameters_render.h \
            parameters_save.h \
            parameters_terrain.h \
-           pov_mode.h \
            progress.h \
            random.h \
            rgb.h \
@@ -98,7 +97,6 @@ SOURCES += \
            parameters_render.cpp \
            parameters_save.cpp \
            parameters_terrain.cpp \
-           pov_mode.cpp \
            progress.cpp \
            random.cpp \
            rgb.cpp \
