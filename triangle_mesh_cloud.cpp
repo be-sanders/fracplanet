@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "triangle_mesh_cloud.h"
 #include "noise.h"
 #include "matrix34.h"
+#include "parameters_render.h"
 
 TriangleMeshCloud::TriangleMeshCloud(Progress* progress)
   :TriangleMesh(progress)
@@ -33,9 +34,14 @@ void TriangleMeshCloud::write_povray(std::ofstream& out,const ParametersSave&,co
   TriangleMesh::write_povray(out,false,true,true);
 }
 
-void TriangleMeshCloud::write_blender(std::ofstream& out,const ParametersSave&,const ParametersCloud&,const std::string& mesh_name) const
+void TriangleMeshCloud::write_blender(std::ofstream& out,const ParametersSave& parameters_save,const ParametersCloud&,const std::string& mesh_name) const
 {
-  TriangleMesh::write_blender(out,mesh_name+".cloud");
+  TriangleMesh::write_blender
+    (
+     out,
+     mesh_name+".cloud",
+     (parameters_save.blender_per_vertex_alpha ? 0 : &parameters_save.parameters_render->background_colour_low)
+     );
 }
 
 void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)

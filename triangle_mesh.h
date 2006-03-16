@@ -56,7 +56,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 class TriangleMesh
 {
-protected:
+ private:
+  //! Fake per-vertex alpha for Blender.
+  static ByteRGBA blender_alpha_workround(const ByteRGBA*,const ByteRGBA&);
+
+ protected:
   //! The vertices of this mesh.
   std::vector<Vertex> _vertex;
 
@@ -238,7 +242,7 @@ public:
   void write_povray(std::ofstream& out,bool exclude_alternate_colour,bool double_illuminate,bool no_shadow) const;
 
   //! Dump the mesh to the file in a form suitable for use by Blender.
-  void write_blender(std::ofstream& out,const std::string& mesh_name) const;
+  void write_blender(std::ofstream& out,const std::string& mesh_name,const FloatRGBA* fake_alpha) const;
 };
 
 //! A single triangle lying in the z-plane.

@@ -47,6 +47,7 @@ class ControlSave : public QVBox
   public slots:
    void setAtmosphere(int v);
    void setSeaSphere(int v);
+   void setPerVertexAlpha(int v);
 };
 
 

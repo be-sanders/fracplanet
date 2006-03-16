@@ -4,6 +4,8 @@
   for terrain colours, heights, and specular (mainly for sea... and snow ?)
 
 -----
+
+- Scale factor for blender output.
 - Ability to load/save fracplanet parameters (simple keyword=value text file)
 - Rename Save to Export.
 - Cloud controls.  Noise parameters and thresholds.

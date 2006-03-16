@@ -25,24 +25,30 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "useful.h"
 
+class ParametersRender;
+
 //! Aggregates controllable parameters for all things related to save.
 class ParametersSave
 {
  public:
   //! Whether to emit an atmosphere object to POV file.
-  bool atmosphere;
+  bool pov_atmosphere;
 
   //! Whether to emit a single sea-level object to POV file.
-  bool sea_object;
+  bool pov_sea_object;
+
+  //! Whether to try using per-vertex-alpha in the blender output.
+  bool blender_per_vertex_alpha;
   
-  //! Base filename for save.
-  std::string basename;
+  //! Save for blender needs access to some of these.
+  const ParametersRender*const parameters_render;
 
   //! Constructor.
-  ParametersSave()
-    :atmosphere(false)
-    ,sea_object(true)
-    ,basename("terrain")
+  ParametersSave(const ParametersRender* pr)
+    :pov_atmosphere(false)
+    ,pov_sea_object(true)
+    ,blender_per_vertex_alpha(false)
+    ,parameters_render(pr)
     {}
 
   //! Destructor.

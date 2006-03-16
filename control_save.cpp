@@ -28,7 +28,7 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
   tabs->addTab(tab_pov,"POV-Ray");
 
   QCheckBox*const atmosphere_checkbox=new QCheckBox("Add atmosphere",tab_pov);
-  atmosphere_checkbox->setChecked(parameters->atmosphere);
+  atmosphere_checkbox->setChecked(parameters->pov_atmosphere);
   QToolTip::add(atmosphere_checkbox,"Select to add an atmosphere");
   connect(
 	  atmosphere_checkbox,SIGNAL(stateChanged(int)),
@@ -36,7 +36,7 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
 	  );
 
   QCheckBox*const sea_object_checkbox=new QCheckBox("Sea as single object",tab_pov);
-  sea_object_checkbox->setChecked(parameters->sea_object);  
+  sea_object_checkbox->setChecked(parameters->pov_sea_object);  
   QToolTip::add(sea_object_checkbox,"Select to emit a single object (instead of multiple triangles) for the sea surface");
   connect(
 	  sea_object_checkbox,SIGNAL(stateChanged(int)),
@@ -59,7 +59,13 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
 
   setStretchFactor(new QVBox(tab_blender),1);
 
-  new QLabel("Known bugs:\nCloud-layer alpha not recognised by Blender.\nEmissive terrain not supported.\n",tab_blender,0);
+  QCheckBox*const per_vertex_alpha=new QCheckBox("Use per-vertex alpha (for clouds)",tab_blender);
+  per_vertex_alpha->setChecked(parameters->blender_per_vertex_alpha);
+  QToolTip::add(per_vertex_alpha,"Unfortunately Blender seems to ignore alpha components supplied with per-vertex\ncolours so a workround is normally used.\nCheck this box to save as if per-vertex alpha worked.");
+  connect(
+	  per_vertex_alpha,SIGNAL(stateChanged(int)),
+	  this,SLOT(setPerVertexAlpha(int))
+	  );
 
   setStretchFactor(new QVBox(tab_blender),1);
 
@@ -78,10 +84,15 @@ ControlSave::~ControlSave()
 
 void ControlSave::setAtmosphere(int v)
 {
-  parameters->atmosphere=(v==2);
+  parameters->pov_atmosphere=(v==2);
 }
 
 void ControlSave::setSeaSphere(int v)
 {
-  parameters->sea_object=(v==2);
+  parameters->pov_sea_object=(v==2);
+}
+
+void ControlSave::setPerVertexAlpha(int v)
+{
+  parameters->blender_per_vertex_alpha=(v==2);
 }

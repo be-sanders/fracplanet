@@ -423,7 +423,7 @@ void TriangleMeshTerrain::do_terrain(const ParametersTerrain& parameters)
 
 void TriangleMeshTerrain::write_blender(std::ofstream& out,const ParametersSave&,const ParametersTerrain&,const std::string& mesh_name) const
 {
-  TriangleMesh::write_blender(out,mesh_name+".terrain");
+  TriangleMesh::write_blender(out,mesh_name+".terrain",0);
 }
 
 
@@ -437,7 +437,7 @@ TriangleMeshTerrainPlanet::TriangleMeshTerrainPlanet(const ParametersTerrain& pa
 
 void TriangleMeshTerrainPlanet::write_povray(std::ofstream& out,const ParametersSave& param_save,const ParametersTerrain& parameters_terrain) const
 {
-  if (param_save.sea_object)
+  if (param_save.pov_sea_object)
     {
       out 
 	<< "sphere {<0.0,0.0,0.0>,1.0 pigment{rgb "
@@ -449,14 +449,14 @@ void TriangleMeshTerrainPlanet::write_povray(std::ofstream& out,const Parameters
 	<< "}}\n";
     }
   
-  if (param_save.atmosphere)
+  if (param_save.pov_atmosphere)
     {
       out
 	<< "sphere {<0.0,0.0,0.0>,1.025 hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <1.0,1.0,1.0> extinction 1}}}}\n"
 	<< "sphere {<0.0,0.0,0.0>,1.05  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
     }
   
-  TriangleMesh::write_povray(out,param_save.sea_object,false,false); // Don't double illuminate.  Don't no-shadow.
+  TriangleMesh::write_povray(out,param_save.pov_sea_object,false,false); // Don't double illuminate.  Don't no-shadow.
 }
 
 TriangleMeshTerrainFlat::TriangleMeshTerrainFlat(const ParametersTerrain& parameters,Progress* progress)
@@ -471,7 +471,7 @@ TriangleMeshTerrainFlat::TriangleMeshTerrainFlat(const ParametersTerrain& parame
 
 void TriangleMeshTerrainFlat::write_povray(std::ofstream& out,const ParametersSave& param_save,const ParametersTerrain& parameters_terrain) const
 {
-  if (param_save.sea_object)
+  if (param_save.pov_sea_object)
     {
       out
 	<< "plane {<0.0,1.0,0.0>,0.0 pigment{rgb "
@@ -483,12 +483,12 @@ void TriangleMeshTerrainFlat::write_povray(std::ofstream& out,const ParametersSa
 	<< "}}\n";
     }
   
-  if (param_save.atmosphere)
+  if (param_save.pov_atmosphere)
     {
       out
 	<< "plane {<0.0,1.0,0.0>,0.05 hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <1.0,1.0,1.0> extinction 1}}}}\n"
 	<< "plane {<0.0,1.0,0.0>,0.1  hollow texture {pigment {color rgbf 1}} interior{media{scattering{1,color rgb <0.0,0.0,1.0> extinction 1}}}}\n";
     }
   
-  TriangleMesh::write_povray(out,param_save.sea_object,false,false); // Don't double illuminate.  Don't no-shadow.
+  TriangleMesh::write_povray(out,param_save.pov_sea_object,false,false); // Don't double illuminate.  Don't no-shadow.
 }
