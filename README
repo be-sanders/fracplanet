@@ -118,25 +118,12 @@ and some HTML user documentation (fracplanet.htm and fracplanet.css ) in
   /usr/local/share/doc/fracplanet
 Obviously you'll probably need to be root for this stage.
 
-RAY TRACING OUTPUT
-==================
-Once you've run fracplanet and saved a planet/landscape 
-(as e.g terrain.pov and terrain.inc), do e.g
-  povray -Q9 -geometry 768x576 terrain.pov
-Expect to get MANY "determinant too small" messages, 
-especially when using high degrees of subdivision.
-It takes POVRay a LOT longer to read large models than
-to render them, so make the most of it once it's loaded
-and use POVRay's animation capabilities to the max.
-
-[Note: the author has only tested with povray 1.5; if there
-are any problems with the newer 1.6 please let me know].
-
 BUILDING CODE DOCUMENTATION
 ===========================
 If you have doxygen (and graphviz) and want to build the code documentation
 subdirectory too, execute 
   ./mkdoc
+The comments may not be particularly useful, or up to date :^)
 
 THANKS
 ======

@@ -235,7 +235,7 @@ void TriangleMesh::write_povray(std::ofstream& out,bool exclude_alternate_colour
       
       if (v!=0)
 	out << ",";
-      out << format_pov(vertex(v).position()) << "\n";
+      out << vertex(v).position().format_pov() << "\n";
     }
   out << "}\n";
   
@@ -251,8 +251,8 @@ void TriangleMesh::write_povray(std::ofstream& out,bool exclude_alternate_colour
 	
 	out << "texture{pigment{";
 	const FloatRGBA colour(vertex(v).colour(c));
-	if (colour.a==1.0f) out << "rgb " << format_pov_rgb(colour);
-	else out << "rgbf " << format_pov_rgbf(colour);
+	if (colour.a==1.0f) out << "rgb " << colour.format_pov_rgb();
+	else out << "rgbf " << colour.format_pov_rgbf();
 	out << "}";
 
 	if (emissive()!=0.0f && vertex(v).colour(c).a==0)
@@ -298,19 +298,28 @@ void TriangleMesh::write_povray(std::ofstream& out,bool exclude_alternate_colour
   progress_complete("Wrote mesh to POV-Ray file");
 }
 
-void TriangleMesh::write_blender(std::ofstream& out) const
+void TriangleMesh::write_blender(std::ofstream& out,const std::string& mesh_name) const
 {
   const uint steps=vertices()+triangles();
   uint step=0;
-  progress_start(100,"Writing mesh to Blender file");
 
+  {
+    std::ostringstream msg;
+    msg << "Writing mesh " << mesh_name << " to Blender file";
+    progress_start(100,msg.str());
+  }
+
+  out << "mat0=Material.New()\n";
+  out << "mat0.rgbCol=[0.0,1.0,0.0]\n"; 
+  out << "mat0.mode=Material.Modes.VCOL_PAINT\n";
+  out << "\n";
+  out << "mat1=Material.New()\n";
+  out << "mat1.rgbCol=[0.0,0.0,1.0]\n";
+  out << "mat1.mode=Material.Modes.VCOL_PAINT\n";
+  out << "\n";
   out << "m=NMesh.GetRaw()\n";
-  out << "\n";
-  out << "mat=Material.New()\n";
-  out << "mat.rgbCol=[1.0,1.0,1.0]\n";
-  out << "mat.mode=Material.Modes.VCOL_PAINT\n";
-  out << "\n";
-  out << "m.materials.append(mat)\n";
+  out << "m.materials.append(mat0)\n";
+  out << "m.materials.append(mat1)\n";
   out << "m.hasVertexColours(1)\n";
   out << "\n";
 
@@ -318,13 +327,38 @@ void TriangleMesh::write_blender(std::ofstream& out) const
     {
       step++;
       progress_step((100*step)/steps);      
-      out << "v(m," << format_comma(vertex(v).position()) << ")\n";
+      out << "v(m," << vertex(v).position().format_blender() << ")\n";
     }
 
-  out << "NMesh.PutRaw(m,\"fracplanet.terrain\",1)\n";
-  out << "Blender.Redraw()\n";
+  out << "\n";
 
-  progress_complete("Wrote mesh to Blender file");  
+  for (uint t=0;t<triangles();t++)
+    {
+      step++;
+      progress_step((100*step)/steps);
+      const uint v0=triangle(t).vertex(0);
+      const uint v1=triangle(t).vertex(1);
+      const uint v2=triangle(t).vertex(2);
+      const uint c=(t<triangles_of_colour0() ? 0 : 1);
+      out
+	<< "f(m,"
+	<< c << ","
+	<< v0 << ","
+	<< triangle(t).vertex(1) << ","
+	<< triangle(t).vertex(2) << ","
+	<< "(" << vertex(v0).colour(c).format_comma() << "),"
+	<< "(" << vertex(v1).colour(c).format_comma() << "),"
+	<< "(" << vertex(v2).colour(c).format_comma() << ")"
+	<< ")\n";
+    }
+
+  out << "\n";
+  out << "NMesh.PutRaw(m,\"" << mesh_name << "\",1)\n";
+  out << "\n";
+  
+  std::ostringstream msg;
+  msg << "Wrote mesh " << mesh_name << " to Blender file";  
+  progress_complete(msg.str());  
 }
 
 TriangleMeshFlat::TriangleMeshFlat(Parameters::ObjectType obj,float z,uint seed,Progress* progress)

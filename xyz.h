@@ -139,8 +139,17 @@ class XYZ
   //! Normalise this vector.
   void normalise();
 
-  //! Write the vector.
+  //! Write the vector (spaces as separators).
   std::ostream& write(std::ostream&) const;
+
+  //! Alternate formatting.
+  const std::string format_comma() const;
+
+  //! Alternate formatting.
+  const std::string format_blender() const;
+
+  //! Alternate formatting.
+  const std::string format_pov() const;
 };
 
 //! Cross product.
@@ -224,9 +233,6 @@ inline std::ostream& operator<<(std::ostream& out,const XYZ& v)
 {
   return v.write(out);
 }
-
-const std::string format_comma(const XYZ&);
-const std::string format_pov(const XYZ&);
 
 //! Generates a random point in the cube bounded by (0,0,0) and (1.0,1.0,1.0)
 class RandomXYZInUnitCube : public XYZ

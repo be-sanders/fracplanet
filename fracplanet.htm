@@ -282,8 +282,8 @@
 <h3>Save tab</h3>
 
 <p>
-  There are currently two supported save formats; POV-Ray and Blender (under construction).
-  Strictly speaking it's Export which is provided, not save, as fracplanet's state cannot be restored.
+  There are currently two supported save formats; POV-Ray and Blender.
+  Strictly speaking it's Export which is provided, not save, as fracplanet's state cannot be restored (yet).
 </p>
 
 <h4>POV-Ray</h4>
@@ -313,17 +313,25 @@
   </dd>
 </dl>
 
+<p>
+  There are additional comments on usage with POV-Ray <a href="#pov">below</a>.
+</p>
+
 <h4>Blender</h4>
 
 <dl>
   <dt>Save (Blender)</dt>
   <dd>
-    Click this button to create a file which can be imported into Blender.
+    Click this button to create a file (a file dialog will appear) which can be imported into Blender.
     Note that the save file takes the form of a Python script (traditionally a <code>.py</code> file extension)
-    which can be executed by Blender to reconstruct the fracplanet model; an easy way to do this is to provide 
-    a <code>-P &lt;filename&gt;</code> command-line argument to Blender.
+    which can be executed by Blender to reconstruct the fracplanet model.
   </dd>
 </dl>
+
+<p>
+  There are additional comments on usage with Blender <a href="#blender">below</a>.
+</p>
+
 
 <h3>Render tab</h3>
 
@@ -380,11 +388,18 @@
   Hit Esc to return to the normal viewing mode.
 </p>
 
-<h2>Ray-tracing with POV-Ray</h2>
+<a name="pov"><h2>Ray-tracing with POV-Ray</h2></a>
 
 <p>
   To ray-trace a saved terrain (saved as terrain.pov and terrain.inc, say) do:<br/>
   <code>povray -Q9 -geometry 768x576 terrain.pov</code>
+  Expect to get MANY "determinant too small" messages, 
+  especially when using high degrees of subdivision.
+  It used to take POVRay a LOT longer to read large models than
+  to render them, but it seems to much faster these days.
+</p>
+
+<p>
   Note that clouds, if generated, are output using POV-Ray's <code>double_illuminate</code>
   and <code>no_shadow</code> declarations.
   <code>double_illuminate</code> means that both sides of clouds are the same colour
@@ -392,6 +407,49 @@
   <code>no_shadow</code> means that the clouds cast no shadow on the ground
   (where the clouds are solid, the shadows are completely black, which looks more unnatural than no shadows).
   If desired, the declarations can be found at the end of the saved .inc file and simply edited out.
+</p>
+
+<p>
+  (The author currently uses POV-Ray 3.5).
+</p>
+
+<a name="blender"><h2>Loading into Blender</h2></a>
+
+<p>
+  The easiest way to load mesh saved for blender is with blender's <code>-P &lt;filename.py&gt;</code>
+  command line argument.
+</p>
+
+<p>
+  Blender consumes an alarming amount of memory.
+  Even loading a planet generated with fracplanet's default five levels of subdivision
+  consumes a quarter of a gigabyte of RAM.
+</p>
+
+<p>
+  Blender's per-vertex-colours capability seems to ignore the alpha component of per-vertex colours,
+  with the result that the cloud layer is rendered as a solid opaque colour.
+  <em>If anyone has a solution to this it would be gratefully received.
+  I suspect there is just some material flag needs setting.</em>
+</p>
+
+<p>
+  The terrain is output with 2 materials.
+  Material 0 is for land facets, material 1 for the sea.
+  This may be useful for users wanting to give them different shader properties.
+</p>
+
+<p>
+  The mesh is loaded as &quot;fracplanet.terrain&quot;.
+  There will also be a &quot;fracplanet.cloud&quot; if clouds were enabled.
+</p>
+
+<p>
+  Emissive terrain isn't supported.
+</p>
+
+<p>
+  (The author currently uses Blender 2.36).
 </p>
 
 <h2>License</h2>

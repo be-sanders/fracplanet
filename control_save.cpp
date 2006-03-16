@@ -59,6 +59,10 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
 
   setStretchFactor(new QVBox(tab_blender),1);
 
+  new QLabel("Known bugs:\nCloud-layer alpha not recognised by Blender.\nEmissive terrain not supported.\n",tab_blender,0);
+
+  setStretchFactor(new QVBox(tab_blender),1);
+
   QPushButton*const save_blender=new QPushButton("Save (Blender)",tab_blender);
   QToolTip::add(save_blender,"Press to save object for Blender");
   connect(

@@ -278,11 +278,25 @@ void FracplanetMain::save_blender()
       out << "def v(mesh,x,y,z):\n";
       out << "\tmesh.verts.append(NMesh.Vert(x,y,z))\n";
       out << "\n";
+      out << "def f(mesh,material,v0,v1,v2,c0,c1,c2):\n";
+      out << "\tface=NMesh.Face()\n";
+      out << "\tface.transp=NMesh.FaceTranspModes.ALPHA\n";
+      out << "\tface.smooth=1\n";
+      out << "\tface.mat=material\n";
+      out << "\tface.v.append(mesh.verts[v0])\n";
+      out << "\tface.v.append(mesh.verts[v1])\n";
+      out << "\tface.v.append(mesh.verts[v2])\n";
+      out << "\tface.col.append(NMesh.Col(c0[0],c0[1],c0[2],c0[3]))\n";
+      out << "\tface.col.append(NMesh.Col(c1[0],c1[1],c1[2],c1[3]))\n";
+      out << "\tface.col.append(NMesh.Col(c2[0],c2[1],c2[2],c2[3]))\n";
+      out << "\tmesh.faces.append(face)\n";
       out << "\n";
-	
-      mesh_terrain->write_blender(out,parameters_save,parameters_terrain);
-      if (mesh_cloud) mesh_cloud->write_blender(out,parameters_save,parameters_cloud);
+
+      mesh_terrain->write_blender(out,parameters_save,parameters_terrain,"fracplanet");
+      if (mesh_cloud) mesh_cloud->write_blender(out,parameters_save,parameters_cloud,"fracplanet");
 	  
+      out << "Blender.Redraw()\n";
+
       out.close();
 
       progress_dialog.reset(0);

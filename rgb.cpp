@@ -22,23 +22,33 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "rgb.h"
 
-/*! State of pov_mode() determines output format
- */
+std::ostream& ByteRGBA::write(std::ostream& out) const
+{
+  return out << static_cast<uint>(r) << " " << static_cast<uint>(g) << " " << static_cast<uint>(b) << " " << static_cast<uint>(a);
+}
+
+const std::string ByteRGBA::format_comma() const
+{
+  std::ostringstream s;
+  s << static_cast<uint>(r) << "," << static_cast<uint>(g) << "," << static_cast<uint>(b) << "," << static_cast<uint>(a);
+  return s.str();
+}
+
 std::ostream& FloatRGBA::write(std::ostream& out) const
 {
   return out << r << " " << g << " " << b << " " << a;
 }
 
-const std::string format_pov_rgb(const FloatRGBA& c)
+const std::string FloatRGBA::format_pov_rgb() const
 {
-  std::ostringstream msg;
-  msg << "<" << c.r << "," << c.g << "," << c.b << ">";
-  return msg.str();
+  std::ostringstream s;
+  s << "<" << r << "," << g << "," << b << ">";
+  return s.str();
 }
 
-const std::string format_pov_rgbf(const FloatRGBA& c)
+const std::string FloatRGBA::format_pov_rgbf() const
 {
-  std::ostringstream msg;
-  msg << "<" << c.r << "," << c.g << "," << c.b << "," << 1.0f-c.a << ">";
-  return msg.str();
+  std::ostringstream s;
+  s << "<" << r << "," << g << "," << b << "," << 1.0f-a << ">";
+  return s.str();
 }

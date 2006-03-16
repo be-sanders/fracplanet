@@ -92,7 +92,9 @@ class ByteRGBA
       b-=v.b;
       a-=v.a;
     }
-}; // Thought this might be needed to get size 4: '__attribute__((packed));' but it seems to be OK
+  std::ostream& write(std::ostream&) const;
+  const std::string format_comma() const;
+}; 
 
 //! Class to represent red-green-blue colours stored to floating point accuracy.
 /*! Direct access to class members is permitted.
@@ -174,10 +176,10 @@ public:
 
   //! Output method.
   std::ostream& write(std::ostream&) const;
-};
 
-const std::string format_pov_rgb(const FloatRGBA&);
-const std::string format_pov_rgbf(const FloatRGBA&);
+  const std::string format_pov_rgb() const;
+  const std::string format_pov_rgbf() const;
+};
 
 //! Colour equality operator.
 inline bool operator==(const FloatRGBA& a,const FloatRGBA& b)

@@ -421,9 +421,9 @@ void TriangleMeshTerrain::do_terrain(const ParametersTerrain& parameters)
   set_emissive(parameters.oceans_and_rivers_emissive);
 }
 
-void TriangleMeshTerrain::write_blender(std::ofstream& out,const ParametersSave&,const ParametersTerrain&) const
+void TriangleMeshTerrain::write_blender(std::ofstream& out,const ParametersSave&,const ParametersTerrain&,const std::string& mesh_name) const
 {
-  TriangleMesh::write_blender(out);
+  TriangleMesh::write_blender(out,mesh_name+".terrain");
 }
 
 
@@ -441,7 +441,7 @@ void TriangleMeshTerrainPlanet::write_povray(std::ofstream& out,const Parameters
     {
       out 
 	<< "sphere {<0.0,0.0,0.0>,1.0 pigment{rgb "
-	<< format_pov_rgb(parameters_terrain.colour_ocean)
+	<< parameters_terrain.colour_ocean.format_pov_rgb()
 	<< "} finish {ambient " 
 	<< emissive() 
 	<< " diffuse " 
@@ -475,7 +475,7 @@ void TriangleMeshTerrainFlat::write_povray(std::ofstream& out,const ParametersSa
     {
       out
 	<< "plane {<0.0,1.0,0.0>,0.0 pigment{rgb "
-	<< format_pov_rgb(parameters_terrain.colour_ocean)
+	<< parameters_terrain.colour_ocean.format_pov_rgb()
 	<< "} finish {ambient " 
 	<< emissive() 
 	<< " diffuse " 

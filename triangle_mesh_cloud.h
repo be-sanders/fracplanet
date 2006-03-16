@@ -48,7 +48,7 @@ class TriangleMeshCloud : virtual TriangleMesh
   virtual void write_povray(std::ofstream& out,const ParametersSave&,const ParametersCloud&) const;
 
   //! Dump mesh to file for Blender
-  virtual void write_blender(std::ofstream& out,const ParametersSave&,const ParametersCloud&) const;
+  virtual void write_blender(std::ofstream& out,const ParametersSave&,const ParametersCloud&,const std::string& mesh_name) const;
 };
 
 

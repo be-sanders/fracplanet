@@ -33,9 +33,9 @@ void TriangleMeshCloud::write_povray(std::ofstream& out,const ParametersSave&,co
   TriangleMesh::write_povray(out,false,true,true);
 }
 
-void TriangleMeshCloud::write_blender(std::ofstream& out,const ParametersSave&,const ParametersCloud&) const
+void TriangleMeshCloud::write_blender(std::ofstream& out,const ParametersSave&,const ParametersCloud&,const std::string& mesh_name) const
 {
-  TriangleMesh::write_blender(out);
+  TriangleMesh::write_blender(out,mesh_name+".cloud");
 }
 
 void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
