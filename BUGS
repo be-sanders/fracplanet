@@ -1,7 +1,8 @@
 - Blender seems to ignore alpha in the cloud layer, and renders
-  it as solid.  I assume there may just be some material flag which
-  needs setting, but haven't been able to discover a solution.
-  Any help appreciated.
+  it as solid.  It doesn't pass per-vertex alphas out to yafray either.
+  This may just be some material flag which needs setting, but haven't
+  been able to discover a solution.  Any help appreciated.
+  The workround is to emit an opaque pre-blended cloud layer.
 
 - River generation can be VERY slow (especially at high levels of subdivision)
   due to the time taken to fill up large lakes (just like in the real world,
@@ -14,5 +15,4 @@
 - Flat (non-planet) terrain mostly disappears when viewed from beneath due
   to back-face culling.
 
-- Save for Blender doesn't support emissive terrain.
-
+- Export to Blender doesn't support emissive terrain.

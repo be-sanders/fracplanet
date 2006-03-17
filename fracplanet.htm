@@ -320,6 +320,14 @@
 <h4>Blender</h4>
 
 <dl>
+  <dt>Per vertex alpha</dt>
+  <dd>
+    This check box selects Fracplanet's preferred method for outputting clouds:
+    by specifying per-vertex alpha components.
+    However, Blender seems to ignore these so a workround is used and an opaque cloud layer is output
+    (which should be ok if you fly underneath it and light it sensibly).
+    You probably don't want to switch this on.
+  </dd>
   <dt>Save (Blender)</dt>
   <dd>
     Click this button to create a file (a file dialog will appear) which can be imported into Blender.
@@ -332,12 +340,15 @@
   There are additional comments on usage with Blender <a href="#blender">below</a>.
 </p>
 
-
 <h3>Render tab</h3>
 
 <p>
   Options for OpenGL rendering appear on this tab.
-  Note that none of these currently makes any difference to the underlying mesh or POV-Ray's rendering of saved meshes.
+  Generally none of these makes any difference to the underlying mesh or the saved meshes.
+  (Exception: the &quot;low altitude&quot; colour is used when saving the cloud layer for Blender with the no-per-vertex-alpha workround.)
+</p>
+
+<p>
   Currently the options are a tickbox to select wireframe rendering,
   another to select display-list rendering (the default is immediate mode),
   another to select joystick mode for the mouse in flight mode
@@ -383,8 +394,8 @@
   Hitting the &quot;Fly&quot; button puts you into free-flight mode.
   Pitch and yaw are controlled by the mouse position relative to the window centre
   (if the pitch control feels backwards, invert mouse-Y behaviour on the render tab).
-  Roll is controlled by left/right mouse buttons, or the left/right arrow keys.
-  Speed is controlled by the mouse wheel or the up/down arrow keys.
+  Roll is controlled by left/right mouse buttons, or the keyboard left/right arrow keys.
+  Speed is controlled by the mouse wheel or the keyboard up/down arrow keys.
   Hit Esc to return to the normal viewing mode.
 </p>
 
@@ -396,7 +407,7 @@
   Expect to get MANY "determinant too small" messages, 
   especially when using high degrees of subdivision.
   It used to take POVRay a LOT longer to read large models than
-  to render them, but it seems to much faster these days.
+  to render them, but it seems to load much faster these days.
 </p>
 
 <p>
@@ -424,28 +435,41 @@
   Blender consumes an alarming amount of memory.
   Even loading a planet generated with fracplanet's default five levels of subdivision
   consumes a quarter of a gigabyte of RAM.
+  It would probably help if fracplanet made some effort to optimise its meshes,
+  and/or made use of textures rather than trying to do everything using geometry, but it doesn't yet.
 </p>
 
 <p>
   Blender's per-vertex-colours capability seems to ignore the alpha component of per-vertex colours,
   with the result that the cloud layer is rendered as a solid opaque colour.
-  <em>If anyone has a solution to this it would be gratefully received.
-  I suspect there is just some material flag needs setting.</em>
+  <em>If anyone has a solution to this it would be gratefully received.</em>
+  Fracplanet's workround is to output an opaque surface with the blending
+  (with the &quot;low altitude&quot; colour from the render tab controls) already done.
+  The &quot;per-vertex alpha&quot; checkbox switches to the preferred behaviour in case it ever gets fixed.
 </p>
 
 <p>
-  The terrain is output with 2 materials.
-  Material 0 is for land facets, material 1 for the sea.
+  Each mesh is output with 2 materials.
+  The clouds just use material 0.
+  For the terrain, material 0 is for land facets, material 1 for the sea.
   This may be useful for users wanting to give them different shader properties.
 </p>
 
 <p>
-  The mesh is loaded as &quot;fracplanet.terrain&quot;.
+  In Blender, the terrain mesh is named &quot;fracplanet.terrain&quot;.
   There will also be a &quot;fracplanet.cloud&quot; if clouds were enabled.
 </p>
 
 <p>
   Emissive terrain isn't supported.
+</p>
+
+<p>
+  If you want to manipulate the terrain, and know a bit of Python,
+  an easy way might be to edit the <code>.py</code> file;
+  at the start there are two functions defined: 
+  <code>v</code> called to create each vertex
+  and <code>f</code> called to create each face.
 </p>
 
 <p>

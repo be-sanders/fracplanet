@@ -6,7 +6,7 @@ VERSION=`./VERSION`
 
 cd ..
 
-FILES_MISC=`ls fracplanet/{README,BUILD,LICENSE,TODO,CHANGES,VERSION,configure,doxygen.cfg,mktgz,fracplanet.css,fracplanet.htm,htm_to_qml.xsl}`
+FILES_MISC=`ls fracplanet/{README,BUILD,LICENSE,TODO,CHANGES,VERSION,configure,doxygen.cfg,mktgz,testtgz,fracplanet.css,fracplanet.htm,htm_to_qml.xsl}`
 FILES_H=`find fracplanet -name moc -prune -o -name usage_text.h -prune  -o -name '*.h' -print`
 FILES_CPP=`find fracplanet -name moc -prune -o -name '*.cpp' -print`
 FILES_PRO=`find fracplanet -name moc -prune -o -name '*.pro' -print`
@@ -16,5 +16,7 @@ FILES="$FILES_MISC $FILES_H $FILES_CPP $FILES_PRO"
 tar cvfz fracplanet/fracplanet.tar.gz $FILES
 
 echo "***"
-echo "*** Suggestion: mv fracplanet.tar.gz fracplanet-$VERSION.tar.gz"
+echo "*** Suggestion:"
+echo "*** mv fracplanet.tar.gz fracplanet-$VERSION.tar.gz"
+echo "*** ./testtgz fracplanet-$VERSION.tar.gz"
 echo "***"

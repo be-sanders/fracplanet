@@ -5,15 +5,19 @@
 
 -----
 
+- Move blender/pov save parameters into nested classes,
+  pass parameters into lowest-level save fns rather than multiple args.
 - Scale factor for blender output.
 - Ability to load/save fracplanet parameters (simple keyword=value text file)
+- Mesh optimisation.
+- Save clouds as some more blender-friendly texture type thing.
 - Rename Save to Export.
 - Cloud controls.  Noise parameters and thresholds.
 - More control over cloud undersides, shadowing etc (c.f on/off in POVRay).
-  (Add checkboxes to save dialog).
+  (Add checkboxes to POVRay save dialog).
   Maybe need better control over ambient, or actually use the ambient
   parameter on the render tab (move to colours).  Then shadows
-  wouldn't be black; wouldn't get night-side though, without varying
+  wouldn't be black; wouldn't get a night-side though, without varying
   ambient around sphere.
 - Shadows of clouds on ground in OpenGL (needs shaders, shadow buffers etc).
 - Optimise matix33 inversion
@@ -27,7 +31,7 @@
 - Add perturbation decay rate for subdivision too.
 - Noise perturbation in X&Y too;
   might help break up subdivision ridge artefacts
-- "man" page instead/besides HTML
+- Basic "man" page besides HTML
 - Make more keys do stuff in fly mode
 - Console mode app: read parameters, generate planet.
 - Fix river/lake hang for high subdivision levels
@@ -40,11 +44,11 @@
 - Add control over heights at which colours switch.
 - Improve code documentation.
 - Save/load parameters.  Automatic mode (load parameters, generate model, exit).
-- Ice packs.
 - Seasonal variations.
-- Ability to save sequences of models (probably by offline generation for parameter file load)
-- Are we 64bit ready ?  Onwards to subdivision level 12,13,14...
+  e.g snowline, ice packs on ocean.
+- Ability to save sequences of models
+  (probably by offline generation for parameter file load)
+- Are we 64bit ready ?  Onwards to subdivision levels 12,13,14...
 - Put ONLY the terrain data in the .inc file; rest in .pov or a different .inc
 - Split up mesh file (3 parts: vertices, colours, meshing)
-- Alternative output formats.
 - Ringworld and Dyson sphere/hollow-Earth starting geometries for fun.
