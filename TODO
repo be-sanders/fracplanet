@@ -5,9 +5,19 @@
 
 -----
 
+- Generate" pull-down picker move to right column
+- Merseinne random number generator (GPLed).
+  Keep Stroustrup as option if slower ?
+- Abort on progress bar (throw exception out to top level ?  Hmmm)
+- Reshow, so don't need to regenerate after hiding viewer
+- Does POV-Ray mesh support given vertex normals ?
+  Renderings show facet shading with smooth colouring, which is
+  legitimate but maybe not what's wanted.
+  (Hmmm can't actually remember how fracplanet does this but it doesn't
+  show facets).
 - Move blender/pov save parameters into nested classes,
   pass parameters into lowest-level save fns rather than multiple args.
-- Scale factor for blender output.
+- Scale parameter for blender output.
 - Ability to load/save fracplanet parameters (simple keyword=value text file)
 - Mesh optimisation.
 - Save clouds as some more blender-friendly texture type thing.
