@@ -17,13 +17,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "random.h"
 
-void Random::seed(uint n)
-{
-  current=n;
-
-  // Scramble it up a bit so small changes to seed have big effects
-  for (uint i=0;i<32;i++) 
-    (*this)();
-}
-
+Random01::Random01(uint s)
+  :_rng(s)
+  ,_dist(0,1)
+  ,_gen(_rng,_dist)
+{}
+  
+Random01::~Random01()
+{}
 

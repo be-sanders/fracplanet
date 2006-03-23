@@ -11,7 +11,7 @@ FILES_H=`find fracplanet -name moc -prune -o -name usage_text.h -prune  -o -name
 FILES_CPP=`find fracplanet -name moc -prune -o -name '*.cpp' -print`
 FILES_PRO=`find fracplanet -name moc -prune -o -name '*.pro' -print`
 
-FILES="$FILES_MISC $FILES_H $FILES_CPP $FILES_PRO"
+FILES="$FILES_MISC $FILES_H $FILES_C $FILES_CPP $FILES_PRO"
 
 tar cvfz fracplanet/fracplanet.tar.gz $FILES
 

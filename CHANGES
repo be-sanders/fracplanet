@@ -1,5 +1,6 @@
 From release 0.3.0:
  - Bump version number to 0.3.1-dev
+ - Use boost for random number generation.
 
 From release 0.2.0:
  - Bump version number to 0.3.0

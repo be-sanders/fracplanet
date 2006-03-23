@@ -5,7 +5,7 @@ mountains, icecaps and rivers.  Parameters are specified interactively
 and the results displayed using OpenGL.  The generated objects can be
 dumped to Pov-Ray format.
 
-It uses C++ (with STL), Qt and OpenGL.  
+It uses C++ (with STL and boost), Qt and OpenGL.  
 
 Home page: http://www.bottlenose.demon.co.uk/share/fracplanet
 
