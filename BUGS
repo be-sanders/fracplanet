@@ -1,3 +1,8 @@
+- Base land height doesn't affect noise-only terrain 
+  (when vertical perturbation is reduced to zero; probably because
+  it's expressed as a proportion of vertical perturbation - should
+  just be absolute).
+
 - Blender seems to ignore alpha in the cloud layer, and renders
   it as solid.  It doesn't pass per-vertex alphas out to yafray either.
   This may just be some material flag which needs setting, but haven't

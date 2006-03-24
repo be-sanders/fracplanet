@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -84,7 +84,7 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
 	  this,SLOT(fly())
 	  );
 
-  clock=new QTime();
+  clock.reset(new QTime());
   clock->start();
 
   timer=new QTimer(this);  
@@ -97,9 +97,7 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
 }
 
 TriangleMeshViewer::~TriangleMeshViewer()
-{
-  delete clock;
-}
+{}
 
 void TriangleMeshViewer::keyPressEvent(QKeyEvent* e)
 {

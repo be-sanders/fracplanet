@@ -50,7 +50,7 @@ FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app)
   tab->addTab(control_render,"Render");
   tab->addTab(control_about,"About");
 
-  viewer=new TriangleMeshViewer(0,&parameters_render,std::vector<const TriangleMesh*>());     // Viewer will be a top-level-window
+  viewer.reset(new TriangleMeshViewer(0,&parameters_render,std::vector<const TriangleMesh*>()));     // Viewer will be a top-level-window
   viewer->resize(512,512);
   viewer->move(384,64);  // Moves view away from controls on most window managers
 
@@ -62,9 +62,7 @@ FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app)
 }
 
 FracplanetMain::~FracplanetMain()
-{
-  delete viewer;
-}
+{}
 
 void FracplanetMain::progress_start(uint target,const std::string& info)
 {
@@ -139,11 +137,11 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
 {
   viewer->hide();
 
-  delete mesh_terrain;
-  delete mesh_cloud;
-  mesh_triangles.clear();
+  meshes.clear();
+  viewer->set_mesh(meshes);
 
-  viewer->set_mesh(mesh_triangles);
+  mesh_terrain.reset();
+  mesh_cloud.reset();
 
   // There are some issues with type here:
   // We need to keep hold of a pointer to TriangleMeshTerrain so we can call its write_povray method
@@ -153,16 +151,16 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
     {
     case Parameters::ObjectTypePlanet:
       {
-	TriangleMeshTerrainPlanet*const it=new TriangleMeshTerrainPlanet(parameters_terrain,this);
-	mesh_terrain=it;
-	mesh_triangles.push_back(it);
+	std::auto_ptr<TriangleMeshTerrainPlanet> it(new TriangleMeshTerrainPlanet(parameters_terrain,this));
+	meshes.push_back(it.get());
+	mesh_terrain.reset(it.release());
 	break;
       }
     default:
       {
-	TriangleMeshTerrainFlat*const it=new TriangleMeshTerrainFlat(parameters_terrain,this);
-	mesh_terrain=it;
-	mesh_triangles.push_back(it);
+	std::auto_ptr<TriangleMeshTerrainFlat> it(new TriangleMeshTerrainFlat(parameters_terrain,this));
+	meshes.push_back(it.get());
+	mesh_terrain.reset(it.release());
 	break;
       }
     }
@@ -173,16 +171,16 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
 	{
 	case Parameters::ObjectTypePlanet:
 	  {
-	    TriangleMeshCloudPlanet*const it=new TriangleMeshCloudPlanet(parameters_cloud,this);
-	    mesh_cloud=it;
-	    mesh_triangles.push_back(it);
+	    std::auto_ptr<TriangleMeshCloudPlanet> it(new TriangleMeshCloudPlanet(parameters_cloud,this));
+	    meshes.push_back(it.get());
+	    mesh_cloud.reset(it.release());
 	    break;
 	  }
 	default:
 	  {
-	    TriangleMeshCloudFlat*const it=new TriangleMeshCloudFlat(parameters_cloud,this);
-	    mesh_cloud=it;
-	    mesh_triangles.push_back(it);
+	    std::auto_ptr<TriangleMeshCloudFlat> it(new TriangleMeshCloudFlat(parameters_cloud,this));
+	    meshes.push_back(it.get());
+	    mesh_cloud.reset(it.release());
 	    break;
 	  }
 	}
@@ -190,7 +188,7 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
   
   progress_dialog.reset(0);
 
-  viewer->set_mesh(mesh_triangles);
+  viewer->set_mesh(meshes);
   viewer->showNormal();
   viewer->raise();
 }

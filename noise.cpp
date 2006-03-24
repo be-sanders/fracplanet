@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2005 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -124,37 +124,35 @@ const float Noise::operator()(const XYZ& p) const
 }
 
 MultiscaleNoise::MultiscaleNoise(uint seed,uint terms,float decay)
+  :_terms(terms)
+  ,_noise(new boost::scoped_ptr<const Noise>[terms])
+  ,_amplitude(new float[terms])
 {
   float k=1.0f;
   float kt=0.0f;
-  for (uint i=0;i<terms;i++)
+  for (uint i=0;i<_terms;i++)
     {
-      noise.push_back(new Noise(seed+i));
-      amplitude.push_back(k);
+      _noise[i].reset(new Noise(seed+i));
+      _amplitude[i]=k;
       kt+=k;
       k*=decay;
     }
-  for (uint i=0;i<terms;i++)
+  for (uint i=0;i<_terms;i++)
     {
-      amplitude[i]/=kt;
+      _amplitude[i]/=kt;
     }
 }
 
 MultiscaleNoise::~MultiscaleNoise()
-{
-  for (uint i=0;i<noise.size();i++)
-    {
-      delete noise[i];
-    }
-}
+{}
 
 //! Return noise value at a point.
 const float MultiscaleNoise::operator()(const XYZ& p) const
 {
   float v=0.0;
-  for (uint i=0;i<noise.size();i++)
+  for (uint i=0;i<_terms;i++)
     {
-      v+=amplitude[i]*(*noise[i])(p*(1<<i));
+      v+=_amplitude[i]*(*_noise[i])(p*(1<<i));
     }
   return v;
 }

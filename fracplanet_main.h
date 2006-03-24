@@ -37,6 +37,8 @@ extern "C"
 #include <iostream>
 #include <vector>
 
+#include <boost/scoped_ptr.hpp>
+
 #include "useful.h"
 #include "random.h"
 
@@ -61,13 +63,13 @@ protected:
   QApplication*const application;
   
   //! Owned terrain.
-  const TriangleMeshTerrain* mesh_terrain;
+  boost::scoped_ptr<const TriangleMeshTerrain> mesh_terrain;
 
   //! Owned clouds, if any.
-  const TriangleMeshCloud* mesh_cloud;
+  boost::scoped_ptr<const TriangleMeshCloud> mesh_cloud;
 
   //! Downcast version for use by mesh viewer.
-  std::vector<const TriangleMesh*> mesh_triangles;
+  std::vector<const TriangleMesh*> meshes;
 
   ParametersTerrain parameters_terrain;
   ParametersCloud parameters_cloud;
@@ -81,7 +83,7 @@ protected:
   ControlTerrain* control_terrain;
   ControlAbout* control_about;
 
-  TriangleMeshViewer* viewer;
+  boost::scoped_ptr<TriangleMeshViewer> viewer;
   QTabWidget* tab;
 
   uint last_step;

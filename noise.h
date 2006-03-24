@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2005 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -26,7 +26,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "useful.h"
 #include "xyz.h"
 
-#include <vector>
+#include <boost/scoped_ptr.hpp>
+#include <boost/scoped_array.hpp>
 
 //! Perlin noise generator.
 class Noise
@@ -59,12 +60,15 @@ class MultiscaleNoise
   //! Return noise value at a point.
   const float operator()(const XYZ& p) const;
 
- protected:
+ private:
+  //! Number of terms
+  const uint _terms;
+
   //! Noise functions for each frequency.
-  std::vector<const Noise*> noise;
+  boost::scoped_array<boost::scoped_ptr<const Noise> > _noise;
 
   //! Amplitude for each frequency.
-  std::vector<float> amplitude;
+  boost::scoped_array<float> _amplitude;
 };
 
 #endif

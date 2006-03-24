@@ -35,6 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <qlabel.h>
 
 #include <vector>
+#include <boost/scoped_ptr.hpp>
 
 #include "useful.h"
 #include "random.h"
@@ -64,7 +65,7 @@ class TriangleMeshViewer : public QGrid
   QTimer* timer;
 
   //! Time for animation progress
-  QTime* clock;
+  boost::scoped_ptr<QTime> clock;
 
   //! Label and box around the elevation slider.
   QGroupBox* tilt_box;
