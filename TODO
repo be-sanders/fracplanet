@@ -5,10 +5,10 @@
 
 -----
 
-- Generate" pull-down picker move to right column
 - Merseinne random number generator (GPLed).
   Keep Stroustrup as option if slower ?
 - Abort on progress bar (throw exception out to top level ?  Hmmm)
+- Make colours depend on more interesting things than height (e.g slope)
 - Reshow, so don't need to regenerate after hiding viewer
 - Does POV-Ray mesh support given vertex normals ?
   Renderings show facet shading with smooth colouring, which is

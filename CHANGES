@@ -1,6 +1,7 @@
 From release 0.3.0:
  - Bump version number to 0.3.1-dev
- - Use boost for random number generation.
+ - Use boost's mt19937 for random number generation.
+ - Minor GUI improvement
 
 From release 0.2.0:
  - Bump version number to 0.3.0

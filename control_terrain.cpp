@@ -60,11 +60,18 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   QVBox* tab_clouds=new QVBox(tabs);
   tabs->addTab(tab_clouds,"Clouds");
 
-  QComboBox* object_type_combo_box=new QComboBox(false,tab_terrain_basics);
-  object_type_combo_box->insertItem("Generate Planet",  Parameters::ObjectTypePlanet);
-  object_type_combo_box->insertItem("Generate Hexagonal Area", Parameters::ObjectTypeFlatHexagon);
-  object_type_combo_box->insertItem("Generate Triangular Area",Parameters::ObjectTypeFlatTriangle);
-  object_type_combo_box->insertItem("Generate Square Area",  Parameters::ObjectTypeFlatSquare);
+
+  QGrid*const grid_terrain_basics=new QGrid(2,Qt::Horizontal,tab_terrain_basics);
+  QGrid*const grid_terrain_subdivision=new QGrid(2,Qt::Horizontal,tab_terrain_subdivision);
+  QGrid*const grid_terrain_noise=new QGrid(2,Qt::Horizontal,tab_terrain_noise);
+
+  new QLabel("Generate:",grid_terrain_basics);
+
+  QComboBox* object_type_combo_box=new QComboBox(false,grid_terrain_basics);
+  object_type_combo_box->insertItem("Planet",  Parameters::ObjectTypePlanet);
+  object_type_combo_box->insertItem("Hexagonal Area", Parameters::ObjectTypeFlatHexagon);
+  object_type_combo_box->insertItem("Triangular Area",Parameters::ObjectTypeFlatTriangle);
+  object_type_combo_box->insertItem("Square Area",  Parameters::ObjectTypeFlatSquare);
 
   object_type_combo_box->setCurrentItem(parameters_terrain->object_type);
 
@@ -73,10 +80,6 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  this,SLOT(setObjectType(int))
 	  );
   
-  QGrid*const grid_terrain_basics=new QGrid(2,Qt::Horizontal,tab_terrain_basics);
-  QGrid*const grid_terrain_subdivision=new QGrid(2,Qt::Horizontal,tab_terrain_subdivision);
-  QGrid*const grid_terrain_noise=new QGrid(2,Qt::Horizontal,tab_terrain_noise);
-
   base_height_label=new QLabel("Base land height (%):",grid_terrain_basics);
   base_height_spinbox=new QSpinBox(-100,100,10,grid_terrain_basics);
   base_height_spinbox->setValue((uint)(100.0*parameters_terrain->base_height));
