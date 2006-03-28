@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 /*! \todo: Might be better (more portable) to use QTime::currentTime () for random seeds.
  */
 ParametersCloud::ParametersCloud()
-  :Parameters()
+  :ParametersObject()
    ,enabled(false)
    ,cloudbase(0.1)
    ,colour(1.0,1.0,1.0,1.0)

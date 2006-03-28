@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2005 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,40 +17,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 /*! \file
-  \brief Interface for class Parameters.
+  \brief Interface for class ParametersNoise.
 */
 
-#ifndef _parameters_h_
-#define _parameters_h_
+#ifndef _parameters_noise_h_
+#define _parameters_noise_h_
 
 #include "useful.h"
 
-//! Parameters class common base for ParametersTerrain and ParametersCloud.
-class Parameters
+class ParametersNoise
 {
  public:
-  
-  //! What kind of object will be generated.
-  typedef enum
-    {
-      ObjectTypePlanet,
-      ObjectTypeFlatHexagon,
-      ObjectTypeFlatTriangle,
-      ObjectTypeFlatSquare
-    }
-  ObjectType;
+  //! Number of Perlin noise terms
+  uint terms;
 
-  //! Kind of object.
-  ObjectType object_type;
+  //! Frequency of 1st noise term
+  float frequency;
 
-  //! Random seed for subdivision and noise.
-  uint seed;
+  //! Amplitude of 1st noise term
+  float amplitude;
 
-  //! Number of subdivisions.
-  uint subdivisions;
+  //! Amplitude decay rate for successive terms
+  float amplitude_decay;
 
-  //! Constructor sets up some hopefully sensible defaults.
-  Parameters();
+  //! Construct with given number of terms
+  ParametersNoise(uint);
 };
 
 #endif

@@ -254,7 +254,7 @@ class TriangleMeshFlat : virtual public TriangleMesh
  public:
 
   //! Constructor.
-  TriangleMeshFlat(Parameters::ObjectType obj,float z,uint seed,Progress* progress);
+  TriangleMeshFlat(ParametersObject::ObjectType obj,float z,uint seed,Progress* progress);
 
   //! Destructor.
   virtual ~TriangleMeshFlat()

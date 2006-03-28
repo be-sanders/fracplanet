@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -21,13 +21,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 /*! \todo: Might be better (more portable) to use QTime::currentTime () for random seeds.
  */
 ParametersTerrain::ParametersTerrain()
-  :Parameters()
+  :ParametersObject()
    ,subdivisions_unperturbed(1)
    ,variation(0.0,0.0,0.125)
-   ,noise_terms(0)
-   ,noise_frequency(1.0)
-   ,noise_amplitude(0.125)
-   ,noise_amplitude_decay(0.5)
+   ,noise(0)
    ,base_height(0)
    ,power_law(1.5)
    ,snowline_equator(0.8)

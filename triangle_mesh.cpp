@@ -384,13 +384,13 @@ ByteRGBA TriangleMesh::blender_alpha_workround(const ByteRGBA* f,const ByteRGBA&
     return c;
 }
 
-TriangleMeshFlat::TriangleMeshFlat(Parameters::ObjectType obj,float z,uint seed,Progress* progress)
+TriangleMeshFlat::TriangleMeshFlat(ParametersObject::ObjectType obj,float z,uint seed,Progress* progress)
 :TriangleMesh(progress)
  ,_geometry(seed)
 {
   switch(obj)
     {
-    case Parameters::ObjectTypeFlatTriangle:
+    case ParametersObject::ObjectTypeFlatTriangle:
       for (uint i=0;i<3;i++)
 	{
 	  add_vertex(Vertex(XYZ(cos(i*2.0*M_PI/3.0),sin(i*2.0*M_PI/3.0),z)));
@@ -398,7 +398,7 @@ TriangleMeshFlat::TriangleMeshFlat(Parameters::ObjectType obj,float z,uint seed,
       add_triangle(Triangle(0,1,2));
       break;
       
-    case Parameters::ObjectTypeFlatSquare:
+    case ParametersObject::ObjectTypeFlatSquare:
       add_vertex(Vertex(XYZ(0.0,0.0,z)));
       
       for (uint i=0;i<4;i++)
@@ -412,7 +412,7 @@ TriangleMeshFlat::TriangleMeshFlat(Parameters::ObjectType obj,float z,uint seed,
 
       break;
 
-    case Parameters::ObjectTypeFlatHexagon:
+    case ParametersObject::ObjectTypeFlatHexagon:
     default:      
       add_vertex(Vertex(XYZ(0.0,0.0,z)));
       for (uint i=0;i<6;i++)

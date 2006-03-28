@@ -32,21 +32,21 @@ TriangleMeshTerrain::~TriangleMeshTerrain()
 
 void TriangleMeshTerrain::do_noise(const ParametersTerrain& parameters)
 {
-  if (parameters.noise_terms==0 || parameters.noise_amplitude==0) return;
+  if (parameters.noise.terms==0 || parameters.noise.amplitude==0) return;
 
   const uint steps=vertices();
   uint step=0;
 
   progress_start(100,"Noise");
 
-  MultiscaleNoise noise(parameters.seed,parameters.noise_terms,parameters.noise_amplitude_decay);
+  MultiscaleNoise noise(parameters.seed,parameters.noise.terms,parameters.noise.amplitude_decay);
   for (uint i=0;i<vertices();i++)
     {
       step++;
       progress_step((100*step)/steps);	  
       
       const float h=vertex_height(i);
-      const float p=parameters.noise_amplitude*noise(parameters.noise_frequency*vertex(i).position());
+      const float p=parameters.noise.amplitude*noise(parameters.noise.frequency*vertex(i).position());
       
       set_vertex_height(i,h+p);
     }

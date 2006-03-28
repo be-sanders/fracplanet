@@ -16,18 +16,41 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include "parameters_render.h"
+/*! \file
+  \brief Interface for class Parameters.
+*/
 
-ParametersRender::ParametersRender()
-  :wireframe(false)
-  ,display_list(false)
-  ,joystick_mouse(true)
-  ,ambient(0.1f)
-  ,background_colour_low(0.25f,0.25f,1.0f,0.0f)
-  ,background_colour_high(0.0f,0.0f,0.0f,0.0f)
-  ,fps_target(75.0f)
-  ,notify(0)
-{}
+#ifndef _parameters_h_
+#define _parameters_h_
 
-ParametersRender::~ParametersRender()
-{}
+#include "useful.h"
+
+//! Common base for ParametersTerrain and ParametersCloud.
+class ParametersObject
+{
+ public:
+  
+  //! What kind of object will be generated.
+  typedef enum
+    {
+      ObjectTypePlanet,
+      ObjectTypeFlatHexagon,
+      ObjectTypeFlatTriangle,
+      ObjectTypeFlatSquare
+    }
+  ObjectType;
+
+  //! Kind of object.
+  ObjectType object_type;
+
+  //! Random seed for subdivision and noise.
+  uint seed;
+
+  //! Number of subdivisions.
+  uint subdivisions;
+
+  //! Constructor sets up some hopefully sensible defaults.
+  ParametersObject();
+};
+
+#endif

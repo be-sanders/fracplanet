@@ -144,8 +144,8 @@ class ControlTerrain : public Control
 
   void setObjectType(int id)
     {
-      parameters_terrain->object_type=static_cast<Parameters::ObjectType>(id);
-      parameters_cloud->object_type=static_cast<Parameters::ObjectType>(id);
+      parameters_terrain->object_type=static_cast<ParametersObject::ObjectType>(id);
+      parameters_cloud->object_type=static_cast<ParametersObject::ObjectType>(id);
     }
   void setTerrainSeed(int v)
     {
@@ -174,19 +174,19 @@ class ControlTerrain : public Control
     }
   void setNoiseTerms(int v)
     {
-      parameters_terrain->noise_terms=v;
+      parameters_terrain->noise.terms=v;
     }
   void setNoiseFrequency(int v)
     {
-      parameters_terrain->noise_frequency=v/100.0;
+      parameters_terrain->noise.frequency=v/100.0;
     }
   void setNoiseAmplitude(int v)
     {
-      parameters_terrain->noise_amplitude=v/100.0;
+      parameters_terrain->noise.amplitude=v/100.0;
     }
   void setNoiseAmplitudeDecay(int v)
     {
-      parameters_terrain->noise_amplitude_decay=v/100.0;
+      parameters_terrain->noise.amplitude_decay=v/100.0;
     }
   void setBaseHeight(int v)
     {

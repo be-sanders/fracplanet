@@ -16,18 +16,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include "parameters_render.h"
+#include "parameters_noise.h"
 
-ParametersRender::ParametersRender()
-  :wireframe(false)
-  ,display_list(false)
-  ,joystick_mouse(true)
-  ,ambient(0.1f)
-  ,background_colour_low(0.25f,0.25f,1.0f,0.0f)
-  ,background_colour_high(0.0f,0.0f,0.0f,0.0f)
-  ,fps_target(75.0f)
-  ,notify(0)
-{}
-
-ParametersRender::~ParametersRender()
+ParametersNoise::ParametersNoise(uint n)
+  :terms(n)
+  ,frequency(1.0)
+  ,amplitude(0.125)
+  ,amplitude_decay(0.5)
 {}

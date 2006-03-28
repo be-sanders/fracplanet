@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -26,12 +26,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "useful.h"
 #include "xyz.h"
 #include "rgb.h"
-#include "parameters.h"
+#include "parameters_noise.h"
+#include "parameters_object.h"
 
 //! This class aggregates the controllable parameters for all things related to terrain generation.
 /*! \todo Add these to ParametersTerrain (and ControlTerrain):  float treeline;  float beachline;
 */
-class ParametersTerrain : public Parameters
+class ParametersTerrain : public ParametersObject
 {
 public:
 
@@ -41,17 +42,7 @@ public:
   //! Maximum size of perturbations (z in vertical direction, x & y horizontally).
   XYZ variation;
 
-  //! Number of Perlin noise terms
-  uint noise_terms;
-
-  //! Frequency of 1st noise term
-  float noise_frequency;
-
-  //! Amplitude of 1st noise term
-  float noise_amplitude;
-
-  //! Amplitude decay rate for successive terms
-  float noise_amplitude_decay;
+  ParametersNoise noise;
 
   //! Initial height of unsubdivided, unperturbed terrain, expressed as a proportion of variation.z
   float base_height;

@@ -58,8 +58,9 @@ HEADERS += \
            matrix34.h \
            noise.h \
            notifiable.h \
-           parameters.h \
            parameters_cloud.h \
+           parameters_noise.h \
+           parameters_object.h \
            parameters_render.h \
            parameters_save.h \
            parameters_terrain.h \
@@ -92,8 +93,9 @@ SOURCES += \
            matrix34.cpp \
            noise.cpp \
            notifiable.cpp \
-           parameters.cpp \
            parameters_cloud.cpp \
+           parameters_noise.cpp \
+           parameters_object.cpp \
            parameters_render.cpp \
            parameters_save.cpp \
            parameters_terrain.cpp \

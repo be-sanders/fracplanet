@@ -149,7 +149,7 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
   // So we end up with code like this to avoid a premature downcast.
   switch (parameters_terrain.object_type)
     {
-    case Parameters::ObjectTypePlanet:
+    case ParametersObject::ObjectTypePlanet:
       {
 	std::auto_ptr<TriangleMeshTerrainPlanet> it(new TriangleMeshTerrainPlanet(parameters_terrain,this));
 	meshes.push_back(it.get());
@@ -169,7 +169,7 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
     {
       switch (parameters_cloud.object_type)
 	{
-	case Parameters::ObjectTypePlanet:
+	case ParametersObject::ObjectTypePlanet:
 	  {
 	    std::auto_ptr<TriangleMeshCloudPlanet> it(new TriangleMeshCloudPlanet(parameters_cloud,this));
 	    meshes.push_back(it.get());
