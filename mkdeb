@@ -1,0 +1,92 @@
+#!/bin/bash -ev
+
+# TODO: Gpg Signing
+# TODO: Auto determine "sarge" vs "breezy"
+
+VER="0.3.1dev"
+TGT="sarge"
+REV="1${TGT}1"
+
+if [ ! -s "../fracplanet-${VER}.tar.gz" ] ; then
+    echo "Can't find ../fracplanet-${VER}.tar.gz"
+    exit
+fi
+
+rm -r -f pkg
+mkdir pkg
+cd pkg
+
+cp ../../fracplanet-$VER.tar.gz fracplanet_$VER.orig.tar.gz
+tar xvfz fracplanet_$VER.orig.tar.gz
+mv fracplanet fracplanet-$VER
+cd fracplanet-$VER
+cp ../../../BUGS .            # TODO: remove once goes in tar file
+mv CHANGES changelog          # As per policy manual
+sed -i "s/${VER}/${VER}-${REV}" VERSION
+
+mkdir debian
+echo "fracplanet (${VER}-${REV}) ${TGT}; urgency=low" > debian/changelog
+echo >> debian/changelog
+echo "  * Package created by fracplanet's mkdeb script." >> debian/changelog
+echo >> debian/changelog
+DATE=`822-date`
+echo " -- $USER <$EMAIL>  $DATE" >> debian/changelog
+
+# Presumably a dch -i here would increment revision
+
+cat << EOF > debian/packages
+Source: fracplanet
+Section: graphics
+Priority: extra
+Maintainer: Tim Day <timday@bottlenose.demon.co.uk>
+Standards-Version: 3.6.1
+Upstream-Source: <URL:http://sourceforge.net/projects/fracplanet/index.htm>
+Home-Page: <URL:http://www.bottlenose.demon.co.uk/share/fracplanet>
+Description: Fractal terrain generator.
+ A interactive application to generate fractal terrain and planets.
+ The results can be exported to POV-Ray and blender.
+Copyright: GPL
+ Copyright 2006 Tim Day
+Build-Depends: qt3-dev-tools,libqt3-mt-dev,xsltproc,libboost-dev
+Build: sh
+ export QTDIR=/usr/share/qt3
+ # Note: yada install deals with DEB_BUILD_OPTIONS 'nostrip'
+ if [ "${DEB_BUILD_OPTIONS#*noopt}" != "$DEB_BUILD_OPTIONS" ]; then
+   ./configure "CONFIG -= release" "CONFIG += debug"
+ else
+   ./configure # No noticeable advantage in overriding qt optimisation options
+ fi
+ make
+Clean: sh
+ make distclean || make clean || true
+
+Package: fracplanet
+Architecture: any
+Depends: []
+Suggests: povray,blender
+Description: Fractal terrain generator.
+Install: sh
+ yada install -bin fracplanet
+ yada install -doc fracplanet.htm fracplanet.css
+ yada install -doc BUGS TODO THANKS changelog
+ yada install -man man/man1/fracplanet.1
+EOF
+
+yada rebuild
+
+# Could do 
+#   dpkg-buildpackage -rfakeroot
+# now but better to build a source file then build it in pbuilder
+
+cd ..
+dpkg-source -b fracplanet-${VER} fracplanet_${VER}.orig.tar.gz
+
+#echo "Updating pbuilder (sudo auth maybe required)"
+#sudo pbuilder update
+
+echo "Building package (assumes pbuilder set up as per Cow Book)"
+sudo -H pbuilder build fracplanet_${VER}-${REV}.dsc
+
+sudo chown ${USER}:${USER} result.*
+
+echo "Don't forget to lintian and linda"

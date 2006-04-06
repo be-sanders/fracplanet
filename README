@@ -3,7 +3,7 @@ ABOUT
 Fracplanet generates random planets and terrain with oceans, 
 mountains, icecaps and rivers.  Parameters are specified interactively 
 and the results displayed using OpenGL.  The generated objects can be
-dumped to Pov-Ray format.
+exported for Pov-Ray or Blender.
 
 It uses C++ (with STL and boost), Qt and OpenGL.  
 
@@ -34,7 +34,8 @@ BUILDING
 Either use the traditional
  ./configure
  make
-(NB The configure script is NOT autoconf generated)
+(NB The configure script is NOT autoconf generated
+and none of the usual autoconf options work)
 
 Or just have both done for you by running 
   ./BUILD
@@ -61,29 +62,28 @@ have to be installed."]
 
 BUILD OPTIONS
 =============
-There are already some generally effective overrides for 
-Qt's usually fairly conservative compile options 
-in the fracplanet.pro file (where QMAKE_CXXFLAGS_RELEASE is
-modified).  If you change them, do a "make distclean" before 
-you rebuild to make sure Makefiles are rebuilt. 
-
-The easiest way to get some additional CPU-specific optimisations
-is to use the configuration option:
-  ./configure <cpu>
-where <cpu> is "p3", "p4" or "xp" as appropriate e.g "./configure p4"
-and rebuild from clean (again, "make distclean" is a good idea).
-I've no idea how much benefit these provide.
-You can also use these with the ./BUILD script e.g "./BUILD p4"
+Qt's qmake builds the Makefile used to build the application
+so to change compile options you should mess with the fracplanet.pro
+(if you do change it, do a "make distclean" before 
+you rebuild to make sure Makefiles are rebuilt)
+or provide overrides on qmake's command line. 
+An example of how to do this is provided by the
+  configure-custom
+script, but note that details may well be different on your system.
 
 BUILD PROBLEMS
 ==============
-- For a Debian system with nvidia-glx it is perhaps necessary to have
-nvidia-glx-dev installed when you build otherwise the application does
-not function properly.
+- For a Debian system with nvidia-glx installed it may be
+necessary to have nvidia-glx-dev installed when you build otherwise 
+he application does not function properly.  Note that binaries
+built in an nvidia free pbuilder environment seem to run fine on an
+nvidia accelerated system.
 
 USAGE
 =====
-User documentation is contained in fracplanet.htm
+User documentation is contained in fracplanet.htm and accessible
+from the ABout tab of the application while running.
+
 If you just want to dive in all you need to know is this:
   
 After changing ANY of the terrain generation parameters, you must 
@@ -105,18 +105,19 @@ needs just over a gigabyte.  Needless to say, if it starts swapping,
 it's not pretty.
 On a 2.4GHz machine with a GeForce4 (well, an "MX") and the Nvidia OpenGL
 drivers display rates start to suffer around subdivision level 7 (for planets).
-A 5200 will get to the next level.  
+A NVidia 5200 will get to the next level.  
 See the BUGS file for other issues.
 
 INSTALL
 =======
 Doing 
   make install
-will attempt to install the executable in 
-  /usr/local/bin
-and some HTML user documentation (fracplanet.htm and fracplanet.css ) in 
-  /usr/local/share/doc/fracplanet
-Obviously you'll probably need to be root for this stage.
+no longer attempts to do anything useful.
+The only build product is the executable "fracplanet"; copy it wherever you like.
+Other files of interest are:
+  man/man1/fracplanet.1
+  fracplanet.htm fracplanet.css
+  BUGS TODO THANKS CHANGES
 
 BUILDING CODE DOCUMENTATION
 ===========================
@@ -124,13 +125,4 @@ If you have doxygen (and graphviz) and want to build the code documentation
 subdirectory too, execute 
   ./mkdoc
 The comments may not be particularly useful, or up to date :^)
-
-THANKS
-======
-For bug reports, feedback and patches:
-  Tobias Klausmann 
-  Frank Plohmann 
-  Steve Roylance 
-  Leon Brooks 
-  Selden E Ball Jr
 

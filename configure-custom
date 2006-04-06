@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# This is an EXAMPLE of how you might override qmake's defaults
+# to produce a more highly optimised version.
+# Exact details may depend on how your qmake is configured
+# (e.g some qmakes may need different flags removing),
+# and of course you may want different flags in ARCHOPT.
+# (Note: for gcc -march also implies -mcpu).
+# It's a good idea to sanity check the generated
+# Makefile after running this script.
+
+# General optimisation
+OPT="-O3 -fomit-frame-pointer -ffast-math"
+
+# Options for a P4
+ARCHOPT="-march=pentium4 -mfpmath=sse -msse2"
+
+# Options for an XP
+#ARCHOPT="-march=athlon-xp -mfpmath=sse -msse2"
+
+./configure "QMAKE_CXXFLAGS_RELEASE -= -O2 -g" "QMAKE_CXXFLAGS_RELEASE += ${OPT} ${ARCHOPT}" 

@@ -32,6 +32,6 @@ VERSION_NUMBER=`./VERSION`
 echo
 echo "Running qmake..."
 
-qmake "CPU=$1" "VERSION_NUMBER=$VERSION_NUMBER" fracplanet.pro
+qmake "VERSION_NUMBER=$VERSION_NUMBER" "$@" fracplanet.pro
 
 echo "...configuration completed - ready to do 'make' now"

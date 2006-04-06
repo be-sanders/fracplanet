@@ -1,7 +1,8 @@
 From release 0.3.0:
  - Bump version number to 0.3.1-dev
  - Use boost's mt19937 for random number generation.
- - Minor GUI improvement
+ - Minor GUI improvement (terrain type pull down).
+ - Add simple man page.
 
 From release 0.2.0:
  - Bump version number to 0.3.0

@@ -1,47 +1,8 @@
 TEMPLATE = app
 
-# append debug or release
-CONFIG+= qt opengl release
+# append debug or release :
+CONFIG+= qt opengl stl release
 
-#######################################
-# Installation 
-
-INSTALLS += executable documentation
-executable.path = /usr/local/bin
-executable.files = fracplanet 
-documentation.path = /usr/local/share/doc/fracplanet
-documentation.files = fracplanet.htm fracplanet.css
-
-##################
-# Improved optimisation options from qmake defaults.
-# Now leaving these ON for general distribution
-# -funroll-loops unproven 
-
-QMAKE_CXXFLAGS_RELEASE -= -O2
-QMAKE_CXXFLAGS_RELEASE += -O3 -fomit-frame-pointer -ffast-math 
-
-##################
-# Architecture specific optimisations
-# The following architecture options make the compiled executables less portable.
-# (On a different setup you may need to change what's subtracted out of the flags.)
-# NB -march=X implies -mcpu=X... no need to specify both the same
-
-contains(CPU, p4 ){
-  QMAKE_CXXFLAGS_RELEASE -= -march=i386 -mcpu=i686
-  QMAKE_CXXFLAGS_RELEASE += -march=pentium4 -mfpmath=sse -msse2
-}
-
-contains(CPU, p3 ){
-  QMAKE_CXXFLAGS_RELEASE -= -march=i386 -mcpu=i686
-  QMAKE_CXXFLAGS_RELEASE += -march=pentium3 -mfpmath=sse -msse
-}
-
-contains(CPU, xp ){
-  QMAKE_CXXFLAGS_RELEASE -= -march=i386 -mcpu=i686
-  QMAKE_CXXFLAGS_RELEASE += -march=athlon-xp -mfpmath=sse -msse
-}
-
-###################################
 # Input files
 
 HEADERS += \

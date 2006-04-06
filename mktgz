@@ -6,12 +6,13 @@ VERSION=`./VERSION`
 
 cd ..
 
-FILES_MISC=`ls fracplanet/{README,BUILD,LICENSE,TODO,CHANGES,VERSION,configure,doxygen.cfg,mktgz,testtgz,fracplanet.css,fracplanet.htm,htm_to_qml.xsl}`
-FILES_H=`find fracplanet -name moc -prune -o -name usage_text.h -prune  -o -name '*.h' -print`
-FILES_CPP=`find fracplanet -name moc -prune -o -name '*.cpp' -print`
-FILES_PRO=`find fracplanet -name moc -prune -o -name '*.pro' -print`
+FILES_MISC=`ls fracplanet/{README,BUILD,LICENSE,TODO,CHANGES,BUGS,VERSION,THANKS,configure,doxygen.cfg,mktgz,testtgz,fracplanet.css,fracplanet.htm,htm_to_qml.xsl}`
+FILES_H=`find fracplanet -name moc -prune -o -name usage_text.h -prune -o -name pkg -prune -o -name '*.h' -print`
+FILES_CPP=`find fracplanet -name moc -prune -o -name pkg -prune -o -name '*.cpp' -print`
+FILES_PRO=`find fracplanet -name moc -prune -o -name pkg -prune -o -name '*.pro' -print`
+FILES_MAN=`find fracplanet/man -name '*.?' -print`
 
-FILES="$FILES_MISC $FILES_H $FILES_C $FILES_CPP $FILES_PRO"
+FILES="$FILES_MISC $FILES_H $FILES_C $FILES_CPP $FILES_PRO $FILES_MAN"
 
 tar cvfz fracplanet/fracplanet.tar.gz $FILES
 
