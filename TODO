@@ -5,8 +5,11 @@
 
 -----
 
-- Merseinne random number generator (GPLed).
-  Keep Stroustrup as option if slower ?
+- Another noise fn to modulate (c.f add) subdivided terrain.
+  Might help reduce middle-of-continent highlands.
+- Another noise fn to modulate power law
+  (could get a mix of highland mesas and deposited lowlands).
+- Time terrain generation and report to cerr or render tab.
 - Abort on progress bar (throw exception out to top level ?  Hmmm)
 - Make colours depend on more interesting things than height (e.g slope)
 - Reshow, so don't need to regenerate after hiding viewer
@@ -42,7 +45,7 @@
 - Noise perturbation in X&Y too;
   might help break up subdivision ridge artefacts
 - Basic "man" page besides HTML
-- Make more keys do stuff in fly mode
+- Make more keys do stuff in fly mode (e.g home to return to start).
 - Console mode app: read parameters, generate planet.
 - Fix river/lake hang for high subdivision levels
 - Perlin noise to modify terrain colours.

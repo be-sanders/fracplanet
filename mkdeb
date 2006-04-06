@@ -1,14 +1,14 @@
 #!/bin/bash -ev
 
 # TODO: Gpg Signing
-# TODO: Auto determine "sarge" vs "breezy"
+# TODO: Auto determine "sarge" vs "breezy" for TGT below (from /etc/debian_version ?)
 
 VER="0.3.1dev"
 TGT="sarge"
 REV="1${TGT}1"
 
-if [ ! -s "../fracplanet-${VER}.tar.gz" ] ; then
-    echo "Can't find ../fracplanet-${VER}.tar.gz"
+if [ ! -s "fracplanet-${VER}.tar.gz" ] ; then
+    echo "Can't find fracplanet-${VER}.tar.gz"
     exit
 fi
 
@@ -16,13 +16,12 @@ rm -r -f pkg
 mkdir pkg
 cd pkg
 
-cp ../../fracplanet-$VER.tar.gz fracplanet_$VER.orig.tar.gz
+cp ../fracplanet-$VER.tar.gz fracplanet_$VER.orig.tar.gz
 tar xvfz fracplanet_$VER.orig.tar.gz
 mv fracplanet fracplanet-$VER
 cd fracplanet-$VER
-cp ../../../BUGS .            # TODO: remove once goes in tar file
 mv CHANGES changelog          # As per policy manual
-sed -i "s/${VER}/${VER}-${REV}" VERSION
+sed -i "s/${VER}/${VER}-${REV}/g" VERSION
 
 mkdir debian
 echo "fracplanet (${VER}-${REV}) ${TGT}; urgency=low" > debian/changelog
@@ -42,9 +41,7 @@ Maintainer: Tim Day <timday@bottlenose.demon.co.uk>
 Standards-Version: 3.6.1
 Upstream-Source: <URL:http://sourceforge.net/projects/fracplanet/index.htm>
 Home-Page: <URL:http://www.bottlenose.demon.co.uk/share/fracplanet>
-Description: Fractal terrain generator.
- A interactive application to generate fractal terrain and planets.
- The results can be exported to POV-Ray and blender.
+Description: Fractal terrain generator
 Copyright: GPL
  Copyright 2006 Tim Day
 Build-Depends: qt3-dev-tools,libqt3-mt-dev,xsltproc,libboost-dev
@@ -64,7 +61,11 @@ Package: fracplanet
 Architecture: any
 Depends: []
 Suggests: povray,blender
-Description: Fractal terrain generator.
+Description: Fractal terrain generator
+ Fracplanet generates random planets and terrain with oceans, 
+ mountains, icecaps and rivers.  Parameters are specified interactively 
+ and the results displayed using OpenGL.  The generated objects can be
+ exported for Pov-Ray or Blender.
 Install: sh
  yada install -bin fracplanet
  yada install -doc fracplanet.htm fracplanet.css
