@@ -143,6 +143,8 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
   mesh_terrain.reset();
   mesh_cloud.reset();
 
+  const clock_t t0=clock();
+
   // There are some issues with type here:
   // We need to keep hold of a pointer to TriangleMeshTerrain so we can call its write_povray method
   // but the triangle viewer needs the TriangleMesh.
@@ -185,8 +187,12 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
 	  }
 	}
     }
+
+  const clock_t t1=clock();
   
   progress_dialog.reset(0);
+
+  std::cerr << "Mesh build time was " << (t1-t0)/static_cast<double>(CLOCKS_PER_SEC) << "s" << std::endl;
 
   viewer->set_mesh(meshes);
   viewer->showNormal();

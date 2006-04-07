@@ -40,7 +40,7 @@ HEADERS += \
            xyz.h
 
 SOURCES += \
-           control.h \
+           control.cpp \
            control_about.cpp \
            control_render.cpp \
            control_save.cpp \
@@ -102,4 +102,4 @@ QMAKE_CXXFLAGS_DEBUG += -DQT_NO_ASCII_CAST
 # Hide those crufty moc_ files away
 
 MOC_DIR = moc
-
+OBJECTS_DIR = obj

@@ -70,13 +70,16 @@ or provide overrides on qmake's command line.
 An example of how to do this is provided by the
   configure-custom
 script, but note that details may well be different on your system.
+On the author's P4 system the extra optimisation options make no
+measurable difference to the application performance (to either
+the display framerate or mesh generation times).
 
 BUILD PROBLEMS
 ==============
 - For a Debian system with nvidia-glx installed it may be
 necessary to have nvidia-glx-dev installed when you build otherwise 
 he application does not function properly.  Note that binaries
-built in an nvidia free pbuilder environment seem to run fine on an
+built in an nvidia-free pbuilder environment seem to run fine on an
 nvidia accelerated system.
 
 USAGE

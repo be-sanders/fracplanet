@@ -4,7 +4,7 @@
 # TODO: Auto determine "sarge" vs "breezy" for TGT below (from /etc/debian_version ?)
 
 VER="0.3.1dev"
-TGT="breezy"
+TGT="sarge"
 REV="1${TGT}1"
 
 if [ ! -s "fracplanet-${VER}.tar.gz" ] ; then
