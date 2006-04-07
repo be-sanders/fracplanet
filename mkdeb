@@ -4,7 +4,7 @@
 # TODO: Auto determine "sarge" vs "breezy" for TGT below (from /etc/debian_version ?)
 
 VER="0.3.1dev"
-TGT="sarge"
+TGT="breezy"
 REV="1${TGT}1"
 
 if [ ! -s "fracplanet-${VER}.tar.gz" ] ; then
@@ -85,9 +85,10 @@ dpkg-source -b fracplanet-${VER} fracplanet_${VER}.orig.tar.gz
 #echo "Updating pbuilder (sudo auth maybe required)"
 #sudo pbuilder update
 
+mkdir result
 echo "Building package (assumes pbuilder set up as per Cow Book)"
-sudo -H pbuilder build fracplanet_${VER}-${REV}.dsc
+sudo -H pbuilder build --buildresult ./result fracplanet_${VER}-${REV}.dsc
 
-sudo chown ${USER}:${USER} result.*
+sudo chown ${USER}:${USER} result/*
 
 echo "Don't forget to lintian and linda"
