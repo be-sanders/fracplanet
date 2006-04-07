@@ -30,6 +30,8 @@ class Notifiable
 {
  public:
 
+  virtual ~Notifiable();
+
   virtual void notify(const std::string&)
     =0;
 };

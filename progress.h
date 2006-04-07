@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -31,6 +31,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class Progress
 {
  public:
+  
+  virtual ~Progress();
+
   virtual void progress_start(uint steps,const std::string& info)
     =0;
   // This will change the dialog text to indicate that progress is stalled for some reason.
