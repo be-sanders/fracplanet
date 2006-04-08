@@ -1,11 +1,20 @@
 #!/bin/bash -ev
 
-# TODO: Gpg Signing
+# TODO: Sort out .pbuilderrc mess on basecamp
+# TODO: Gpg Signing (dpkg-sig)
 # TODO: Auto determine "sarge" vs "breezy" for TGT below (from /etc/debian_version ?)
 
-VER="0.3.1dev"
-TGT="sarge"
-REV="1${TGT}1"
+VER="0.3.1dev"     # TODO: Should lify this from .tar.gz name
+
+GUESS_DISTRIBUTION=`grep '^DISTRIBUTION=' /etc/pbuilderrc | tail -1`
+eval ${GUESS_DISTRIBUTION}
+if [[ "${DISTRIBUTION}" == "" ]] ; 
+    then echo "Could't guess distribution from /etc/pbuilderrc" ; exit ; 
+fi
+
+echo "Assuming distribution is \"${DISTRIBUTION}\""
+
+REV="1${DISTRIBUTION}1"
 
 if [ ! -s "fracplanet-${VER}.tar.gz" ] ; then
     echo "Can't find fracplanet-${VER}.tar.gz"
@@ -24,7 +33,7 @@ mv CHANGES changelog          # As per policy manual
 sed -i "s/${VER}/${VER}-${REV}/g" VERSION
 
 mkdir debian
-echo "fracplanet (${VER}-${REV}) ${TGT}; urgency=low" > debian/changelog
+echo "fracplanet (${VER}-${REV}) ${DISTRIBUTION}; urgency=low" > debian/changelog
 echo >> debian/changelog
 echo "  * Package created by fracplanet's mkdeb script." >> debian/changelog
 echo >> debian/changelog
@@ -87,7 +96,7 @@ dpkg-source -b fracplanet-${VER} fracplanet_${VER}.orig.tar.gz
 
 mkdir result
 echo "Building package (assumes pbuilder set up as per Cow Book)"
-sudo -H pbuilder build --buildresult ./result fracplanet_${VER}-${REV}.dsc
+sudo pbuilder build --buildresult ./result fracplanet_${VER}-${REV}.dsc
 
 sudo chown ${USER}:${USER} result/*
 
