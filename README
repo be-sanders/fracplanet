@@ -76,9 +76,11 @@ the display framerate or mesh generation times).
 
 BUILD PROBLEMS
 ==============
+- Recent versions of gcc may output a lot of warnings about Qt's
+lack of virtual destructors.  Don't worry about them.
 - For a Debian system with nvidia-glx installed it may be
-necessary to have nvidia-glx-dev installed when you build otherwise 
-he application does not function properly.  Note that binaries
+necessary to have nvidia-glx-dev installed when you build, otherwise 
+the application may not function properly.  Note that binaries
 built in an nvidia-free pbuilder environment seem to run fine on an
 nvidia accelerated system.
 
@@ -116,16 +118,22 @@ INSTALL
 Doing 
   make install
 no longer attempts to do anything useful.
-The only build product is the executable "fracplanet"; copy it wherever you like.
+The only build product is the executable "fracplanet";
+simply copy it wherever you like.
+
 Other files of interest are:
   man/man1/fracplanet.1
   fracplanet.htm fracplanet.css
   BUGS TODO THANKS CHANGES
 
-BUILDING CODE DOCUMENTATION
-===========================
-If you have doxygen (and graphviz) and want to build the code documentation
-subdirectory too, execute 
-  ./mkdoc
-The comments may not be particularly useful, or up to date :^)
+OTHER STUFF
+===========
+Probably only of interest to those actively developing the code:
 
+ - mktgz builds the tarballs released on sourceforge.
+
+ - mkdeb builds .deb binary installables for Debian systems.
+   (It probably assumes you have things pbuilder set up in a certain way).
+
+ - mkdoc (in the CVS, not distributed) builds source-code
+   documentation using doxygen.

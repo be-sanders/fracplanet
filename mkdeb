@@ -1,10 +1,8 @@
 #!/bin/bash -ev
 
-# TODO: Sort out .pbuilderrc mess on basecamp
 # TODO: Gpg Signing (dpkg-sig)
-# TODO: Auto determine "sarge" vs "breezy" for TGT below (from /etc/debian_version ?)
 
-VER="0.3.1dev"     # TODO: Should lify this from .tar.gz name
+VER="0.3.1dev"     # TODO: Should lift this from .tar.gz name
 
 GUESS_DISTRIBUTION=`grep '^DISTRIBUTION=' /etc/pbuilderrc | tail -1`
 eval ${GUESS_DISTRIBUTION}
