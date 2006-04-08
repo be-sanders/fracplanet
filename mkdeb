@@ -1,39 +1,47 @@
 #!/bin/bash -ev
 
 # TODO: Gpg Signing (dpkg-sig)
+# TODO: DEBEMAIL
 
-VER="0.3.1dev"     # TODO: Should lift this from .tar.gz name
+VER=`./VERSION`
+
+TARBALL=fracplanet-${VER}.tar.gz
+
+if [ ! -s ${TARBALL} ] ; then
+    echo "Could't find ${TARBALL}" ; 
+    exit ;
+fi
 
 GUESS_DISTRIBUTION=`grep '^DISTRIBUTION=' /etc/pbuilderrc | tail -1`
 eval ${GUESS_DISTRIBUTION}
-if [[ "${DISTRIBUTION}" == "" ]] ; 
-    then echo "Could't guess distribution from /etc/pbuilderrc" ; exit ; 
+if [[ "${DISTRIBUTION}" == "" ]] ; then
+    echo "Could't guess distribution from /etc/pbuilderrc" ; 
+    exit ; 
 fi
 
-echo "Assuming distribution is \"${DISTRIBUTION}\""
+echo "*** Will package ${TARBALL} for distribution \"${DISTRIBUTION}\""
+echo -n "*** Starting in 10 seconds..."
+for t in 10 9 8 7 6 5 4 3 2 1 ; do sleep 1 ; echo -n "." ; done
 
+PROJECT=`echo $TARBALL | sed 's/-.*//'`
+TARBALLORIG="${PROJECT}_${VER}.orig.tar.gz"
 REV="1${DISTRIBUTION}1"
-
-if [ ! -s "fracplanet-${VER}.tar.gz" ] ; then
-    echo "Can't find fracplanet-${VER}.tar.gz"
-    exit
-fi
 
 rm -r -f pkg
 mkdir pkg
 cd pkg
 
-cp ../fracplanet-$VER.tar.gz fracplanet_$VER.orig.tar.gz
-tar xvfz fracplanet_$VER.orig.tar.gz
-mv fracplanet fracplanet-$VER
-cd fracplanet-$VER
+cp ../${TARBALL} ${TARBALLORIG}
+tar xvfz ${TARBALLORIG}
+mv ${PROJECT} ${PROJECT}-${VER}
+cd ${PROJECT}-${VER}
 mv CHANGES changelog          # As per policy manual
 sed -i "s/${VER}/${VER}-${REV}/g" VERSION
 
 mkdir debian
-echo "fracplanet (${VER}-${REV}) ${DISTRIBUTION}; urgency=low" > debian/changelog
+echo "${PROJECT} (${VER}-${REV}) ${DISTRIBUTION}; urgency=low" > debian/changelog
 echo >> debian/changelog
-echo "  * Package created by fracplanet's mkdeb script." >> debian/changelog
+echo "  * Package created by ${PROJECT}'s mkdeb script." >> debian/changelog
 echo >> debian/changelog
 DATE=`822-date`
 echo " -- $USER <$EMAIL>  $DATE" >> debian/changelog
@@ -87,14 +95,14 @@ yada rebuild
 # now but better to build a source file then build it in pbuilder
 
 cd ..
-dpkg-source -b fracplanet-${VER} fracplanet_${VER}.orig.tar.gz
+dpkg-source -b ${PROJECT}-${VER} ${TARBALLORIG}
 
 #echo "Updating pbuilder (sudo auth maybe required)"
 #sudo pbuilder update
 
 mkdir result
-echo "Building package (assumes pbuilder set up as per Cow Book)"
-sudo pbuilder build --buildresult ./result fracplanet_${VER}-${REV}.dsc
+echo "Building package"
+sudo pbuilder build --buildresult ./result ${PROJECT}_${VER}-${REV}.dsc
 
 sudo chown ${USER}:${USER} result/*
 

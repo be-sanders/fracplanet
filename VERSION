@@ -5,4 +5,7 @@
 
 # NB If you edit this, you will need to "make distclean" and then rebuild (./BUILD) as there is no dependency checking
 
+# Avoid '-' or '_' in the version as it confuses mkdeb.
+# Use dev or wip qualifier while working to a release.
+
 echo "0.3.1dev"

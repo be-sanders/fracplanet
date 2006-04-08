@@ -7,11 +7,13 @@ VERSION=`./VERSION`
 
 cd ..
 
+PRUNEDIRS="-name moc -prune -o -name obj -prune -o -name pkg -prune"
+
 FILES_MISC=`ls fracplanet/{README,BUILD,LICENSE,TODO,CHANGES,BUGS,VERSION,THANKS,configure,doxygen.cfg,mktgz,testtgz,mkdeb,fracplanet.css,fracplanet.htm,htm_to_qml.xsl}`
-FILES_H=`find fracplanet -name moc -prune -o -name usage_text.h -prune -o -name pkg -prune -o -name '*.h' -print`
-FILES_CPP=`find fracplanet -name moc -prune -o -name pkg -prune -o -name '*.cpp' -print`
-FILES_PRO=`find fracplanet -name moc -prune -o -name pkg -prune -o -name '*.pro' -print`
-FILES_MAN=`find fracplanet/man -name '*.?' -print`
+FILES_H=`find fracplanet ${PRUNEDIRS} -o -name usage_text.h -prune -o -name '*.h' -print`
+FILES_CPP=`find fracplanet ${PRUNEDIRS} -o -name '*.cpp' -print`
+FILES_PRO=`find fracplanet ${PRUNEDIRS} -o -name '*.pro' -print`
+FILES_MAN=`find fracplanet/man -name '*.1' -print`
 
 FILES="$FILES_MISC $FILES_H $FILES_C $FILES_CPP $FILES_PRO $FILES_MAN"
 
