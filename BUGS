@@ -1,3 +1,14 @@
+- Have some suspicions that software GL (maybe only on slow machines?)
+  has problems dealing with large meshes.  But meshes as separate
+  objects work fine (e.g terrain mesh at subdivision level 4 is fine
+  but a cloud mesh in the same scene at subdivision level 5 will break up.
+  Something to do with number of vertices a GL implementation caches ?
+  Maybe need to break up meshes into smaller chunks.
+  All my Nvidia machines (I'll buy an ATI card when I can apt-get
+  the drivers) with GeForce2s and later cards work fine.
+  [The old machine displaying the problems has a motherboard-mounted
+  Riva128 (nv driver) and glxgears doesn't work properly either].
+
 - Base land height doesn't affect noise-only terrain 
   (when vertical perturbation is reduced to zero; probably because
   it's expressed as a proportion of vertical perturbation - should
@@ -21,3 +32,9 @@
   to back-face culling.
 
 - Export to Blender doesn't support emissive terrain.
+
+- Doing the clouds as a mesh might seem pointless but there
+  are plans to perturb the mesh to produce weather systems.
+  Maybe add some height too.
+
+

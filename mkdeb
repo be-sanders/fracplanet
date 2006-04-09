@@ -27,9 +27,9 @@ PROJECT=`echo $TARBALL | sed 's/-.*//'`
 TARBALLORIG="${PROJECT}_${VER}.orig.tar.gz"
 REV="1${DISTRIBUTION}1"
 
-rm -r -f pkg
-mkdir pkg
-cd pkg
+rm -r -f pkg_${VER}-${REV}
+mkdir pkg_${VER}-${REV}
+cd pkg_${VER}-${REV}
 
 cp ../${TARBALL} ${TARBALLORIG}
 tar xvfz ${TARBALLORIG}
@@ -107,3 +107,5 @@ sudo pbuilder build --buildresult ./result ${PROJECT}_${VER}-${REV}.dsc
 sudo chown ${USER}:${USER} result/*
 
 echo "Don't forget to lintian and linda"
+echo 'Also dpkg-sig --sign builder -k $DPKGSIG_KEYID any .deb files'
+
