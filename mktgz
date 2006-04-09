@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # Execute this to package up fracplanet as a .tar.gz.
 # This is the script used to build the tarballs released on sourceforge
