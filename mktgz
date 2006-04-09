@@ -10,12 +10,13 @@ cd ..
 PRUNEDIRS='-name moc -prune -o -name obj -prune -o -name pkg_* -prune'
 
 FILES_MISC=`ls fracplanet/{README,BUILD,LICENSE,TODO,CHANGES,BUGS,VERSION,THANKS,configure,doxygen.cfg,mktgz,testtgz,mkdeb,fracplanet.css,fracplanet.htm,htm_to_qml.xsl}`
-FILES_H=`find fracplanet ${PRUNEDIRS} -o -name usage_text.h -prune -o -name '*.h' -print`
-FILES_CPP=`find fracplanet ${PRUNEDIRS} -o -name '*.cpp' -print`
 FILES_PRO=`find fracplanet ${PRUNEDIRS} -o -name '*.pro' -print`
 FILES_MAN=`find fracplanet/man -name '*.1' -print`
+FILES_H=`find fracplanet ${PRUNEDIRS} -o -name usage_text.h -prune -o -name '*.h' -print`
+FILES_C=`find fracplanet ${PRUNEDIRS} -o -name usage_text.h -prune -o -name '*.c' -print`
+FILES_CPP=`find fracplanet ${PRUNEDIRS} -o -name '*.cpp' -print`
 
-FILES="$FILES_MISC $FILES_H $FILES_C $FILES_CPP $FILES_PRO $FILES_MAN"
+FILES="$FILES_MISC $FILES_PRO $FILES_MAN $FILES_H $FILES_C $FILES_CPP"
 
 tar cvfz fracplanet/fracplanet.tar.gz $FILES
 
