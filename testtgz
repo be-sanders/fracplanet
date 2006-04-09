@@ -1,5 +1,6 @@
-#!/bin/bash
+#!/bin/bash -e
 
+rm -r -f /tmp/fracplanet
 mkdir /tmp/fracplanet
 cp $1 /tmp/fracplanet/
 cd /tmp/fracplanet/

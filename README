@@ -43,12 +43,12 @@ Or just have both done for you by running
 this may be useful on the many distros which don't have qmake in the default
 user path).
 
-NB In either case you do almost certainly DO need your QTDIR 
+NB In either case you almost certainly DO need your QTDIR 
 environment variable to be correctly defined.
 
 This will give you a "fracplanet" executable which you can run with
   ./fracplanet
-or install where you like. 
+or copy to wherever you like (see INSTALL section below).
 
 If you have xsltproc (and sed) installed then you should get a copy of the
 fracplanet.htm documentation built into the application.
