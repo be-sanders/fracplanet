@@ -7,7 +7,7 @@ VERSION=`./VERSION`
 
 cd ..
 
-PRUNEDIRS="-name moc -prune -o -name obj -prune -o -name pkg -prune"
+PRUNEDIRS='-name moc -prune -o -name obj -prune -o -name pkg_* -prune'
 
 FILES_MISC=`ls fracplanet/{README,BUILD,LICENSE,TODO,CHANGES,BUGS,VERSION,THANKS,configure,doxygen.cfg,mktgz,testtgz,mkdeb,fracplanet.css,fracplanet.htm,htm_to_qml.xsl}`
 FILES_H=`find fracplanet ${PRUNEDIRS} -o -name usage_text.h -prune -o -name '*.h' -print`
