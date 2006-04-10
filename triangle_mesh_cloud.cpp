@@ -81,7 +81,7 @@ void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
   Random01 r01(parameters.seed);
   const uint steps=100*vertices();
   uint step=0;
-  if (false) //for (uint i=0;i<0;i++) // Number of twisters parameter
+  for (uint i=0;i<parameters.weather_systems;i++)
     {
       const uint random_vertex=static_cast<uint>(r01()*vertices());
       const XYZ position(vertex(random_vertex).position());
@@ -105,7 +105,7 @@ void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
 	      const float rotation_angle=strength*exp(-10.0*distance);
 	      
 	      // Now rotate p about axis through position by the rotation angle
-	      // TODO: Optimise.  axis and position is the same for all points; we're constantly recomputing the basis change matrices.
+	      // TODO: Optimise!  axis and position is the same for all points; we're constantly recomputing the basis change matrices.
 	      // Create a stateful version of Matrix34RotateAboutAxisThrough.
 	      vertex(j).position
 		(

@@ -39,6 +39,9 @@ public:
   //! Height of base of clouds
   float cloudbase;
 
+  //! Number of weather systems
+  uint weather_systems;
+
   //! Colour for clouds
   FloatRGBA colour;
 

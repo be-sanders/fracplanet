@@ -17,12 +17,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "parameters_cloud.h"
 
-/*! \todo: Might be better (more portable) to use QTime::currentTime () for random seeds.
- */
 ParametersCloud::ParametersCloud()
   :ParametersObject()
    ,enabled(false)
    ,cloudbase(0.1)
+   ,weather_systems(0)
    ,colour(1.0,1.0,1.0,1.0)
 {}
 

@@ -288,6 +288,11 @@ class ControlTerrain : public Control
     {
       parameters_cloud->cloudbase=v/100.0f;
     }
+  void setWeatherSystems(int v)
+    {
+      parameters_cloud->weather_systems=v;
+    }
+
 
   void regenerate_with_new_terrain_seed();
   void regenerate_with_new_rivers_seed();

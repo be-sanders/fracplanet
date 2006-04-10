@@ -335,7 +335,7 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
   QToolTip::add(clouds_seed_spinbox,"Random seed for cloud generation");
 
   new QLabel("Cloud height",grid_clouds);
-  QSpinBox* clouds_height_spinbox=new QSpinBox(1,100,1,grid_clouds);
+  QSpinBox*const clouds_height_spinbox=new QSpinBox(1,100,1,grid_clouds);
   clouds_height_spinbox->setValue(static_cast<int>(parameters_cloud->cloudbase*100.0f));
   QToolTip::add(clouds_height_spinbox,"Altitude of cloud layer");
   connect(
@@ -343,6 +343,15 @@ ControlTerrain::ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTer
 	  this,SLOT(setCloudbase(int))
 	  );
 
+  new QLabel("Weather systems",grid_clouds);
+  QSpinBox*const clouds_weather_systems_spinbox=new QSpinBox(0,1000,10,grid_clouds);
+  clouds_weather_systems_spinbox->setValue(parameters_cloud->weather_systems);
+  QToolTip::add(clouds_weather_systems_spinbox,"Number of cyclonic features in clouds");
+  connect(
+	  clouds_weather_systems_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setWeatherSystems(int))
+	  );
+  
   colour_cloud_button=new QPushButton(build_icon_of_colour(parameters_cloud->colour),"Cloud colour",tab_clouds);
   connect(
 	  colour_cloud_button,SIGNAL(clicked()),
