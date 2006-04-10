@@ -8,6 +8,15 @@ fracplanet
 [
 .I <QtOptions>
 ]
+[
+.B --display-list
+]
+[
+.B --help
+]
+[
+.B --wireframe
+]
 
 .SH DESCRIPTION
 
@@ -27,7 +36,23 @@ accessible from the application's "About" menu once it is running.
 Standard options recognised by the Qt toolkit (for example
 .B \-geometry
 .I <width>x<height>
+Note that these use the single-dash option style.
 ).
+
+.TP 0.5i
+.B --display-list, -d
+Start up the application with rendering in display list mode by default
+(c.f immediate mode).
+This is particularly useful when the application is running remotely as the
+generated meshes are only sent to the local OpenGL display hardware once.
+
+.TP 0.5i
+.B --help, -h
+Display a list of recognised arguments.
+
+.TP 0.5i
+.B --wireframe, -w
+Start application with rendering set to wireframe mode.
 
 .SH AUTHOR
 .B fracplanet

@@ -1,7 +1,7 @@
 TEMPLATE = app
 
 # append debug or release :
-CONFIG+= qt opengl stl release
+CONFIG+= qt opengl stl exceptions release
 
 # Input files
 
@@ -73,6 +73,8 @@ SOURCES += \
            vertex.cpp \
            triangle_edge.cpp \
            xyz.cpp
+
+LIBS += -lboost_program_options-gcc-mt-1_32
 
 #######################################
 # Version numbering.  This is ENTIRELY controlled by what is echoed by the VERSION script

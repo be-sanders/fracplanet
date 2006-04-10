@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*! \page License License
 
 This program is free software; you can redistribute it and/or
@@ -28,6 +28,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   \todo For new features to be added, see the TODO file.
  */
 
+#include <boost/program_options/errors.hpp>
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/parsers.hpp>
+#include <boost/program_options/variables_map.hpp>
 #include <qapplication.h>
 
 #include "fracplanet_main.h"
@@ -40,6 +44,38 @@ int main(int argc,char* argv[])
 {
   QApplication app(argc,argv);
 
+  try
+    {
+
+      boost::program_options::options_description opt_desc("Recognised options");
+      opt_desc.add_options()
+	("display-list,d","display list rendering")
+	("help,h","show list of recognised options")
+	("wireframe,w","wireframe mode");
+
+      boost::program_options::variables_map opt_map;
+      boost::program_options::store
+	(
+	 boost::program_options::parse_command_line(argc,argv,opt_desc),
+	 opt_map
+	 );
+      boost::program_options::notify(opt_map);
+
+      if (opt_map.count("help"))
+	{
+	  std::cerr << opt_desc << std::endl;
+	  return 1;
+	}
+
+      const bool wireframe=opt_map.count("wireframe");
+      const bool display_list=opt_map.count("display-list");
+    }
+  catch (boost::program_options::error e)
+    {
+      std::cerr << "Bad command line: " << e.what() << std::endl;
+      std::cerr << "Use -h or --help to list recognised options" << std::endl;
+      return 1;
+    }
   FracplanetMain*const main_widget=new FracplanetMain(0,&app);
 
   app.setMainWidget(main_widget);
