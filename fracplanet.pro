@@ -74,7 +74,8 @@ SOURCES += \
            triangle_edge.cpp \
            xyz.cpp
 
-LIBS += -lboost_program_options-gcc-mt-1_32
+#LIBS += -lboost_program_options-gcc-mt-1_32
+LIBS += -lboost_program_options
 
 #######################################
 # Version numbering.  This is ENTIRELY controlled by what is echoed by the VERSION script
