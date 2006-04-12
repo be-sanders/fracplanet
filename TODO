@@ -1,10 +1,6 @@
-- Mail http://objects.povworld.org/links7.html.  Also links at main POV site.
-
 - Option to save a raster map (cylindrical projection for spheres)
-  for terrain colours, heights, and specular (mainly for sea... and snow ?)
-
------
-
+  for terrain colours, heights, and specular (mainly for sea... and snow ?).  Clouds ?
+- More control over weather and clouds.
 - Another noise fn to modulate (c.f add) subdivided terrain.
   Might help reduce middle-of-continent highlands.
 - Another noise fn to modulate power law

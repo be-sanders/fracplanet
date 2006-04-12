@@ -15,6 +15,9 @@ fracplanet
 .B --help
 ]
 [
+.B --invert-mouse-y
+]
+[
 .B --wireframe
 ]
 
@@ -29,9 +32,8 @@ exported for Pov-Ray or Blender.
 A document fully describing usage via the application's GUI is
 accessible from the application's "About" menu once it is running.
 
-.SH OPTIONS
+.SH GENERAL OPTIONS
 
-.TP 0.5i
 .I <QtOptions>
 Standard options recognised by the Qt toolkit (for example
 .B \-geometry
@@ -39,20 +41,27 @@ Standard options recognised by the Qt toolkit (for example
 Note that these use the single-dash option style.
 ).
 
-.TP 0.5i
+.B --help, -h
+Display a list of recognised arguments.
+
+.SH RENDERING OPTIONS
+These affect the initial settings on the render controls tab, which controls the OpenGL display.
+
 .B --display-list, -d
 Start up the application with rendering in display list mode by default
 (c.f immediate mode).
 This is particularly useful when the application is running remotely as the
 generated meshes are only sent to the local OpenGL display hardware once.
 
-.TP 0.5i
-.B --help, -h
-Display a list of recognised arguments.
+.B --invert-mouse-y, -y
+Start application with mouse in non-joystick mode for flight.
 
-.TP 0.5i
 .B --wireframe, -w
 Start application with rendering set to wireframe mode.
+
+.SH SEE ALSO
+.B blender
+.B povray
 
 .SH AUTHOR
 .B fracplanet
@@ -60,3 +69,4 @@ was written by Tim Day (www.timday.com) and is released
 under the conditions of the GNU General Public License.
 For further details see the application's "About" dialog
 or the file LICENSE supplied with the source code.
+
