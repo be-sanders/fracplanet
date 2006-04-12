@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -44,16 +44,10 @@ class ParametersSave
   const ParametersRender*const parameters_render;
 
   //! Constructor.
-  ParametersSave(const ParametersRender* pr)
-    :pov_atmosphere(false)
-    ,pov_sea_object(true)
-    ,blender_per_vertex_alpha(false)
-    ,parameters_render(pr)
-    {}
+  ParametersSave(const ParametersRender*);
 
   //! Destructor.
-  ~ParametersSave()
-    {}
+  ~ParametersSave();
 };
 
 #endif

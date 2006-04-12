@@ -25,11 +25,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <fstream>
 
-FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app)
+FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app,const boost::program_options::variables_map& opts)
   :QHBox(parent)
    ,application(app)
    ,mesh_terrain(0)
    ,mesh_cloud(0)
+   ,parameters_terrain()
+   ,parameters_cloud()
+   ,parameters_render(opts)
    ,parameters_save(&parameters_render)
    ,last_step(0)
    ,progress_was_stalled(false)

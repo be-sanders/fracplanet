@@ -18,10 +18,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "parameters_render.h"
 
-ParametersRender::ParametersRender()
-  :wireframe(false)
-  ,display_list(false)
-  ,joystick_mouse(true)
+boost::program_options::options_description ParametersRender::options()
+{
+  boost::program_options::options_description desc("Render options");
+  desc.add_options()
+    ("display-list,d","use display list rendering")
+    ("wireframe,w","render in wireframe mode")
+    ("invert-mouse-y,y","invert mouse-y in flight mode");
+  return desc;
+}
+
+ParametersRender::ParametersRender(const boost::program_options::variables_map& opts)
+  :wireframe(opts.count("wireframe"))
+  ,display_list(opts.count("display-list"))
+  ,joystick_mouse(!opts.count("invert-mouse-y"))
   ,ambient(0.1f)
   ,background_colour_low(0.25f,0.25f,1.0f,0.0f)
   ,background_colour_high(0.0f,0.0f,0.0f,0.0f)

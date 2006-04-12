@@ -44,31 +44,27 @@ int main(int argc,char* argv[])
 {
   QApplication app(argc,argv);
 
+  boost::program_options::variables_map opts;
   try
     {
-
-      boost::program_options::options_description opt_desc("Recognised options");
+      boost::program_options::options_description opt_desc("Recognised options (besides Qt standards):");
       opt_desc.add_options()
-	("display-list,d","display list rendering")
-	("help,h","show list of recognised options")
-	("wireframe,w","wireframe mode");
+	("help,h","show list of recognised options");
+	
+      opt_desc.add(ParametersRender::options());
 
-      boost::program_options::variables_map opt_map;
       boost::program_options::store
 	(
 	 boost::program_options::parse_command_line(argc,argv,opt_desc),
-	 opt_map
+	 opts
 	 );
-      boost::program_options::notify(opt_map);
+      boost::program_options::notify(opts);
 
-      if (opt_map.count("help"))
+      if (opts.count("help"))
 	{
 	  std::cerr << opt_desc << std::endl;
 	  return 1;
 	}
-
-      const bool wireframe=opt_map.count("wireframe");
-      const bool display_list=opt_map.count("display-list");
     }
   catch (boost::program_options::error e)
     {
@@ -76,7 +72,7 @@ int main(int argc,char* argv[])
       std::cerr << "Use -h or --help to list recognised options" << std::endl;
       return 1;
     }
-  FracplanetMain*const main_widget=new FracplanetMain(0,&app);
+  FracplanetMain*const main_widget=new FracplanetMain(0,&app,opts);
 
   app.setMainWidget(main_widget);
   main_widget->show();

@@ -28,6 +28,8 @@ extern "C"
 #include <time.h>
 }
 
+#include <boost/program_options/variables_map.hpp>
+
 #include <qtabwidget.h>
 #include <qhbox.h>
 #include <qvbox.h>
@@ -73,8 +75,8 @@ protected:
 
   ParametersTerrain parameters_terrain;
   ParametersCloud parameters_cloud;
-  ParametersSave parameters_save;
   ParametersRender parameters_render;
+  ParametersSave parameters_save;
   
   QVBox* vbox;
   
@@ -95,7 +97,7 @@ protected:
   bool startup;
 
  public:
-  FracplanetMain(QWidget* parent,QApplication* app);
+  FracplanetMain(QWidget* parent,QApplication* app,const boost::program_options::variables_map& opts);
   virtual ~FracplanetMain();
   
   virtual void progress_start(uint target,const std::string&);
