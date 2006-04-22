@@ -80,6 +80,14 @@ int main(int argc,char* argv[])
   std::cerr << "sizeof(ByteRGBA) is " << sizeof(ByteRGBA) << " (4 is good)\n";  
   std::cerr << "sizeof(Vertex) is " << sizeof(Vertex) << " (32 is good)\n";
 
+  GLint max_elements_vertices;
+  GLint max_elements_indices; 
+  glGetIntegerv(GL_MAX_ELEMENTS_VERTICES,&max_elements_vertices);
+  glGetIntegerv(GL_MAX_ELEMENTS_INDICES,&max_elements_indices);
+
+  std::cerr << "GL_MAX_ELEMENTS_VERTICES : " << max_elements_vertices << std::endl;
+  std::cerr << "GL_MAX_ELEMENTS_INDICES : " << max_elements_indices << std::endl;
+
   //  std::cerr << "GL Extensions are :\n\"" << glGetString(GL_EXTENSIONS) << "\"\n";
   //std::cerr << "GLU Extensions are :\n\"" << gluGetString(GL_EXTENSIONS) << "\"\n";
 

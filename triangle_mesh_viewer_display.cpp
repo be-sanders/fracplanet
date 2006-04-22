@@ -172,11 +172,27 @@ void TriangleMeshViewerDisplay::paintGL()
 		  glColorPointer((m==0 ? 3 : 4),GL_UNSIGNED_BYTE,sizeof(Vertex),&(it->vertex(0).colour(0).r));
 		  
 		  // Draw the colour-zero triangles
-		  glDrawElements(GL_TRIANGLES,3*it->triangles_of_colour0(),GL_UNSIGNED_INT,&(it->triangle(0).vertex(0)));
+		  glDrawRangeElements
+		    (
+		     GL_TRIANGLES,
+		     0,
+		     it->vertices(),
+		     3*it->triangles_of_colour0(),
+		     GL_UNSIGNED_INT,
+		     &(it->triangle(0).vertex(0))
+		     );
 		  
 		  // Switch to alternate colour and draw the colour-one triangles
 		  glColorPointer(3,GL_UNSIGNED_BYTE,sizeof(Vertex),&(it->vertex(0).colour(1).r));
-		  glDrawElements(GL_TRIANGLES,3*it->triangles_of_colour1(),GL_UNSIGNED_INT,&(it->triangle(it->triangles_of_colour0()).vertex(0)));
+		  glDrawRangeElements
+		    (
+		     GL_TRIANGLES,
+		     0,
+		     it->vertices(),
+		     3*it->triangles_of_colour1(),
+		     GL_UNSIGNED_INT,
+		     &(it->triangle(it->triangles_of_colour0()).vertex(0))
+		     );
 		  
 		  glDisable(GL_COLOR_MATERIAL);
 		}
