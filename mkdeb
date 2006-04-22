@@ -1,6 +1,18 @@
 #!/bin/bash -ev
 
-# TODO: Gpg Signing (dpkg-sig)
+# Before using this you probably need to install
+#   pbuilder yada devscripts lintian linda 
+# and maybe dpkg-sig.  Also:
+# set up for sudo
+# set up pbuilder with 
+#   sudo pbuilder create --distribution sarge/etch/whatever
+#   sudo emacs -nw /etc/pbuilderrc
+#   ...change MIRRORSITE
+#   ...(and OTHERMIRROR if security updates for a stable)
+#   ...change DISTRIBUTION
+# or update with 
+#   sudo pbuilder update
+
 # TODO: DEBEMAIL
 
 VER=`./VERSION`
@@ -90,15 +102,11 @@ EOF
 
 yada rebuild
 
-# Could do 
-#   dpkg-buildpackage -rfakeroot
-# now but better to build a source file then build it in pbuilder
-
 cd ..
 dpkg-source -b ${PROJECT}-${VER} ${TARBALLORIG}
 
-#echo "Updating pbuilder (sudo auth maybe required)"
-#sudo pbuilder update
+# Alternative but inferior approach is apparently to do 
+#   dpkg-buildpackage -rfakeroot
 
 mkdir result
 echo "Building package"
