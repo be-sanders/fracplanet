@@ -47,10 +47,12 @@ int main(int argc,char* argv[])
   boost::program_options::variables_map opts;
   try
     {
-      boost::program_options::options_description opt_desc("Recognised options (besides Qt standards):");
+      boost::program_options::options_description opt_desc
+	("Recognised options (besides Qt standards):");
+
       opt_desc.add_options()
 	("help,h","show list of recognised options")
-	("info,i","display information about the fracplanet and the GL graphics system it's running on")
+	("info,i","display interesting information")
 	;
 	
       opt_desc.add(ParametersRender::options());
@@ -75,6 +77,11 @@ int main(int argc,char* argv[])
       return 1;
     }
 
+  FracplanetMain*const main_widget=new FracplanetMain(0,&app,opts);
+
+  app.setMainWidget(main_widget);
+  main_widget->show();
+
   if (opts.count("info"))
     {
       std::cerr << "Fracplanet:" << std::endl;
@@ -83,24 +90,23 @@ int main(int argc,char* argv[])
       std::cerr << std::endl;
 
       std::cerr << "GL:" << std::endl;
+
+      std::cerr << "  Vendor   : " << glGetString(GL_VENDOR) << std::endl;
+      std::cerr << "  Renderer : " << glGetString(GL_RENDERER) << std::endl;
+      std::cerr << "  Version  : " << glGetString(GL_VERSION) << std::endl;
+
       GLint max_elements_vertices;
       GLint max_elements_indices; 
       glGetIntegerv(GL_MAX_ELEMENTS_VERTICES,&max_elements_vertices);
-      glGetIntegerv(GL_MAX_ELEMENTS_INDICES,&max_elements_indices);
-      
+      glGetIntegerv(GL_MAX_ELEMENTS_INDICES,&max_elements_indices);      
       std::cerr << "  GL_MAX_ELEMENTS_VERTICES : " << max_elements_vertices << std::endl;
       std::cerr << "  GL_MAX_ELEMENTS_INDICES : " << max_elements_indices << std::endl;
 
       std::cerr << "  GL Extensions are : \"" << glGetString(GL_EXTENSIONS) << "\"" << std::endl;
       //std::cerr << "GLU Extensions are :\n\"" << gluGetString(GL_EXTENSIONS) << "\"\n";
 
-      std::cerr.flush();
+      //std::cerr.flush();
     }
-
-  FracplanetMain*const main_widget=new FracplanetMain(0,&app,opts);
-
-  app.setMainWidget(main_widget);
-  main_widget->show();
 
   std::cerr << "fracplanet: commencing main loop...\n";
 
