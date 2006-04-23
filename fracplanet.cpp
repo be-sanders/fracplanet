@@ -49,7 +49,9 @@ int main(int argc,char* argv[])
     {
       boost::program_options::options_description opt_desc("Recognised options (besides Qt standards):");
       opt_desc.add_options()
-	("help,h","show list of recognised options");
+	("help,h","show list of recognised options")
+	("info,i","display information about the fracplanet and the GL graphics system it's running on")
+	;
 	
       opt_desc.add(ParametersRender::options());
 
@@ -72,26 +74,35 @@ int main(int argc,char* argv[])
       std::cerr << "Use -h or --help to list recognised options" << std::endl;
       return 1;
     }
+
+  if (opts.count("info"))
+    {
+      std::cerr << "Fracplanet:" << std::endl;
+      std::cerr << "  sizeof(ByteRGBA) is " << sizeof(ByteRGBA) << " (4 is good)" << std::endl;  
+      std::cerr << "  sizeof(Vertex) is " << sizeof(Vertex) << " (32 is good)" << std::endl;
+      std::cerr << std::endl;
+
+      std::cerr << "GL:" << std::endl;
+      GLint max_elements_vertices;
+      GLint max_elements_indices; 
+      glGetIntegerv(GL_MAX_ELEMENTS_VERTICES,&max_elements_vertices);
+      glGetIntegerv(GL_MAX_ELEMENTS_INDICES,&max_elements_indices);
+      
+      std::cerr << "  GL_MAX_ELEMENTS_VERTICES : " << max_elements_vertices << std::endl;
+      std::cerr << "  GL_MAX_ELEMENTS_INDICES : " << max_elements_indices << std::endl;
+
+      std::cerr << "  GL Extensions are : \"" << glGetString(GL_EXTENSIONS) << "\"" << std::endl;
+      //std::cerr << "GLU Extensions are :\n\"" << gluGetString(GL_EXTENSIONS) << "\"\n";
+
+      std::cerr.flush();
+    }
+
   FracplanetMain*const main_widget=new FracplanetMain(0,&app,opts);
 
   app.setMainWidget(main_widget);
   main_widget->show();
 
-  std::cerr << "sizeof(ByteRGBA) is " << sizeof(ByteRGBA) << " (4 is good)\n";  
-  std::cerr << "sizeof(Vertex) is " << sizeof(Vertex) << " (32 is good)\n";
-
-  GLint max_elements_vertices;
-  GLint max_elements_indices; 
-  glGetIntegerv(GL_MAX_ELEMENTS_VERTICES,&max_elements_vertices);
-  glGetIntegerv(GL_MAX_ELEMENTS_INDICES,&max_elements_indices);
-
-  std::cerr << "GL_MAX_ELEMENTS_VERTICES : " << max_elements_vertices << std::endl;
-  std::cerr << "GL_MAX_ELEMENTS_INDICES : " << max_elements_indices << std::endl;
-
-  //  std::cerr << "GL Extensions are :\n\"" << glGetString(GL_EXTENSIONS) << "\"\n";
-  //std::cerr << "GLU Extensions are :\n\"" << gluGetString(GL_EXTENSIONS) << "\"\n";
-
-  std::cerr << "Commencing main loop...\n";
+  std::cerr << "fracplanet: commencing main loop...\n";
 
   return app.exec();
 }

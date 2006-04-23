@@ -63,3 +63,4 @@
 - Put ONLY the terrain data in the .inc file; rest in .pov or a different .inc
 - Split up mesh file (3 parts: vertices, colours, meshing)
 - Ringworld and Dyson sphere/hollow-Earth starting geometries for fun.
+- yafray export (note povray not available for sparc, but yafray is)
