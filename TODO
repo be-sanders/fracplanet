@@ -1,3 +1,5 @@
+- Use glDrawRangeElements() instead of glDrawElements()
+  [Get hold of OpenGL Distilled book - Paul Martz - Addison Wesley]
 - Option to save a raster map (cylindrical projection for spheres)
   for terrain colours, heights, and specular (mainly for sea... and snow ?).  Clouds ?
 - More control over weather and clouds.

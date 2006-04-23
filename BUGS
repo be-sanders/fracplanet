@@ -9,6 +9,15 @@
   [The old machine displaying the problems has a motherboard-mounted
   Riva128 (nv driver) and glxgears doesn't work properly either].
 
+- More on the above:  the broken renderings occur when the
+  app runs on my feeble ubuntu machine (ie independent of where the
+  xserver runs).  Similarly non ubuntu machines can use the feeble
+  ubuntu machine as an xserver (with software OpenGL rendering) and
+  are fine.  Live Ubuntu shows the same problem.
+  As a workround, set Create->Colours->Oceans and Rivers emissve to
+  '1' instead of '0'.  This fixes the bug, probably because
+  big index buffers aren't then used.
+
 - Base land height doesn't affect noise-only terrain 
   (when vertical perturbation is reduced to zero; probably because
   it's expressed as a proportion of vertical perturbation - should

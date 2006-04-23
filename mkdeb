@@ -1,7 +1,7 @@
 #!/bin/bash -ev
 
 # Before using this you probably need to install
-#   pbuilder yada devscripts lintian linda 
+#   sudo pbuilder yada devscripts lintian linda 
 # and maybe dpkg-sig.  Also:
 # set up for sudo
 # set up pbuilder with 
