@@ -5,12 +5,12 @@
 # and maybe dpkg-sig.  Also:
 # set up for sudo
 # set up pbuilder with 
-#   sudo pbuilder create --distribution sarge/etch/whatever
 #   sudo emacs -nw /etc/pbuilderrc
 #   ...change MIRRORSITE
 #   ...(and OTHERMIRROR if security updates for a stable)
 #   ...change DISTRIBUTION
-# or update with 
+#   sudo pbuilder create --distribution sarge/etch/whatever
+# and/or update with 
 #   sudo pbuilder update
 
 # TODO: DEBEMAIL
