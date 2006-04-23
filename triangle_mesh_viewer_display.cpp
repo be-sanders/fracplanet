@@ -28,7 +28,7 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const Param
   :QGLWidget(parent)
    ,mesh(m)
    ,parameters(param)
-   ,frame(0)
+   ,frame_number(0)
    ,width(0)
    ,height(0)
    ,frame_time()
@@ -72,6 +72,37 @@ const FloatRGBA TriangleMeshViewerDisplay::background_colour() const
   else return parameters->background_colour_low+h*(parameters->background_colour_high-parameters->background_colour_low);
 }
 
+void TriangleMeshViewerDisplay::check_for_gl_errors(const char* where) const
+{
+  GLenum error;
+  while ((error=glGetError())!=GL_NO_ERROR)
+    {
+      std::ostringstream msg;
+      msg << "GL error in " << where << " (frame " << frame_number << ") : ";
+      switch (error)
+	{
+	case GL_INVALID_ENUM:
+	  msg << "GL_INVALID_ENUM";
+	  break;
+	case GL_INVALID_VALUE:
+	  msg << "GL_INVALID_VALUE";
+	  break;
+	case GL_INVALID_OPERATION:
+	  msg << "GL_INVALID_OPERATION";
+	  break;
+	case GL_STACK_OVERFLOW:
+	  msg << "GL_STACK_OVERFLOW";
+	  break;
+	case GL_STACK_UNDERFLOW:
+	  msg << "GL_STACK_UNDERFLOW";
+	  break;
+	case GL_OUT_OF_MEMORY:
+	  msg << "GL_OUT_OF_MEMORY";
+	  break;
+	}
+      std::cerr << msg.str() << std::endl;
+    }
+}
 
 void TriangleMeshViewerDisplay::paintGL()
 {
@@ -259,6 +290,8 @@ void TriangleMeshViewerDisplay::paintGL()
 
   glFlush();
 
+  check_for_gl_errors("TriangleMeshViewerDisplay::paintGL");
+
   // Get time taken since last frame
   const uint dt=frame_time.restart();
 
@@ -346,7 +379,7 @@ void TriangleMeshViewerDisplay::resizeGL(int w,int h)
 
 void TriangleMeshViewerDisplay::draw_frame(const XYZ& p,const XYZ& l,const XYZ& u,float r,float t)
 {
-  frame++;
+  frame_number++;
 
   camera_position=p;
   camera_lookat=l;
