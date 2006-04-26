@@ -86,7 +86,8 @@ int main(int argc,char* argv[])
     {
       std::cerr << "Fracplanet:" << std::endl;
       std::cerr << "  sizeof(ByteRGBA) is " << sizeof(ByteRGBA) << " (4 is good)" << std::endl;  
-      std::cerr << "  sizeof(Vertex) is " << sizeof(Vertex) << " (32 is good)" << std::endl;
+      std::cerr << "  sizeof(Vertex)   is " << sizeof(Vertex) << " (32 is good)" << std::endl;
+      std::cerr << "  sizeof(Triangle) is " << sizeof(Triangle) << " (12 is good)" << std::endl;
       std::cerr << std::endl;
 
       std::cerr << "GL:" << std::endl;

@@ -1,11 +1,18 @@
-- The Ubuntu built packages break (some sort of vertex scrambing) when
-  meshes are drawn with glDrawElements (NB the problem seems to be
-  in the built app, NOT the xserver).
-  This seems to be something to do with Ubuntu using (defaulting to ?)
-  the mesa GL libraries and Debian using the XFree86 versions.
+- The Ubuntu built packages break (some sort of vertex scrambing,
+  NOT a crash) when meshes are drawn with glDraw[Range]Elements
+  (NB the problem seems to be in the built app, NOT the xserver).
+  I did wonder if this was something to do with Ubuntu using
+  the mesa GL libraries and Debian using the XFree86 versions:
   dpkg-query -S /usr/include/GL/gl.h
    Sarge:  xlibmesa-gl-dev: /usr/include/GL/gl.h
    Dapper: mesa-common-dev: /usr/include/GL/gl.h 
+  But building the package on Debian Etch against
+   libgl1-mesa-dev,libglu1-mesa-dev,mesa-common-dev
+  (add them into the yadda build dependencies in mkdeb)
+  doesn't reproduce the problem there.
+  Both platforms are gcc 4.0.3.
+  So it's a mystery!  Any help gratefully received.
+  In the meantime there will be a broken-gl checkbox and cmdline flag.
 
 - Base land height doesn't affect noise-only terrain 
   (when vertical perturbation is reduced to zero; probably because
