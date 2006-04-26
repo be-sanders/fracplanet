@@ -1,18 +1,29 @@
-- The Ubuntu built packages break (some sort of vertex scrambing,
-  NOT a crash) when meshes are drawn with glDraw[Range]Elements
+- The Ubuntu built packages seem to have some problems
+  when meshes are drawn with glDraw[Range]Elements
   (NB the problem seems to be in the built app, NOT the xserver).
-  I did wonder if this was something to do with Ubuntu using
+  The confusion seems to occur above the 1k primitives mark.
+  Reducing the number of primitives per glDrawRangeElements
+  seems to help although some xservers seem to spew
+    X Error: GLXBadLargeRequest.
+  and give a blank view.  If this happens, increase the
+    Create/Colours/...emissive... 
+  spinbox from zero; this uses a different render path.
+  [I did wonder if this was something to do with Ubuntu using
   the mesa GL libraries and Debian using the XFree86 versions:
-  dpkg-query -S /usr/include/GL/gl.h
-   Sarge:  xlibmesa-gl-dev: /usr/include/GL/gl.h
-   Dapper: mesa-common-dev: /usr/include/GL/gl.h 
+    dpkg-query -S /usr/include/GL/gl.h
+      Sarge:  xlibmesa-gl-dev: /usr/include/GL/gl.h
+      Dapper: mesa-common-dev: /usr/include/GL/gl.h 
   But building the package on Debian Etch against
-   libgl1-mesa-dev,libglu1-mesa-dev,mesa-common-dev
-  (add them into the yadda build dependencies in mkdeb)
+    libgl1-mesa-dev,libglu1-mesa-dev,mesa-common-dev
+  (add them into the yadda build dependencies in the mkdeb script)
   doesn't reproduce the problem there.
   Both platforms are gcc 4.0.3.
-  So it's a mystery!  Any help gratefully received.
-  In the meantime there will be a broken-gl checkbox and cmdline flag.
+  It's a mystery!  Any help gratefully received.]
+
+- Bear in mind that selecting display list rendering means a copy
+  the GL system takes a copy of the triangle mesh.  This needs memory;
+  if there isn't enough the application may crash (some drivers
+  may crash if the display list doesn't fit on the graphics card). 
 
 - Base land height doesn't affect noise-only terrain 
   (when vertical perturbation is reduced to zero; probably because
@@ -41,5 +52,3 @@
 - Doing the clouds as a mesh might seem pointless but there
   are plans to perturb the mesh to produce weather systems.
   Maybe add some height too.
-
-
