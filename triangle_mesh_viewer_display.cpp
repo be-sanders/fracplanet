@@ -150,7 +150,7 @@ void TriangleMeshViewerDisplay::paintGL()
 	{
 	  gl_display_list_index=glGenLists(1);
 	  glNewList(gl_display_list_index,GL_COMPILE_AND_EXECUTE);
-	  std::cerr << "Building display list...\n";
+	  std::cerr << "Building display list...";
 	}
 
       GLfloat default_material_white[3]={1.0f,1.0f,1.0f};
@@ -220,6 +220,10 @@ void TriangleMeshViewerDisplay::paintGL()
 			 GL_UNSIGNED_INT,
 			 &(it->triangle(t).vertex(0))
 			 );
+		      if (building_display_list)
+			{
+			  std::cerr << ".";
+			}
 		    }
 		  
 		  // Switch to alternate colour and draw the colour-one triangles
@@ -236,6 +240,10 @@ void TriangleMeshViewerDisplay::paintGL()
 			 GL_UNSIGNED_INT,
 			 &(it->triangle(t).vertex(0))
 			 );
+		      if (building_display_list)
+			{
+			  std::cerr << ".";
+			}
 		    }
 		  
 		  glDisable(GL_COLOR_MATERIAL);
@@ -255,8 +263,12 @@ void TriangleMeshViewerDisplay::paintGL()
 		  glBegin(GL_TRIANGLES);
 		  for (unsigned int t=0;t<it->triangles();t++)
 		    {
-		      const uint c=(t<it->triangles_of_colour0() ? 0 : 1);
-		      
+		      if (building_display_list && (t&0x3ff) == 0)
+			{
+			  std::cerr << ".";
+			}
+
+		      const uint c=(t<it->triangles_of_colour0() ? 0 : 1);		      
 		      for (uint i=0;i<3;i++)
 			{
 			  const uint vn=it->triangle(t).vertex(i);
@@ -297,7 +309,7 @@ void TriangleMeshViewerDisplay::paintGL()
       if (building_display_list)
 	{
 	  glEndList();
-	  std::cerr << "...built display list\n";
+	  std::cerr << "\n...built display list\n";
 	}
     }
 
