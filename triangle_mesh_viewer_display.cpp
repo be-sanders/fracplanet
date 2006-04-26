@@ -202,8 +202,9 @@ void TriangleMeshViewerDisplay::paintGL()
 		  // For a second mesh, use alpha (actually could use it for the first mesh but maybe it's more efficient not to).
 		  glColorPointer((m==0 ? 3 : 4),GL_UNSIGNED_BYTE,sizeof(Vertex),&(it->vertex(0).colour(0).r));
 
-		  // Some broken GL implementations (ie Ubuntu's ?) seem to get in a mess if you render >1k primitives
-		  // (3k vertices).  Debian (Sarge or Etch) has no problems with unlimited batches.
+		  // Builds on some platforms (ie Ubuntu) seem to get in a mess if you render >1k primitives
+		  // (3k vertices).  NB This is a problem in the client; not the xserver.
+		  // Debian (Sarge or Etch) has no problems with unlimited batches.
 		  // Note it's simply the batch size; there doesn't seem to be any problem with the 10Ks or vertices.
 		  // Since the limited batch size doesn't seem to hurt working implementations we just use it everywhere.
 		  const uint batch_size=1024;
