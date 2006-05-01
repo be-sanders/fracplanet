@@ -290,17 +290,11 @@ template <typename T> class Image : private ImageStorage<T>, public Raster<T>, p
  public:
   Image(uint w,uint h)
     :ImageStorage<T>(w*h)
-    ,Raster<T>(w,h,w,_storage.get())
+    ,Raster<T>(w,h,w,ImageStorage<T>::_storage.get())
     {}
   ~Image()
     {}  
 };
-
-template class Raster<uchar>;
-template class Image<uchar>;
-
-template class Raster<ByteRGBA>;
-template class Image<ByteRGBA>;
 
 #endif
 

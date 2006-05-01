@@ -58,3 +58,9 @@ template <> void Raster<uchar>::write_pgm(std::ostream& out) const
   for (ConstRowIterator row=row_begin();row!=row_end();++row)
     out.write(reinterpret_cast<const char*>(&(*(row->begin()))),row->size());
 }
+
+template class Raster<uchar>;
+template class Image<uchar>;
+
+template class Raster<ByteRGBA>;
+template class Image<ByteRGBA>;
