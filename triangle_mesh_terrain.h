@@ -81,7 +81,7 @@ class TriangleMeshTerrain : virtual TriangleMesh
   virtual void write_blender(std::ofstream& out,const ParametersSave&,const ParametersTerrain&,const std::string& mesh_name) const;
 
   //! Render the mesh onto a raster image.
-  virtual void render_texture(Image<ByteRGBA>&) const;
+  virtual void render_texture(Raster<ByteRGBA>&) const;
 };
 
 //! Class constructing specific case of a planetary terrain.

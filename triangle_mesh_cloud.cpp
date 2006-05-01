@@ -44,9 +44,9 @@ void TriangleMeshCloud::write_blender(std::ofstream& out,const ParametersSave& p
      );
 }
 
-void TriangleMeshCloud::render_texture(Image<uchar>& image) const
+void TriangleMeshCloud::render_texture(Raster<uchar>& image) const
 {
-  image.clear(128);
+  image.fill(128);
 }
 
 void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)

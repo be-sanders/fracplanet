@@ -54,7 +54,7 @@ class TriangleMeshCloud : virtual TriangleMesh
   //! Render the mesh onto a raster image.
   /*! The only interesting thing with clouds is their alpha, so render a greyscale.
   */
-  virtual void render_texture(Image<uchar>&) const;
+  virtual void render_texture(Raster<uchar>&) const;
 };
 
 //! Class constructing specific case of a planetary cloud.

@@ -25,41 +25,36 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "rgb.h"
 #include <iostream>
 
-template <typename T> void Image<T>::clear(const T& v)
+template <typename T> void Raster<T>::fill(const T& v)
 {
-  for (typename RasterType::iterator row=_raster.begin();row!=_raster.end();++row)
+  for (RowIterator row=row_begin();row!=row_end();++row)
     std::fill((*row).begin(),(*row).end(),v);
 }
 
-template <typename T> void Image<T>::scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1)
+template <typename T> void Raster<T>::scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1)
 {
-  uint xi=ceil(x0);
+  int xi=static_cast<int>(ceil(x0));
   while (xi<x1)
     {
-      (*this)(y,xi)=T(v0);
       xi++;
     }
 }
 
-template <> void Image<ByteRGBA>::write_ppm(std::ostream& out) const
+template <> void Raster<ByteRGBA>::write_ppm(std::ostream& out) const
 {
   out << "P6" << std::endl;
   out << width() << " " << height() << std::endl;
   out << "255" << std::endl;
-  for (RasterType::const_iterator row=_raster.begin();row!=_raster.end();++row) 
-    {
-      for (RasterType::const_subarray<1>::type::const_iterator it=(*row).begin();it!=(*row).end();++it)
-	out.write(reinterpret_cast<const char*>(&((*it).r)),3);
-    }
+  for (ConstRowIterator row=row_begin();row!=row_end();++row)
+    for (const ByteRGBA* it=row->begin();it!=row->end();++it)
+      out.write(reinterpret_cast<const char*>(&((*it).r)),3);
 }
 
-template <> void Image<uchar>::write_pgm(std::ostream& out) const
+template <> void Raster<uchar>::write_pgm(std::ostream& out) const
 {
   out << "P5" << std::endl;
   out << width() << " " << height() << std::endl;
   out << "255" << std::endl;
-  for (RasterType::const_iterator row=_raster.begin();row!=_raster.end();++row) 
-    {
-      out.write(reinterpret_cast<const char*>(&(*((*row).begin()))),(*row).size());
-    }
+  for (ConstRowIterator row=row_begin();row!=row_end();++row)
+    out.write(reinterpret_cast<const char*>(&(*(row->begin()))),row->size());
 }
