@@ -67,6 +67,8 @@ template <typename T> class Raster
     ,_height(h) 
     ,_pitch(p)
     ,_data(d)
+    ,_row_end(row_range(h),p)
+    ,_const_row_end(row_range(h),p)
     {}
   virtual ~Raster()
     {}
@@ -115,6 +117,17 @@ template <typename T> class Raster
   const T* row_end(uint r) const
     {
       return row_begin(r)+_width;
+    }
+  boost::iterator_range<T*> row_range(uint r)
+    {
+      T*const it=row_begin(r);
+      return boost::iterator_range<T*>(it,it+_width);
+    }
+
+  boost::iterator_range<const T*> row_range(uint r) const
+    {
+      const T*const it=row_begin(r);
+      return boost::iterator_range<const T*>(it,it+_width);
     }
 
   class RowIterator : public std::iterator<std::forward_iterator_tag, boost::iterator_range<T*> >
@@ -179,7 +192,7 @@ template <typename T> class Raster
     }
   RowIterator row_end()
     {
-      return RowIterator(row_range(_height),_pitch);
+      return _row_end;
     }
   
   class ConstRowIterator : public std::iterator<std::forward_iterator_tag, boost::iterator_range<const T*> >
@@ -244,19 +257,9 @@ template <typename T> class Raster
     }
   ConstRowIterator row_end() const
     {
-      return ConstRowIterator(row_range(_height),_pitch);
+      return _const_row_end;
     }
   
-  boost::iterator_range<T*> row_range(uint r)
-    {
-      return boost::iterator_range<T*>(row_begin(r),row_end(r));
-    }
-
-  boost::iterator_range<const T*> row_range(uint r) const
-    {
-      return boost::iterator_range<const T*>(row_begin(r),row_end(r));
-    }
-
   //! Clear the image to a constant value.
   void fill(const T& v);
 
@@ -271,6 +274,8 @@ template <typename T> class Raster
   const uint _height;
   const uint _pitch;
   T*const _data;
+  const RowIterator _row_end;
+  const ConstRowIterator _const_row_end;
 };
 
 template <typename T> class ImageStorage
