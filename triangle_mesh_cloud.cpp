@@ -44,6 +44,11 @@ void TriangleMeshCloud::write_blender(std::ofstream& out,const ParametersSave& p
      );
 }
 
+void TriangleMeshCloud::render_texture(Image<uchar>& image) const
+{
+  image.clear(128);
+}
+
 void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
 {
   compute_vertex_normals();

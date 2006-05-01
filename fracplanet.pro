@@ -14,6 +14,7 @@ HEADERS += \
            dialog_documentation.h \
            fracplanet_main.h \
            geometry.h \
+           image.h \
            license.h \
            matrix33.h \
            matrix34.h \
@@ -49,6 +50,7 @@ SOURCES += \
            fracplanet.cpp \
            fracplanet_main.cpp \
            geometry.cpp \
+           image.cpp \
            license.cpp \
            matrix33.cpp \
            matrix34.cpp \

@@ -115,6 +115,9 @@ protected:
 
   //! Invoked by ControlSave to save to file (Blender format).
   void save_blender();
+
+  //! Invoked by ControlSave to save to file as texture(s).
+  void save_texture();
 };
 
 #endif

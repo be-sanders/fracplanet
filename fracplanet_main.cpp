@@ -25,6 +25,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <fstream>
 
+#include <boost/scoped_ptr.hpp>
+
+#include "image.h"
+
 FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app,const boost::program_options::variables_map& opts)
   :QHBox(parent)
    ,application(app)
@@ -209,56 +213,53 @@ void FracplanetMain::save_pov()
     {
       QMessageBox::critical(this,"Fracplanet","No file specified\nNothing saved");
     }
+  else if (!(selected_filename.upper().endsWith(".POV") || selected_filename.upper().endsWith(".INC")))
+    {
+      QMessageBox::critical(this,"Fracplanet","File selected must have .pov or .inc suffix.");
+    }
   else
     {
-      if (!(selected_filename.upper().endsWith(".POV") || selected_filename.upper().endsWith(".INC")))
+      viewer->hide();
+      
+      const std::string filename_base(selected_filename.left(selected_filename.length()-4).local8Bit());
+      const std::string filename_pov=filename_base+".pov";
+      const std::string filename_inc=filename_base+".inc";
+      
+      const uint last_separator=filename_inc.rfind('/');
+      const std::string filename_inc_relative_to_pov=
+	"./"
+	+(
+	  last_separator==std::string::npos
+	  ?
+	  filename_inc
+	  :
+	  filename_inc.substr(last_separator+1)
+	  );
+      
+      std::ofstream out_pov(filename_pov.c_str());
+      std::ofstream out_inc(filename_inc.c_str());
+      
+      // Boilerplate for renderer    
+      out_pov << "camera {perspective location <0,1,-4.5> look_at <0,0,0> angle 45}\n";
+      out_pov << "light_source {<100,100,-100> color rgb <1.0,1.0,1.0>}\n";
+      out_pov << "#include \""+filename_inc_relative_to_pov+"\"\n";
+      
+      mesh_terrain->write_povray(out_inc,parameters_save,parameters_terrain);
+      if (mesh_cloud) mesh_cloud->write_povray(out_inc,parameters_save,parameters_cloud);
+      
+      out_pov.close();
+      out_inc.close();
+      
+      const bool ok=(out_pov && out_inc);
+      
+      progress_dialog.reset(0);
+      
+      viewer->showNormal();
+      viewer->raise();
+      
+      if (!ok) 
 	{
-	  QMessageBox::critical(this,"Fracplanet","File selected must have .pov or .inc suffix.");
-	}
-      else
-	{
-	  viewer->hide();
-
-	  const std::string filename_base(selected_filename.left(selected_filename.length()-4).local8Bit());
-	  const std::string filename_pov=filename_base+".pov";
-	  const std::string filename_inc=filename_base+".inc";
-	  
-	  const uint last_separator=filename_inc.rfind('/');
-	  const std::string filename_inc_relative_to_pov=
-	    "./"
-	    +(
-	      last_separator==std::string::npos
-	      ?
-	      filename_inc
-	      :
-	      filename_inc.substr(last_separator+1)
-	      );
-	  
-	  std::ofstream out_pov(filename_pov.c_str());
-	  std::ofstream out_inc(filename_inc.c_str());
-	  
-	  // Boilerplate for renderer    
-	  out_pov << "camera {perspective location <0,1,-4.5> look_at <0,0,0> angle 45}\n";
-	  out_pov << "light_source {<100,100,-100> color rgb <1.0,1.0,1.0>}\n";
-	  out_pov << "#include \""+filename_inc_relative_to_pov+"\"\n";
-	  
-	  mesh_terrain->write_povray(out_inc,parameters_save,parameters_terrain);
-	  if (mesh_cloud) mesh_cloud->write_povray(out_inc,parameters_save,parameters_cloud);
-	  
-	  out_pov.close();
-	  out_inc.close();
-
-	  const bool ok=(out_pov && out_inc);
-	  
-	  progress_dialog.reset(0);
-	  
-	  viewer->showNormal();
-	  viewer->raise();
-	  
-	  if (!ok) 
-	    {
-	      QMessageBox::critical(this,"Fracplanet","Errors ocurred while the files were being written.");
-	    }
+	  QMessageBox::critical(this,"Fracplanet","Errors ocurred while the files were being written.");
 	}
     }
 }
@@ -273,9 +274,8 @@ void FracplanetMain::save_blender()
   else
     {
       viewer->hide();
-      
+
       const std::string filename(selected_filename.local8Bit());
-	  
       std::ofstream out(filename.c_str());
       
       // Boilerplate
@@ -313,6 +313,57 @@ void FracplanetMain::save_blender()
       viewer->raise();
 	  
       if (!out) 
+	{
+	  QMessageBox::critical(this,"Fracplanet","Errors ocurred while the files were being written.");
+	}
+    }
+}
+
+void FracplanetMain::save_texture()
+{
+  QString selected_filename=QFileDialog::getSaveFileName(".","Texture (*.ppm)",this,"Save texture","Fracplanet");
+  if (selected_filename.isEmpty())
+    {
+      QMessageBox::critical(this,"Fracplanet","No file specified\nNothing saved");
+    }
+  else if (!(selected_filename.upper().endsWith(".PPM")))
+    {
+      QMessageBox::critical(this,"Fracplanet","File selected must have .ppm suffix.");
+    }
+  else
+    {
+      const std::string filename(selected_filename.local8Bit());
+      const std::string filename_base(selected_filename.left(selected_filename.length()-4).local8Bit());
+      	  
+      viewer->hide();
+
+      bool ok=true;
+      {
+	boost::scoped_ptr<Image<ByteRGBA> > terrain_image(new Image<ByteRGBA>(360,180));
+	mesh_terrain->render_texture(*terrain_image);
+
+	std::ofstream out(filename.c_str(),std::ios::binary);      
+	terrain_image->write_ppm(out);
+	out.close();
+	if (!out) ok=false;
+      }
+
+      if (ok && mesh_cloud)
+	{
+	  boost::scoped_ptr<Image<uchar> > cloud_image(new Image<uchar>(360,180));
+	  mesh_cloud->render_texture(*cloud_image);
+	  std::ofstream out((filename_base+"_cloud.png").c_str(),std::ios::binary);      
+	  cloud_image->write_pgm(out);
+	  out.close();
+	  if (!out) ok=false;
+	}
+
+      progress_dialog.reset(0);
+      
+      viewer->showNormal();
+      viewer->raise();
+	  
+      if (!ok) 
 	{
 	  QMessageBox::critical(this,"Fracplanet","Errors ocurred while the files were being written.");
 	}

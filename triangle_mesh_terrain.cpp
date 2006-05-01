@@ -426,6 +426,10 @@ void TriangleMeshTerrain::write_blender(std::ofstream& out,const ParametersSave&
   TriangleMesh::write_blender(out,mesh_name+".terrain",0);
 }
 
+void TriangleMeshTerrain::render_texture(Image<ByteRGBA>& image) const
+{
+  image.clear(ByteRGBA(0,0,255,255));
+}
 
 TriangleMeshTerrainPlanet::TriangleMeshTerrainPlanet(const ParametersTerrain& parameters,Progress* progress)
   :TriangleMesh(progress)

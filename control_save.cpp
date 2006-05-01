@@ -45,7 +45,7 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
 
   setStretchFactor(new QVBox(tab_pov),1);
 
-  QPushButton*const save_pov=new QPushButton("Save (POV-Ray)",tab_pov);
+  QPushButton*const save_pov=new QPushButton("Save for POV-Ray",tab_pov);
   QToolTip::add(save_pov,"Press to save object for POV-Ray");
   connect(
 	  save_pov,SIGNAL(clicked()),
@@ -69,7 +69,7 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
 
   setStretchFactor(new QVBox(tab_blender),1);
 
-  QPushButton*const save_blender=new QPushButton("Save (Blender)",tab_blender);
+  QPushButton*const save_blender=new QPushButton("Save for Blender",tab_blender);
   QToolTip::add(save_blender,"Press to save object for Blender");
   connect(
 	  save_blender,SIGNAL(clicked()),
@@ -77,6 +77,19 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
 	  );
 
   setStretchFactor(new QVBox(tab_blender),1);
+
+  QVBox*const tab_texture=new QVBox(this);
+  tabs->addTab(tab_texture,"Texture");
+  setStretchFactor(new QVBox(tab_texture),1);
+
+  QPushButton*const save_texture=new QPushButton("Save as texture",tab_texture);
+  QToolTip::add(save_blender,"Press to save object as textures");
+  connect(
+	  save_texture,SIGNAL(clicked()),
+	  save_target,SLOT(save_texture())
+	  );
+
+  setStretchFactor(new QVBox(tab_texture),1);
 }
 
 ControlSave::~ControlSave()

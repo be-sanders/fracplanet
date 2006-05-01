@@ -23,8 +23,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _triangle_mesh_terrain_h_
 #define _triangle_mesh_terrain_h_
 
-#include "triangle_mesh.h"
+#include "image.h"
 #include "parameters_terrain.h"
+#include "triangle_mesh.h"
 
 //! This class holds all the terrain-related methods.  
 /*! It's intended to be used as a "mix-in", adding terrain generating 
@@ -78,6 +79,9 @@ class TriangleMeshTerrain : virtual TriangleMesh
   /*! Unlike write_povray there are no specialisations for flat/spherical terrain.
    */
   virtual void write_blender(std::ofstream& out,const ParametersSave&,const ParametersTerrain&,const std::string& mesh_name) const;
+
+  //! Render the mesh onto a raster image.
+  virtual void render_texture(Image<ByteRGBA>&) const;
 };
 
 //! Class constructing specific case of a planetary terrain.
