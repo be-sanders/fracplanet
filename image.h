@@ -29,13 +29,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class ByteRGBA;
 
 #include "useful.h"
+#include "rgb.h"
+
+//! Class to support specialisation for particular pixel formats
+template <typename T> class PixelTraits
+{
+  typedef T ComputeType;
+};
+
+template<> class PixelTraits<uchar>
+{
+ public:
+  typedef float ComputeType;
+};
+
+template<> class PixelTraits<ByteRGBA>
+{
+ public:
+  typedef FloatRGBA ComputeType;
+};
 
 //! Class for 2D raster images of a specified type.
 /*! Completely gratuitously implemented using boost multiarray type.
+  Assumes explicit instantiation.
+  /todo Multiarray has GOT TO GO.  Far too heavyweight.
  */
 template <typename T> class Image
 {
  public:
+  typedef boost::multi_array<T,2> RasterType;
+  typedef T PixelType;
+  typedef typename PixelTraits<T>::ComputeType ComputeType;
+
   Image(uint width,uint height)
     :_raster(boost::extents[height][width])
     {}
@@ -51,41 +76,40 @@ template <typename T> class Image
       return _raster.shape()[0];
     }
 
-  const boost::multi_array<T,2>& raster() const
+  const RasterType& raster() const
     {
       return _raster;
     }
-  boost::multi_array<T,2>& raster()
+  RasterType& raster()
     {
       return _raster;
     }
 
-  const T& operator()(int x,int y) const
+  const T& operator()(uint x,uint y) const
     {
       return _raster[y][x];
     }
-  T& operator()(int x,int y)
+  T& operator()(uint x,uint y)
     {
       return _raster[y][x];
     }
 
-  void clear(const T& v)
-    {
-      for (typename RasterType::iterator row=_raster.begin();row!=_raster.end();row++)
-	std::fill((*row).begin(),(*row).end(),v);
-    }
+  //! Clear the image to a constant value.
+  void clear(const T& v);
+
+  //! Fill a line segment on the given half-open range [x0,x1), interpolating between the two given values.
+  void scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1);
 
   void write_ppm(std::ostream&) const;
   void write_pgm(std::ostream&) const;
 
  private:
-  typedef boost::multi_array<T,2> RasterType;
   RasterType _raster;
 };
 
-template <> extern void Image<ByteRGBA>::write_ppm(std::ostream&) const;
+template class Image<uchar>;
+template class Image<ByteRGBA>;
 
-template <> extern void Image<uchar>::write_pgm(std::ostream&) const;
 
 #endif
 

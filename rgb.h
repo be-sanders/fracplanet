@@ -136,6 +136,7 @@ template <typename T> inline RGBA<T> operator-(const RGBA<T>& a,const RGBA<T>& b
 class ByteRGBA : public RGBA<uchar>
 {
  public:
+
   //! Null constructor.  NB There are no default values.
   ByteRGBA()
     :RGBA<uchar>()
