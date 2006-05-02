@@ -56,6 +56,7 @@ template<> class PixelTraits<ByteRGBA>
   NB The base type just refers to storage allocated elsewhere.
   Used to be gratuitously implemented using boost multiarray type,
   but that was too inefficient
+  This is still pretty bad byt gcc 4.1 seems to do a very nice job with -O2.
  */
 template <typename T> class Raster
 {
@@ -91,42 +92,46 @@ template <typename T> class Raster
     }
   const uint contiguous_size() const
     {
+      assert(contiguous());
       return _width*_height;
     }
   T*const contiguous_begin()
     {
+      assert(contiguous());
       return _data;
+    }
+  const T*const contiguous_begin() const
+    {
+      assert(contiguous());
+      return _data;
+    }
+  T*const contiguous_end()
+    {
+      assert(contiguous());
+      return _data+contiguous_size();
     }
   const T*const contiguous_end() const
     {
+      assert(contiguous());
       return _data+contiguous_size();
     }
 
-  T* row_begin(uint r)
+  T* row(uint r)
     {
       return _data+r*_pitch;
     }
-  const T* row_begin(uint r) const
+  const T* row(uint r) const
     {
       return _data+r*_pitch;
-    }
-  T* row_end(uint r)
-    {
-      return row_begin(r)+_width;
-    }
-  const T* row_end(uint r) const
-    {
-      return row_begin(r)+_width;
     }
   boost::iterator_range<T*> row_range(uint r)
     {
-      T*const it=row_begin(r);
+      T*const it=row(r);
       return boost::iterator_range<T*>(it,it+_width);
     }
-
   boost::iterator_range<const T*> row_range(uint r) const
     {
-      const T*const it=row_begin(r);
+      const T*const it=row(r);
       return boost::iterator_range<const T*>(it,it+_width);
     }
 

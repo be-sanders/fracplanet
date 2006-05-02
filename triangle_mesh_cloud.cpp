@@ -46,7 +46,23 @@ void TriangleMeshCloud::write_blender(std::ofstream& out,const ParametersSave& p
 
 void TriangleMeshCloud::render_texture(Raster<uchar>& image) const
 {
-  image.fill(128);
+  image.fill(0);
+  for (uint i=0;i<triangles();i++)
+    {
+      const Triangle& t=triangle(i);
+
+      std::vector<ScanLine> scanlines;
+      geometry().scan_convert
+	(
+	 &vertex(t.vertex(0)),
+	 &vertex(t.vertex(1)),
+	 &vertex(t.vertex(1)),
+	 image.width(),
+	 image.height(),
+	 scanlines
+	 );
+      
+    }
 }
 
 void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)

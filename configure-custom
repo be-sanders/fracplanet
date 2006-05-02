@@ -13,9 +13,9 @@
 OPT="-O3 -ffast-math"
 
 # Options for a P4
-#ARCHOPT="-march=pentium4 -mfpmath=sse -msse2"
+ARCHOPT="-march=pentium4 -mfpmath=sse -msse2"
 
 # Options for an XP
-ARCHOPT="-march=athlon-xp -mfpmath=sse"
+#ARCHOPT="-march=athlon-xp -mfpmath=sse"
 
 ./configure "QMAKE_CXXFLAGS_RELEASE -= -O2 -g" "QMAKE_CXXFLAGS_RELEASE += ${OPT} ${ARCHOPT}" 

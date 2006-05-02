@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -23,7 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _geometry_h_
 #define _geometry_h_
 
+#include <boost/array.hpp>
+
 #include "useful.h"
+#include "scan.h"
 #include "xyz.h"
 
 //! Class to provide abstract interface to different world geometries.
@@ -86,6 +89,20 @@ public:
     If this is the case, a non-zero epsilon value can be returned and used as an error tolerence when comparing two heights for equivalence.
    */
   virtual const float epsilon() const
+    =0;
+
+  //! Set-up for scan conversion of given vertices to the given map.
+  /* Scan conversion output is a series of [,) open intervals with vertex identifiers and weightings for each end.
+   */
+  virtual void scan_convert
+    (
+     const Vertex* vertex0,
+     const Vertex* vertex1,
+     const Vertex* vertex2,
+     uint map_width,
+     uint map_height,
+     std::vector<ScanLine>& scan_lines
+     ) const
     =0;
 };
 
@@ -156,6 +173,16 @@ class GeometryFlat : public Geometry
     {
       return 0.0f;  // No need 'cos heights are stored exactly
     }
+
+  virtual void scan_convert
+    (
+     const Vertex* vertex0,
+     const Vertex* vertex1,
+     const Vertex* vertex2,
+     uint map_width,
+     uint map_height,
+     std::vector<ScanLine>& scan_lines
+     ) const;
 };
 
 //! Concrete class providing a flat geometry (a sphere with nominal radius 1, equator in the XY-plane, Z axis through the poles).
@@ -247,6 +274,16 @@ class GeometrySpherical : public Geometry
     {
       return 0.000001f;
     }
+
+  virtual void scan_convert
+    (
+     const Vertex* vertex0,
+     const Vertex* vertex1,
+     const Vertex* vertex2,
+     uint map_width,
+     uint map_height,
+     std::vector<ScanLine>& scan_lines
+     ) const;
 };
 
 

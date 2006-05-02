@@ -428,7 +428,35 @@ void TriangleMeshTerrain::write_blender(std::ofstream& out,const ParametersSave&
 
 void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image) const
 {
-  image.fill(ByteRGBA(0,0,255,255));
+  progress_start(100,"Saving texture");
+
+  image.fill(ByteRGBA(0,0,0,0));
+
+  for (uint i=0;i<triangles();i++)
+    {
+      const Triangle& t=triangle(i);
+
+      std::vector<ScanLine> scanlines;
+      geometry().scan_convert
+	(
+	 &vertex(t.vertex(0)),
+	 &vertex(t.vertex(1)),
+	 &vertex(t.vertex(1)),
+	 image.width(),
+	 image.height(),
+	 scanlines
+	 );
+      for (std::vector<ScanLine>::const_iterator it0=scanlines.begin();it0!=scanlines.end();++it0)
+	{
+	  for (std::vector<ScanSpan>::const_iterator it1=(*it0).spans.begin();it1!=(*it0).spans.end();++it1)
+	    {
+	      image.scan((*it0).y,(*it1).edge[0].x,FloatRGBA(1.0f,0.0f,0.0f,1.0f),(*it1).edge[1].x,FloatRGBA(0.0f,1.0f,0.0f,1.0f));
+	    }
+	}
+      progress_step((100*i)/triangles());
+    }
+
+  progress_complete("Save texture completed");
 }
 
 TriangleMeshTerrainPlanet::TriangleMeshTerrainPlanet(const ParametersTerrain& parameters,Progress* progress)

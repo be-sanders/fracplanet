@@ -1,7 +1,7 @@
 TEMPLATE = app
 
 # append debug or release :
-CONFIG+= qt opengl stl exceptions release
+CONFIG+= qt opengl stl exceptions debug #release
 
 # Input files
 
@@ -29,6 +29,7 @@ HEADERS += \
            progress.h \
            random.h \
            rgb.h \
+           scan.h \
            triangle.h \
            triangle_mesh.h \
            triangle_mesh_cloud.h \
@@ -65,6 +66,7 @@ SOURCES += \
            progress.cpp \
            random.cpp \
            rgb.cpp \
+           scan.cpp \
            triangle.cpp \
            triangle_mesh.cpp \
            triangle_mesh_cloud.cpp \
