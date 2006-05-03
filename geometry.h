@@ -96,9 +96,7 @@ public:
    */
   virtual void scan_convert
     (
-     const Vertex* vertex0,
-     const Vertex* vertex1,
-     const Vertex* vertex2,
+     const Vertex*const vertex[3],
      uint map_width,
      uint map_height,
      std::vector<ScanLine>& scan_lines
@@ -176,9 +174,7 @@ class GeometryFlat : public Geometry
 
   virtual void scan_convert
     (
-     const Vertex* vertex0,
-     const Vertex* vertex1,
-     const Vertex* vertex2,
+     const Vertex*const vertex[3],
      uint map_width,
      uint map_height,
      std::vector<ScanLine>& scan_lines
@@ -277,9 +273,7 @@ class GeometrySpherical : public Geometry
 
   virtual void scan_convert
     (
-     const Vertex* vertex0,
-     const Vertex* vertex1,
-     const Vertex* vertex2,
+     const Vertex*const vertex[3],
      uint map_width,
      uint map_height,
      std::vector<ScanLine>& scan_lines

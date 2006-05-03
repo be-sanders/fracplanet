@@ -17,54 +17,66 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "geometry.h"
 
+
 void GeometryFlat::scan_convert
 (
- const Vertex* vertex0,
- const Vertex* vertex1,
- const Vertex* vertex2,
+ const Vertex*const vertex[3],
  uint map_width,
  uint map_height,
  std::vector<ScanLine>& scan_lines
  ) const
 {
-  // Sort vertices by y co-ordinate
-  if (vertex0->position().y>vertex1->position().y) exchange(vertex0,vertex1);
-  if (vertex1->position().y>vertex2->position().y) exchange(vertex1,vertex2);
-  if (vertex0->position().y>vertex1->position().y) exchange(vertex0,vertex1);
+  const boost::array<XYZ,3> v
+    ={
+      XYZ(map_width*0.5f*(1.0f+vertex[0]->position().x),map_height*0.5f*(1.0f-vertex[0]->position().y),0.0f),
+      XYZ(map_width*0.5f*(1.0f+vertex[1]->position().x),map_height*0.5f*(1.0f-vertex[1]->position().y),0.0f),
+      XYZ(map_width*0.5f*(1.0f+vertex[2]->position().x),map_height*0.5f*(1.0f-vertex[2]->position().y),0.0f)
+    };
 
-  const int ymin=std::max(0,static_cast<int>(ceilf(map_height*(vertex0->position().y))));
-  const float ymid=map_height*(vertex1->position().y);
-  const float ymax=std::min(static_cast<float>(map_height),map_height*(vertex2->position().y));
+  boost::array<uint,3> sort={0,1,2};
 
-  const float y02=vertex2->position().y-vertex0->position().y;
-  const float x02=vertex2->position().x-vertex0->position().x;
-  const float y01=vertex1->position().y-vertex0->position().y;
-  const float x01=vertex1->position().x-vertex0->position().x;
-  const float y12=vertex2->position().y-vertex1->position().y;
-  const float x12=vertex2->position().x-vertex1->position().x;
-  const float iy02=1.0f/y02;
-  const float iy01=1.0f/y01;
-  const float iy12=1.0f/y12;
-  const float ky=1.0f/map_height;
+  // Sort vertices by increasing image y co-ordinate 
+  if (v[sort[0]].y>v[sort[1]].y) exchange(sort[0],sort[1]);
+  if (v[sort[1]].y>v[sort[2]].y) exchange(sort[1],sort[2]);
+  if (v[sort[0]].y>v[sort[1]].y) exchange(sort[0],sort[1]);
 
-  for (int y=ymin;y<ymax;++y)
+  // y range on image 
+  const float y_min=std::max(0.0f,ceilf(v[sort[0]].y));
+  const float y_mid=v[sort[1]].y;
+  const float y_max=std::min(static_cast<float>(map_height-1),floorf(v[sort[2]].y));
+
+  // deltas
+  const float x02=v[sort[2]].x-v[sort[0]].x;
+  const float y02=v[sort[2]].y-v[sort[0]].y;
+  const float x01=v[sort[1]].x-v[sort[0]].x;
+  const float y01=v[sort[1]].y-v[sort[0]].y;
+  const float x12=v[sort[2]].x-v[sort[1]].x;
+  const float y12=v[sort[2]].y-v[sort[1]].y;
+
+  const float ky02=1.0f/y02;
+  const float ky01=1.0f/y01;
+  const float ky12=1.0f/y12;
+
+  for (int y=static_cast<int>(y_min);y<=static_cast<int>(y_max);y++)
     {
-      const float yp02=(y*ky-vertex0->position().y)*iy02;
       scan_lines.push_back(ScanLine(y));
-
       ScanSpan span;
-      span.edge[0]=ScanEdge(map_width*(vertex0->position().x+yp02*x02),vertex0,vertex2,yp02);
+      
+      // yp02 is proportion along edge 02
+      const float yp02=(y-v[sort[0]].y)*ky02;
+      span.edge[0]=ScanEdge(v[sort[0]].x+yp02*x02,vertex[sort[0]],vertex[sort[2]],yp02);
 
-      if (y<ymid)
+      if (y<y_mid)
 	{
-	  const float yp01=(y-vertex0->position().y)*iy01;
-	  span.edge[1]=ScanEdge(map_width*(vertex0->position().x+yp01*x01),vertex0,vertex1,yp01);
+	  const float yp01=(y-v[sort[0]].y)*ky01;
+	  span.edge[1]=ScanEdge(v[sort[0]].x+yp01*x01,vertex[sort[0]],vertex[sort[1]],yp01);
 	}
       else
 	{
-	  const float yp12=(y-vertex1->position().y)*iy12;
-	  span.edge[1]=ScanEdge(map_width*(vertex1->position().x+yp12*x12),vertex1,vertex2,yp12);
+	  const float yp12=(y-v[sort[1]].y)*ky12;
+	  span.edge[1]=ScanEdge(v[sort[1]].x+yp12*x12,vertex[sort[1]],vertex[sort[2]],yp12);
 	}
+
       if (span.edge[0].x>span.edge[1].x)
 	{
 	  exchange(span.edge[0],span.edge[1]);
@@ -76,9 +88,7 @@ void GeometryFlat::scan_convert
 
 void GeometrySpherical::scan_convert
 (
- const Vertex* vertex0,
- const Vertex* vertex1,
- const Vertex* vertex2,
+ const Vertex*const vertex[3],
  uint map_width,
  uint map_height,
  std::vector<ScanLine>& scan_lines

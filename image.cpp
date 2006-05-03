@@ -40,20 +40,18 @@ template <typename T> void Raster<T>::fill(const T& v)
 
 template <typename T> void Raster<T>::scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1)
 {
-  std::cerr << "[" << y << ",(" << x0 << "," << x1 << ")]";
-
   const float dx=x1-x0;
   const ComputeType dv(v1-v0);
   const ComputeType kv(dv*(1.0f/dx));
-  const int xmin=std::max(0,static_cast<int>(ceil(x0)));
-  if (x1>width()) x1=width();
+  const int xmin=std::max(0,static_cast<int>(ceilf(x0)));
+  const int xmax=std::min(static_cast<int>(width()-1),static_cast<int>(floorf(x1)));
+
   T*const row_ptr=row(y);
-  for (uint xi=xmin;xi<x1;xi++)
+  for (int xi=xmin;xi<=xmax;xi++)
     {
       const float x=xi-x0;
       const ComputeType v(v0+x*kv);
       row_ptr[xi]=static_cast<T>(v);
-      xi++;
     }
 }
 

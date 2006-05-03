@@ -435,13 +435,18 @@ void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image) const
   for (uint i=0;i<triangles();i++)
     {
       const Triangle& t=triangle(i);
+      const boost::array<const Vertex*,3> vertices
+	={
+	  &vertex(t.vertex(0)),
+	  &vertex(t.vertex(1)),
+	  &vertex(t.vertex(2)),
+	};
+      const uint which_colour=(i<triangles_of_colour0() ? 0 : 1);
 
       std::vector<ScanLine> scanlines;
       geometry().scan_convert
 	(
-	 &vertex(t.vertex(0)),
-	 &vertex(t.vertex(1)),
-	 &vertex(t.vertex(1)),
+	 vertices.data(),
 	 image.width(),
 	 image.height(),
 	 scanlines
@@ -450,7 +455,21 @@ void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image) const
 	{
 	  for (std::vector<ScanSpan>::const_iterator it1=(*it0).spans.begin();it1!=(*it0).spans.end();++it1)
 	    {
-	      image.scan((*it0).y,(*it1).edge[0].x,FloatRGBA(1.0f,0.0f,0.0f,1.0f),(*it1).edge[1].x,FloatRGBA(0.0f,1.0f,0.0f,1.0f));
+	      const ScanEdge& edge0=(*it1).edge[0];
+	      const FloatRGBA c0
+		(
+		 (1.0f-edge0.lambda) * FloatRGBA(edge0.vertex0->colour(which_colour))
+		 +
+		 edge0.lambda * FloatRGBA(edge0.vertex1->colour(which_colour))
+		 );
+	      const ScanEdge& edge1=(*it1).edge[1];
+	      const FloatRGBA c1
+		(
+		 (1.0f-edge1.lambda)*FloatRGBA(edge1.vertex0->colour(which_colour))
+		 +
+		 edge1.lambda*FloatRGBA(edge1.vertex1->colour(which_colour))
+		 );
+	      image.scan((*it0).y,edge0.x,c0,edge1.x,c1);
 	    }
 	}
       progress_step((100*i)/triangles());

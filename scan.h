@@ -37,16 +37,16 @@ class ScanEdge
  public:
   ScanEdge()
     {}
-  ScanEdge(float vx,const Vertex* v0,const Vertex* v1,float w)
+  ScanEdge(float vx,const Vertex* v0,const Vertex* v1,float l)
     :x(vx)
     ,vertex0(v0)
     ,vertex1(v1)
-    ,weight01(w)
+    ,lambda(l)
     {}
   float x;
   const Vertex* vertex0;
   const Vertex* vertex1;
-  float weight01;
+  float lambda;
 };
 
 class ScanSpan

@@ -339,7 +339,7 @@ void FracplanetMain::save_texture()
 
       bool ok=true;
       {
-	boost::scoped_ptr<Image<ByteRGBA> > terrain_image(new Image<ByteRGBA>(360,180));
+	boost::scoped_ptr<Image<ByteRGBA> > terrain_image(new Image<ByteRGBA>(3600,1800));
 	mesh_terrain->render_texture(*terrain_image);
 
 	std::ofstream out(filename.c_str(),std::ios::binary);      
