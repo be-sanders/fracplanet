@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "useful.h"
 #include "scan.h"
+#include "vertex.h"
 #include "xyz.h"
 
 //! Class to provide abstract interface to different world geometries.

@@ -26,26 +26,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <vector>
 
 #include "useful.h"
-#include "vertex.h"
 
 //! Encapsulates information needed for scan conversion.
 /*! We want to be independent of what quantity the client is going to interpolate over,
-  so the best we can do is point to the vertices delimiting an edge and give the weights.
+  so the best we can do is identify the vertices delimiting an edge and give the weights.
 */
 class ScanEdge
 {
  public:
   ScanEdge()
     {}
-  ScanEdge(float vx,const Vertex* v0,const Vertex* v1,float l)
+  ScanEdge(float vx,uint v0,uint v1,float l)
     :x(vx)
     ,vertex0(v0)
     ,vertex1(v1)
     ,lambda(l)
     {}
   float x;
-  const Vertex* vertex0;
-  const Vertex* vertex1;
+  uint vertex0;
+  uint vertex1;
   float lambda;
 };
 

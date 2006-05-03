@@ -64,17 +64,17 @@ void GeometryFlat::scan_convert
       
       // yp02 is proportion along edge 02
       const float yp02=(y-v[sort[0]].y)*ky02;
-      span.edge[0]=ScanEdge(v[sort[0]].x+yp02*x02,vertex[sort[0]],vertex[sort[2]],yp02);
+      span.edge[0]=ScanEdge(v[sort[0]].x+yp02*x02,sort[0],sort[2],yp02);
 
       if (y<y_mid)
 	{
 	  const float yp01=(y-v[sort[0]].y)*ky01;
-	  span.edge[1]=ScanEdge(v[sort[0]].x+yp01*x01,vertex[sort[0]],vertex[sort[1]],yp01);
+	  span.edge[1]=ScanEdge(v[sort[0]].x+yp01*x01,sort[0],sort[1],yp01);
 	}
       else
 	{
 	  const float yp12=(y-v[sort[1]].y)*ky12;
-	  span.edge[1]=ScanEdge(v[sort[1]].x+yp12*x12,vertex[sort[1]],vertex[sort[2]],yp12);
+	  span.edge[1]=ScanEdge(v[sort[1]].x+yp12*x12,sort[1],sort[2],yp12);
 	}
 
       if (span.edge[0].x>span.edge[1].x)
@@ -86,6 +86,9 @@ void GeometryFlat::scan_convert
     }
 }
 
+/*!
+  The problem with spherical geometry is that spans can go off one side of the map and come back on the other.
+ */
 void GeometrySpherical::scan_convert
 (
  const Vertex*const vertex[3],

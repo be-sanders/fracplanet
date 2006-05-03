@@ -340,12 +340,23 @@ void FracplanetMain::save_texture()
       bool ok=true;
       {
 	boost::scoped_ptr<Image<ByteRGBA> > terrain_image(new Image<ByteRGBA>(3600,1800));
-	mesh_terrain->render_texture(*terrain_image);
+	boost::scoped_ptr<Image<ushort> > terrain_heights(new Image<ushort>(3600,1800));
+	mesh_terrain->render_texture(*terrain_image,*terrain_heights);
 
-	std::ofstream out(filename.c_str(),std::ios::binary);      
-	terrain_image->write_ppm(out);
-	out.close();
-	if (!out) ok=false;
+	{
+	  std::ofstream out(filename.c_str(),std::ios::binary);
+	  terrain_image->write_ppm(out);
+	  out.close();
+	  if (!out) ok=false;
+	}
+	
+	if (ok)
+	  {
+	    std::ofstream out((filename_base+"_dem.pgm").c_str(),std::ios::binary);
+	    terrain_heights->write_pgm(out);
+	    out.close();
+	    if (!out) ok=false;
+	  }
       }
 
       if (ok && mesh_cloud)

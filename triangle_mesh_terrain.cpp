@@ -426,11 +426,12 @@ void TriangleMeshTerrain::write_blender(std::ofstream& out,const ParametersSave&
   TriangleMesh::write_blender(out,mesh_name+".terrain",0);
 }
 
-void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image) const
+void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image,Raster<ushort>& dem) const
 {
-  progress_start(100,"Saving texture");
+  progress_start(100,"Generating textures");
 
   image.fill(ByteRGBA(0,0,0,0));
+  dem.fill(0);
 
   for (uint i=0;i<triangles();i++)
     {
@@ -440,6 +441,12 @@ void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image) const
 	  &vertex(t.vertex(0)),
 	  &vertex(t.vertex(1)),
 	  &vertex(t.vertex(2)),
+	};
+      const boost::array<float,3> vertex_heights
+	={
+	  std::max(0.0f,std::min(65535.0f,65535.0f*geometry().height(vertex(t.vertex(0)).position()))),
+	  std::max(0.0f,std::min(65535.0f,65535.0f*geometry().height(vertex(t.vertex(1)).position()))),
+	  std::max(0.0f,std::min(65535.0f,65535.0f*geometry().height(vertex(t.vertex(2)).position())))
 	};
       const uint which_colour=(i<triangles_of_colour0() ? 0 : 1);
 
@@ -456,26 +463,35 @@ void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image) const
 	  for (std::vector<ScanSpan>::const_iterator it1=(*it0).spans.begin();it1!=(*it0).spans.end();++it1)
 	    {
 	      const ScanEdge& edge0=(*it1).edge[0];
+	      const ScanEdge& edge1=(*it1).edge[1];
+
 	      const FloatRGBA c0
 		(
-		 (1.0f-edge0.lambda) * FloatRGBA(edge0.vertex0->colour(which_colour))
+		 (1.0f-edge0.lambda) * FloatRGBA(vertices[edge0.vertex0]->colour(which_colour))
 		 +
-		 edge0.lambda * FloatRGBA(edge0.vertex1->colour(which_colour))
+		 edge0.lambda * FloatRGBA(vertices[edge0.vertex1]->colour(which_colour))
 		 );
-	      const ScanEdge& edge1=(*it1).edge[1];
 	      const FloatRGBA c1
 		(
-		 (1.0f-edge1.lambda)*FloatRGBA(edge1.vertex0->colour(which_colour))
+		 (1.0f-edge1.lambda)*FloatRGBA(vertices[edge1.vertex0]->colour(which_colour))
 		 +
-		 edge1.lambda*FloatRGBA(edge1.vertex1->colour(which_colour))
+		 edge1.lambda*FloatRGBA(vertices[edge1.vertex1]->colour(which_colour))
 		 );
 	      image.scan((*it0).y,edge0.x,c0,edge1.x,c1);
+
+	      const float h0
+		=(1.0f-edge0.lambda) * vertex_heights[edge0.vertex0]
+		+      edge0.lambda  * vertex_heights[edge0.vertex1];
+	      const float h1
+		=(1.0f-edge1.lambda) * vertex_heights[edge1.vertex0]
+		+      edge1.lambda  * vertex_heights[edge1.vertex1];
+	      dem.scan((*it0).y,edge0.x,h0,edge1.x,h1);
 	    }
 	}
       progress_step((100*i)/triangles());
     }
 
-  progress_complete("Save texture completed");
+  progress_complete("Texture generation completed");
 }
 
 TriangleMeshTerrainPlanet::TriangleMeshTerrainPlanet(const ParametersTerrain& parameters,Progress* progress)

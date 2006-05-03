@@ -38,6 +38,18 @@ template <typename T> void Raster<T>::fill(const T& v)
     }
 }
 
+template <typename T> const typename Raster<T>::ScalarType Raster<T>::maximum_scalar_pixel_value() const
+{
+  ScalarType m(scalar(*_data));
+  for (ConstRowIterator row=row_begin();row!=row_end();++row)
+    for (const T* it=row->begin();it!=row->end();++it)
+      {
+	const ScalarType v(scalar(*it));
+	if (v>m) m=v;
+      }
+  return m;
+}
+
 template <typename T> void Raster<T>::scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1)
 {
   const float dx=x1-x0;
@@ -55,6 +67,29 @@ template <typename T> void Raster<T>::scan(uint y,float x0,const ComputeType& v0
     }
 }
 
+template <> void Raster<uchar>::write_pgm(std::ostream& out) const
+{
+  out << "P5" << std::endl;
+  out << width() << " " << height() << std::endl;
+  out << "255" << std::endl;
+  for (ConstRowIterator row=row_begin();row!=row_end();++row)
+    out.write(reinterpret_cast<const char*>(&(*(row->begin()))),row->size());
+}
+
+template <> void Raster<ushort>::write_pgm(std::ostream& out) const
+{
+  out << "P5" << std::endl;
+  out << width() << " " << height() << std::endl;
+  out << maximum_scalar_pixel_value() << std::endl;
+  for (ConstRowIterator row=row_begin();row!=row_end();++row)
+    for (const ushort* it=row->begin();it!=row->end();++it)
+      {
+	// PGM spec is most significant byte first
+	const uchar p[2]={((*it)>>8),(*it)};
+	out.write(reinterpret_cast<const char*>(p),2);
+      }
+}
+
 template <> void Raster<ByteRGBA>::write_ppm(std::ostream& out) const
 {
   out << "P6" << std::endl;
@@ -65,17 +100,12 @@ template <> void Raster<ByteRGBA>::write_ppm(std::ostream& out) const
       out.write(reinterpret_cast<const char*>(&((*it).r)),3);
 }
 
-template <> void Raster<uchar>::write_pgm(std::ostream& out) const
-{
-  out << "P5" << std::endl;
-  out << width() << " " << height() << std::endl;
-  out << "255" << std::endl;
-  for (ConstRowIterator row=row_begin();row!=row_end();++row)
-    out.write(reinterpret_cast<const char*>(&(*(row->begin()))),row->size());
-}
 
 template class Raster<uchar>;
 template class Image<uchar>;
+
+template class Raster<ushort>;
+template class Image<ushort>;
 
 template class Raster<ByteRGBA>;
 template class Image<ByteRGBA>;

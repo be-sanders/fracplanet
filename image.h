@@ -36,19 +36,34 @@ class ByteRGBA;
 //! Class to support specialisation for particular pixel formats
 template <typename T> class PixelTraits
 {
+ public:
   typedef T ComputeType;
+  typedef T ScalarType;
+  static const ScalarType scalar(const T& v) {return v;}
 };
 
 template<> class PixelTraits<uchar>
 {
  public:
   typedef float ComputeType;
+  typedef uchar ScalarType;
+  static const ScalarType scalar(const uchar& v) {return v;}
+};
+
+template<> class PixelTraits<ushort>
+{
+ public:
+  typedef float ComputeType;
+  typedef float ScalarType;
+  static const ScalarType scalar(const ushort& v) {return v;}
 };
 
 template<> class PixelTraits<ByteRGBA>
 {
  public:
   typedef FloatRGBA ComputeType;
+  typedef float ScalarType;
+  static const ScalarType scalar(const ByteRGBA& v) {return (static_cast<float>(v.r)+static_cast<float>(v.g)+static_cast<float>(v.b))/3.0f;}
 };
 
 //! Class for 2D raster images of a specified type.
@@ -62,6 +77,9 @@ template <typename T> class Raster
 {
  public:
   typedef typename PixelTraits<T>::ComputeType ComputeType;
+  typedef typename PixelTraits<T>::ScalarType ScalarType;
+
+  static const ScalarType scalar(const T& v) {return PixelTraits<T>::scalar(v);}
 
   Raster(uint w,uint h,uint p,T* d)
     :_width(w)
@@ -267,6 +285,8 @@ template <typename T> class Raster
   
   //! Clear the image to a constant value.
   void fill(const T& v);
+
+  const ScalarType maximum_scalar_pixel_value() const;
 
   //! Fill a line segment on the given half-open range [x0,x1), interpolating between the two given values.
   void scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1);
