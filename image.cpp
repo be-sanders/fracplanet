@@ -52,11 +52,12 @@ template <typename T> const typename Raster<T>::ScalarType Raster<T>::maximum_sc
 
 template <typename T> void Raster<T>::scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1)
 {
-  const float dx=x1-x0;
-  const ComputeType dv(v1-v0);
-  const ComputeType kv(dv*(1.0f/dx));
   const int xmin=std::max(0,static_cast<int>(ceilf(x0)));
   const int xmax=std::min(static_cast<int>(width()-1),static_cast<int>(floorf(x1)));
+  
+  if (xmax<0 || xmin>static_cast<int>(width()-1)) return;  // Early out for spans off edges
+
+  const ComputeType kv((v1-v0)*(1.0/(x1-x0)));
 
   T*const row_ptr=row(y);
   for (int xi=xmin;xi<=xmax;xi++)

@@ -23,7 +23,7 @@ void GeometryFlat::scan_convert
  const Vertex*const vertex[3],
  uint map_width,
  uint map_height,
- std::vector<ScanLine>& scan_lines
+ ScanConvertBackend& backend
  ) const
 {
   const boost::array<XYZ,3> v
@@ -58,31 +58,29 @@ void GeometryFlat::scan_convert
   const float ky12=1.0f/y12;
 
   for (int y=static_cast<int>(y_min);y<=static_cast<int>(y_max);y++)
-    {
-      scan_lines.push_back(ScanLine(y));
-      ScanSpan span;
-      
+    {      
       // yp02 is proportion along edge 02
       const float yp02=(y-v[sort[0]].y)*ky02;
-      span.edge[0]=ScanEdge(v[sort[0]].x+yp02*x02,sort[0],sort[2],yp02);
+      const ScanEdge edge0(v[sort[0]].x+yp02*x02,sort[0],sort[2],yp02);
 
       if (y<y_mid)
 	{
 	  const float yp01=(y-v[sort[0]].y)*ky01;
-	  span.edge[1]=ScanEdge(v[sort[0]].x+yp01*x01,sort[0],sort[1],yp01);
+	  const ScanEdge edge1(v[sort[0]].x+yp01*x01,sort[0],sort[1],yp01);
+	  if (edge0.x<=edge1.x)
+	    backend.scan_convert_backend(y,edge0,edge1);
+	  else
+	    backend.scan_convert_backend(y,edge1,edge0);
 	}
       else
 	{
 	  const float yp12=(y-v[sort[1]].y)*ky12;
-	  span.edge[1]=ScanEdge(v[sort[1]].x+yp12*x12,sort[1],sort[2],yp12);
+	  const ScanEdge edge1(v[sort[1]].x+yp12*x12,sort[1],sort[2],yp12);
+	  if (edge0.x<=edge1.x)
+	    backend.scan_convert_backend(y,edge0,edge1);
+	  else
+	    backend.scan_convert_backend(y,edge1,edge0);
 	}
-
-      if (span.edge[0].x>span.edge[1].x)
-	{
-	  exchange(span.edge[0],span.edge[1]);
-	}
-      
-      scan_lines.back().spans.push_back(span);
     }
 }
 
@@ -94,7 +92,7 @@ void GeometrySpherical::scan_convert
  const Vertex*const vertex[3],
  uint map_width,
  uint map_height,
- std::vector<ScanLine>& scan_lines
+ ScanConvertBackend& backend
  ) const
 {
 }

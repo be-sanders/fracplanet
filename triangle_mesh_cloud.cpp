@@ -44,6 +44,18 @@ void TriangleMeshCloud::write_blender(std::ofstream& out,const ParametersSave& p
      );
 }
 
+namespace 
+{
+  class ScanConvertHelper : public ScanConvertBackend
+  {
+  public:
+    ScanConvertHelper()
+    {}
+    virtual void scan_convert_backend(uint y,const ScanEdge& edge0,const ScanEdge& edge1)
+    {}
+  };
+}
+
 void TriangleMeshCloud::render_texture(Raster<uchar>& image) const
 {
   image.fill(0);
@@ -57,13 +69,13 @@ void TriangleMeshCloud::render_texture(Raster<uchar>& image) const
 	  &vertex(t.vertex(2)),
 	};
       
-      std::vector<ScanLine> scanlines;
+      ScanConvertHelper scan_convert_backend;
       geometry().scan_convert
 	(
 	 vertices.data(),
 	 image.width(),
 	 image.height(),
-	 scanlines
+	 scan_convert_backend
 	 );
       
     }

@@ -100,7 +100,7 @@ public:
      const Vertex*const vertex[3],
      uint map_width,
      uint map_height,
-     std::vector<ScanLine>& scan_lines
+     ScanConvertBackend&
      ) const
     =0;
 };
@@ -178,7 +178,7 @@ class GeometryFlat : public Geometry
      const Vertex*const vertex[3],
      uint map_width,
      uint map_height,
-     std::vector<ScanLine>& scan_lines
+     ScanConvertBackend&
      ) const;
 };
 
@@ -277,7 +277,7 @@ class GeometrySpherical : public Geometry
      const Vertex*const vertex[3],
      uint map_width,
      uint map_height,
-     std::vector<ScanLine>& scan_lines
+     ScanConvertBackend&
      ) const;
 };
 

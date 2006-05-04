@@ -426,6 +426,51 @@ void TriangleMeshTerrain::write_blender(std::ofstream& out,const ParametersSave&
   TriangleMesh::write_blender(out,mesh_name+".terrain",0);
 }
 
+namespace
+{
+  class ScanConvertHelper : public ScanConvertBackend
+  {
+  public:
+    ScanConvertHelper(Raster<ByteRGBA>& image,Raster<ushort>& dem,const boost::array<FloatRGBA,3>& vertex_colours,const boost::array<float,3>& vertex_heights)
+      :_image(image)
+       ,_dem(dem)
+       ,_vertex_colours(vertex_colours)
+       ,_vertex_heights(vertex_heights)
+    {}
+    
+    virtual void scan_convert_backend(uint y,const ScanEdge& edge0,const ScanEdge& edge1)
+    {      
+      const FloatRGBA c0
+	(
+	 (1.0f-edge0.lambda)*_vertex_colours[edge0.vertex0]
+	 +
+	       edge0.lambda *_vertex_colours[edge0.vertex1]
+	 );
+      const FloatRGBA c1
+	(
+	 (1.0f-edge1.lambda)*_vertex_colours[edge1.vertex0]
+	 +
+	       edge1.lambda *_vertex_colours[edge1.vertex1]
+	 );
+      _image.scan(y,edge0.x,c0,edge1.x,c1);
+      
+      const float h0
+	=(1.0f-edge0.lambda)*_vertex_heights[edge0.vertex0]
+	+      edge0.lambda *_vertex_heights[edge0.vertex1];
+      const float h1
+	=(1.0f-edge1.lambda)*_vertex_heights[edge1.vertex0]
+	+      edge1.lambda *_vertex_heights[edge1.vertex1];
+      _dem.scan(y,edge0.x,h0,edge1.x,h1); 
+    }
+    
+  private:
+    Raster<ByteRGBA>& _image;
+    Raster<ushort>& _dem;
+    const boost::array<FloatRGBA,3>& _vertex_colours;
+    const boost::array<float,3>& _vertex_heights;
+  };
+}
+
 void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image,Raster<ushort>& dem) const
 {
   progress_start(100,"Generating textures");
@@ -442,53 +487,32 @@ void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image,Raster<ushort>&
 	  &vertex(t.vertex(1)),
 	  &vertex(t.vertex(2)),
 	};
+
+      const uint which_colour=(i<triangles_of_colour0() ? 0 : 1);
+      const boost::array<FloatRGBA,3> vertex_colours
+	={
+	  FloatRGBA(vertices[0]->colour(which_colour)),
+	  FloatRGBA(vertices[1]->colour(which_colour)),
+	  FloatRGBA(vertices[2]->colour(which_colour))
+	};
       const boost::array<float,3> vertex_heights
 	={
-	  std::max(0.0f,std::min(65535.0f,65535.0f*geometry().height(vertex(t.vertex(0)).position()))),
-	  std::max(0.0f,std::min(65535.0f,65535.0f*geometry().height(vertex(t.vertex(1)).position()))),
-	  std::max(0.0f,std::min(65535.0f,65535.0f*geometry().height(vertex(t.vertex(2)).position())))
+	  std::max(0.0f,std::min(65535.0f,65535.0f*geometry().height(vertices[0]->position()))),
+	  std::max(0.0f,std::min(65535.0f,65535.0f*geometry().height(vertices[1]->position()))),
+	  std::max(0.0f,std::min(65535.0f,65535.0f*geometry().height(vertices[2]->position())))
 	};
-      const uint which_colour=(i<triangles_of_colour0() ? 0 : 1);
 
-      std::vector<ScanLine> scanlines;
+      ScanConvertHelper backend(image,dem,vertex_colours,vertex_heights);
+
       geometry().scan_convert
 	(
 	 vertices.data(),
 	 image.width(),
 	 image.height(),
-	 scanlines
+	 backend
 	 );
-      for (std::vector<ScanLine>::const_iterator it0=scanlines.begin();it0!=scanlines.end();++it0)
-	{
-	  for (std::vector<ScanSpan>::const_iterator it1=(*it0).spans.begin();it1!=(*it0).spans.end();++it1)
-	    {
-	      const ScanEdge& edge0=(*it1).edge[0];
-	      const ScanEdge& edge1=(*it1).edge[1];
 
-	      const FloatRGBA c0
-		(
-		 (1.0f-edge0.lambda) * FloatRGBA(vertices[edge0.vertex0]->colour(which_colour))
-		 +
-		 edge0.lambda * FloatRGBA(vertices[edge0.vertex1]->colour(which_colour))
-		 );
-	      const FloatRGBA c1
-		(
-		 (1.0f-edge1.lambda)*FloatRGBA(vertices[edge1.vertex0]->colour(which_colour))
-		 +
-		 edge1.lambda*FloatRGBA(vertices[edge1.vertex1]->colour(which_colour))
-		 );
-	      image.scan((*it0).y,edge0.x,c0,edge1.x,c1);
-
-	      const float h0
-		=(1.0f-edge0.lambda) * vertex_heights[edge0.vertex0]
-		+      edge0.lambda  * vertex_heights[edge0.vertex1];
-	      const float h1
-		=(1.0f-edge1.lambda) * vertex_heights[edge1.vertex0]
-		+      edge1.lambda  * vertex_heights[edge1.vertex1];
-	      dem.scan((*it0).y,edge0.x,h0,edge1.x,h1);
-	    }
-	}
-      progress_step((100*i)/triangles());
+      progress_step((100*i)/(triangles()-1));
     }
 
   progress_complete("Texture generation completed");

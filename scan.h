@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 //! Encapsulates information needed for scan conversion.
 /*! We want to be independent of what quantity the client is going to interpolate over,
-  so the best we can do is identify the vertices delimiting an edge and give the weights.
+  so the best we can do is identify (by index in given triangle) the vertices delimiting an edge and give the weights.
 */
 class ScanEdge
 {
@@ -48,25 +48,15 @@ class ScanEdge
   float lambda;
 };
 
-class ScanSpan
+class ScanConvertBackend
 {
  public:
-  ScanSpan()
+  ScanConvertBackend()
     {}
-  ScanEdge edge[2];
-};
-
-//! ScanLine may consist of multiple spans in case of troublesome spherical geometries.
-/*! Need to handle triangles straddling the mad-edges.    
- */
-class ScanLine
-{
- public:
-  ScanLine(uint vy)
-    :y(vy)
+  virtual ~ScanConvertBackend()
     {}
-  uint y;
-  std::vector<ScanSpan> spans;
+  virtual void scan_convert_backend(uint y,const ScanEdge& edge0,const ScanEdge& edge1)
+    =0;
 };
 
 #endif
