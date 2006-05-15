@@ -17,7 +17,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "geometry.h"
 
+#include <boost/optional.hpp>
 
+/*! Scan lines are throught the centre of pixels at y=0.5.
+  This function doesn't care about quantization in x; that's for the backend.
+ */
 void GeometryFlat::scan_convert
 (
  const Vertex*const vertex[3],
@@ -26,6 +30,8 @@ void GeometryFlat::scan_convert
  ScanConvertBackend& backend
  ) const
 {
+  //! \todo This could just take XYZ positions rather than Vertex
+
   const boost::array<XYZ,3> v
     ={
       XYZ(map_width*0.5f*(1.0f+vertex[0]->position().x),map_height*0.5f*(1.0f-vertex[0]->position().y),0.0f),
@@ -40,11 +46,6 @@ void GeometryFlat::scan_convert
   if (v[sort[1]].y>v[sort[2]].y) exchange(sort[1],sort[2]);
   if (v[sort[0]].y>v[sort[1]].y) exchange(sort[0],sort[1]);
 
-  // y range on image 
-  const float y_min=std::max(0.0f,ceilf(v[sort[0]].y));
-  const float y_mid=v[sort[1]].y;
-  const float y_max=std::min(static_cast<float>(map_height-1),floorf(v[sort[2]].y));
-
   // deltas
   const float x02=v[sort[2]].x-v[sort[0]].x;
   const float y02=v[sort[2]].y-v[sort[0]].y;
@@ -52,36 +53,49 @@ void GeometryFlat::scan_convert
   const float y01=v[sort[1]].y-v[sort[0]].y;
   const float x12=v[sort[2]].x-v[sort[1]].x;
   const float y12=v[sort[2]].y-v[sort[1]].y;
-
-  const float ky02=1.0f/y02;
-  const float ky01=1.0f/y01;
-  const float ky12=1.0f/y12;
-
-  for (int y=static_cast<int>(y_min);y<=static_cast<int>(y_max);y++)
-    {      
-      // yp02 is proportion along edge 02
-      const float yp02=(y-v[sort[0]].y)*ky02;
-      const ScanEdge edge0(v[sort[0]].x+yp02*x02,sort[0],sort[2],yp02);
-
-      if (y<y_mid)
-	{
-	  const float yp01=(y-v[sort[0]].y)*ky01;
-	  const ScanEdge edge1(v[sort[0]].x+yp01*x01,sort[0],sort[1],yp01);
-	  if (edge0.x<=edge1.x)
-	    backend.scan_convert_backend(y,edge0,edge1);
-	  else
-	    backend.scan_convert_backend(y,edge1,edge0);
-	}
-      else
-	{
-	  const float yp12=(y-v[sort[1]].y)*ky12;
-	  const ScanEdge edge1(v[sort[1]].x+yp12*x12,sort[1],sort[2],yp12);
-	  if (edge0.x<=edge1.x)
-	    backend.scan_convert_backend(y,edge0,edge1);
-	  else
-	    backend.scan_convert_backend(y,edge1,edge0);
-	}
-    }
+  
+  boost::optional<float> ky02;
+  boost::optional<float> ky01;
+  boost::optional<float> ky12;
+  
+  if (y02==0.0f) return;
+  
+  ky02=1.0f/y02;
+  if (y01!=0.0f) ky01=1.0f/y01;
+  if (y12!=0.0f) ky12=1.0f/y12;
+  
+  // y range in image co-ordinates
+  const int iy_min=static_cast<int>(std::max(0.0f,ceilf(v[sort[0]].y-0.5f)));
+  const int iy_mid=static_cast<int>(floorf(v[sort[1]].y-0.5f));
+  const int iy_max=static_cast<int>(std::min(map_height-0.5f,floorf(v[sort[2]].y-0.5f)));
+  
+  if (ky01)
+    for (int iy=iy_min;iy<=iy_mid;iy++)
+      {
+	const float yp02=(iy+0.5f-v[sort[0]].y)*ky02.get();
+	const ScanEdge edge0(v[sort[0]].x+yp02*x02,sort[0],sort[2],yp02);
+	
+	const float yp01=(iy+0.5f-v[sort[0]].y)*ky01.get();
+	const ScanEdge edge1(v[sort[0]].x+yp01*x01,sort[0],sort[1],yp01);
+	if (edge0.x<=edge1.x)
+	  backend.scan_convert_backend(iy,edge0,edge1);
+	else
+	  backend.scan_convert_backend(iy,edge1,edge0);
+      }
+  
+  if (ky12)
+    for (int iy=iy_mid+1;iy<=iy_max;iy++)
+      {
+	const float yp02=(iy+0.5f-v[sort[0]].y)*ky02.get();
+	const ScanEdge edge0(v[sort[0]].x+yp02*x02,sort[0],sort[2],yp02);
+	
+	const float yp12=(iy+0.5f-v[sort[1]].y)*ky12.get();
+	const ScanEdge edge1(v[sort[1]].x+yp12*x12,sort[1],sort[2],yp12);
+	if (edge0.x<=edge1.x)
+	  backend.scan_convert_backend(iy,edge0,edge1);
+	else
+	  backend.scan_convert_backend(iy,edge1,edge0);
+      }
 }
 
 /*!

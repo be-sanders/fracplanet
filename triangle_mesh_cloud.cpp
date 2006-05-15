@@ -77,7 +77,6 @@ void TriangleMeshCloud::render_texture(Raster<uchar>& image) const
 	 image.height(),
 	 scan_convert_backend
 	 );
-      
     }
 }
 

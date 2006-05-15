@@ -50,21 +50,27 @@ template <typename T> const typename Raster<T>::ScalarType Raster<T>::maximum_sc
   return m;
 }
 
+/*! Scan x0 to x1 into image.
+  Pixel centres are at 0.5 , so x0=0.75 goes to pixel 1.
+  Rightmost pixel is at width()-0.5.
+*/
 template <typename T> void Raster<T>::scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1)
 {
-  const int xmin=std::max(0,static_cast<int>(ceilf(x0)));
-  const int xmax=std::min(static_cast<int>(width()-1),static_cast<int>(floorf(x1)));
+  //if (!(x0<=x1)) {std::cerr << y << ":" << x0 << " " << x1 << "\n";std::cerr.flush();}
+  assert(x0<=x1);
   
-  if (xmax<0 || xmin>static_cast<int>(width()-1)) return;  // Early out for spans off edges
-
+  if (x1<0.5f || width()-0.5f<x0) return;  // Early out for spans off edges
+  
+  const int ix_min=static_cast<int>(std::max(0.0f        ,ceilf(x0-0.5f)));
+  const int ix_max=static_cast<int>(std::min(width()-0.5f,floorf(x1-0.5f)));
+  
   const ComputeType kv((v1-v0)*(1.0/(x1-x0)));
-
+  
   T*const row_ptr=row(y);
-  for (int xi=xmin;xi<=xmax;xi++)
+  ComputeType v(v0+kv*(ix_min+0.5f-x0));
+  for (int ix=ix_min;ix<=ix_max;ix++,v+=kv)
     {
-      const float x=xi-x0;
-      const ComputeType v(v0+x*kv);
-      row_ptr[xi]=static_cast<T>(v);
+      row_ptr[ix]=static_cast<T>(v);
     }
 }
 

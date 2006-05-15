@@ -27,9 +27,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern "C"
 {
 #include <stdlib.h>
-#include <assert.h>
 }
 
+#include <cassert>
 #include <cmath>
 #include <iosfwd>
 #include <string>
