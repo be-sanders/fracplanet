@@ -1,7 +1,9 @@
 - Find out what the errors are this guy mentions:
     http://douglas.nerad.org/journal/2006/04/03/
 - Option to save a raster map (cylindrical projection for spheres)
-  for terrain colours, heights, and specular (mainly for sea... and snow ?).  Clouds ?
+  for terrain colours, heights, and specular (mainly for sea... and snow ?).
+  Clouds ?
+  Going to be tricky to scan-convert triangles near poles.
 - More control over weather and clouds.
 - Another noise fn to modulate (c.f add) subdivided terrain.
   Might help reduce middle-of-continent highlands.

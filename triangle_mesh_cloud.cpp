@@ -62,17 +62,17 @@ void TriangleMeshCloud::render_texture(Raster<uchar>& image) const
   for (uint i=0;i<triangles();i++)
     {
       const Triangle& t=triangle(i);
-      const boost::array<const Vertex*,3> vertices
+      const boost::array<XYZ,3> vertex_positions
 	={
-	  &vertex(t.vertex(0)),
-	  &vertex(t.vertex(1)),
-	  &vertex(t.vertex(2)),
+	  vertex(t.vertex(0)).position(),
+	  vertex(t.vertex(1)).position(),
+	  vertex(t.vertex(2)).position()
 	};
-      
+
       ScanConvertHelper scan_convert_backend;
       geometry().scan_convert
 	(
-	 vertices.data(),
+	 vertex_positions,
 	 image.width(),
 	 image.height(),
 	 scan_convert_backend

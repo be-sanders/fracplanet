@@ -37,13 +37,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 class Geometry
 {
- protected:
-  //! Random number generator used for perturbations and the like.
-  /*! Declared mutable so it can be used in const methods.
-    \todo Perhaps theres a better place for the geometry random number generator to live: having it here creates the anomaly of having to pass random seeds into apparently non-random objects like icosahedrons etc.
-   */
-  mutable Random01 _r01;
-
 public:
 
   //! Constructor.
@@ -97,12 +90,27 @@ public:
    */
   virtual void scan_convert
     (
-     const Vertex*const vertex[3],
+     const boost::array<XYZ,3>& v,
      uint map_width,
      uint map_height,
      ScanConvertBackend&
      ) const
     =0;
+
+ protected:
+  //! Common scan-converter code
+  static void scan_convert_common
+    (
+     const boost::array<XYZ,3>& v,
+     uint map_height,
+     ScanConvertBackend& backend
+     );
+
+  //! Random number generator used for perturbations and the like.
+  /*! Declared mutable so it can be used in const methods.
+    \todo Perhaps theres a better place for the geometry random number generator to live: having it here creates the anomaly of having to pass random seeds into apparently non-random objects like icosahedrons etc.
+   */
+  mutable Random01 _r01;
 };
 
 //! Concrete class providing a flat geometry (in the XY-plane, with Z up).
@@ -175,7 +183,7 @@ class GeometryFlat : public Geometry
 
   virtual void scan_convert
     (
-     const Vertex*const vertex[3],
+     const boost::array<XYZ,3>& v,
      uint map_width,
      uint map_height,
      ScanConvertBackend&
@@ -274,7 +282,7 @@ class GeometrySpherical : public Geometry
 
   virtual void scan_convert
     (
-     const Vertex*const vertex[3],
+     const boost::array<XYZ,3>& v,
      uint map_width,
      uint map_height,
      ScanConvertBackend&

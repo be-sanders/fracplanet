@@ -488,6 +488,13 @@ void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image,Raster<ushort>&
 	  &vertex(t.vertex(2)),
 	};
 
+      const boost::array<XYZ,3> vertex_positions
+	={
+	  vertices[0]->position(),
+	  vertices[1]->position(),
+	  vertices[2]->position()
+	};
+
       const uint which_colour=(i<triangles_of_colour0() ? 0 : 1);
       const boost::array<FloatRGBA,3> vertex_colours
 	={
@@ -506,7 +513,7 @@ void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image,Raster<ushort>&
 
       geometry().scan_convert
 	(
-	 vertices.data(),
+	 vertex_positions,
 	 image.width(),
 	 image.height(),
 	 backend

@@ -19,26 +19,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <boost/optional.hpp>
 
-/*! Scan lines are throught the centre of pixels at y=0.5.
-  This function doesn't care about quantization in x; that's for the backend.
+/*! Common scan-converter code
  */
-void GeometryFlat::scan_convert
+void Geometry::scan_convert_common
 (
- const Vertex*const vertex[3],
- uint map_width,
+ const boost::array<XYZ,3>& v,
  uint map_height,
  ScanConvertBackend& backend
- ) const
+ )
 {
-  //! \todo This could just take XYZ positions rather than Vertex
-
-  const boost::array<XYZ,3> v
-    ={
-      XYZ(map_width*0.5f*(1.0f+vertex[0]->position().x),map_height*0.5f*(1.0f-vertex[0]->position().y),0.0f),
-      XYZ(map_width*0.5f*(1.0f+vertex[1]->position().x),map_height*0.5f*(1.0f-vertex[1]->position().y),0.0f),
-      XYZ(map_width*0.5f*(1.0f+vertex[2]->position().x),map_height*0.5f*(1.0f-vertex[2]->position().y),0.0f)
-    };
-
   boost::array<uint,3> sort={0,1,2};
 
   // Sort vertices by increasing image y co-ordinate 
@@ -98,15 +87,66 @@ void GeometryFlat::scan_convert
       }
 }
 
-/*!
-  The problem with spherical geometry is that spans can go off one side of the map and come back on the other.
+/*! Scan lines are throught the centre of pixels at y=0.5.
+  This function doesn't care about quantization in x; that's for the backend.
  */
-void GeometrySpherical::scan_convert
+void GeometryFlat::scan_convert
 (
- const Vertex*const vertex[3],
+ const boost::array<XYZ,3>& v,
  uint map_width,
  uint map_height,
  ScanConvertBackend& backend
  ) const
 {
+  const boost::array<XYZ,3> vp
+    ={
+      XYZ(map_width*0.5f*(1.0f+v[0].x),map_height*0.5f*(1.0f-v[0].y),0.0f),
+      XYZ(map_width*0.5f*(1.0f+v[1].x),map_height*0.5f*(1.0f-v[1].y),0.0f),
+      XYZ(map_width*0.5f*(1.0f+v[2].x),map_height*0.5f*(1.0f-v[2].y),0.0f)
+    };
+
+  scan_convert_common(vp,map_height,backend);
+}
+
+/*!
+  The problem with spherical geometry is that spans can go off one side of the map and come back on the other.
+ */
+void GeometrySpherical::scan_convert
+(
+ const boost::array<XYZ,3>& v,
+ uint map_width,
+ uint map_height,
+ ScanConvertBackend& backend
+ ) const
+{
+  boost::array<XYZ,3> vp;
+  for (uint i=0;i<3;i++)
+    {
+      const XYZ vn(v[i].normalised());
+      vp[i].x=map_width*0.5f*(1.0f+atan2f(vn.y,vn.x)*M_1_PI);
+      if (i!=0)
+	{
+	  // Need to keep all the vertices in the same domain
+	  if (vp[i].x-vp[0].x>0.5*map_width) vp[i].x-=map_width;
+	  else if (vp[i].x-vp[0].x<-0.5*map_width) vp[i].x+=map_width;
+	}
+      vp[i].y=map_height*0.5f*(1.0f-asinf(vn.z)*M_2_PI);
+      vp[i].z=0.0f;
+    }
+  for (float d=-1.0f;d<=1.0f;d+=1.0f)
+    {
+      // Easiest way to deal with triangles on the "date line" is to
+      // render them with all possible placements and let the back end cull them.
+      /*! \todo Might be better if span replication was done in backed rather than
+	duplicating all the y-compute.
+      */
+      boost::array<XYZ,3> vpt;
+      for (uint i=0;i<3;i++)
+	{
+	  vpt[i].x=vp[i].x+d*map_width;
+	  vpt[i].y=vp[i].y;
+	  vpt[i].z=vp[i].z;
+	}
+      scan_convert_common(vpt,map_height,backend);
+    }
 }
