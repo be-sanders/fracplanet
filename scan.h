@@ -23,9 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _scan_h_
 #define _scan_h_
 
-#include <vector>
+#include <boost/array.hpp>
 
 #include "useful.h"
+#include "xyz.h"
 
 //! Encapsulates information needed for scan conversion.
 /*! We want to be independent of what quantity the client is going to interpolate over,
@@ -48,15 +49,52 @@ class ScanEdge
   float lambda;
 };
 
-class ScanConvertBackend
+class ScanConvertBackend;
+
+class ScanConverter
 {
  public:
-  ScanConvertBackend()
+  ScanConverter()
     {}
-  virtual ~ScanConvertBackend()
+  virtual ~ScanConverter()
     {}
-  virtual void scan_convert_backend(uint y,const ScanEdge& edge0,const ScanEdge& edge1)
+
+  //! Set-up for scan conversion of given vertices to the given map.
+  /* Scan conversion output is a series of [,) open intervals with vertex identifiers and weightings for each end.
+   */
+  virtual void scan_convert
+    (
+     const boost::array<XYZ,3>& v,
+     const ScanConvertBackend&
+     ) const
     =0;
 };
 
+class ScanConvertBackend
+{
+ public:
+  ScanConvertBackend(int w,int h)
+    :_width(w)
+    ,_height(h)
+    {}
+  virtual ~ScanConvertBackend()
+    {}
+  int width() const
+    {
+      return _width;
+    }
+  int height() const
+    {
+      return _height;
+    }
+  virtual void scan_convert_backend(uint y,const ScanEdge& edge0,const ScanEdge& edge1) const
+    =0;
+  virtual void subdivide(const boost::array<XYZ,3>& v,const ScanConverter*) const
+    =0;
+ private:
+  const int _width;
+  const int _height;
+};
+
 #endif
+

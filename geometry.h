@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   For example, the direction of "up" at a given point will vary depending on whether we are generating a flat world or a spherical one.
   \todo Most of these methods should have their implementation moved geometry.cpp
  */
-class Geometry
+class Geometry : public ScanConverter
 {
 public:
 
@@ -85,25 +85,12 @@ public:
   virtual const float epsilon() const
     =0;
 
-  //! Set-up for scan conversion of given vertices to the given map.
-  /* Scan conversion output is a series of [,) open intervals with vertex identifiers and weightings for each end.
-   */
-  virtual void scan_convert
-    (
-     const boost::array<XYZ,3>& v,
-     uint map_width,
-     uint map_height,
-     ScanConvertBackend&
-     ) const
-    =0;
-
  protected:
   //! Common scan-converter code
   static void scan_convert_common
     (
      const boost::array<XYZ,3>& v,
-     uint map_height,
-     ScanConvertBackend& backend
+     const ScanConvertBackend& backend
      );
 
   //! Random number generator used for perturbations and the like.
@@ -184,9 +171,7 @@ class GeometryFlat : public Geometry
   virtual void scan_convert
     (
      const boost::array<XYZ,3>& v,
-     uint map_width,
-     uint map_height,
-     ScanConvertBackend&
+     const ScanConvertBackend&
      ) const;
 };
 
@@ -283,9 +268,7 @@ class GeometrySpherical : public Geometry
   virtual void scan_convert
     (
      const boost::array<XYZ,3>& v,
-     uint map_width,
-     uint map_height,
-     ScanConvertBackend&
+     const ScanConvertBackend&
      ) const;
 };
 
