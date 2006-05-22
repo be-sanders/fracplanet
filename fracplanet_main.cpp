@@ -339,8 +339,8 @@ void FracplanetMain::save_texture()
 
       bool ok=true;
       {
-	boost::scoped_ptr<Image<ByteRGBA> > terrain_image(new Image<ByteRGBA>(3600,1800));
-	boost::scoped_ptr<Image<ushort> > terrain_heights(new Image<ushort>(3600,1800));
+	boost::scoped_ptr<Image<ByteRGBA> > terrain_image(new Image<ByteRGBA>(360,180));
+	boost::scoped_ptr<Image<ushort> > terrain_heights(new Image<ushort>(360,180));
 	mesh_terrain->render_texture(*terrain_image,*terrain_heights);
 
 	{

@@ -1,4 +1,8 @@
-- X gets bigger when using display lists ?  Need to delete on exit ?
+- Fix bogus rendering in lower left of sphere textures
+  Isn't insufficient subdivision.  Isn't insufficient domain replication.
+  Is in subdivided zone.  Suspect precision ?  (Edge deltas go bad for high image-y ?)
+  (Maybe not: still a problem with 360x180).  Maybe asinf and normalized z precision ?
+- X gets bigger when using display lists (remote only?) ?  Need to delete on exit ?
 - Find out what the errors are this guy mentions:
     http://douglas.nerad.org/journal/2006/04/03/
 - Option to save a raster map (cylindrical projection for spheres)

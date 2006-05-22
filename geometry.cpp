@@ -127,20 +127,21 @@ void GeometrySpherical::scan_convert
 	{
 	  backend.subdivide(v,this);
 	}
+      else return;
     }
 
+  boost::array<XYZ,3> vn={v[0].normalised(),v[1].normalised(),v[2].normalised()};
   boost::array<XYZ,3> vp;
   for (uint i=0;i<3;i++)
     {
-      const XYZ vn(v[i].normalised());
-      vp[i].x=backend.width()*0.5f*(1.0f+atan2f(vn.y,vn.x)*M_1_PI);
+      vp[i].x=backend.width()*0.5f*(1.0f+atan2f(vn[i].y,vn[i].x)*M_1_PI);
       if (i!=0)
 	{
 	  // Need to keep all the vertices in the same domain
 	  if (vp[i].x-vp[0].x>0.5*backend.width()) vp[i].x-=backend.width();
 	  else if (vp[i].x-vp[0].x<-0.5*backend.width()) vp[i].x+=backend.width();
 	}
-      vp[i].y=backend.height()*0.5f*(1.0f-asinf(vn.z)*M_2_PI);
+      vp[i].y=backend.height()*0.5f*(1.0f-asinf(vn[i].z)*M_2_PI);
       vp[i].z=0.0f;
     }
   for (float d=-1.0f;d<=1.0f;d+=1.0f)

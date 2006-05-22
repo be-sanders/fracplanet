@@ -399,12 +399,12 @@ TriangleMeshFlat::TriangleMeshFlat(ParametersObject::ObjectType obj,float z,uint
       break;
       
     case ParametersObject::ObjectTypeFlatSquare:
-      add_vertex(Vertex(XYZ(0.0,0.0,z)));
-      
-      for (uint i=0;i<4;i++)
-	{
-	  add_vertex(Vertex(XYZ(cos(i*M_PI/2.0),sin(i*M_PI/2.0),z)));
-	}
+      add_vertex(Vertex(XYZ( 0.0, 0.0,z)));      
+      add_vertex(Vertex(XYZ( 1.0, 1.0,z)));
+      add_vertex(Vertex(XYZ(-1.0, 1.0,z)));
+      add_vertex(Vertex(XYZ(-1.0,-1.0,z)));
+      add_vertex(Vertex(XYZ( 1.0,-1.0,z)));
+
       for (uint i=0;i<4;i++)
 	{
 	  add_triangle(Triangle(0,1+i,1+(i+1)%4));
