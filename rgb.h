@@ -156,10 +156,10 @@ class ByteRGBA : public RGBA<uchar>
   explicit ByteRGBA(const RGBA<float>& c)
     :RGBA<uchar>
     (
-     static_cast<uchar>(255.0*c.r),
-     static_cast<uchar>(255.0*c.g),
-     static_cast<uchar>(255.0*c.b),
-     static_cast<uchar>(255.0*c.a)
+     static_cast<uchar>(255.0*clamped(c.r,0.0f,1.0f)),
+     static_cast<uchar>(255.0*clamped(c.g,0.0f,1.0f)),
+     static_cast<uchar>(255.0*clamped(c.b,0.0f,1.0f)),
+     static_cast<uchar>(255.0*clamped(c.a,0.0f,1.0f))
      )
     {}
   
@@ -225,6 +225,19 @@ inline FloatRGBA operator*(const FloatRGBA& c,float k)
      k*c.a
      );
 }
+
+//! Colour division-by-scalar operator.
+inline FloatRGBA operator/(const FloatRGBA& c,float k)
+{
+  return FloatRGBA
+    (
+     c.r/k,
+     c.g/k,
+     c.b/k,
+     c.a/k
+     );
+}
+
 
 //! Colour multiplication operator.
 /*! Componentwise multiplication.

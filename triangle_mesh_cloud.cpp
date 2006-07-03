@@ -58,39 +58,6 @@ namespace
     {}
     virtual void scan_convert_backend(uint y,const ScanEdge& edge0,const ScanEdge& edge1) const
     {}
-    virtual void subdivide(const boost::array<XYZ,3>& v,const ScanConverter* scan_converter) const
-    {
-      const XYZ v01(0.5f*(v[0]+v[1]));
-      const XYZ v12(0.5f*(v[1]+v[2]));
-      const XYZ v02(0.5f*(v[0]+v[2]));
-      const float c01(0.5f*(_vertex_colours[0]+_vertex_colours[1]));
-      const float c12(0.5f*(_vertex_colours[1]+_vertex_colours[2]));
-      const float c02(0.5f*(_vertex_colours[0]+_vertex_colours[2]));
-
-      {
-	const boost::array<XYZ,3> v0={v[0],v01,v02};
-	const boost::array<float,3> c0={_vertex_colours[0],c01,c02};
-	scan_converter->scan_convert(v0,ScanConvertHelper(_image,c0));
-      }
-
-      {
-	const boost::array<XYZ,3> v1={v01,v[1],v12};
-	const boost::array<float,3> c1={c01,_vertex_colours[1],c12};
-	scan_converter->scan_convert(v1,ScanConvertHelper(_image,c1));
-      }
-
-      {
-	const boost::array<XYZ,3> v2={v02,v12,v[2]};
-	const boost::array<float,3> c2={c02,c12,_vertex_colours[2]};
-	scan_converter->scan_convert(v2,ScanConvertHelper(_image,c2));
-      }
-
-      {
-	const boost::array<XYZ,3> v3={v01,v12,v02};
-	const boost::array<float,3> c3={c01,c12,c02};
-	scan_converter->scan_convert(v3,ScanConvertHelper(_image,c3));
-      }
-    }
   private:
     Raster<uchar>& _image;
     const boost::array<float,3>& _vertex_colours;

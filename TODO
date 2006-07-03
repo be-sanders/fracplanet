@@ -1,7 +1,6 @@
-- Fix bogus rendering in lower left of sphere textures
-  Isn't insufficient subdivision.  Isn't insufficient domain replication.
-  Is in subdivided zone.  Suspect precision ?  (Edge deltas go bad for high image-y ?)
-  (Maybe not: still a problem with 360x180).  Maybe asinf and normalized z precision ?
+- Fix bogus rendering to textures for spheres.
+  Is caused by subdivision: bad joins -> gaps.
+  Replace by what ?  Ray-tracing exploration of the triangle ?  Of un-rendered pixels ?
 - X gets bigger when using display lists (remote only?) ?  Need to delete on exit ?
 - Find out what the errors are this guy mentions:
     http://douglas.nerad.org/journal/2006/04/03/

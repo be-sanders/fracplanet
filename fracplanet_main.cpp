@@ -339,8 +339,9 @@ void FracplanetMain::save_texture()
 
       bool ok=true;
       {
-	boost::scoped_ptr<Image<ByteRGBA> > terrain_image(new Image<ByteRGBA>(360,180));
-	boost::scoped_ptr<Image<ushort> > terrain_heights(new Image<ushort>(360,180));
+	boost::scoped_ptr<Image<ByteRGBA> > terrain_image(new Image<ByteRGBA>(3600,1800));
+	terrain_image->fill(ByteRGBA(255,0,0,0)); //! \todo Remove clear to red - for debug only
+	boost::scoped_ptr<Image<ushort> > terrain_heights(new Image<ushort>(3600,1800));
 	mesh_terrain->render_texture(*terrain_image,*terrain_heights);
 
 	{
@@ -361,7 +362,7 @@ void FracplanetMain::save_texture()
 
       if (ok && mesh_cloud)
 	{
-	  boost::scoped_ptr<Image<uchar> > cloud_image(new Image<uchar>(360,180));
+	  boost::scoped_ptr<Image<uchar> > cloud_image(new Image<uchar>(3600,1800));
 	  mesh_cloud->render_texture(*cloud_image);
 	  std::ofstream out((filename_base+"_cloud.png").c_str(),std::ios::binary);      
 	  cloud_image->write_pgm(out);

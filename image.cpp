@@ -64,12 +64,12 @@ template <typename T> void Raster<T>::scan(uint y,float x0,const ComputeType& v0
   const int ix_min=static_cast<int>(std::max(0.0f        ,ceilf(x0-0.5f)));
   const int ix_max=static_cast<int>(std::min(width()-0.5f,floorf(x1-0.5f)));
   
-  const ComputeType kv((v1-v0)*(1.0/(x1-x0)));
+  const ComputeType kv((v1-v0)/(x1-x0));
   
   T*const row_ptr=row(y);
-  ComputeType v(v0+kv*(ix_min+0.5f-x0));
-  for (int ix=ix_min;ix<=ix_max;ix++,v+=kv)
+  for (int ix=ix_min;ix<=ix_max;ix++)
     {
+      const ComputeType v(v0+kv*(ix+0.5f-x0));
       row_ptr[ix]=static_cast<T>(v);
     }
 }

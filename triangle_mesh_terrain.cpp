@@ -468,47 +468,6 @@ namespace
 	+      edge1.lambda *_vertex_heights[edge1.vertex1];
       _dem.scan(y,edge0.x,h0,edge1.x,h1); 
     }
-
-    virtual void subdivide(const boost::array<XYZ,3>& v,const ScanConverter* scan_converter) const
-    {
-      const XYZ v01(0.5f*(v[0]+v[1]));
-      const XYZ v12(0.5f*(v[1]+v[2]));
-      const XYZ v02(0.5f*(v[0]+v[2]));
-      const FloatRGBA c01(0.5f*(_vertex_colours[0]+_vertex_colours[1]));
-      const FloatRGBA c12(0.5f*(_vertex_colours[1]+_vertex_colours[2]));
-      const FloatRGBA c02(0.5f*(_vertex_colours[0]+_vertex_colours[2]));
-      const float h01(0.5f*(_vertex_heights[0]+_vertex_heights[1]));
-      const float h12(0.5f*(_vertex_heights[1]+_vertex_heights[2]));
-      const float h02(0.5f*(_vertex_heights[0]+_vertex_heights[2]));
-
-      {
-	const boost::array<XYZ,3> v0={v[0],v01,v02};
-	const boost::array<FloatRGBA,3> c0={_vertex_colours[0],c01,c02};
-	const boost::array<float,3> h0={_vertex_heights[0],h01,h02};
-	scan_converter->scan_convert(v0,ScanConvertHelper(_image,_dem,c0,h0));
-      }
-
-      {
-	const boost::array<XYZ,3> v1={v01,v[1],v12};
-	const boost::array<FloatRGBA,3> c1={c01,_vertex_colours[1],c12};
-	const boost::array<float,3> h1={h01,_vertex_heights[1],h12};
-	scan_converter->scan_convert(v1,ScanConvertHelper(_image,_dem,c1,h1));
-      }
-
-      {
-	const boost::array<XYZ,3> v2={v02,v12,v[2]};
-	const boost::array<FloatRGBA,3> c2={c02,c12,_vertex_colours[2]};
-	const boost::array<float,3> h2={h02,h12,_vertex_heights[2]};
-	scan_converter->scan_convert(v2,ScanConvertHelper(_image,_dem,c2,h2));
-      }
-
-      {
-	const boost::array<XYZ,3> v3={v01,v12,v02};
-	const boost::array<FloatRGBA,3> c3={c01,c12,c02};
-	const boost::array<float,3> h3={h01,h12,h02};
-	scan_converter->scan_convert(v3,ScanConvertHelper(_image,_dem,c3,h3));
-      }
-    }
     
   private:
     Raster<ByteRGBA>& _image;
@@ -522,7 +481,7 @@ void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image,Raster<ushort>&
 {
   progress_start(100,"Generating textures");
 
-  image.fill(ByteRGBA(0,0,0,0));
+  image.fill(ByteRGBA(255,0,0,0));
   dem.fill(0);
 
   for (uint i=0;i<triangles();i++)

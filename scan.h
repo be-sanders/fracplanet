@@ -89,12 +89,9 @@ class ScanConvertBackend
     }
   virtual void scan_convert_backend(uint y,const ScanEdge& edge0,const ScanEdge& edge1) const
     =0;
-  virtual void subdivide(const boost::array<XYZ,3>& v,const ScanConverter*) const
-    =0;
  private:
   const int _width;
   const int _height;
 };
 
 #endif
-

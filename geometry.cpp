@@ -86,7 +86,7 @@ void Geometry::scan_convert_common
       }
 }
 
-/*! Scan lines are throught the centre of pixels at y=0.5.
+/*! Scan lines are through the centre of pixels at y=0.5.
   This function doesn't care about quantization in x; that's for the backend.
  */
 void GeometryFlat::scan_convert
@@ -107,30 +107,29 @@ void GeometryFlat::scan_convert
 
 /*!
   The problem with spherical geometry is that spans can go off one side of the map and come back on the other.
- */
+*/
 void GeometrySpherical::scan_convert
 (
  const boost::array<XYZ,3>& v,
  const ScanConvertBackend& backend
  ) const
 {
-  const float vx_min=std::min(v[0].x,std::min(v[1].x,v[2].x));
-  const float vx_max=std::max(v[0].x,std::max(v[1].x,v[2].x));
-  const float vy_min=std::min(v[0].y,std::min(v[1].y,v[2].y));
-  const float vy_max=std::max(v[0].y,std::max(v[1].y,v[2].y));
-  if (vx_min<=0.0f && 0.0f<=vx_max && vy_min<=0.0f && 0.0f<=vy_max)
-    {
-      // Triangle _may_ include the pole (z-axis), so consider subdividing
-      const float dx=std::max(-vx_min,vx_max);
-      const float dy=std::max(-vy_min,vy_max);
-      if ((dx+dy)*backend.height()>0.25f)
-	{
-	  backend.subdivide(v,this);
-	}
-      else return;
-    }
-
-  boost::array<XYZ,3> vn={v[0].normalised(),v[1].normalised(),v[2].normalised()};
+  {
+    const XYZ pole(0.0f,0.0f,1.0f);
+    
+    const float p01=pole%(v[0]*v[1]);
+    const float p12=pole%(v[1]*v[2]);
+    const float p20=pole%(v[2]*v[0]);
+    
+    const bool contains_pole=((p01>=0.0f && p12>=0.0f && p20>=0.0f) || (p01<=0.0f && p12<=0.0f && p20<=0.0f));
+    if (contains_pole)
+      {
+	return;
+	//! \todo Subdivision is not a solution: leads to gaps due to disagreements about edges.
+      }
+  }
+  
+  const boost::array<XYZ,3> vn={v[0].normalised(),v[1].normalised(),v[2].normalised()};
   boost::array<XYZ,3> vp;
   for (uint i=0;i<3;i++)
     {
