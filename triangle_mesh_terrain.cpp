@@ -471,9 +471,6 @@ namespace
 
     virtual void subdivide(const boost::array<XYZ,3>& v,const XYZ& m,const ScanConverter& scan_converter) const
     {
-      std::cerr << v[0] << "," << v[1] << "," << v[2] << ":" << m << "\n";
-
-
       const XYZ v01=(v[0]+v[1]+m)/3.0f;
       const XYZ v12=(v[1]+v[2]+m)/3.0f;
       const XYZ v20=(v[2]+v[0]+m)/3.0f;

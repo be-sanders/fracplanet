@@ -121,11 +121,9 @@ void GeometrySpherical::scan_convert
 
   {
     const XYZ pole(0.0f,0.0f,1.0f);
-    
     const float p01=pole%(v[0]*v[1]);
     const float p12=pole%(v[1]*v[2]);
     const float p20=pole%(v[2]*v[0]);
-    
     const bool contains_pole=((p01>=0.0f && p12>=0.0f && p20>=0.0f) || (p01<=0.0f && p12<=0.0f && p20<=0.0f));
     if (contains_pole)
       {
