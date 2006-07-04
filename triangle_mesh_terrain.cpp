@@ -468,6 +468,72 @@ namespace
 	+      edge1.lambda *_vertex_heights[edge1.vertex1];
       _dem.scan(y,edge0.x,h0,edge1.x,h1); 
     }
+
+    virtual void subdivide(const boost::array<XYZ,3>& v,const XYZ& m,const ScanConverter& scan_converter) const
+    {
+      std::cerr << v[0] << "," << v[1] << "," << v[2] << ":" << m << "\n";
+
+
+      const XYZ v01=(v[0]+v[1]+m)/3.0f;
+      const XYZ v12=(v[1]+v[2]+m)/3.0f;
+      const XYZ v20=(v[2]+v[0]+m)/3.0f;
+      const FloatRGBA c01=0.5f*(_vertex_colours[0]+_vertex_colours[1]);  //! \todo This isn't right.
+      const FloatRGBA c12=0.5f*(_vertex_colours[1]+_vertex_colours[2]);
+      const FloatRGBA c20=0.5f*(_vertex_colours[2]+_vertex_colours[0]);
+      const float h01=0.5f*(_vertex_heights[0]+_vertex_heights[1]);
+      const float h12=0.5f*(_vertex_heights[1]+_vertex_heights[2]);
+      const float h20=0.5f*(_vertex_heights[2]+_vertex_heights[0]);
+
+      {
+	const boost::array<XYZ,3> p={v[0],v[1],v01};
+	const boost::array<FloatRGBA,3> c={_vertex_colours[0],_vertex_colours[1],c01};
+	const boost::array<float,3> h={_vertex_heights[0],_vertex_heights[1],h01};	
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+      }
+
+      {
+	const boost::array<XYZ,3> p={v[1],v[2],v12};
+	const boost::array<FloatRGBA,3> c={_vertex_colours[1],_vertex_colours[2],c12};
+	const boost::array<float,3> h={_vertex_heights[1],_vertex_heights[2],h12};
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+      }
+
+      {
+	const boost::array<XYZ,3> p={v[2],v[0],v20};
+	const boost::array<FloatRGBA,3> c={_vertex_colours[2],_vertex_colours[0],c20};
+	const boost::array<float,3> h={_vertex_heights[2],_vertex_heights[0],h20};
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+      }
+
+      {
+	const boost::array<XYZ,3> p={v[0],v01,v20};
+	const boost::array<FloatRGBA,3> c={_vertex_colours[0],c01,c20};
+	const boost::array<float,3> h={_vertex_heights[0],h01,h20};	
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+      }
+
+      {
+	const boost::array<XYZ,3> p={v[1],v12,v01};
+	const boost::array<FloatRGBA,3> c={_vertex_colours[1],c12,c01};
+	const boost::array<float,3> h={_vertex_heights[1],h12,h01};	
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+      }
+
+      {
+	const boost::array<XYZ,3> p={v[2],v20,v12};
+	const boost::array<FloatRGBA,3> c={_vertex_colours[2],c20,c12};
+	const boost::array<float,3> h={_vertex_heights[2],h20,h12};	
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+      }
+
+      {
+	const boost::array<XYZ,3> p={v01,v12,v20};
+	const boost::array<FloatRGBA,3> c={c01,c12,c20};
+	const boost::array<float,3> h={h01,h12,h20};	
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+      }
+      
+    }
     
   private:
     Raster<ByteRGBA>& _image;

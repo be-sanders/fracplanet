@@ -114,6 +114,11 @@ void GeometrySpherical::scan_convert
  const ScanConvertBackend& backend
  ) const
 {
+  const boost::array<XYZ,3> vn={v[0].normalised(),v[1].normalised(),v[2].normalised()};
+
+  const bool coplanar=(fabsf((vn[0]*vn[1]).normalised()%vn[2]) < 1e-6f);
+  if (coplanar) return;
+
   {
     const XYZ pole(0.0f,0.0f,1.0f);
     
@@ -124,16 +129,24 @@ void GeometrySpherical::scan_convert
     const bool contains_pole=((p01>=0.0f && p12>=0.0f && p20>=0.0f) || (p01<=0.0f && p12<=0.0f && p20<=0.0f));
     if (contains_pole)
       {
-	return;
-	//! \todo Subdivision is not a solution: leads to gaps due to disagreements about edges.
+	// Don't subdivide when furthest vertex is so close it won't be rendered
+	const float mx=std::max(fabsf(vn[0].x),std::max(fabsf(vn[1].x),fabsf(vn[2].x)));
+	const float my=std::max(fabsf(vn[0].y),std::max(fabsf(vn[1].y),fabsf(vn[2].y)));
+	const float m=std::max(mx,my);
+	if (m<0.25f/backend.height())
+	  return;
+	else
+	  {
+	    const XYZ which_pole(0.0f,0.0f,((v[0]+v[1]+v[2]).z>0.0f? 1.0f : -1.0f));
+	    backend.subdivide(v,which_pole,*this);
+	  }
       }
   }
   
-  const boost::array<XYZ,3> vn={v[0].normalised(),v[1].normalised(),v[2].normalised()};
   boost::array<XYZ,3> vp;
   for (uint i=0;i<3;i++)
     {
-      vp[i].x=backend.width()*0.5f*(1.0f+atan2f(vn[i].y,vn[i].x)*M_1_PI);
+      vp[i].x=backend.width()*0.5f*(1.0f+M_1_PI*atan2f(vn[i].y,vn[i].x));  // atan2f returns [-pi to +pi] so vp[0] in [0,width] 
       if (i!=0)
 	{
 	  // Need to keep all the vertices in the same domain
