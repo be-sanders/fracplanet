@@ -471,10 +471,13 @@ namespace
 
     virtual void subdivide(const boost::array<XYZ,3>& v,const XYZ& m,const ScanConverter& scan_converter) const
     {
+      // Subdivision pattern (into 7) avoids creating any mid-points in edges shared with other triangles.
       const XYZ v01=(v[0]+v[1]+m)/3.0f;
       const XYZ v12=(v[1]+v[2]+m)/3.0f;
       const XYZ v20=(v[2]+v[0]+m)/3.0f;
-      const FloatRGBA c01=0.5f*(_vertex_colours[0]+_vertex_colours[1]);  //! \todo This isn't right.
+
+      //! \todo This isn't right (for correct value would need to compute barycentric coordinates of m), but it will should only affect one facet at the pole.  
+      const FloatRGBA c01=0.5f*(_vertex_colours[0]+_vertex_colours[1]);  
       const FloatRGBA c12=0.5f*(_vertex_colours[1]+_vertex_colours[2]);
       const FloatRGBA c20=0.5f*(_vertex_colours[2]+_vertex_colours[0]);
       const float h01=0.5f*(_vertex_heights[0]+_vertex_heights[1]);

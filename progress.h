@@ -47,4 +47,17 @@ class Progress
     =0;
 };
 
+class ProgressScope
+{
+ public:
+  ProgressScope(uint steps,const std::string& info,Progress* tgt);
+  ~ProgressScope();
+  void step();
+ private:
+  const uint _steps;
+  const std::string _info;
+  Progress*const _target;
+  uint _step;
+};
+
 #endif

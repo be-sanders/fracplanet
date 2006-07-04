@@ -28,10 +28,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <boost/range.hpp>
 #include <boost/noncopyable.hpp>
 
-class ByteRGBA;
-
 #include "useful.h"
 #include "rgb.h"
+
+class Progress;
 
 //! Class to support specialisation for particular pixel formats
 template <typename T> class PixelTraits
@@ -291,8 +291,8 @@ template <typename T> class Raster
   //! Fill a line segment on the given half-open range [x0,x1), interpolating between the two given values.
   void scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1);
 
-  void write_ppm(std::ostream&) const;
-  void write_pgm(std::ostream&) const;
+  void write_ppm(std::ostream&,Progress*) const;
+  void write_pgm(std::ostream&,Progress*) const;
 
  private:
   const uint _width;

@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "image.h"
 
+#include "progress.h"
 #include "rgb.h"
 #include <iostream>
 
@@ -74,37 +75,49 @@ template <typename T> void Raster<T>::scan(uint y,float x0,const ComputeType& v0
     }
 }
 
-template <> void Raster<uchar>::write_pgm(std::ostream& out) const
+template <> void Raster<uchar>::write_pgm(std::ostream& out,Progress* target) const
 {
+  ProgressScope progress(height(),"Writing PGM image",target);
   out << "P5" << std::endl;
   out << width() << " " << height() << std::endl;
   out << "255" << std::endl;
   for (ConstRowIterator row=row_begin();row!=row_end();++row)
-    out.write(reinterpret_cast<const char*>(&(*(row->begin()))),row->size());
+    {
+      progress.step();
+      out.write(reinterpret_cast<const char*>(&(*(row->begin()))),row->size());
+    }
 }
 
-template <> void Raster<ushort>::write_pgm(std::ostream& out) const
+template <> void Raster<ushort>::write_pgm(std::ostream& out,Progress* target) const
 {
+  ProgressScope progress(height(),"Writing PGM image",target);
   out << "P5" << std::endl;
   out << width() << " " << height() << std::endl;
   out << maximum_scalar_pixel_value() << std::endl;
   for (ConstRowIterator row=row_begin();row!=row_end();++row)
-    for (const ushort* it=row->begin();it!=row->end();++it)
-      {
-	// PGM spec is most significant byte first
-	const uchar p[2]={((*it)>>8),(*it)};
-	out.write(reinterpret_cast<const char*>(p),2);
-      }
+    {
+      progress.step();
+      for (const ushort* it=row->begin();it!=row->end();++it)
+	{
+	  // PGM spec is most significant byte first
+	  const uchar p[2]={((*it)>>8),(*it)};
+	  out.write(reinterpret_cast<const char*>(p),2);
+	}
+    }
 }
 
-template <> void Raster<ByteRGBA>::write_ppm(std::ostream& out) const
+template <> void Raster<ByteRGBA>::write_ppm(std::ostream& out,Progress* target) const
 {
+  ProgressScope progress(height(),"Writing PPM image",target);
   out << "P6" << std::endl;
   out << width() << " " << height() << std::endl;
   out << "255" << std::endl;
   for (ConstRowIterator row=row_begin();row!=row_end();++row)
-    for (const ByteRGBA* it=row->begin();it!=row->end();++it)
-      out.write(reinterpret_cast<const char*>(&((*it).r)),3);
+    {
+      progress.step();
+      for (const ByteRGBA* it=row->begin();it!=row->end();++it)
+	out.write(reinterpret_cast<const char*>(&((*it).r)),3);
+    }
 }
 
 

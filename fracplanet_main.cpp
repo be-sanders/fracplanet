@@ -346,7 +346,7 @@ void FracplanetMain::save_texture()
 
 	{
 	  std::ofstream out(filename.c_str(),std::ios::binary);
-	  terrain_image->write_ppm(out);
+	  terrain_image->write_ppm(out,this);
 	  out.close();
 	  if (!out) ok=false;
 	}
@@ -354,7 +354,7 @@ void FracplanetMain::save_texture()
 	if (ok)
 	  {
 	    std::ofstream out((filename_base+"_dem.pgm").c_str(),std::ios::binary);
-	    terrain_heights->write_pgm(out);
+	    terrain_heights->write_pgm(out,this);
 	    out.close();
 	    if (!out) ok=false;
 	  }
@@ -365,7 +365,7 @@ void FracplanetMain::save_texture()
 	  boost::scoped_ptr<Image<uchar> > cloud_image(new Image<uchar>(3600,1800));
 	  mesh_cloud->render_texture(*cloud_image);
 	  std::ofstream out((filename_base+"_cloud.png").c_str(),std::ios::binary);      
-	  cloud_image->write_pgm(out);
+	  cloud_image->write_pgm(out,this);
 	  out.close();
 	  if (!out) ok=false;
 	}

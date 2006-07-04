@@ -1,13 +1,10 @@
-- Fix bogus rendering to textures for spheres.
-  Is caused by subdivision: bad joins -> gaps.
-  Replace by what ?  Ray-tracing exploration of the triangle ?  Of un-rendered pixels ?
 - X gets bigger when using display lists (remote only?) ?  Need to delete on exit ?
 - Find out what the errors are this guy mentions:
     http://douglas.nerad.org/journal/2006/04/03/
 - Option to save a raster map (cylindrical projection for spheres)
   for terrain colours, heights, and specular (mainly for sea... and snow ?).
   Clouds ?
-  Going to be tricky to scan-convert triangles near poles.
+  Will end up with duplicate code in ScanConvertHelper; use boost MPL to produce generic version operating on a heterogenous array ?
 - More control over weather and clouds.
 - Another noise fn to modulate (c.f add) subdivided terrain.
   Might help reduce middle-of-continent highlands.
