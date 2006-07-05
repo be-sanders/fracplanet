@@ -344,19 +344,11 @@ void FracplanetMain::save_texture()
 	boost::scoped_ptr<Image<ushort> > terrain_heights(new Image<ushort>(3600,1800));
 	mesh_terrain->render_texture(*terrain_image,*terrain_heights);
 
-	{
-	  std::ofstream out(filename.c_str(),std::ios::binary);
-	  terrain_image->write_ppm(out,this);
-	  out.close();
-	  if (!out) ok=false;
-	}
+	if (!terrain_image->write_ppmfile(filename,this)) ok=false;
 	
 	if (ok)
 	  {
-	    std::ofstream out((filename_base+"_dem.pgm").c_str(),std::ios::binary);
-	    terrain_heights->write_pgm(out,this);
-	    out.close();
-	    if (!out) ok=false;
+	    if (!terrain_heights->write_pgmfile(filename_base+"_dem.pgm",this)) ok=false;
 	  }
       }
 
@@ -364,10 +356,7 @@ void FracplanetMain::save_texture()
 	{
 	  boost::scoped_ptr<Image<uchar> > cloud_image(new Image<uchar>(3600,1800));
 	  mesh_cloud->render_texture(*cloud_image);
-	  std::ofstream out((filename_base+"_cloud.png").c_str(),std::ios::binary);      
-	  cloud_image->write_pgm(out,this);
-	  out.close();
-	  if (!out) ok=false;
+	  if (!cloud_image->write_pgmfile(filename_base+"_cloud.png",this)) ok=false;
 	}
 
       progress_dialog.reset(0);

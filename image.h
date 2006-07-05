@@ -291,8 +291,8 @@ template <typename T> class Raster
   //! Fill a line segment on the given half-open range [x0,x1), interpolating between the two given values.
   void scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1);
 
-  void write_ppm(std::ostream&,Progress*) const;
-  void write_pgm(std::ostream&,Progress*) const;
+  bool write_ppmfile(const std::string&,Progress*) const;
+  bool write_pgmfile(const std::string&,Progress*) const;
 
  private:
   const uint _width;

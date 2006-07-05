@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "progress.h"
 #include "rgb.h"
 #include <iostream>
+#include <fstream>
 
 template <typename T> void Raster<T>::fill(const T& v)
 {
@@ -75,9 +76,10 @@ template <typename T> void Raster<T>::scan(uint y,float x0,const ComputeType& v0
     }
 }
 
-template <> void Raster<uchar>::write_pgm(std::ostream& out,Progress* target) const
+template <> bool Raster<uchar>::write_pgmfile(const std::string& filename,Progress* target) const
 {
-  ProgressScope progress(height(),"Writing PGM image",target);
+  ProgressScope progress(height(),"Writing PGM image:\n"+filename,target);
+  std::ofstream out(filename.c_str(),std::ios::binary);
   out << "P5" << std::endl;
   out << width() << " " << height() << std::endl;
   out << "255" << std::endl;
@@ -86,11 +88,14 @@ template <> void Raster<uchar>::write_pgm(std::ostream& out,Progress* target) co
       progress.step();
       out.write(reinterpret_cast<const char*>(&(*(row->begin()))),row->size());
     }
+  out.close();
+  return out;
 }
 
-template <> void Raster<ushort>::write_pgm(std::ostream& out,Progress* target) const
+template <> bool Raster<ushort>::write_pgmfile(const std::string& filename,Progress* target) const
 {
-  ProgressScope progress(height(),"Writing PGM image",target);
+  ProgressScope progress(height(),"Writing PGM image:\n"+filename,target);
+  std::ofstream out(filename.c_str(),std::ios::binary);
   out << "P5" << std::endl;
   out << width() << " " << height() << std::endl;
   out << maximum_scalar_pixel_value() << std::endl;
@@ -104,11 +109,14 @@ template <> void Raster<ushort>::write_pgm(std::ostream& out,Progress* target) c
 	  out.write(reinterpret_cast<const char*>(p),2);
 	}
     }
+  out.close();
+  return out;
 }
 
-template <> void Raster<ByteRGBA>::write_ppm(std::ostream& out,Progress* target) const
+template <> bool Raster<ByteRGBA>::write_ppmfile(const std::string& filename,Progress* target) const
 {
-  ProgressScope progress(height(),"Writing PPM image",target);
+  ProgressScope progress(height(),"Writing PPM image:\n"+filename,target);
+  std::ofstream out(filename.c_str(),std::ios::binary);
   out << "P6" << std::endl;
   out << width() << " " << height() << std::endl;
   out << "255" << std::endl;
@@ -118,6 +126,8 @@ template <> void Raster<ByteRGBA>::write_ppm(std::ostream& out,Progress* target)
       for (const ByteRGBA* it=row->begin();it!=row->end();++it)
 	out.write(reinterpret_cast<const char*>(&((*it).r)),3);
     }
+  out.close();
+  return out;
 }
 
 
