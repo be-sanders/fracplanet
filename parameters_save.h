@@ -39,6 +39,9 @@ class ParametersSave
 
   //! Whether to try using per-vertex-alpha in the blender output.
   bool blender_per_vertex_alpha;
+
+  //! Size of texture for texture save (is height; width is implicit).
+  uint texture_height;
   
   //! Save for blender needs access to some of these.
   const ParametersRender*const parameters_render;

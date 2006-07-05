@@ -321,6 +321,9 @@ void FracplanetMain::save_blender()
 
 void FracplanetMain::save_texture()
 {
+  const uint height=parameters_save.texture_height;
+  const uint width=height*mesh_terrain->geometry().scan_convert_image_aspect_ratio();
+
   QString selected_filename=QFileDialog::getSaveFileName(".","Texture (*.ppm)",this,"Save texture","Fracplanet");
   if (selected_filename.isEmpty())
     {
@@ -339,9 +342,9 @@ void FracplanetMain::save_texture()
 
       bool ok=true;
       {
-	boost::scoped_ptr<Image<ByteRGBA> > terrain_image(new Image<ByteRGBA>(3600,1800));
+	boost::scoped_ptr<Image<ByteRGBA> > terrain_image(new Image<ByteRGBA>(width,height));
 	terrain_image->fill(ByteRGBA(255,0,0,0)); //! \todo Remove clear to red - for debug only
-	boost::scoped_ptr<Image<ushort> > terrain_heights(new Image<ushort>(3600,1800));
+	boost::scoped_ptr<Image<ushort> > terrain_heights(new Image<ushort>(width,height));
 	mesh_terrain->render_texture(*terrain_image,*terrain_heights);
 
 	if (!terrain_image->write_ppmfile(filename,this)) ok=false;
@@ -354,7 +357,7 @@ void FracplanetMain::save_texture()
 
       if (ok && mesh_cloud)
 	{
-	  boost::scoped_ptr<Image<uchar> > cloud_image(new Image<uchar>(3600,1800));
+	  boost::scoped_ptr<Image<uchar> > cloud_image(new Image<uchar>(width,height));
 	  mesh_cloud->render_texture(*cloud_image);
 	  if (!cloud_image->write_pgmfile(filename_base+"_cloud.png",this)) ok=false;
 	}

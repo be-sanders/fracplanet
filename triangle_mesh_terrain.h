@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2002,2003 Tim Day
+// Copyright (C) 2006 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -30,9 +30,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //! This class holds all the terrain-related methods.  
 /*! It's intended to be used as a "mix-in", adding terrain generating 
   functionality to terrain objects subclassed from simpler geometries.
-  \todo Ugh!!!  This is really yucky use of multiple inheritance.  Switch to a "Factory" pattern.
+  \todo Ugh!!!  This is really yucky use of multiple inheritance.  Better for these terrain types to have-a TriangleMesh.
  */
-class TriangleMeshTerrain : virtual TriangleMesh
+class TriangleMeshTerrain : virtual public TriangleMesh
 {
  protected:
   //! Indices of the set of triangles with all vertices at sea-level

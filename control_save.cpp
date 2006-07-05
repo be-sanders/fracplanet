@@ -80,10 +80,18 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
 
   QVBox*const tab_texture=new QVBox(this);
   tabs->addTab(tab_texture,"Texture");
+
   setStretchFactor(new QVBox(tab_texture),1);
 
+  QGrid*const grid_texture=new QGrid(2,Qt::Horizontal,tab_texture);
+  new QLabel("Texture height",grid_texture);
+  QSpinBox* texture_height_spinbox=new QSpinBox(1,0x7fffffff,1,grid_texture);
+  QToolTip::add(texture_height_spinbox,"Texture height in pixels; the texture width is the same as the height\nexcept for spherical geometry when it is double.");
+
+  setStretchFactor(new QVBox(tab_texture),1);
+  
   QPushButton*const save_texture=new QPushButton("Save as texture",tab_texture);
-  QToolTip::add(save_blender,"Press to save object as textures");
+  QToolTip::add(save_texture,"Press to save object as textures");
   connect(
 	  save_texture,SIGNAL(clicked()),
 	  save_target,SLOT(save_texture())
@@ -108,4 +116,9 @@ void ControlSave::setSeaSphere(int v)
 void ControlSave::setPerVertexAlpha(int v)
 {
   parameters->blender_per_vertex_alpha=(v==2);
+}
+
+void ControlSave::setTextureHeight(int v)
+{
+  parameters->texture_height=v;
 }

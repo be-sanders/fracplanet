@@ -30,9 +30,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //! This class holds all the cloud-related methods.  
 /*! It's intended to be used as a "mix-in", adding cloud generating 
   functionality to cloud objects subclassed from simpler geometries.
-  \todo Ugh!!!  This is really yucky use of multiple inheritance.  Switch to a "Factory" pattern.
+  \todo Ugh!!!  This is really yucky use of multiple inheritance.  Better for these terrain types to have-a TriangleMesh.
  */
-class TriangleMeshCloud : virtual TriangleMesh
+class TriangleMeshCloud : virtual public TriangleMesh
 {
  protected:
   void do_cloud(const ParametersCloud& parameters);

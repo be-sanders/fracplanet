@@ -85,6 +85,12 @@ public:
   virtual const float epsilon() const
     =0;
 
+  //! Multiplier for width of a scan-converted image.
+  virtual const uint scan_convert_image_aspect_ratio() const
+    {
+      return 1;
+    }
+
  protected:
   //! Common scan-converter code
   static void scan_convert_common
@@ -270,6 +276,13 @@ class GeometrySpherical : public Geometry
      const boost::array<XYZ,3>& v,
      const ScanConvertBackend&
      ) const;
+
+  //! Return 2.0 for spheres because vertical range is +/- pi/2, horizontal is +/- pi
+  virtual const uint scan_convert_image_aspect_ratio() const
+    {
+      return 2;
+    }
+
 };
 
 
