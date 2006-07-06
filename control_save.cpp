@@ -86,7 +86,12 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
   QGrid*const grid_texture=new QGrid(2,Qt::Horizontal,tab_texture);
   new QLabel("Texture height",grid_texture);
   QSpinBox* texture_height_spinbox=new QSpinBox(1,0x7fffffff,1,grid_texture);
+  texture_height_spinbox->setValue(1024);
   QToolTip::add(texture_height_spinbox,"Texture height in pixels; the texture width is the same as the height\nexcept for spherical geometry when it is double.");
+  connect(
+	  texture_height_spinbox,SIGNAL(valueChanged(int)),
+	  this,SLOT(setTextureHeight(int))
+	  );
 
   setStretchFactor(new QVBox(tab_texture),1);
   

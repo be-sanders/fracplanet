@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <sstream>
 #include <fstream>
 #include <cassert>
+#include <boost/optional.hpp>
 
 TriangleMeshTerrain::TriangleMeshTerrain(Progress* progress)
   :TriangleMesh(progress)
@@ -429,15 +430,38 @@ void TriangleMeshTerrain::write_blender(std::ofstream& out,const ParametersSave&
 
 namespace
 {
+  template <typename T> boost::array<T,3> make_array(const T& v0,const T& v1,const T& v2)
+  {
+    const boost::array<T,3> r={v0,v1,v2};
+    return r;
+  }
+
+  template <typename T> boost::optional<boost::array<T,3> > make_optional_array(bool c,const T& v0,const T& v1,const T& v2)
+  {
+    boost::optional<boost::array<T,3> > r;
+    if (c) r=make_array(v0,v1,v2);
+    return r;
+  }
+
   class ScanConvertHelper : public ScanConvertBackend
   {
   public:
-    ScanConvertHelper(Raster<ByteRGBA>& image,Raster<ushort>& dem,const boost::array<FloatRGBA,3>& vertex_colours,const boost::array<float,3>& vertex_heights)
+    ScanConvertHelper
+    (
+     Raster<ByteRGBA>& image,
+     Raster<ushort>& dem,
+     const boost::array<FloatRGBA,3>& vertex_colours,
+     const boost::array<float,3>& vertex_heights,
+     bool shading,
+     const boost::array<XYZ,3>& vertex_normals
+     )
       :ScanConvertBackend(image.width(),image.height())
-       ,_image(image)
-       ,_dem(dem)
-       ,_vertex_colours(vertex_colours)
-       ,_vertex_heights(vertex_heights)
+      ,_image(image)
+      ,_dem(dem)
+      ,_vertex_colours(vertex_colours)
+      ,_vertex_heights(vertex_heights)
+      ,_shading(true)
+      ,_vertex_normals(vertex_normals)
     {
       assert(_image.width()==_dem.width() && _image.height()==_dem.height());
     }
@@ -472,65 +496,83 @@ namespace
     virtual void subdivide(const boost::array<XYZ,3>& v,const XYZ& m,const ScanConverter& scan_converter) const
     {
       // Subdivision pattern (into 7) avoids creating any mid-points in edges shared with other triangles.
-      const XYZ v01=(v[0]+v[1]+m)/3.0f;
-      const XYZ v12=(v[1]+v[2]+m)/3.0f;
-      const XYZ v20=(v[2]+v[0]+m)/3.0f;
+      const boost::array<XYZ,3> vm=
+	{
+	  (v[1]+v[2]+m)/3.0f,
+	  (v[0]+v[2]+m)/3.0f,
+	  (v[0]+v[1]+m)/3.0f
+	};
 
       //! \todo This isn't right (for correct value would need to compute barycentric coordinates of m), but it will should only affect one facet at the pole.  
-      const FloatRGBA c01=0.5f*(_vertex_colours[0]+_vertex_colours[1]);  
-      const FloatRGBA c12=0.5f*(_vertex_colours[1]+_vertex_colours[2]);
-      const FloatRGBA c20=0.5f*(_vertex_colours[2]+_vertex_colours[0]);
-      const float h01=0.5f*(_vertex_heights[0]+_vertex_heights[1]);
-      const float h12=0.5f*(_vertex_heights[1]+_vertex_heights[2]);
-      const float h20=0.5f*(_vertex_heights[2]+_vertex_heights[0]);
+      const boost::array<FloatRGBA,3> cm=
+	{
+	  0.5f*(_vertex_colours[1]+_vertex_colours[2]),
+	  0.5f*(_vertex_colours[0]+_vertex_colours[2]),
+	  0.5f*(_vertex_colours[0]+_vertex_colours[1])
+	};
+      const boost::array<float,3> hm=
+	{
+	  0.5f*(_vertex_heights[1]+_vertex_heights[2]),
+	  0.5f*(_vertex_heights[0]+_vertex_heights[2]),
+	  0.5f*(_vertex_heights[0]+_vertex_heights[1])
+	};
+      const boost::array<XYZ,3> nm=
+	{
+	  (_vertex_normals[1]+_vertex_normals[2]).normalised(),
+	  (_vertex_normals[0]+_vertex_normals[2]).normalised(),
+	  (_vertex_normals[0]+_vertex_normals[1]).normalised()
+	};
 
       {
-	const boost::array<XYZ,3> p={v[0],v[1],v01};
-	const boost::array<FloatRGBA,3> c={_vertex_colours[0],_vertex_colours[1],c01};
-	const boost::array<float,3> h={_vertex_heights[0],_vertex_heights[1],h01};	
-	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+	const boost::array<XYZ,3> p={v[0],v[1],vm[2]};
+	const boost::array<FloatRGBA,3> c={_vertex_colours[0],_vertex_colours[1],cm[2]};
+	const boost::array<float,3> h={_vertex_heights[0],_vertex_heights[1],hm[2]};
+	const boost::array<XYZ,3> n={_vertex_normals[0],_vertex_normals[1],nm[2]};
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h,_shading,n));
       }
 
       {
-	const boost::array<XYZ,3> p={v[1],v[2],v12};
-	const boost::array<FloatRGBA,3> c={_vertex_colours[1],_vertex_colours[2],c12};
-	const boost::array<float,3> h={_vertex_heights[1],_vertex_heights[2],h12};
-	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+	const boost::array<XYZ,3> p={v[1],v[2],vm[0]};
+	const boost::array<FloatRGBA,3> c={_vertex_colours[1],_vertex_colours[2],cm[0]};
+	const boost::array<float,3> h={_vertex_heights[1],_vertex_heights[2],hm[0]};
+	const boost::array<XYZ,3> n={_vertex_normals[1],_vertex_normals[2],nm[0]};
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h,_shading,n));
       }
 
       {
-	const boost::array<XYZ,3> p={v[2],v[0],v20};
-	const boost::array<FloatRGBA,3> c={_vertex_colours[2],_vertex_colours[0],c20};
-	const boost::array<float,3> h={_vertex_heights[2],_vertex_heights[0],h20};
-	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+	const boost::array<XYZ,3> p={v[2],v[0],vm[1]};
+	const boost::array<FloatRGBA,3> c={_vertex_colours[2],_vertex_colours[0],cm[1]};
+	const boost::array<float,3> h={_vertex_heights[2],_vertex_heights[0],hm[1]};
+	const boost::array<XYZ,3> n={_vertex_normals[2],_vertex_normals[0],nm[1]};
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h,_shading,n));
       }
 
       {
-	const boost::array<XYZ,3> p={v[0],v01,v20};
-	const boost::array<FloatRGBA,3> c={_vertex_colours[0],c01,c20};
-	const boost::array<float,3> h={_vertex_heights[0],h01,h20};	
-	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+	const boost::array<XYZ,3> p={v[0],vm[2],vm[1]};
+	const boost::array<FloatRGBA,3> c={_vertex_colours[0],cm[2],cm[1]};
+	const boost::array<float,3> h={_vertex_heights[0],hm[2],hm[1]};	
+	const boost::array<XYZ,3> n={_vertex_normals[0],nm[2],nm[1]};
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h,_shading,n));
       }
 
       {
-	const boost::array<XYZ,3> p={v[1],v12,v01};
-	const boost::array<FloatRGBA,3> c={_vertex_colours[1],c12,c01};
-	const boost::array<float,3> h={_vertex_heights[1],h12,h01};	
-	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+	const boost::array<XYZ,3> p={v[1],vm[0],vm[2]};
+	const boost::array<FloatRGBA,3> c={_vertex_colours[1],cm[0],cm[2]};
+	const boost::array<float,3> h={_vertex_heights[1],hm[0],hm[2]};	
+	const boost::array<XYZ,3> n={_vertex_normals[1],nm[0],nm[2]};
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h,_shading,n));
       }
 
       {
-	const boost::array<XYZ,3> p={v[2],v20,v12};
-	const boost::array<FloatRGBA,3> c={_vertex_colours[2],c20,c12};
-	const boost::array<float,3> h={_vertex_heights[2],h20,h12};	
-	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+	const boost::array<XYZ,3> p={v[2],vm[1],vm[0]};
+	const boost::array<FloatRGBA,3> c={_vertex_colours[2],cm[1],cm[0]};
+	const boost::array<float,3> h={_vertex_heights[2],hm[1],hm[0]};	
+	const boost::array<XYZ,3> n={_vertex_normals[2],nm[1],nm[0]};
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h,_shading,n));
       }
 
       {
-	const boost::array<XYZ,3> p={v01,v12,v20};
-	const boost::array<FloatRGBA,3> c={c01,c12,c20};
-	const boost::array<float,3> h={h01,h12,h20};	
-	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,c,h));
+	scan_converter.scan_convert(vm,ScanConvertHelper(_image,_dem,cm,hm,_shading,nm));
       }
       
     }
@@ -540,6 +582,8 @@ namespace
     Raster<ushort>& _dem;
     const boost::array<FloatRGBA,3>& _vertex_colours;
     const boost::array<float,3>& _vertex_heights;
+    const bool _shading;
+    const boost::array<XYZ,3>& _vertex_normals;
   };
 }
 
@@ -580,8 +624,14 @@ void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image,Raster<ushort>&
 	  std::max(0.0f,std::min(65535.0f,65535.0f*geometry().height(vertices[1]->position()))),
 	  std::max(0.0f,std::min(65535.0f,65535.0f*geometry().height(vertices[2]->position())))
 	};
+      const boost::array<XYZ,3> vertex_normals
+	={
+	  vertices[0]->normal(),
+	  vertices[1]->normal(),
+	  vertices[2]->normal()
+	};
 
-      ScanConvertHelper backend(image,dem,vertex_colours,vertex_heights);
+      ScanConvertHelper backend(image,dem,vertex_colours,vertex_heights,true,vertex_normals);
 
       geometry().scan_convert
 	(
