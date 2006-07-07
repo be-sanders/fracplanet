@@ -343,15 +343,26 @@ void FracplanetMain::save_texture()
       bool ok=true;
       {
 	boost::scoped_ptr<Image<ByteRGBA> > terrain_image(new Image<ByteRGBA>(width,height));
-	terrain_image->fill(ByteRGBA(255,0,0,0)); //! \todo Remove clear to red - for debug only
-	boost::scoped_ptr<Image<ushort> > terrain_heights(new Image<ushort>(width,height));
-	mesh_terrain->render_texture(*terrain_image,*terrain_heights);
+	terrain_image->fill(ByteRGBA(0,0,0,0));
+
+	boost::scoped_ptr<Image<ushort> > terrain_dem(new Image<ushort>(width,height));
+	terrain_dem->fill(0);
+
+	boost::scoped_ptr<Image<ByteRGBA> > terrain_normals(new Image<ByteRGBA>(width,height));
+	terrain_normals->fill(ByteRGBA(0,0,0,0));
+
+	mesh_terrain->render_texture(*terrain_image,terrain_dem.get(),terrain_normals.get());
 
 	if (!terrain_image->write_ppmfile(filename,this)) ok=false;
 	
-	if (ok)
+	if (ok && terrain_dem)
 	  {
-	    if (!terrain_heights->write_pgmfile(filename_base+"_dem.pgm",this)) ok=false;
+	    if (!terrain_dem->write_pgmfile(filename_base+"_dem.pgm",this)) ok=false;
+	  }
+
+	if (ok && terrain_normals)
+	  {
+	    if (!terrain_normals->write_ppmfile(filename_base+"_norm.ppm",this)) ok=false;
 	  }
       }
 
