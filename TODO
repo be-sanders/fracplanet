@@ -1,4 +1,6 @@
-- Fix normalmap output.
+- Fix normalmap output (clarify range in docs);
+- Stop http links in QML'ed fracplanet.htm breaking so badly
+  (fix in htm_to_qml.xsl)
 - X gets bigger when using display lists (remote only?) ?  Need to delete on exit ?
 - Find out what the errors are this guy mentions:
     http://douglas.nerad.org/journal/2006/04/03/

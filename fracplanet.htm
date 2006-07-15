@@ -20,23 +20,51 @@
 <p>
   Fracplanet is an application to generate random planets and terrain with oceans, mountains, icecaps and rivers.
   Parameters are specified interactively and the results displayed using OpenGL.
-  The generated objects can be dumped in Pov-Ray format.
+  The generated objects can be exported in formats directly usable by Pov-Ray or Blender,
+  or as more generally useful texture images.
 </p>
 
 <h2>Command line arguments</h2>
 
 <p>
-  Fracplanet has no command line arguments other than those intercepted and interpreted by Qt.
+  Some command line arguments (not listed here) are intercepted and interpreted by Qt.
   These are pretty much what you'd expect most X11 applications to handle 
   e.g <code>-geometry <em>X</em>x<em>Y</em></code>.
+  Fracplanet's own command line arguments are:
 </p>
+
+<dl>
+  <dt>--help, -h</dt>
+  <dd>
+    Display a list of recognised arguments.
+  </dd>
+  <dt>--info, -i</dt>
+  <dd>
+    Display information about fracplanet and the GL graphics system it's running on.
+  </dd>
+  <dt>--display-list, -d</dt>
+  <dd>
+    Start up the application with rendering in display list mode by default
+    (c.f immediate mode).
+    This is particularly useful when the application is running remotely as the
+    generated meshes are then only sent to the local OpenGL display hardware once.
+  </dd>
+  <dt>--invert-mouse-y, -y</dt>
+  <dd>
+    Start application with mouse in non-joystick mode for flight.
+  </dd>
+  <dt>--wireframe, -w</dt>
+  <dd>
+    Start application with rendering set to wireframe mode.
+  </dd>
+</dl>
 
 <h2>GUI</h2>
 
 <p>
-  The fracplanet GUI is a tabbed control.
-  The terrain generated is shown in a separate window (which disappears when regenerating).
-  A progress dialog is generally displayed while generating terrain (except at startup).
+  The main part of the fracplanet GUI is a tabbed control.
+  The terrain generated is shown in a separate window (which disappears while regenerating).
+  A progress dialog is generally displayed while generating terrain (except during application startup).
 </p>
 
 <h3>Create tab</h3>
@@ -370,10 +398,11 @@
   </dd>
   <dt>filename_norm.pgm</dt>
   <dd>
-    The surface normals; XYZ components are mapped to RGB; [-1, 1] is scaled to [1,255].
+    The surface normals; XYZ components are mapped to RGB; [-1, 1] is scaled to [0,255].
     It is thought this should be useful for bump-mapping renderers (e.g Celestica) where the
     illusion of surface relief is produced by normal perturbation.
-    If you intend to use this file, you almost certainly want to disable shading (see below), as your renderer will compute it later.
+    If you intend to use this file, you almost certainly want to disable shading (see below),
+    as your renderer will compute it later.
   </dd>
 </dl>
 

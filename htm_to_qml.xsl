@@ -24,6 +24,20 @@
     <p>Version: <xsl:value-of select="$version"/></p>
   </xsl:template>
 
+  <xsl:template match="a[@href]">
+    <xsl:choose>
+      <xsl:when test="starts-with(@href,'http:')">
+        <xsl:apply-templates select="node()"/>
+        (see <xsl:value-of select="string(@href)"/>)
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy>
+          <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="@*|node()">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
