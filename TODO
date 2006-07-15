@@ -1,5 +1,6 @@
 - TriangleMeshViewer and TriangleMeshViewerDisplay seem to duplicate some parameters unnecessarily and confusingly and wrongly.
-- Make illumination agree between GL and texture save 
+- Make illumination agree between GL and texture save.
+  Planets seem to be OK but flat terrain looks rotated 90 degrees.
 - X gets bigger when using display lists (remote only?) ?  Need to delete on exit ?
 - Find out what the errors are this guy mentions:
     http://douglas.nerad.org/journal/2006/04/03/

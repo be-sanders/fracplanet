@@ -432,30 +432,52 @@
 <h3>Render tab</h3>
 
 <p>
-  Options for OpenGL rendering appear on this tab.
-  Generally none of these makes any difference to the underlying mesh or the saved meshes.
-  (Exception: the &quot;low altitude&quot; colour is used when saving the cloud layer for Blender with the no-per-vertex-alpha workround.)
+  Options controlling OpenGL rendering appear on this tab.
+  Generally none of these makes any difference to the state of the rendered mesh.
+  However, some of the parameters do affect some export methods; see the individual item descriptions.
 </p>
 
-<p>
-  Currently the options are a tickbox to select wireframe rendering,
-  another to select display-list rendering (the default is immediate mode),
-  another to select joystick mode for the mouse in flight mode
-  (this simply affects whether pulling the mouse down the screen flies you in that
-  direction, or whether it's more like an aircraft joystick and pitches you up instead),
-  a slider controlling the amount of ambient light and two colour-picking buttons to select the
-  viewing area's background colour at high and low altitude.
-  The frame rate and current mesh size (number of triangles and vertices) is also displayed.
-</p>
-
-<p>
-  Display list rendering is generally but not always faster
-  (depends on your OpenGL implementation and graphics drivers).
-  The main reason display list is not enabled by default is that
-  the application may pause for a long time while OpenGL processes the
-  list when it is first rendered; the amount of additional memory
-  consumed by the display list is also a problem for very large meshes.  
-</p>
+<dl>
+  <dt>Wireframe checkbox</dt>
+  <dd>
+    Selects OpenGL wireframe rendering mode.
+  </dd>
+  <dt>Joystick mouse checkbox</dt>
+  <dd>
+    This simply affects whether, when in flight mode, pulling the mouse down the screen flies you in that
+    direction, or whether it's more like an aircraft joystick and pitches you up instead.
+  </dd>
+  <dt>Display list</dt>
+  <dd>
+    Selects OpenGL display list rendering.
+    Display list rendering is generally but not always faster
+    (depends on your OpenGL implementation and graphics drivers).
+    The main reason display list rendering is not enabled by default is that
+    the application may pause for a long time while OpenGL processes the
+    list when it is first rendered; the amount of additional memory
+    consumed by the display list is also a problem for very large meshes.  
+  </dd>
+  <dt>Background colour</dt>
+  <dd>
+    Colour picking buttons to control the colour used for the viewing area background.
+    The low altitude colour is also used when exporting a cloud mesh to blender.
+  </dd>
+  <dt>Ambient</dt>
+  <dd>
+    The amount of ambient illumination.
+    This is also used when exporting shaded textures.
+  </dd>
+  <dt>Illumination azimuth and elevation</dt>
+  <dd>
+    Control the illumination direction.
+    These are also used when exporting shaded textures.
+  </dd>
+  <dt>Status</dt>
+  <dd>
+    A text field displaying information about the rendered mesh,
+    and rendering performance (recent average frames-per-second).
+  </dd>
+</dl>
 
 <h3>About tab</h3>
 
