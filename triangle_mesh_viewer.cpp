@@ -52,8 +52,13 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
   tilt_slider=new QSlider(-80,80,10,-30,Qt::Vertical,tilt_box);
   spinrate_slider =new QSlider(-80,80,10, 0,Qt::Horizontal,spinrate_box);
 
-  fly_button=new QPushButton("Fly",this);
+  QVBox*const button_box=new QVBox(this);
+  
+  fly_button=new QPushButton("Fly",button_box);
   QToolTip::add(fly_button,"While flying:\nEsc will return to normal view.\nMouse controls pitch and yaw.\nLeft and right mouse buttons (or left/right arrow keys) control roll.\nMouse wheel (or up/down arrow keys) control speed.");
+
+  reset_button=new QPushButton("Reset",button_box);
+  QToolTip::add(reset_button,"Press to restore initial default orientation.");
 
   tilt_slider->setTickInterval(10);
   spinrate_slider->setTickInterval(10);
@@ -82,6 +87,10 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
   connect(
 	  fly_button,SIGNAL(clicked()),
 	  this,SLOT(fly())
+	  );
+  connect(
+	  reset_button,SIGNAL(clicked()),
+	  this,SLOT(reset())
 	  );
 
   clock.reset(new QTime());
@@ -203,6 +212,7 @@ void TriangleMeshViewer::fly()
   tilt_box->hide();
   spinrate_box->hide();
   fly_button->hide();
+  reset_button->hide();
   fly_info->show();
   display->updateGeometry();
   setFocus();
@@ -210,6 +220,17 @@ void TriangleMeshViewer::fly()
 }
 
 void TriangleMeshViewer::unfly()
+{
+  reset();
+  fly_info->hide();
+  tilt_box->show();
+  spinrate_box->show();
+  fly_button->show();
+  reset_button->show();
+  display->updateGeometry();
+}
+
+void TriangleMeshViewer::reset()
 {
   fly_mode=false;
   camera_position=XYZ(-3.0f,0.0f,0.0f);
@@ -219,11 +240,9 @@ void TriangleMeshViewer::unfly()
   camera_yaw_rate=0.0f;
   camera_pitch_rate=0.0f;
   camera_roll_rate=0.0f;
-  fly_info->hide();
-  tilt_box->show();
-  spinrate_box->show();
-  fly_button->show();
-  display->updateGeometry();
+  tilt_slider->setValue(-30);
+  spinrate_slider->setValue(0);
+  object_rotation=0.0f;
 }
 
 void TriangleMeshViewer::tick()

@@ -73,9 +73,12 @@ class TriangleMeshViewer : public QGrid
   //! Elevation slider.
   QSlider* tilt_slider;
 
-  //! Fly button
+  //! Button to start flying.
   QPushButton* fly_button;
-  
+
+  //! Button to restore default orientation.
+  QPushButton* reset_button;
+
   //! Label and box arond the spin-rate slider.
   QGroupBox* spinrate_box;
 
@@ -147,12 +150,14 @@ class TriangleMeshViewer : public QGrid
  public slots:
   void fly();
   void unfly();
-
+  
   void set_tilt(int v);
   void set_spinrate(int v);
   
  private slots:
   void tick();
+
+  void reset();
 };
 
 #endif
