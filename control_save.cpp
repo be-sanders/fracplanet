@@ -83,6 +83,15 @@ ControlSave::ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersS
 
   setStretchFactor(new QVBox(tab_texture),1);
 
+  QCheckBox*const shaded_checkbox=new QCheckBox("Shaded texture",tab_texture);
+  shaded_checkbox->setChecked(parameters->texture_shaded);
+  QToolTip::add(shaded_checkbox,"Check to have the texture include relief shading");
+  connect(
+	  shaded_checkbox,SIGNAL(stateChanged(int)),
+	  this,SLOT(setTextureShaded(int))
+	  );
+
+
   QGrid*const grid_texture=new QGrid(2,Qt::Horizontal,tab_texture);
   new QLabel("Texture height",grid_texture);
   QSpinBox* texture_height_spinbox=new QSpinBox(1,0x7fffffff,1,grid_texture);
@@ -126,4 +135,9 @@ void ControlSave::setPerVertexAlpha(int v)
 void ControlSave::setTextureHeight(int v)
 {
   parameters->texture_height=v;
+}
+
+void ControlSave::setTextureShaded(int v)
+{
+  parameters->texture_height=(v==2);
 }

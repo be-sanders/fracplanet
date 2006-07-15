@@ -344,14 +344,13 @@ void FracplanetMain::save_texture()
       {
 	boost::scoped_ptr<Image<ByteRGBA> > terrain_image(new Image<ByteRGBA>(width,height));
 	terrain_image->fill(ByteRGBA(0,0,0,0));
-
 	boost::scoped_ptr<Image<ushort> > terrain_dem(new Image<ushort>(width,height));
 	terrain_dem->fill(0);
 
 	boost::scoped_ptr<Image<ByteRGBA> > terrain_normals(new Image<ByteRGBA>(width,height));
-	terrain_normals->fill(ByteRGBA(0,0,0,0));
+	terrain_normals->fill(ByteRGBA(128,128,128,0));
 
-	mesh_terrain->render_texture(*terrain_image,terrain_dem.get(),terrain_normals.get());
+	mesh_terrain->render_texture(*terrain_image,terrain_dem.get(),terrain_normals.get(),parameters_save.texture_shaded,parameters_render.ambient,XYZ(1.0f,0.0f,0.0f));
 
 	if (!terrain_image->write_ppmfile(filename,this)) ok=false;
 	
@@ -368,9 +367,10 @@ void FracplanetMain::save_texture()
 
       if (ok && mesh_cloud)
 	{
-	  boost::scoped_ptr<Image<uchar> > cloud_image(new Image<uchar>(width,height));
-	  mesh_cloud->render_texture(*cloud_image);
-	  if (!cloud_image->write_pgmfile(filename_base+"_cloud.png",this)) ok=false;
+	  QMessageBox::warning(this,"Fracplanet","Texture save of cloud mesh not currently supported");
+	  //boost::scoped_ptr<Image<uchar> > cloud_image(new Image<uchar>(width,height));
+	  //mesh_cloud->render_texture(*cloud_image);
+	  //if (!cloud_image->write_pgmfile(filename_base+"_cloud.png",this)) ok=false;
 	}
 
       progress_dialog.reset(0);

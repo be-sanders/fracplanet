@@ -52,30 +52,6 @@ template <typename T> const typename Raster<T>::ScalarType Raster<T>::maximum_sc
   return m;
 }
 
-/*! Scan x0 to x1 into image.
-  Pixel centres are at 0.5 , so x0=0.75 goes to pixel 1.
-  Rightmost pixel is at width()-0.5.
-*/
-template <typename T> void Raster<T>::scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1)
-{
-  //if (!(x0<=x1)) {std::cerr << y << ":" << x0 << " " << x1 << "\n";std::cerr.flush();}
-  assert(x0<=x1);
-  
-  if (x1<0.5f || width()-0.5f<x0) return;  // Early out for spans off edges
-  
-  const int ix_min=static_cast<int>(std::max(0.0f        ,ceilf(x0-0.5f)));
-  const int ix_max=static_cast<int>(std::min(width()-0.5f,floorf(x1-0.5f)));
-  
-  const ComputeType kv((v1-v0)/(x1-x0));
-  
-  T*const row_ptr=row(y);
-  for (int ix=ix_min;ix<=ix_max;ix++)
-    {
-      const ComputeType v(v0+kv*(ix+0.5f-x0));
-      row_ptr[ix]=static_cast<T>(v);
-    }
-}
-
 template <> bool Raster<uchar>::write_pgmfile(const std::string& filename,Progress* target) const
 {
   ProgressScope progress(height(),"Writing PGM image:\n"+filename,target);
@@ -98,15 +74,24 @@ template <> bool Raster<ushort>::write_pgmfile(const std::string& filename,Progr
   std::ofstream out(filename.c_str(),std::ios::binary);
   out << "P5" << std::endl;
   out << width() << " " << height() << std::endl;
-  out << maximum_scalar_pixel_value() << std::endl;
+  const ushort m=maximum_scalar_pixel_value();
+  out << m << std::endl;
   for (ConstRowIterator row=row_begin();row!=row_end();++row)
     {
       progress.step();
       for (const ushort* it=row->begin();it!=row->end();++it)
 	{
-	  // PGM spec is most significant byte first
 	  const uchar p[2]={((*it)>>8),(*it)};
-	  out.write(reinterpret_cast<const char*>(p),2);
+	  if (m>=256)
+	    {
+	      // PGM spec is most significant byte first
+	      out.write(reinterpret_cast<const char*>(p),2);
+	    }
+	  else
+	    {
+	      assert(p[0]==0);
+	      out.write(reinterpret_cast<const char*>(p+1),1);
+	    }
 	}
     }
   out.close();
@@ -139,3 +124,4 @@ template class Image<ushort>;
 
 template class Raster<ByteRGBA>;
 template class Image<ByteRGBA>;
+

@@ -68,6 +68,7 @@ namespace
 
 void TriangleMeshCloud::render_texture(Raster<uchar>& image) const
 {
+  assert(false);
   image.fill(0);
   for (uint i=0;i<triangles();i++)
     {

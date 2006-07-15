@@ -282,8 +282,8 @@
 <h3>Save tab</h3>
 
 <p>
-  There are currently two supported save formats; POV-Ray and Blender.
   Strictly speaking it's Export which is provided, not save, as fracplanet's state cannot be restored (yet).
+  There are currently three ways of exporting models from fracplanet for other uses: to POV-Ray, to Blender and as textures.
 </p>
 
 <h4>POV-Ray</h4>
@@ -309,7 +309,7 @@
   <dt>Save (POV-Ray)</dt>
   <dd>
     Click this button to create the POV-Ray files.
-    This can take quite a long time so the progress bar is used to track the completed percentage.
+    This can take quite a long time so a progress bar is used to track the completed percentage.
   </dd>
 </dl>
 
@@ -339,6 +339,66 @@
 <p>
   There are additional comments on usage with Blender <a href="#blender">below</a>.
 </p>
+
+<h4>Texture</h4>
+
+<p>
+  Saving as texture(s) gives you a set of 2D images which can be used by other rendering or modelling applications,
+  if not immediately then perhaps after a little massaging with the ImageMagick or NetPBM tools.
+  On saving you'll be prompted for a base <i>filename.ppm</i>.  A number of files are then saved:
+</p>
+
+<dl>
+  <dt>filename.ppm</dt>
+  <dd>
+    The basic texture.
+    This will be embedded in black pixels if the terrain isn't square e.g for the hexagonal terrain area.
+    Planets produce a cylindrically projected latitude-longitude &quot;spheremap&quot;.
+  </dd>
+  <dt>filename_dem.pgm</dt>
+  <dd>
+    The height field (a &quot;DEM&quot; is a Digital Elevation Model).
+    This is output as a PGM image, with heights from 0.0 to 1.0 scaling to 0 to 65535.
+    If the DEM contains a value greater than or equal to 256
+    (highly likely, except for exceptionally flat terrains),
+    then it will be output as a 16-bit PGM which, while part of the PGM
+    <a href="http://netpbm.sourceforge.net/doc/pgm.html">&quot;standard&quot;</a>
+    isn't well supported by many common graphics tools which appear to otherwise offer good PPM support
+    (e.g The Gimp doesn't like it).
+    The NetPBM tools are your best bet to convert this to something else (e.g pnmdepth).
+    Imagemagick's simple &quot;display&quot; tool also handles them well, scaling the maximum value to white.
+  </dd>
+  <dt>filename_norm.pgm</dt>
+  <dd>
+    The surface normals; XYZ components are mapped to RGB; [-1, 1] is scaled to [1,255].
+    It is thought this should be useful for bump-mapping renderers (e.g Celestica) where the
+    illusion of surface relief is produced by normal perturbation.
+    If you intend to use this file, you almost certainly want to disable shading (see below), as your renderer will compute it later.
+  </dd>
+</dl>
+
+<p>
+  Other texture save options:
+<p>
+
+<dl>
+  <dt>Shaded texture</dt>
+  <dd>
+    Controls whether the texture map includes the effect of lighting.
+    Note that the amount of ambient lighting is taken from the slider on the render tab.
+    (Disabling shading is the same effect as setting ambient to 1.0).
+    If you intend to use the information in the _norm.ppm or the _dem.pgm files to subsequently compute lighting,
+    then you almost certainly want to shading of the output texture.
+  </dd>
+  <dt>Texture height</dt>
+  <dd>
+    The number of pixels high the saved texture images are.
+    The width is implicitly determined by the height.
+    For flat terrain the width is the same as the height.
+    For planets the width is twice the height because the height spans [-90,+90] degrees,
+    and the width spans [-180,180] degrees.
+  </dd>
+</dl>
 
 <h3>Render tab</h3>
 

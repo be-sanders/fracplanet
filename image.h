@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <boost/scoped_array.hpp>
 #include <boost/range.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/function.hpp>
 
 #include "useful.h"
 #include "rgb.h"
@@ -54,7 +55,7 @@ template<> class PixelTraits<ushort>
 {
  public:
   typedef float ComputeType;
-  typedef float ScalarType;
+  typedef ushort ScalarType;
   static const ScalarType scalar(const ushort& v) {return v;}
 };
 
@@ -290,6 +291,9 @@ template <typename T> class Raster
 
   //! Fill a line segment on the given half-open range [x0,x1), interpolating between the two given values.
   void scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1);
+  
+  //! Variant scan, interpolates between two values then process them through function before 
+  template <typename V> void scan(uint y,float x0,const V& v0,float x1,const V& v1,const boost::function<ComputeType (const V&)>& fn);
 
   bool write_ppmfile(const std::string&,Progress*) const;
   bool write_pgmfile(const std::string&,Progress*) const;
@@ -302,6 +306,49 @@ template <typename T> class Raster
   const RowIterator _row_end;
   const ConstRowIterator _const_row_end;
 };
+
+/*! Scan x0 to x1 into image.
+  Pixel centres are at 0.5 , so x0=0.75 goes to pixel 1.
+  Rightmost pixel is at width()-0.5.
+*/
+template <typename T> inline void Raster<T>::scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1)
+{
+  assert(x0<=x1);
+  
+  if (x1<0.5f || width()-0.5f<x0) return;  // Early out for spans off edges
+  
+  const int ix_min=static_cast<int>(std::max(0.0f        ,ceilf(x0-0.5f)));
+  const int ix_max=static_cast<int>(std::min(width()-0.5f,floorf(x1-0.5f)));
+  
+  const ComputeType kv((v1-v0)/(x1-x0));
+  
+  T*const row_ptr=row(y);
+  for (int ix=ix_min;ix<=ix_max;ix++)
+    {
+      const ComputeType v(v0+kv*(ix+0.5f-x0));
+      row_ptr[ix]=static_cast<T>(v);
+    }
+}
+
+template <typename T> template <typename V> inline void Raster<T>::scan(uint y,float x0,const V& v0,float x1,const V& v1,const boost::function<ComputeType (const V&)>& fn)
+{
+  assert(x0<=x1);
+  
+  if (x1<0.5f || width()-0.5f<x0) return;  // Early out for spans off edges
+  
+  const int ix_min=static_cast<int>(std::max(0.0f        ,ceilf(x0-0.5f)));
+  const int ix_max=static_cast<int>(std::min(width()-0.5f,floorf(x1-0.5f)));
+  
+  const V kv((v1-v0)/(x1-x0));
+  
+  T*const row_ptr=row(y);
+  for (int ix=ix_min;ix<=ix_max;ix++)
+    {
+      const ComputeType v(fn(v0+kv*(ix+0.5f-x0)));
+      row_ptr[ix]=static_cast<T>(v);
+    }
+}
+
 
 template <typename T> class ImageStorage
 {

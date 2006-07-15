@@ -49,6 +49,7 @@ class ControlSave : public QVBox
    void setSeaSphere(int v);
    void setPerVertexAlpha(int v);
    void setTextureHeight(int v);
+   void setTextureShaded(int v);
 };
 
 

@@ -3,7 +3,7 @@ ABOUT
 Fracplanet generates random planets and terrain with oceans, 
 mountains, icecaps and rivers.  Parameters are specified interactively 
 and the results displayed using OpenGL.  The generated objects can be
-exported for Pov-Ray or Blender.
+exported as Pov-Ray or Blender models, or as textures.
 
 It uses C++ (with STL and boost), Qt and OpenGL.  
 

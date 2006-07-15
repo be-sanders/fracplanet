@@ -22,6 +22,7 @@ ParametersSave::ParametersSave(const ParametersRender* pr)
   ,pov_sea_object(true)
   ,blender_per_vertex_alpha(false)
   ,texture_height(1024)
+  ,texture_shaded(true)
   ,parameters_render(pr)
 {}
 

@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <sstream>
 #include <fstream>
 #include <cassert>
-#include <boost/optional.hpp>
+#include <boost/bind.hpp>
 
 TriangleMeshTerrain::TriangleMeshTerrain(Progress* progress)
   :TriangleMesh(progress)
@@ -435,6 +435,11 @@ namespace
     return (1.0f-l)*v0+l*v1;
   }
 
+  FloatRGBA fn(const XYZ& v)
+  {
+    const XYZ n(v.normalised());
+    return FloatRGBA(0.5f+0.5f*n.x,0.5f+0.5f*n.y,0.5f+0.5f*n.z,0.0f);
+  }
 
   class ScanConvertHelper : public ScanConvertBackend
   {
@@ -443,7 +448,7 @@ namespace
     (
      Raster<ByteRGBA>& image,
      Raster<ushort>* dem,
-     Raster<ByteRGBA>* normal,
+     Raster<ByteRGBA>* normalmap,
      const boost::array<FloatRGBA,3>& vertex_colours,
      const boost::array<float,3>& vertex_heights,
      const boost::array<XYZ,3>& vertex_normals
@@ -451,13 +456,13 @@ namespace
       :ScanConvertBackend(image.width(),image.height())
        ,_image(image)
        ,_dem(dem)
-       ,_normal(normal)
+       ,_normalmap(normalmap)
        ,_vertex_colours(vertex_colours)
        ,_vertex_heights(vertex_heights)
        ,_vertex_normals(vertex_normals)
     {
       if (_dem) assert(_image.width()==_dem->width() && _image.height()==_dem->height());
-      if (_normal) assert(_image.width()==_normal->width() && _image.height()==_normal->height());
+      if (_normalmap) assert(_image.width()==_normalmap->width() && _image.height()==_normalmap->height());
     }
     virtual ~ScanConvertHelper()
     {}
@@ -473,7 +478,13 @@ namespace
 	  const float h0=lerp(edge0.lambda,_vertex_heights[edge0.vertex0],_vertex_heights[edge0.vertex1]);
 	  const float h1=lerp(edge1.lambda,_vertex_heights[edge1.vertex0],_vertex_heights[edge1.vertex1]);
 	  _dem->scan(y,edge0.x,h0,edge1.x,h1); 
-	}      
+	}
+      if (_normalmap)
+	{
+	  const XYZ n0(lerp(edge0.lambda,_vertex_normals[edge0.vertex0],_vertex_normals[edge0.vertex1]).normalised());
+	  const XYZ n1(lerp(edge1.lambda,_vertex_normals[edge1.vertex0],_vertex_normals[edge1.vertex1]).normalised());
+	  _normalmap->scan<XYZ>(y,edge0.x,n0,edge1.x,n1,fn);
+	}
     }
 
     virtual void subdivide(const boost::array<XYZ,3>& v,const XYZ& m,const ScanConverter& scan_converter) const
@@ -511,7 +522,7 @@ namespace
 	const boost::array<FloatRGBA,3> c={_vertex_colours[0],_vertex_colours[1],cm[2]};
 	const boost::array<float,3> h={_vertex_heights[0],_vertex_heights[1],hm[2]};
 	const boost::array<XYZ,3> n={_vertex_normals[0],_vertex_normals[1],nm[2]};
-	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,_normal,c,h,n));
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,_normalmap,c,h,n));
       }
 
       {
@@ -519,7 +530,7 @@ namespace
 	const boost::array<FloatRGBA,3> c={_vertex_colours[1],_vertex_colours[2],cm[0]};
 	const boost::array<float,3> h={_vertex_heights[1],_vertex_heights[2],hm[0]};
 	const boost::array<XYZ,3> n={_vertex_normals[1],_vertex_normals[2],nm[0]};
-	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,_normal,c,h,n));
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,_normalmap,c,h,n));
       }
 
       {
@@ -527,7 +538,7 @@ namespace
 	const boost::array<FloatRGBA,3> c={_vertex_colours[2],_vertex_colours[0],cm[1]};
 	const boost::array<float,3> h={_vertex_heights[2],_vertex_heights[0],hm[1]};
 	const boost::array<XYZ,3> n={_vertex_normals[2],_vertex_normals[0],nm[1]};
-	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,_normal,c,h,n));
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,_normalmap,c,h,n));
       }
 
       {
@@ -535,7 +546,7 @@ namespace
 	const boost::array<FloatRGBA,3> c={_vertex_colours[0],cm[2],cm[1]};
 	const boost::array<float,3> h={_vertex_heights[0],hm[2],hm[1]};	
 	const boost::array<XYZ,3> n={_vertex_normals[0],nm[2],nm[1]};
-	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,_normal,c,h,n));
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,_normalmap,c,h,n));
       }
 
       {
@@ -543,7 +554,7 @@ namespace
 	const boost::array<FloatRGBA,3> c={_vertex_colours[1],cm[0],cm[2]};
 	const boost::array<float,3> h={_vertex_heights[1],hm[0],hm[2]};	
 	const boost::array<XYZ,3> n={_vertex_normals[1],nm[0],nm[2]};
-	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,_normal,c,h,n));
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,_normalmap,c,h,n));
       }
 
       {
@@ -551,11 +562,11 @@ namespace
 	const boost::array<FloatRGBA,3> c={_vertex_colours[2],cm[1],cm[0]};
 	const boost::array<float,3> h={_vertex_heights[2],hm[1],hm[0]};	
 	const boost::array<XYZ,3> n={_vertex_normals[2],nm[1],nm[0]};
-	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,_normal,c,h,n));
+	scan_converter.scan_convert(p,ScanConvertHelper(_image,_dem,_normalmap,c,h,n));
       }
 
       {
-	scan_converter.scan_convert(vm,ScanConvertHelper(_image,_dem,_normal,cm,hm,nm));
+	scan_converter.scan_convert(vm,ScanConvertHelper(_image,_dem,_normalmap,cm,hm,nm));
       }
       
     }
@@ -563,14 +574,14 @@ namespace
   private:
     Raster<ByteRGBA>& _image;
     Raster<ushort>* _dem;
-    Raster<ByteRGBA>* _normal;
+    Raster<ByteRGBA>* _normalmap;
     const boost::array<FloatRGBA,3>& _vertex_colours;
     const boost::array<float,3>& _vertex_heights;
     const boost::array<XYZ,3>& _vertex_normals;
   };
 }
 
-void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image,Raster<ushort>* dem,Raster<ByteRGBA>* normal_map) const
+void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image,Raster<ushort>* dem,Raster<ByteRGBA>* normal_map,bool shading,float ambient,const XYZ& illumination) const
 {
   progress_start(100,"Generating textures");
 
@@ -595,12 +606,11 @@ void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image,Raster<ushort>*
 	};
 
       const uint which_colour=(i<triangles_of_colour0() ? 0 : 1);
-      const bool shading=true;
       const boost::array<FloatRGBA,3> vertex_colours
 	={
-	  FloatRGBA(vertices[0]->colour(which_colour))*(shading ? std::max(0.0f,vertices[0]->normal().x) : 1.0f),
-	  FloatRGBA(vertices[1]->colour(which_colour))*(shading ? std::max(0.0f,vertices[1]->normal().x) : 1.0f),
-	  FloatRGBA(vertices[2]->colour(which_colour))*(shading ? std::max(0.0f,vertices[2]->normal().x) : 1.0f)
+	  FloatRGBA(vertices[0]->colour(which_colour))*(shading ? ambient+(1.0f-ambient)*std::max(0.0f,vertices[0]->normal()%illumination) : 1.0f),
+	  FloatRGBA(vertices[1]->colour(which_colour))*(shading ? ambient+(1.0f-ambient)*std::max(0.0f,vertices[1]->normal()%illumination) : 1.0f),
+	  FloatRGBA(vertices[2]->colour(which_colour))*(shading ? ambient+(1.0f-ambient)*std::max(0.0f,vertices[2]->normal()%illumination) : 1.0f)
 	};
       const boost::array<float,3> vertex_heights
 	={

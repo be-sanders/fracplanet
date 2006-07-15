@@ -42,6 +42,9 @@ class ParametersSave
 
   //! Size of texture for texture save (is height; width is implicit).
   uint texture_height;
+
+  //! Whether textures should include shading.
+  bool texture_shaded;
   
   //! Save for blender needs access to some of these.
   const ParametersRender*const parameters_render;
