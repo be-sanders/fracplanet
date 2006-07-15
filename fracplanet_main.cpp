@@ -350,7 +350,7 @@ void FracplanetMain::save_texture()
 	boost::scoped_ptr<Image<ByteRGBA> > terrain_normals(new Image<ByteRGBA>(width,height));
 	terrain_normals->fill(ByteRGBA(128,128,128,0));
 
-	mesh_terrain->render_texture(*terrain_image,terrain_dem.get(),terrain_normals.get(),parameters_save.texture_shaded,parameters_render.ambient,XYZ(1.0f,0.0f,0.0f));
+	mesh_terrain->render_texture(*terrain_image,terrain_dem.get(),terrain_normals.get(),parameters_save.texture_shaded,parameters_render.ambient,parameters_render.illumination_direction());
 
 	if (!terrain_image->write_ppmfile(filename,this)) ok=false;
 	

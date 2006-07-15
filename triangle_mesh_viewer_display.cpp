@@ -127,15 +127,7 @@ void TriangleMeshViewerDisplay::paintGL()
 	    camera_up.x      ,camera_up.y      ,camera_up.z
 	    );
 
-  const float illumination_azimuth=-5*M_PI/6;
-  const float illumination_elevation=M_PI/6;
-  const XYZ light_direction
-    (
-     cos(illumination_azimuth)*cos(illumination_elevation),
-     sin(illumination_azimuth)*cos(illumination_elevation),
-     sin(illumination_elevation)
-     );
-  //GLfloat light_position[]={-2.0,-3.0,1.0,0.0};
+  const XYZ light_direction(parameters->illumination_direction());
   GLfloat light_position[]=
     {
       light_direction.x,

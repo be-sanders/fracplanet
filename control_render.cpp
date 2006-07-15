@@ -72,6 +72,23 @@ ControlRender::ControlRender(QWidget* parent,ParametersRender* param)
 	  this,SLOT(setAmbient(int))
 	  );
 
+  QGroupBox* illumination_box=new QGroupBox(3,Qt::Horizontal,"Illumination azimuth/elevation",this);
+  new QLabel("-180",illumination_box);
+  illumination_azimuth=new QSlider(-180,180,10,static_cast<int>(parameters->illumination_azimuth*180/M_PI),Qt::Horizontal,illumination_box);
+  new QLabel("180",illumination_box);
+  new QLabel("-90",illumination_box);
+  illumination_elevation=new QSlider(-90,90,10,static_cast<int>(parameters->illumination_elevation*180/M_PI),Qt::Horizontal,illumination_box);
+  new QLabel("90",illumination_box);
+
+  connect(
+	  illumination_azimuth,SIGNAL(valueChanged(int)),
+	  this,SLOT(setIlluminationAzimuth(int))
+	  );
+  connect(
+	  illumination_elevation,SIGNAL(valueChanged(int)),
+	  this,SLOT(setIlluminationElevation(int))
+	  );
+
   new QLabel("Status:",this);
   status=new QLabel("",this);
 
@@ -105,6 +122,16 @@ void ControlRender::setJoystickMouse(int v)
 void ControlRender::setAmbient(int v)
 {
   parameters->ambient=v/100.0f;
+}
+
+void ControlRender::setIlluminationAzimuth(int v)
+{
+  parameters->illumination_azimuth=v*M_PI/180;
+}
+
+void ControlRender::setIlluminationElevation(int v)
+{
+  parameters->illumination_elevation=v*M_PI/180;
 }
 
 void ControlRender::pickBackgroundColourLow()

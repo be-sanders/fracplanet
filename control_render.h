@@ -55,6 +55,8 @@ class ControlRender : public Control, public Notifiable
   QCheckBox* display_list;
   QCheckBox* joystick_mouse;
   QSlider* ambient;
+  QSlider* illumination_azimuth;
+  QSlider* illumination_elevation;
 
   QLabel* status;
 
@@ -73,6 +75,8 @@ class ControlRender : public Control, public Notifiable
   void setDisplayList(int v);
   void setJoystickMouse(int v);
   void setAmbient(int v);
+  void setIlluminationAzimuth(int v);
+  void setIlluminationElevation(int v);
 
   void pickBackgroundColourLow();
   void pickBackgroundColourHigh();
