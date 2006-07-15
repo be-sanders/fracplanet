@@ -65,6 +65,8 @@ ControlRender::ControlRender(QWidget* parent,ParametersRender* param)
   QGroupBox* ambient_box=new QGroupBox(3,Qt::Horizontal,"Ambient",this);
   new QLabel("0.0",ambient_box);
   ambient=new QSlider(0,100,10,10,Qt::Horizontal,ambient_box);
+  ambient->setTickmarks(QSlider::Both);
+  ambient->setTickInterval(10);
   ambient->setTracking(true);
   new QLabel("1.0",ambient_box);
   connect(
@@ -75,9 +77,15 @@ ControlRender::ControlRender(QWidget* parent,ParametersRender* param)
   QGroupBox* illumination_box=new QGroupBox(3,Qt::Horizontal,"Illumination azimuth/elevation",this);
   new QLabel("-180",illumination_box);
   illumination_azimuth=new QSlider(-180,180,10,static_cast<int>(parameters->illumination_azimuth*180/M_PI),Qt::Horizontal,illumination_box);
+  illumination_azimuth->setTickmarks(QSlider::Both);
+  illumination_azimuth->setTickInterval(10);
+  illumination_azimuth->setTracking(true);
   new QLabel("180",illumination_box);
   new QLabel("-90",illumination_box);
   illumination_elevation=new QSlider(-90,90,10,static_cast<int>(parameters->illumination_elevation*180/M_PI),Qt::Horizontal,illumination_box);
+  illumination_elevation->setTickmarks(QSlider::Both);
+  illumination_elevation->setTickInterval(10);
+  illumination_elevation->setTracking(true);
   new QLabel("90",illumination_box);
 
   connect(

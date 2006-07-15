@@ -32,10 +32,10 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const Param
    ,width(0)
    ,height(0)
    ,frame_time()
-   ,camera_position(-3.0f,0.0f,0.0f)
+   ,camera_position(3.0f,0.0f,0.0f)
    ,camera_lookat(0.0f,0.0f,0.0f)
    ,camera_up(0.0f,0.0f,1.0f)
-   ,object_tilt(-30.0f*M_PI/180.0f)
+   ,object_tilt(30.0f*M_PI/180.0f)
    ,object_rotation(0.0f)
 {
   setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding,1,1));
@@ -356,9 +356,16 @@ void TriangleMeshViewerDisplay::paintGL()
 	    n_vertices+=mesh[m]->vertices();
 	  }
       }
-    report << "Triangles: " << n_triangles << "\n";
-    report << "Vertices : " << n_vertices << "\n";
-    report << "FPS (av) : " << fps << "\n";
+    report 
+      << "Triangles: " 
+      << n_triangles
+      << ", "
+      << "Vertices: " 
+      << n_vertices 
+      << ", "
+      << "FPS: " 
+      << fps 
+      << "\n";
     
     parameters->notify->notify(report.str());
     frame_time_reported.restart();
