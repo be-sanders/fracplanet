@@ -323,13 +323,15 @@
   </dd>
   <dt>Sea object</dt>
   <dd>
-    This tick-box causes a single sphere or infinite plane to generated for the oceans <em>instead</em> of numerous individual triangles.
+    This tick-box causes a single sphere or infinite plane to generated 
+    for the oceans <em>instead</em> of numerous individual triangles.
   </dd>
   <dt>Base filename</dt>
   <dd>
     Enter the filename root to be used here.
     Two files will be generated, one with &quot;.pov&quot; appended, and one with &quot;.inc&quot; appended.
-    The .inc file actually contains the object (using POV-Rays's <code>mesh2</code> format), plus any other objects generated due to the options above.
+    The .inc file actually contains the object (using POV-Rays's <code>mesh2</code> format),
+    plus any other objects generated due to the options above.
     The .pov just includes the .inc and adds a camera and light source and was primarily intended for testing:
     the expectation is that users will generally include the .inc into their own scenes, probably wrapping it
     in a POV-Ray <code>union</code> with embedded translate/scale/rotate directives).
