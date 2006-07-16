@@ -64,7 +64,7 @@ const FloatRGBA TriangleMeshViewerDisplay::background_colour() const
   if (mesh.empty()) return FloatRGBA(0.0f,0.0f,0.0f,1.0f);
 
   const XYZ relative_camera_position 
-    =Matrix33RotateAboutZ(-object_rotation)*Matrix33RotateAboutY(-object_tilt)*camera_position;
+    =Matrix33RotateAboutZ(-object_rotation)*Matrix33RotateAboutX(-object_tilt)*camera_position;
 
   const float h = mesh[0]->geometry().height(relative_camera_position);
   if (h<=0.0f) return parameters->background_colour_low;
@@ -138,7 +138,7 @@ void TriangleMeshViewerDisplay::paintGL()
 
   glLightfv(GL_LIGHT0,GL_POSITION,light_position);
 
-  glRotatef((180.0/M_PI)*object_tilt,0.0,1.0,0.0);
+  glRotatef((180.0/M_PI)*object_tilt,1.0,0.0,0.0);
   glRotatef((180.0/M_PI)*object_rotation,0.0,0.0,1.0);
 
   glPolygonMode(GL_FRONT_AND_BACK,(parameters->wireframe ? GL_LINE : GL_FILL));

@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& mesh)
   :QGrid(2,Qt::Horizontal,parent)
   ,parameters(param)
-  ,camera_position(3.0f,0.0f,0.0f)
-  ,camera_forward(-1.0f,0.0f,0.0f)
+  ,camera_position(0.0f,-3.0f,0.0f)
+  ,camera_forward(0.0f,1.0f,0.0f)
   ,camera_up(0.0f,0.0f,1.0f)
   ,camera_velocity(0.0f)
   ,camera_yaw_rate(0.0f)
@@ -233,8 +233,8 @@ void TriangleMeshViewer::unfly()
 void TriangleMeshViewer::reset()
 {
   fly_mode=false;
-  camera_position=XYZ(3.0f,0.0f,0.0f);
-  camera_forward=XYZ(-1.0f,0.0f,0.0f);
+  camera_position=XYZ(0.0f,-3.0f,0.0f);
+  camera_forward=XYZ(0.0f,1.0f,0.0f);
   camera_up=XYZ(0.0f,0.0f,1.0f);
   camera_velocity=0.0f;
   camera_yaw_rate=0.0f;

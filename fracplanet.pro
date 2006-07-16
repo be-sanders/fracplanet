@@ -1,7 +1,7 @@
 TEMPLATE = app
 
 # append debug or release :
-CONFIG+= qt opengl stl exceptions debug
+CONFIG+= qt opengl stl exceptions release
 
 # Input files
 

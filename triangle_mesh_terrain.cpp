@@ -593,9 +593,6 @@ void TriangleMeshTerrain::render_texture
 {
   progress_start(100,"Generating textures");
 
-  image.fill(ByteRGBA(255,0,0,0));
-  dem->fill(0);
-
   for (uint i=0;i<triangles();i++)
     {
       const Triangle& t=triangle(i);

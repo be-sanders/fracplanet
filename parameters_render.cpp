@@ -35,7 +35,7 @@ ParametersRender::ParametersRender(const boost::program_options::variables_map& 
   ,display_list(opts.count("display-list"))
   ,joystick_mouse(!opts.count("invert-mouse-y"))
   ,ambient(0.1f)
-  ,illumination_azimuth(M_PI/6)
+  ,illumination_azimuth(-M_PI/3)
   ,illumination_elevation(M_PI/6)
   ,background_colour_low(0.25f,0.25f,1.0f,0.0f)
   ,background_colour_high(0.0f,0.0f,0.0f,0.0f)

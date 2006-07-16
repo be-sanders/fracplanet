@@ -415,10 +415,14 @@
   <dt>Shaded texture</dt>
   <dd>
     Controls whether the texture map includes the effect of lighting.
-    Note that the amount of ambient lighting is taken from the slider on the render tab.
-    (Disabling shading is the same effect as setting ambient to 1.0).
     If you intend to use the information in the _norm.ppm or the _dem.pgm files to subsequently compute lighting,
-    then you almost certainly want to shading of the output texture.
+    then you almost certainly do <em>not</em> want the output texture to be shaded.
+    The amount of ambient lighting is taken from the slider on the render tab.
+    (Disabling shading is the same effect as setting ambient to 1.0).
+    The lighting direction is controlled by the render tab's illumination azimuth and elevation controls.
+    If you want to use the OpenGL window to preview the lighting, you should set zero spin and tilt
+    by hitting the &quot;reset&quot;button and dragging the tilt to the centre (unfortunately, this
+    gives you an edge-on view of flat terrain areas so it may be necessary to use the &quot;fly&quot; mode).
   </dd>
   <dt>Texture height</dt>
   <dd>
