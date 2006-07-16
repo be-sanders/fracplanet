@@ -98,6 +98,7 @@ Install: sh
  yada install -doc fracplanet.htm fracplanet.css
  yada install -doc BUGS TODO THANKS changelog
  yada install -man man/man1/fracplanet.1
+Menu: ?package(fracplanet):needs="X11" section="Apps/Graphics" title="fracplanet" command="/usr/bin/fracplanet"
 EOF
 
 yada rebuild

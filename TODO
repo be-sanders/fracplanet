@@ -1,4 +1,4 @@
-- Create a menu entry
+- Create a menu entry.  Check it works on Ubuntu too.
 - Texture render should also output a specular map for celestia.
 - Texture render for clouds.
   Will end up with duplicate code in cloud mesh's ScanConvertHelper; use boost MPL/Fusion
