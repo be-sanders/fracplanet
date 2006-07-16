@@ -2,7 +2,7 @@ From release 0.3.1:
  - Bump version number to 0.3.2 (dev while under development)
  - Reinstate weather systems (spinbox to control number).
  - Various commandline options (uses boost::program_options).
- - Save to texture
+ - Save to texture, shaded and unshaded.
  - Illumination direction control
 
 From release 0.3.0:

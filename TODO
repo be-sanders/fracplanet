@@ -1,16 +1,12 @@
-- Make illumination agree between GL and texture save.
-  Planets seem to be OK but flat terrain looks rotated 90 degrees.
 - TriangleMeshViewer and TriangleMeshViewerDisplay seem to
   duplicate some parameters unnecessarily and confusingly and wrongly.
 - Texture render should also output a specular map for celestia.
+- Texture render for clouds.
+  Will end up with duplicate code in cloud mesh's ScanConvertHelper; use boost MPL/Fusion
+  to produce generic version operating on general tuples ?
 - X gets bigger when using display lists (remote only?) ?  Need to delete on exit ?
 - Find out what the errors are this guy mentions:
     http://douglas.nerad.org/journal/2006/04/03/
-- Option to save a raster map (cylindrical lat/long projection for spheres)
-  for terrain colours, heights, and specular (mainly for sea... and snow ?).
-  Clouds ?
-  Will end up with duplicate code in ScanConvertHelper; use boost MPL/Fusion
-  to produce generic version operating on a heterogenous array ?
 - More control over weather and clouds.
 - Another noise fn to modulate (c.f add) subdivided terrain.
   Might help reduce middle-of-continent highlands.

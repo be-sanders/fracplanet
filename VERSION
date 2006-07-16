@@ -8,4 +8,4 @@
 # Avoid '-' or '_' in the version as it confuses mkdeb.
 # Use dev or wip qualifier while working to a release.
 
-echo "0.3.2dev"
+echo "0.3.2"
