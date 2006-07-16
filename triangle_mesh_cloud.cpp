@@ -56,9 +56,9 @@ namespace
     {}
     virtual ~ScanConvertHelper()
     {}
-    virtual void scan_convert_backend(uint y,const ScanEdge& edge0,const ScanEdge& edge1) const
+    virtual void scan_convert_backend(uint /*y*/,const ScanEdge& /*edge0*/,const ScanEdge& /*edge1*/) const
     {}
-    virtual void subdivide(const boost::array<XYZ,3>& v,const XYZ& m,const ScanConverter& scan_converter) const
+    virtual void subdivide(const boost::array<XYZ,3>& /*v*/,const XYZ& /*m*/,const ScanConverter& /*scan_converter*/) const
     {}
   private:
     Raster<uchar>& _image;
