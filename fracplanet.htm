@@ -627,10 +627,10 @@
     light_source {&lt;100,100,-100&gt; color rgb&lt;1,1,1&gt;}<br/>
     sphere<br/>
     {<br/>
-    &emsp;&lt;0,0,0&gt;,1
-    &emsp;pigment { image_map {png &quot;spheremap.png&quot; map_type 1} }<br/>
-    &emsp;normal { bump_map {png &quot;spheremap_dem.png&quot; map_type 1 bump_size 20.0} }<br/>
-    &emsp;rotate &lt;0,clock*360,0.0&gt;<br/>
+    &lt;0,0,0&gt;,1
+    pigment { image_map {png &quot;spheremap.png&quot; map_type 1} }<br/>
+    normal { bump_map {png &quot;spheremap_dem.png&quot; map_type 1 bump_size 20.0} }<br/>
+    rotate &lt;0,clock*360,0.0&gt;<br/>
     }<br/>
     EOF<br/>
     povray spheremap.pov +KFI1 +KFF100 +W640 +H480 +Of.png<br/>
