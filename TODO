@@ -1,9 +1,8 @@
-- TriangleMeshViewer and TriangleMeshViewerDisplay seem to
-  duplicate some parameters unnecessarily and confusingly and wrongly.
 - Texture render should also output a specular map for celestia.
 - Texture render for clouds.
   Will end up with duplicate code in cloud mesh's ScanConvertHelper; use boost MPL/Fusion
   to produce generic version operating on general tuples ?
+- Craters.
 - X gets bigger when using display lists (remote only?) ?  Need to delete on exit ?
 - Find out what the errors are this guy mentions:
     http://douglas.nerad.org/journal/2006/04/03/
