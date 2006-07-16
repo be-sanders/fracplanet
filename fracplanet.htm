@@ -20,7 +20,7 @@
 <p>
   Fracplanet is an application to generate random planets and terrain with oceans, mountains, icecaps and rivers.
   Parameters are specified interactively and the results displayed using OpenGL.
-  The generated objects can be exported in formats directly usable by Pov-Ray or Blender,
+  The generated objects can be exported in formats directly usable by POV-Ray or Blender,
   or as more generally useful texture images.
 </p>
 
@@ -399,7 +399,8 @@
   <dt>filename_norm.pgm</dt>
   <dd>
     The surface normals; XYZ components are mapped to RGB; [-1, 1] is scaled to [0,255].
-    It is thought this should be useful for bump-mapping renderers (e.g Celestica) where the
+    It is thought this should be useful for bump-mapping renderers (e.g
+    <a href="http://www.shatters.net/celestia/">Celestia</a>) where the
     illusion of surface relief is produced by normal perturbation.
     If you intend to use this file, you almost certainly want to disable shading (see below),
     as your renderer will compute it later.
@@ -424,10 +425,14 @@
     The number of pixels high the saved texture images are.
     The width is implicitly determined by the height.
     For flat terrain the width is the same as the height.
-    For planets the width is twice the height because the height spans [-90,+90] degrees,
-    and the width spans [-180,180] degrees.
+    For planets the width is twice the height because the height spans [-90,+90] degrees latitude,
+    and the width spans [-180,180] degrees longitude.
   </dd>
 </dl>
+
+<p>
+  There are additional comments exported texture usage <a href="#texture">below</a>.
+</p>
 
 <h3>Render tab</h3>
 
@@ -510,14 +515,16 @@
   Hit Esc to return to the normal viewing mode.
 </p>
 
-<a name="pov"><h2>Ray-tracing with POV-Ray</h2></a>
+<h2>Fracplanet exports: usage notes</h2>
+
+<a name="pov"><h3>POV-Ray</h3></a>
 
 <p>
   To ray-trace a saved terrain (saved as terrain.pov and terrain.inc, say) do:<br/>
-  <code>povray -Q9 -geometry 768x576 terrain.pov</code>
+  <code>povray -Q9 -geometry 768x576 terrain.pov</code><br/>
   Expect to get MANY "determinant too small" messages, 
   especially when using high degrees of subdivision.
-  It used to take POVRay a LOT longer to read large models than
+  It used to take POV-Ray a LOT longer to read large models than
   to render them, but it seems to load much faster these days.
 </p>
 
@@ -535,11 +542,11 @@
   (The author currently uses POV-Ray 3.5).
 </p>
 
-<a name="blender"><h2>Loading into Blender</h2></a>
+<a name="blender"><h3>Blender</h3></a>
 
 <p>
   The easiest way to load mesh saved for blender is with blender's <code>-P &lt;filename.py&gt;</code>
-  command line argument.
+  command line argument on startup.
 </p>
 
 <p>
@@ -585,6 +592,53 @@
 
 <p>
   (The author currently uses Blender 2.36).
+</p>
+
+<a name="texture"><h3>Texture Maps</h3></a>
+
+<p>
+  It is hoped that the texture export option will be of use to those building planets for
+  <a href="http://www.shatters.net/celestia/">Celestia</a>.
+  (The author hasn't tried it himself yet; at time of writing Celestia
+  is waiting to make it's way from Debian Unstable to Testing).
+  Celestia's texture formats are well documented at the 
+  <a href="http://www.celestiamotherlode.net/catalog/documentation.html">Celestia Motherlode</a>,
+  in particular by the <a href="http://www.lns.cornell.edu/~seb/celestia/textures.html">Virtual Surface Textures</a>
+  document.
+  The main issues for anyone doing this would seem to be the need to reduce the height map from 16 to 8 bit
+  (easily changed by pnmdepth) and the possiblity that fracplanet's normal map (if used, alternative Celestia
+  can compute normal maps from the height map) needs it's components exchanging or reflecting.
+  Celestia can also take a specular map, generally used to indicating the presence of reflective water (or snow);
+  fracplanet doesn't output this (yet) but it should be possible to fake something by processing the height or texture map.
+</p>
+
+<p>
+  As a simple demonstration of how to use a saved planet texture, here's how to use it as a spheremap in POV-Ray.
+  Save an <em>unshaded</em> <code>spheremap.ppm</code> from fracplanet, and do:<br/>
+  <code>
+    convert spheremap.ppm spheremap.png<br/>
+    convert -depth 8 spheremap_dem.pgm spheremap_dem.png<br/>
+    cat &lt;&lt;EOF &gt; spheremap.pov<br/>
+    camera {perspective location &lt;0,1,-4.5&gt; look_at &lt;0,0,0&gt; angle 45}<br/>
+    light_source {&lt;100,100,-100&gt; color rgb&lt;1,1,1&gt;}<br/>
+    sphere<br/>
+    {<br/>
+    &emsp;&lt;0,0,0&gt;,1
+    &emsp;pigment { image_map {png &quot;spheremap.png&quot; map_type 1} }<br/>
+    &emsp;normal { bump_map {png &quot;spheremap_dem.png&quot; map_type 1 bump_size 20.0} }<br/>
+    &emsp;rotate &lt;0,clock*360,0.0&gt;<br/>
+    }<br/>
+    EOF<br/>
+    povray spheremap.pov +KFI1 +KFF100 +W640 +H480 +Of.png<br/>
+    animate f???.png<br/>
+  </code>
+</p>
+
+<p>
+  <code>convert</code> is one of the ImageMagick utilities.
+  You could omit the line beginning &quot;normal&quot; but you will get a rather flat looking planet.
+  The factor of 20.0 at the end of the line is a rather arbitrary parameter.
+  Raise or lower it to adjust the apparent roughness of the planet.
 </p>
 
 <h2>License</h2>

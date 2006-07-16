@@ -132,12 +132,13 @@ void ControlSave::setPerVertexAlpha(int v)
   parameters->blender_per_vertex_alpha=(v==2);
 }
 
+void ControlSave::setTextureShaded(int v)
+{
+  parameters->texture_shaded=(v==2);
+}
+
 void ControlSave::setTextureHeight(int v)
 {
   parameters->texture_height=v;
 }
 
-void ControlSave::setTextureShaded(int v)
-{
-  parameters->texture_height=(v==2);
-}

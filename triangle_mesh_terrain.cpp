@@ -581,7 +581,15 @@ namespace
   };
 }
 
-void TriangleMeshTerrain::render_texture(Raster<ByteRGBA>& image,Raster<ushort>* dem,Raster<ByteRGBA>* normal_map,bool shading,float ambient,const XYZ& illumination) const
+void TriangleMeshTerrain::render_texture
+(
+ Raster<ByteRGBA>& image,
+ Raster<ushort>* dem,
+ Raster<ByteRGBA>* normal_map,
+ bool shading,
+ float ambient,
+ const XYZ& illumination
+ ) const
 {
   progress_start(100,"Generating textures");
 

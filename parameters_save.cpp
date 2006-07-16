@@ -21,8 +21,8 @@ ParametersSave::ParametersSave(const ParametersRender* pr)
   :pov_atmosphere(false)
   ,pov_sea_object(true)
   ,blender_per_vertex_alpha(false)
-  ,texture_height(1024)
   ,texture_shaded(true)
+  ,texture_height(1024)
   ,parameters_render(pr)
 {}
 
