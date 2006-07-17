@@ -1,4 +1,6 @@
-- Create a menu entry.  Check it works on Ubuntu too.
+- .debs should create a menu entry.  Check it works on Ubuntu too.
+- Check clouds tab's documentation.
+- More control over clouds.
 - Texture render should also output a specular map for celestia.
 - Texture render for clouds.
   Will end up with duplicate code in cloud mesh's ScanConvertHelper; use boost MPL/Fusion
