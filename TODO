@@ -2,6 +2,9 @@
 - Check clouds tab's documentation.
 - More control over clouds.
 - Texture render should also output a specular map for celestia.
+- Add an option to load vertex heights from a DEM
+  (would replace mid-point perturbation during subdivision;
+  would retain our colouring rules, ability to add noise, rivers etc).
 - Texture render for clouds.
   Will end up with duplicate code in cloud mesh's ScanConvertHelper; use boost MPL/Fusion
   to produce generic version operating on general tuples ?
@@ -30,6 +33,7 @@
 - Mesh optimisation.
 - Save clouds as some more blender-friendly texture type thing.
 - Rename Save to Export.
+  (Eventually want Save/Load/Export POV-Ray/Export Blender/Export Texture/Import Texture).
 - Cloud controls.  Noise parameters and thresholds.
 - More control over cloud undersides, shadowing etc (c.f on/off in POVRay).
   (Add checkboxes to POVRay save dialog).
