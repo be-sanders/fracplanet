@@ -23,6 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _triangle_mesh_viewer_display_h_
 #define _triangle_mesh_viewer_display_h_
 
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h>
+#include <GL/glext.h>
+
 #include <qwidget.h>
 #include <qgl.h>
 #include <qdatetime.h>
