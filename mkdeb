@@ -1,17 +1,16 @@
 #!/bin/bash -ev
 
 # Before using this you probably need to install
-#   sudo pbuilder yada devscripts lintian linda 
+#   sudo pbuilder yada devscripts lintian linda cdeboostrap (or debootstrap)
 # and maybe dpkg-sig.  Also:
 # set up for sudo
 # set up pbuilder with 
 #   sudo emacs -nw /etc/pbuilderrc
-#   ...change MIRRORSITE
-#   ...(and OTHERMIRROR if security updates for a stable)
-#   ...change DISTRIBUTION
+#   ...change MIRRORSITE & DEBSECSERVER
 #   sudo pbuilder create --distribution sarge/etch/whatever
 # and/or update with 
 #   sudo pbuilder update
+# Expect a lot of warnings re LOGNAME - see Debian bug Bug#275118
 
 # TODO: DEBEMAIL
 
@@ -24,12 +23,8 @@ if [ ! -s ${TARBALL} ] ; then
     exit ;
 fi
 
-GUESS_DISTRIBUTION=`grep '^DISTRIBUTION=' /etc/pbuilderrc | tail -1`
-eval ${GUESS_DISTRIBUTION}
-if [[ "${DISTRIBUTION}" == "" ]] ; then
-    echo "Could't guess distribution from /etc/pbuilderrc" ; 
-    exit ; 
-fi
+export DISTRIBUTION=`lsb_release -s -c`
+
 
 echo "*** Will package ${TARBALL} for distribution \"${DISTRIBUTION}\""
 echo -n "*** Starting in 10 seconds..."
@@ -39,9 +34,10 @@ PROJECT=`echo $TARBALL | sed 's/-.*//'`
 TARBALLORIG="${PROJECT}_${VER}.orig.tar.gz"
 REV="1${DISTRIBUTION}1"
 
-rm -r -f pkg_${VER}-${REV}
-mkdir pkg_${VER}-${REV}
-cd pkg_${VER}-${REV}
+WORKDIR=pkg_${VER}-${REV}
+rm -r -f ${WORKDIR}
+mkdir ${WORKDIR}
+cd ${WORKDIR}
 
 cp ../${TARBALL} ${TARBALLORIG}
 tar xvfz ${TARBALLORIG}
@@ -71,7 +67,7 @@ Home-Page: <URL:http://www.bottlenose.demon.co.uk/share/fracplanet>
 Description: Fractal terrain generator
 Copyright: GPL
  Copyright 2006 Tim Day
-Build-Depends: qt3-dev-tools,libqt3-mt-dev,xsltproc,libboost-dev,libboost-program-options-dev
+Build-Depends: qt3-dev-tools,libqt3-headers,libqt3-mt-dev,libqt3-mt,xsltproc,libboost-dev,libboost-program-options-dev
 Build: sh
  export QTDIR=/usr/share/qt3
  # Note: yada install deals with DEB_BUILD_OPTIONS 'nostrip'
@@ -115,6 +111,8 @@ sudo pbuilder build --buildresult ./result ${PROJECT}_${VER}-${REV}.dsc
 
 sudo chown ${USER}:${USER} result/*
 
+RESULT=`(cd .. ; find ${WORKDIR} -name '*.deb')`
+echo "Results: ${RESULT}"
 echo "Don't forget to lintian and linda"
 echo 'Also dpkg-sig --sign builder -k $DPKGSIG_KEYID any .deb files'
 
