@@ -12,7 +12,7 @@ cd ./fracplanet
 
 ./BUILD
 
-echo "Please save xxx.pov for PovRay and xxx.py for Blender, then quit"
+echo "Please save xxx.pov for PovRay, xxx.py for Blender, then quit"
 
 if ! test -s ./fracplanet ; then echo "*** Build failed" ; exit ; fi
 ./fracplanet

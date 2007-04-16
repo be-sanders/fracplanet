@@ -74,17 +74,17 @@ void TriangleMeshCloud::render_texture(Raster<uchar>& image) const
     {
       const Triangle& t=triangle(i);
       const boost::array<XYZ,3> vertex_positions
-	={
+	={{
 	  vertex(t.vertex(0)).position(),
 	  vertex(t.vertex(1)).position(),
 	  vertex(t.vertex(2)).position()
-	};
+	}};
       const boost::array<float,3> vertex_colours
-	={
+	={{
 	  FloatRGBA(vertex(t.vertex(0)).colour(0)).a,
 	  FloatRGBA(vertex(t.vertex(1)).colour(0)).a,
 	  FloatRGBA(vertex(t.vertex(2)).colour(0)).a
-	};
+	}};
 
       ScanConvertHelper scan_convert_backend(image,vertex_colours);
       geometry().scan_convert

@@ -28,7 +28,7 @@ void Geometry::scan_convert_common
  )
 {
   // Sort vertices by increasing image y co-ordinate 
-  boost::array<uint,3> sort={0,1,2};
+  boost::array<uint,3> sort={{0,1,2}};
   if (v[sort[0]].y>v[sort[1]].y) exchange(sort[0],sort[1]);
   if (v[sort[1]].y>v[sort[2]].y) exchange(sort[1],sort[2]);
   if (v[sort[0]].y>v[sort[1]].y) exchange(sort[0],sort[1]);
@@ -96,11 +96,11 @@ void GeometryFlat::scan_convert
  ) const
 {
   const boost::array<XYZ,3> vp
-    ={
+    ={{
       XYZ(backend.width()*0.5f*(1.0f+v[0].x),backend.height()*0.5f*(1.0f-v[0].y),0.0f),
       XYZ(backend.width()*0.5f*(1.0f+v[1].x),backend.height()*0.5f*(1.0f-v[1].y),0.0f),
       XYZ(backend.width()*0.5f*(1.0f+v[2].x),backend.height()*0.5f*(1.0f-v[2].y),0.0f)
-    };
+    }};
 
   scan_convert_common(vp,backend);
 }
@@ -114,7 +114,7 @@ void GeometrySpherical::scan_convert
  const ScanConvertBackend& backend
  ) const
 {
-  const boost::array<XYZ,3> vn={v[0].normalised(),v[1].normalised(),v[2].normalised()};
+  const boost::array<XYZ,3> vn={{v[0].normalised(),v[1].normalised(),v[2].normalised()}};
 
   const bool coplanar=(fabsf((vn[0]*vn[1]).normalised()%vn[2]) < 1e-6f);
   if (coplanar) return;
