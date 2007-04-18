@@ -1,4 +1,7 @@
-- .debs should create a menu entry.  Check it works on Ubuntu too.
+- How to build for ultrasparc ?  (Any faster if did ?)
+- .debs should create a menu entry.
+  They do, but yada bug (Debian #419878) getting in the way.
+  Doesn't work on Ubuntu either (install to wrong dir? no update menu?)
 - Check clouds tab's documentation.
 - More control over clouds.
 - Texture render should also output a specular map for celestia.
