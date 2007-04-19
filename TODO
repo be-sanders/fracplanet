@@ -1,9 +1,8 @@
-- How to build for ultrasparc ?  (Any faster if did ?)
-  (Answers: ./configure 'QMAKE_CXXFLAGS_RELEASE += -mcpu=ultrasparc'
-   and it's no faster building meshes so don't bother).
 - .debs should create a menu entry.
   They do, but yada bug (Debian #419878) getting in the way.
   Doesn't work on Ubuntu either (install to wrong dir? no update menu?)
+- DEB_BUILD_OPTIONS should also recognize debug ? (and do same as noopt probably)
+  It's not actually in the policy manual.
 - Check clouds tab's documentation.
 - More control over clouds.
 - Texture render should also output a specular map for celestia.
@@ -46,6 +45,9 @@
   parameter on the render tab (move to colours).  Then shadows
   wouldn't be black; wouldn't get a night-side though, without varying
   ambient around sphere.
+- Give cloud illusion of depth using GLSL (parallax effects).
+- Use GLSL to get hard edged rivers.
+  Not so useful without some way of exporting to PovRay/Blender (texture and texture co-ords?)
 - Shadows of clouds on ground in OpenGL (needs shaders, shadow buffers etc).
 - Optimise matix33 inversion
 - End abuse of alpha as flag; just use it as the emissive quantity.
@@ -80,3 +82,8 @@
 - Split up mesh file (3 parts: vertices, colours, meshing)
 - Ringworld and Dyson sphere/hollow-Earth starting geometries for fun.
 - yafray export (note povray not available for sparc, but yafray is)
+
+Could do, but rejected:
+- Build for ultrasparc 
+  ./configure 'QMAKE_CXXFLAGS_RELEASE += -mcpu=ultrasparc'
+  but it's no faster
