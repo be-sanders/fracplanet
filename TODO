@@ -1,4 +1,6 @@
 - How to build for ultrasparc ?  (Any faster if did ?)
+  (Answers: ./configure 'QMAKE_CXXFLAGS_RELEASE += -mcpu=ultrasparc'
+   and it's no faster building meshes so don't bother).
 - .debs should create a menu entry.
   They do, but yada bug (Debian #419878) getting in the way.
   Doesn't work on Ubuntu either (install to wrong dir? no update menu?)

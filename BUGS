@@ -1,3 +1,6 @@
+- Sparc etch build doesn't display on Nvidia i386 machine.
+  However, nvidia OpenGL i386 build does display on the sparc.
+
 - The Ubuntu built packages seem to have some problems
   when meshes are drawn with glDraw[Range]Elements
   (NB the problem seems to be in the built app, NOT the xserver).
