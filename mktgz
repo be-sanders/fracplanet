@@ -7,14 +7,14 @@ VERSION=`./VERSION`
 
 cd ..
 
-PRUNEDIRS='-name moc -prune -o -name obj -prune -o -name pkg_* -prune'
+PRUNE='-name moc -prune -o -name obj -prune -o -name pkg_* -prune -o -name usage_text.h -prune'
 
 FILES_MISC=`ls fracplanet/{README,BUILD,LICENSE,TODO,CHANGES,BUGS,VERSION,THANKS,configure,doxygen.cfg,mktgz,testtgz,mkdeb,fracplanet.css,fracplanet.htm,htm_to_qml.xsl}`
-FILES_PRO=`find fracplanet ${PRUNEDIRS} -o -name '*.pro' -print`
-FILES_MAN=`find fracplanet/man -name '*.1' -print`
-FILES_H=`find fracplanet ${PRUNEDIRS} -o -name usage_text.h -prune -o -name '*.h' -print`
-FILES_C=`find fracplanet ${PRUNEDIRS} -o -name usage_text.h -prune -o -name '*.c' -print`
-FILES_CPP=`find fracplanet ${PRUNEDIRS} -o -name '*.cpp' -print`
+FILES_PRO=`find fracplanet ${PRUNE} -o -name '*.pro' -print`
+FILES_MAN=`find fracplanet/man ${PRUNE} -name '*.1' -print`
+FILES_H=`find fracplanet ${PRUNE} -o -name '*.h' -print`
+FILES_C=`find fracplanet ${PRUNE} -o -name '*.c' -print`
+FILES_CPP=`find fracplanet ${PRUNE} -o -name '*.cpp' -print`
 
 FILES="$FILES_MISC $FILES_PRO $FILES_MAN $FILES_H $FILES_C $FILES_CPP"
 

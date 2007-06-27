@@ -1,3 +1,8 @@
+- Look at Art of Illusion.  Try it's .pov import.
+  (It can also import .obj, but that doesn't support per-vertext colour).
+- If you checkout fracplanet to say fracplanet-0.3.3 then mktgz script doesn't like it.
+  (Not clear how useful this is in practice because you wouldn't tag it in cvs without building
+  tgz first to check testtgz and mkdeb; maybe something like -0.3.3rc1 though ?).
 - .debs should create a menu entry.
   They do, but yada bug (Debian #419878) getting in the way.
   Doesn't work on Ubuntu either (install to wrong dir? no update menu?)
