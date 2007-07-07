@@ -1,3 +1,8 @@
+- Export Ogre .xml mesh files:
+  http://www.ogre3d.org/wiki/index.php/Creating_a_triangle_strip
+  http://www.ogre3d.org/phpBB2/viewtopic.php?p=228739#228739
+  http://www.ogre3d.org/wiki/index.php/Ogre_meshxml_DTD
+- Debian transitioning Apps to Applications (post Etch) see bug 361418
 - Look at Art of Illusion.  Try it's .pov import.
   (It can also import .obj, but that doesn't support per-vertext colour).
 - If you checkout fracplanet to say fracplanet-0.3.3 then mktgz script doesn't like it.
