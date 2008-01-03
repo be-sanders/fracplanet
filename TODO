@@ -7,6 +7,8 @@
 - Debian transitioning Apps to Applications (post Etch) see bug 361418
 - Look at Art of Illusion.  Try it's .pov import.
   (It can also import .obj, but that doesn't support per-vertext colour).
+- Texture export should have the option of a .obj file for the DEM.
+- Export to wings3d ?  Would probably be via .obj
 - If you checkout fracplanet to say fracplanet-0.3.3 then mktgz script doesn't like it.
   (Not clear how useful this is in practice because you wouldn't tag it in cvs without building
   tgz first to check testtgz and mkdeb; maybe something like -0.3.3rc1 though ?).
@@ -37,6 +39,9 @@
 - Abort on progress bar (throw exception out to top level ?  Hmmm)
 - Make colours depend on more interesting things than height (e.g slope)
 - Reshow, so don't need to regenerate after hiding viewer
+- Save to texture with shading for spheres should have the option of some
+  sort of "atlas shading": effectively local illumination giving
+  impression terrain has been "unpeeled" then illuminated.
 - Does POV-Ray mesh support given vertex normals ?
   Renderings show facet shading with smooth colouring, which is
   legitimate but maybe not what's wanted.
