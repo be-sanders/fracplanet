@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2006 Tim Day
+// Copyright (C) 2008 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -116,14 +116,12 @@ void TriangleMesh::subdivide(const XYZ& variation,uint level,uint levels)
   }
   
   {
-    // Make a copy of our data
-    //! \todo Could be done more efficiently
-    std::vector<Vertex> old_vertex(_vertex);
-    std::vector<Triangle> old_triangle(_triangle); 
+    // Efficiently move aside current geometry, get ready for fresh.
+    std::vector<Vertex> old_vertex;
+    old_vertex.swap(_vertex);
 
-    // Clear ourself out
-    _vertex.clear();
-    _triangle.clear();
+    std::vector<Triangle> old_triangle; 
+    old_triangle.swap(_triangle);
 
     // Copy back all vertices and perturb
     for (uint v=0;v<old_vertex.size();v++)
