@@ -113,6 +113,12 @@ drivers display rates start to suffer around subdivision level 7 (for planets).
 A NVidia 5200 will get to the next level.  
 See the BUGS file for other issues.
 
+FSAA/MULTISAMPLING
+==================
+On the author's GeForce7600 system, the standard Qt3 built
+fracplanet runs nicely antialiased simply by doing
+  __GL_FSAA_MODE=7 ./fracplanet
+
 INSTALL
 =======
 Doing 
