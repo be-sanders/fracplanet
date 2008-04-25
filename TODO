@@ -1,3 +1,4 @@
+- Get models into K-3D somehow (K-3D plugin ?  Write via it's exporter class ?)
 - Sourceforge tracker reports problems with Beryl/Compiz.
   Try it out now have this working with Debian/lenny.
 - Export Ogre .xml mesh files:
