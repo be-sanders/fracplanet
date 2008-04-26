@@ -1,4 +1,8 @@
-- Get models into K-3D somehow (K-3D plugin ?  Write via it's exporter class ?)
+- Get models into K3D somehow 
+  Generating python for K3D's idea of a mesh_source script seems most promising.
+  Does seem to allow setting of vertex properties.
+  Imported file formats all too limiting, and python API maybe better documented
+  than K3D's XML file format.
 - Sourceforge tracker reports problems with Beryl/Compiz.
   Try it out now have this working with Debian/lenny.
 - Export Ogre .xml mesh files:
