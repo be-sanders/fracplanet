@@ -24,6 +24,9 @@
   It's a mystery!  Any help gratefully received.]
   Haven't tried edgy yet.
 
+- fracplanet running on 64 bit lenny shows missing polys
+  (all sea?) when viewed by display list from 32bit lenny mesa
+
 - Bear in mind that selecting display list rendering means a copy
   the GL system takes a copy of the triangle mesh.  This needs memory;
   if there isn't enough the application may crash (some drivers
