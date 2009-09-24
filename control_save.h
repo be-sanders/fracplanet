@@ -22,16 +22,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _control_save_h_
 #define _control_save_h_
 
-#include <qvbox.h>
-#include <qwidget.h>
-
+#include "control.h"
 #include "useful.h"
 #include "parameters_save.h"
 
 class FracplanetMain;
 
 //! Encapsulates GUI elements for controlling save.
-class ControlSave : public QVBox
+class ControlSave : public Control
 {
  private:
   Q_OBJECT
@@ -41,7 +39,7 @@ class ControlSave : public QVBox
   ParametersSave*const parameters;
   
  public:
-  ControlSave(QWidget* parent,FracplanetMain* save_target,ParametersSave* param);
+  ControlSave(FracplanetMain* save_target,ParametersSave* param);
   virtual ~ControlSave();
 
   public slots:

@@ -27,9 +27,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <GL/gl.h>
 #include <GL/glext.h>
 
-#include <qwidget.h>
-#include <qgl.h>
-#include <qdatetime.h>
+#include <QtOpenGL/qgl.h>
+#include <QWidget>
+#include <QDateTime>
 
 #include <deque>
 #include <vector>
@@ -96,7 +96,7 @@ class TriangleMeshViewerDisplay : public QGLWidget
 
  public:
   //! Constructor.
-  TriangleMeshViewerDisplay(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
+  TriangleMeshViewerDisplay(const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
 
   //! Set the mesh being rendered.
   void set_mesh(const std::vector<const TriangleMesh*>& m);

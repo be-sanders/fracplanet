@@ -18,11 +18,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "control.h"
 
-#include <qcolordialog.h>
+#include <QColorDialog>
+#include <QVBoxLayout>
 
-Control::Control(QWidget* parent)
-  :QVBox(parent)
-{}
+Control::Control()
+  :QWidget()
+{
+  setLayout(new QVBoxLayout());
+}
 
 Control::~Control()
 {}
@@ -38,18 +41,18 @@ void Control::pickColour(QPushButton* button,FloatRGBA& colour)
       
       QPixmap pmap(16,16);
       pmap.fill(qcol_new);
-      button->setIconSet(QIconSet(pmap));
+      button->setIcon(QIcon(pmap));
     }
 }
 
 /*! Used when initialising colour-chooser buttons.
  */
-QIconSet Control::build_icon_of_colour(const FloatRGBA& col)
+QIcon Control::build_icon_of_colour(const FloatRGBA& col)
 {
   QPixmap pmap(16,16);
 
   const ByteRGBA bcol(col);
   pmap.fill(QColor(bcol.r,bcol.g,bcol.b));
-  return QIconSet(pmap);
+  return QIcon(pmap);
 }
 

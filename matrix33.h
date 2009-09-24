@@ -87,10 +87,10 @@ class Matrix33
     }
 
   //! Cofactor of an element
-  const float cofactor(uint row,uint col) const;
+  float cofactor(uint row,uint col) const;
 
   //! Determinant of matrix 
-  const float determinant() const;
+  float determinant() const;
 
   //! Return inverse of matrix
   const Matrix33 inverted() const; 

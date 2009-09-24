@@ -57,22 +57,22 @@ Noise::Noise(uint seed)
     }
 }
 
-inline const float value(const XYZ& q,float rx,float ry,float rz)
+inline float value(const XYZ& q,float rx,float ry,float rz)
 {
   return rx*q.x+ry*q.y+rz*q.z;
 }
 
-inline const float surve(float t)
+inline float surve(float t)
 {
   return t*t*(3.0-2.0*t);
 }
 
-inline const float lerp(float t,float a,float b)
+inline float lerp(float t,float a,float b)
 {
   return a+t*(b-a);
 }
 
-const float Noise::operator()(const XYZ& p) const
+float Noise::operator()(const XYZ& p) const
 {
   // Crank up the frequency a bit otherwise don't see much variation in base case
   const float tx=2.0*p.x+10000.0f;
@@ -147,7 +147,7 @@ MultiscaleNoise::~MultiscaleNoise()
 {}
 
 //! Return noise value at a point.
-const float MultiscaleNoise::operator()(const XYZ& p) const
+float MultiscaleNoise::operator()(const XYZ& p) const
 {
   float v=0.0;
   for (uint i=0;i<_terms;i++)

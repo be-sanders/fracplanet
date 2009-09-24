@@ -19,10 +19,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <sstream>
 #include <qcursor.h>
+#include <qgridlayout.h>
 #include <qtooltip.h>
+#include <QKeyEvent>
 
 TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& mesh)
-  :QGrid(2,Qt::Horizontal,parent)
+  :QWidget(parent,Qt::Window)
   ,parameters(param)
   ,camera_position(0.0f,-3.0f,0.0f)
   ,camera_forward(0.0f,1.0f,0.0f)
@@ -42,39 +44,58 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
   ,keypressed_mouse_right(false)
   ,fly_mode(false)
 {
-  setSpacing(5);
+  QGridLayout*const grid=new QGridLayout();
+  setLayout(grid);
 
-  display=new TriangleMeshViewerDisplay(this,param,mesh);
+  display=new TriangleMeshViewerDisplay(param,mesh);
+  grid->addWidget(display,0,0);
+  grid->setRowStretch(0,1);
+  grid->setColumnStretch(0,1);
 
-  tilt_box=new QGroupBox(1,Qt::Horizontal,"Tilt",this);
-  spinrate_box=new QGroupBox(1,Qt::Horizontal,"Spin Rate",this);
-
-  tilt_slider=new QSlider(-80,80,10,30,Qt::Vertical,tilt_box);
-  spinrate_slider =new QSlider(-80,80,10, 0,Qt::Horizontal,spinrate_box);
-
-  QVBox*const button_box=new QVBox(this);
-  
-  fly_button=new QPushButton("Fly",button_box);
-  QToolTip::add(fly_button,"While flying:\nEsc will return to normal view.\nMouse controls pitch and yaw.\nLeft and right mouse buttons (or left/right arrow keys) control roll.\nMouse wheel (or up/down arrow keys) control speed.");
-
-  reset_button=new QPushButton("Reset",button_box);
-  QToolTip::add(reset_button,"Press to restore initial default orientation.");
-
+  tilt_box=new QGroupBox("Tilt");
+  tilt_box->setLayout(new QVBoxLayout());
+  tilt_box->layout()->setAlignment(Qt::AlignCenter);
+  tilt_slider=new QSlider(Qt::Vertical);
+  tilt_box->layout()->addWidget(tilt_slider);
+  tilt_slider->setRange(-80,80);
+  tilt_slider->setSingleStep(10);
+  tilt_slider->setValue(30);
   tilt_slider->setTickInterval(10);
-  spinrate_slider->setTickInterval(10);
-
-  tilt_slider->setTickmarks(QSlider::Both);
-  spinrate_slider->setTickmarks(QSlider::Both);
-
+  tilt_slider->setTickPosition(QSlider::TicksBothSides);
   tilt_slider->setTracking(true);
-  spinrate_slider->setTracking(true);
+  grid->addWidget(tilt_box,0,1);
 
-  fly_info=new QLabel("-",this);
-  fly_info->hide();
+  spinrate_box=new QGroupBox("Spin Rate");
+  spinrate_box->setLayout(new QHBoxLayout());
+  spinrate_box->layout()->setAlignment(Qt::AlignCenter);
+  spinrate_slider=new QSlider(Qt::Horizontal);
+  spinrate_box->layout()->addWidget(spinrate_slider);
+  spinrate_slider->setRange(-80,80);
+  spinrate_slider->setSingleStep(10);
+  spinrate_slider->setValue(0);
+  spinrate_slider->setTickInterval(10);
+  spinrate_slider->setTickPosition(QSlider::TicksBothSides);
+  spinrate_slider->setTracking(true);
+  grid->addWidget(spinrate_box,1,0);
+  
+  button_box=new QWidget();
+  button_box->setLayout(new QVBoxLayout());
+  grid->addWidget(button_box,1,1);
+
+  fly_button=new QPushButton("Fly");
+  button_box->layout()->addWidget(fly_button);
+  fly_button->setToolTip("While flying:\nEsc will return to normal view.\nMouse controls pitch and yaw.\nLeft and right mouse buttons (or left/right arrow keys) control roll.\nMouse wheel (or up/down arrow keys) control speed.");
+
+  reset_button=new QPushButton("Reset");
+  button_box->layout()->addWidget(reset_button);
+  reset_button->setToolTip("Press to restore initial default orientation.");
+
+  statusbar=new QStatusBar();
+  grid->addWidget(statusbar,2,0,1,2);
 
   //Calling setFocus() when switching to fly mode seems to avoid need for this, but do it anyway.
-  tilt_slider->setFocusPolicy(QWidget::NoFocus);
-  spinrate_slider->setFocusPolicy(QWidget::NoFocus);
+  tilt_slider->setFocusPolicy(Qt::NoFocus);
+  spinrate_slider->setFocusPolicy(Qt::NoFocus);
 
   connect(
 	  tilt_slider,SIGNAL(valueChanged(int)),
@@ -107,6 +128,11 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
 
 TriangleMeshViewer::~TriangleMeshViewer()
 {}
+
+void TriangleMeshViewer::notify(const std::string& msg)
+{
+  notify_message=msg;
+}
 
 void TriangleMeshViewer::keyPressEvent(QKeyEvent* e)
 {
@@ -170,7 +196,6 @@ void TriangleMeshViewer::mouseReleaseEvent(QMouseEvent* e)
     }
 }
 
-
 void TriangleMeshViewer::wheelEvent(QWheelEvent* e)
 {
   if (fly_mode)
@@ -183,7 +208,10 @@ void TriangleMeshViewer::wheelEvent(QWheelEvent* e)
     }
 }
 
-inline float signedsquare(float v) {return (v<0.0f ? -v*v : v*v);}
+inline float signedsquare(float v) 
+{
+  return (v<0.0f ? -v*v : v*v);
+}
 
 void TriangleMeshViewer::mouseMoveEvent(QMouseEvent* e)
 {
@@ -211,10 +239,7 @@ void TriangleMeshViewer::fly()
   spinrate_slider->setValue(0);
   tilt_box->hide();
   spinrate_box->hide();
-  fly_button->hide();
-  reset_button->hide();
-  fly_info->show();
-  display->updateGeometry();
+  button_box->hide();
   setFocus();
   QCursor::setPos(mapToGlobal(QPoint(width()/2,height()/2)));
 }
@@ -222,12 +247,9 @@ void TriangleMeshViewer::fly()
 void TriangleMeshViewer::unfly()
 {
   reset();
-  fly_info->hide();
   tilt_box->show();
   spinrate_box->show();
-  fly_button->show();
-  reset_button->show();
-  display->updateGeometry();
+  button_box->show();
 }
 
 void TriangleMeshViewer::reset()
@@ -243,6 +265,7 @@ void TriangleMeshViewer::reset()
   tilt_slider->setValue(30);
   spinrate_slider->setValue(0);
   object_rotation=0.0f;
+  statusbar->clearMessage();
 }
 
 void TriangleMeshViewer::tick()
@@ -278,8 +301,12 @@ void TriangleMeshViewer::tick()
     }
 
   std::ostringstream msg;
-  msg << "Velocity: " << camera_velocity << "  Roll rate:" << camera_roll_rate << "\n";
-  fly_info->setText(msg.str().c_str());
+  if (fly_mode)
+    {
+      msg << "Velocity:" << camera_velocity << "  Roll rate:" << camera_roll_rate << "  ";
+    }
+  msg << notify_message;
+  statusbar->showMessage(msg.str().c_str());
 }
 
 void TriangleMeshViewer::set_tilt(int v)

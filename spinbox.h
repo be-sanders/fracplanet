@@ -1,5 +1,5 @@
 // Source file for fracplanet
-// Copyright (C) 2006 Tim Day
+// Copyright (C) 2009 Tim Day
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -16,35 +16,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-/*! \file
-  \brief Interface for class Control.
-*/
+#include <QSpinBox>
 
-#ifndef _control_h_
-#define _control_h_
-
-#include <QIcon>
-#include <QPushButton>
-#include <QWidget>
-
-#include "useful.h"
-#include "rgb.h"
-
-//! Base class for other controls; useful for shared stuff.
-class Control : public QWidget
+/*! QSpinBox ctor helper
+ */
+class SpinBox : public QSpinBox
 {
  public:
-
-  Control();
-  virtual ~Control();
-
-  //! Use Qt's colour-picking dialog to replace the referenced colour
-  void pickColour(QPushButton* button,FloatRGBA& colour);
-
- protected:
-
-  //! Utility function to build a small Qt icon of the specified colour.
-  static QIcon build_icon_of_colour(const FloatRGBA& col);
+  SpinBox(int lo,int hi,int step);
+  ~SpinBox();
 };
-
-#endif

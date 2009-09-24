@@ -23,17 +23,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _control_about_h_
 #define _control_about_h_
 
-#include <qvbox.h>
+#include "control.h"
 #include "useful.h"
 
 //! Displays "About" type info
-class ControlAbout : public QVBox
+class ControlAbout : public Control
 {
  private:
   Q_OBJECT;
 
  public:
-  ControlAbout(QWidget* parent);
+  ControlAbout();
 };
 
 #endif

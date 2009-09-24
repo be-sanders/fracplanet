@@ -29,39 +29,69 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "image.h"
 
-FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app,const boost::program_options::variables_map& opts)
-  :QHBox(parent)
-   ,application(app)
-   ,mesh_terrain(0)
-   ,mesh_cloud(0)
-   ,parameters_terrain()
-   ,parameters_cloud()
-   ,parameters_render(opts)
-   ,parameters_save(&parameters_render)
-   ,last_step(0)
-   ,progress_was_stalled(false)
-   ,startup(true)
+FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app,const boost::program_options::variables_map& opts,bool verbose)
+  :QWidget(parent)
+  ,application(app)
+  ,mesh_terrain(0)
+  ,mesh_cloud(0)
+  ,parameters_terrain()
+  ,parameters_cloud()
+  ,parameters_render(opts)
+  ,parameters_save(&parameters_render)
+  ,last_step(0)
+  ,progress_was_stalled(false)
+  ,startup(true)
 {
-  vbox=new QVBox(this);
-  setStretchFactor(vbox,1);
-
-  control_terrain=new ControlTerrain(this,this,&parameters_terrain,&parameters_cloud);
-  control_save=new ControlSave(this,this,&parameters_save);
-  control_render=new ControlRender(this,&parameters_render);
-  control_about=new ControlAbout(this);
-
-  tab=new QTabWidget(vbox);
+  setLayout(new QVBoxLayout);
   
+  tab=new QTabWidget();
+  layout()->addWidget(tab);
+  
+  control_terrain=new ControlTerrain(this,&parameters_terrain,&parameters_cloud);
   tab->addTab(control_terrain,"Create");
+
+  if (verbose)
+    std::cerr << "...ControlTerrain created...\n";
+
+  control_save=new ControlSave(this,&parameters_save);
   tab->addTab(control_save,"Save");
+
+  if (verbose)
+    std::cerr << "...ControlSave created...\n";
+
+  control_render=new ControlRender(&parameters_render);
   tab->addTab(control_render,"Render");
+
+  if (verbose)
+    std::cerr << "...ControlRender created...\n";
+
+  control_about=new ControlAbout();
   tab->addTab(control_about,"About");
 
-  viewer.reset(new TriangleMeshViewer(0,&parameters_render,std::vector<const TriangleMesh*>()));     // Viewer will be a top-level-window
+  if (verbose)
+    std::cerr << "...ControlAbout created...\n";
+
+  viewer.reset(new TriangleMeshViewer(this,&parameters_render,std::vector<const TriangleMesh*>()));     // Viewer will be a top-level-window
+
   viewer->resize(512,512);
   viewer->move(384,64);  // Moves view away from controls on most window managers
 
+  // Tweak viewer appearance so controls not too dominant
+  QFont viewer_font;
+  viewer_font.setPointSize(viewer_font.pointSize()-2);
+  viewer->setFont(viewer_font);
+  viewer->layout()->setSpacing(2);
+  viewer->layout()->setContentsMargins(2,2,2,2);
+
+  parameters_render.notify=viewer.get();
+
+  if (verbose)
+    std::cerr << "...TriangleMeshViewer created...\n";
+
   regenerate();
+
+  if (verbose)
+    std::cerr << "...terrain created...\n";
 
   raise();   // On app start-up the control panel is the most important thing (regenerate raises the viewer window).
   
@@ -77,7 +107,9 @@ void FracplanetMain::progress_start(uint target,const std::string& info)
 
   if (!progress_dialog.get())
     {
-      progress_dialog=std::auto_ptr<QProgressDialog>(new QProgressDialog("Progress","Cancel",100,this,0,true));
+      progress_dialog=std::auto_ptr<QProgressDialog>(new QProgressDialog("Progress","Cancel",0,100,this));
+      progress_dialog->setWindowModality(Qt::WindowModal);
+
       progress_dialog->setCancelButton(0);  // Cancel not supported
       progress_dialog->setAutoClose(false); // Avoid it flashing on and off
       progress_dialog->setMinimumDuration(0);
@@ -86,7 +118,7 @@ void FracplanetMain::progress_start(uint target,const std::string& info)
   progress_was_stalled=false;
   progress_info=info;
   progress_dialog->reset();
-  progress_dialog->setTotalSteps(target+1);   // Not sure why, but  +1 seems to avoid the progress bar dropping back to the start on completion
+  progress_dialog->setMaximum(target+1);   // Not sure why, but  +1 seems to avoid the progress bar dropping back to the start on completion
   progress_dialog->setLabelText(progress_info.c_str());
   progress_dialog->show();
 
@@ -110,15 +142,16 @@ void FracplanetMain::progress_step(uint step)
 
   if (progress_was_stalled) 
     {
-      progress_dialog->setLabelText(progress_info);
+      progress_dialog->setLabelText(progress_info.c_str());
       progress_was_stalled=false;
       application->processEvents();
     }
-      
-  // We might be called lots of times with the same step.  Don't know if Qt handles this efficiently so check for it ourselves.
+
+  // We might be called lots of times with the same step.  
+  // Don't know if Qt handles this efficiently so check for it ourselves.
   if (step!=last_step)
     {
-      progress_dialog->setProgress(step);
+      progress_dialog->setValue(step);
       last_step=step;
       application->processEvents();
     }
@@ -208,12 +241,18 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
 
 void FracplanetMain::save_pov()
 {
-  QString selected_filename=QFileDialog::getSaveFileName(".","POV-Ray (*.pov *.inc)",this,"Save object","Fracplanet: a .pov AND .inc file will be written");
+  const QString selected_filename=QFileDialog::getSaveFileName
+    (
+     this,
+     "POV-Ray",
+     ".",
+     "(*.pov *.inc)"
+     );
   if (selected_filename.isEmpty())
     {
       QMessageBox::critical(this,"Fracplanet","No file specified\nNothing saved");
     }
-  else if (!(selected_filename.upper().endsWith(".POV") || selected_filename.upper().endsWith(".INC")))
+  else if (!(selected_filename.toUpper().endsWith(".POV") || selected_filename.toUpper().endsWith(".INC")))
     {
       QMessageBox::critical(this,"Fracplanet","File selected must have .pov or .inc suffix.");
     }
@@ -221,7 +260,7 @@ void FracplanetMain::save_pov()
     {
       viewer->hide();
       
-      const std::string filename_base(selected_filename.left(selected_filename.length()-4).local8Bit());
+      const std::string filename_base(selected_filename.left(selected_filename.length()-4).toLocal8Bit());
       const std::string filename_pov=filename_base+".pov";
       const std::string filename_inc=filename_base+".inc";
       
@@ -266,7 +305,13 @@ void FracplanetMain::save_pov()
 
 void FracplanetMain::save_blender()
 {
-  QString selected_filename=QFileDialog::getSaveFileName(".","Blender (*.py)",this,"Save object","Fracplanet");
+  const QString selected_filename=QFileDialog::getSaveFileName
+    (
+     this,
+     "Blender",
+     ".",
+     "(*.py)"
+     );
   if (selected_filename.isEmpty())
     {
       QMessageBox::critical(this,"Fracplanet","No file specified\nNothing saved");
@@ -275,7 +320,7 @@ void FracplanetMain::save_blender()
     {
       viewer->hide();
 
-      const std::string filename(selected_filename.local8Bit());
+      const std::string filename(selected_filename.toLocal8Bit());
       std::ofstream out(filename.c_str());
       
       // Boilerplate
@@ -324,20 +369,26 @@ void FracplanetMain::save_texture()
   const uint height=parameters_save.texture_height;
   const uint width=height*mesh_terrain->geometry().scan_convert_image_aspect_ratio();
 
-  QString selected_filename=QFileDialog::getSaveFileName(".","Texture (*.ppm)",this,"Save texture","Fracplanet");
+  const QString selected_filename=QFileDialog::getSaveFileName
+    (
+     this,
+     "Texture",
+     ".",
+     "(*.ppm)"
+     );
   if (selected_filename.isEmpty())
     {
       QMessageBox::critical(this,"Fracplanet","No file specified\nNothing saved");
     }
-  else if (!(selected_filename.upper().endsWith(".PPM")))
+  else if (!(selected_filename.toUpper().endsWith(".PPM")))
     {
       QMessageBox::critical(this,"Fracplanet","File selected must have .ppm suffix.");
     }
   else
     {
-      const std::string filename(selected_filename.local8Bit());
-      const std::string filename_base(selected_filename.left(selected_filename.length()-4).local8Bit());
-      	  
+      const std::string filename(selected_filename.toLocal8Bit());
+      const std::string filename_base(selected_filename.left(selected_filename.length()-4).toLocal8Bit());
+
       viewer->hide();
 
       bool ok=true;

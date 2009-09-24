@@ -23,10 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _dialog_documentation_h_
 #define _dialog_documentation_h_
 
-#include <qdialog.h>
-#include <qvbox.h>
-#include <qtextbrowser.h>
-#include <qpushbutton.h>
+#include <QDialog>
+#include <QPushButton>
+#include <QTextBrowser>
+#include <QVBoxLayout>
 
 #include "useful.h"
 
@@ -41,20 +41,7 @@ class DialogDocumentation : public QDialog
   DialogDocumentation(QWidget* parent);
 
   //! Destructor.
-  virtual ~DialogDocumentation();
-
- protected:
-  //! Vertical layout.
-  QVBox* vbox;
-
-  //! Text area.
-  QTextBrowser* browser;
-
-  //! Button to close dialog.
-  QPushButton* ok;
-
-  //! Need to pass resizes on to vbox or things just get chopped.
-  virtual void resizeEvent(QResizeEvent*);
+  ~DialogDocumentation();
 };
 
 #endif

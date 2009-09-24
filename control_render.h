@@ -23,19 +23,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _control_render_h_
 #define _control_render_h_
 
-#include <qhbox.h>
-#include <qlabel.h>
-#include <qgroupbox.h>
-#include <qcheckbox.h>
-#include <qpushbutton.h>
-#include <qprogressbar.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
-#include <qgrid.h>
-#include <qtooltip.h>
-#include <qradiobutton.h>
-#include <qhbuttongroup.h>
-#include <qslider.h>
+#include <QCheckBox>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QProgressBar>
+#include <QRadioButton>
+#include <QSlider>
+#include <QSpinBox>
+#include <QToolTip>
 
 #include "useful.h"
 #include "control.h"
@@ -43,7 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "parameters_render.h"
 
 //! Encapsulates GUI elements for controlling OpenGL rendering.
-class ControlRender : public Control, public Notifiable
+class ControlRender : public Control
 {
  private:
   Q_OBJECT;
@@ -58,17 +56,11 @@ class ControlRender : public Control, public Notifiable
   QSlider* illumination_azimuth;
   QSlider* illumination_elevation;
 
-  QLabel* status;
-
-  QVBox* padding;
-
  public:
 
-  ControlRender(QWidget* parent,ParametersRender* param);
+  ControlRender(ParametersRender* param);
   ~ControlRender();
 
-  virtual void notify(const std::string& message);
-  
   public slots:
     
   void setWireframe(int v);

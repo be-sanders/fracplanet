@@ -38,7 +38,7 @@ public:
   ~Random01();
   
   // Return random number in 0-1 (don't think we care whether open interval or not).
-  const double operator()()
+  double operator()()
     {
       return _gen();
     }

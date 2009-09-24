@@ -49,7 +49,7 @@ public:
     {}
 
   //! Return the height of the given point.
-  virtual const float height(const XYZ& p) const
+  virtual float height(const XYZ& p) const
     =0;
 
   //! Move the specified point vertically until.
@@ -61,7 +61,7 @@ public:
     =0;
 
   //! Really only meaningful for spherical geometries.
-  virtual const float normalised_latitude(const XYZ&p) const
+  virtual float normalised_latitude(const XYZ&p) const
     =0;
 
   //! Return the direction of "up" at the specified point.
@@ -82,11 +82,11 @@ public:
   /*! In some geometries (e.g spherical, but not flat) modifying a point to be at a particular height does not guarantee that exact value will be returned on a susequent height query.
     If this is the case, a non-zero epsilon value can be returned and used as an error tolerence when comparing two heights for equivalence.
    */
-  virtual const float epsilon() const
+  virtual float epsilon() const
     =0;
 
   //! Multiplier for width of a scan-converted image.
-  virtual const uint scan_convert_image_aspect_ratio() const
+  virtual uint scan_convert_image_aspect_ratio() const
     {
       return 1;
     }
@@ -117,7 +117,7 @@ class GeometryFlat : public Geometry
     {}
 
   //! Height is just the z co-ordinate of a point.
-  virtual const float height(const XYZ& p) const
+  virtual float height(const XYZ& p) const
     {
       return p.z;
     }
@@ -135,7 +135,7 @@ class GeometryFlat : public Geometry
     }
 
   //! This doesn't really mean anything here, so return zero, which would correspond to the equator of a spherical geometry.
-  virtual const float normalised_latitude(const XYZ&) const
+  virtual float normalised_latitude(const XYZ&) const
     {
       return 0.0f;
     }
@@ -169,7 +169,7 @@ class GeometryFlat : public Geometry
     }
 
   //! Returns zero.  Heights are stored exactly once assigned so no need for non-zero epsilon.
-  virtual const float epsilon() const
+  virtual float epsilon() const
     {
       return 0.0f;  // No need 'cos heights are stored exactly
     }
@@ -195,7 +195,7 @@ class GeometrySpherical : public Geometry
     {}
 
   //! Height is relative to the surface of the unit radius sphere.
-  virtual const float height(const XYZ& p) const
+  virtual float height(const XYZ& p) const
     {
       return p.magnitude()-1.0f;
     }
@@ -219,7 +219,7 @@ class GeometrySpherical : public Geometry
     } 
   
   //! Normalised latitude is 1.0 at the north pole, -1.0 at the south pole
-  virtual const float normalised_latitude(const XYZ& p) const
+  virtual float normalised_latitude(const XYZ& p) const
     {
       return p.z;
     }
@@ -266,7 +266,7 @@ class GeometrySpherical : public Geometry
     }
 
   //! This needs to return something small for the lake flooding algorithm to work.
-  virtual const float epsilon() const
+  virtual float epsilon() const
     {
       return 0.000001f;
     }
@@ -278,7 +278,7 @@ class GeometrySpherical : public Geometry
      ) const;
 
   //! Return 2.0 for spheres because vertical range is +/- pi/2, horizontal is +/- pi
-  virtual const uint scan_convert_image_aspect_ratio() const
+  virtual uint scan_convert_image_aspect_ratio() const
     {
       return 2;
     }

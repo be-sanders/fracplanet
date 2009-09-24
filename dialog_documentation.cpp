@@ -29,15 +29,18 @@ static const char*const text=
 DialogDocumentation::DialogDocumentation(QWidget* parent)
   :QDialog(parent)
 {
-  setCaption("Fracplanet User Manual");
-  setMinimumSize(300,200);
+  setWindowTitle("Fracplanet User Manual");
+  setMinimumSize(480,320);
+  setSizeGripEnabled(true);
 
-  vbox=new QVBox(this);
+  setLayout(new QVBoxLayout());
   
-  browser=new QTextBrowser(vbox);
+  QTextBrowser*const browser=new QTextBrowser();
+  layout()->addWidget(browser);
   browser->setText(text);
 
-  ok=new QPushButton("OK",vbox);
+  QPushButton*const ok=new QPushButton("OK");
+  layout()->addWidget(ok);
 
   //! \todo: These button settings don't seem to do anything.  Find out what's up.
   ok->setAutoDefault(true);
@@ -51,8 +54,3 @@ DialogDocumentation::DialogDocumentation(QWidget* parent)
 
 DialogDocumentation::~DialogDocumentation()
 {}
-
-void DialogDocumentation::resizeEvent(QResizeEvent*)
-{
-  vbox->resize(size());
-}

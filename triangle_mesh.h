@@ -114,7 +114,7 @@ public:
     }
 
   //! Accessor
-  const float emissive() const
+  float emissive() const
     {
       return _emissive;
     }
@@ -148,13 +148,13 @@ public:
     =0;
 
   //! Return height of a vertex.
-  const float vertex_height(uint i) const
+  float vertex_height(uint i) const
     {
       return geometry().height(vertex(i).position());
     }
 
   //! Set height of a vertex.
-  const void set_vertex_height(uint i,float h)
+  void set_vertex_height(uint i,float h)
     {
       XYZ p(vertex(i).position());
       geometry().set_height(p,h);   
@@ -162,7 +162,7 @@ public:
     }
 
   //! Return minimum height of a triangle's vertices.
-  const float triangle_height_min(uint i) const
+  float triangle_height_min(uint i) const
     {
       const Triangle& t=triangle(i);
       return minimum
@@ -174,7 +174,7 @@ public:
     }
 
   //! Return maximum height of a triangle's vertices.
-  const float triangle_height_max(uint i) const
+  float triangle_height_max(uint i) const
     {
       const Triangle& t=triangle(i);
       return maximum
@@ -186,7 +186,7 @@ public:
     }
 
   //! Return mean height of a triangle's vertices.
-  const float triangle_height_average(uint i) const
+  float triangle_height_average(uint i) const
     {
       const Triangle& t=triangle(i);
       return 
@@ -201,30 +201,30 @@ public:
   const XYZ triangle_normal(uint i) const;
 
   //! Return which vertex colour to use for a triangle.
-  const uint which_colour_for_triangle(uint t) const
+  uint which_colour_for_triangle(uint t) const
     {
       return (t<_triangle_switch_colour ? 0 : 1);
     }
 
   //! Returns number of vertices in mesh.
-  const uint vertices() const
+  uint vertices() const
     {
       return _vertex.size();
     }
   //! Returns number of triangles in mesh.
-  const uint triangles() const
+  uint triangles() const
     {
       return _triangle.size();
     }
 
   //! Returns number of triangles in mesh indexing colour[0] of vertices.
-  const uint triangles_of_colour0() const
+  uint triangles_of_colour0() const
     {
       return _triangle_switch_colour;
     }
 
   //! Returns number of triangles in mesh indexing colour[1] of vertices.
-  const uint triangles_of_colour1() const
+  uint triangles_of_colour1() const
     {
       return triangles()-_triangle_switch_colour;
     }

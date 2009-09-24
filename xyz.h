@@ -122,13 +122,13 @@ class XYZ
     }
 
   //! Return the square of the magnitude.
-  const float magnitude2() const
+  float magnitude2() const
     {
       return x*x+y*y+z*z;
     }
 
   //! Return the magnitude.
-  const float magnitude() const
+  float magnitude() const
     {
       return sqrt(magnitude2());
     }
@@ -165,7 +165,7 @@ inline const XYZ operator*(const XYZ& a,const XYZ& b)
 //! Dot product.
 /*! Perhaps a curious choice of operator but it works for me.
  */
-inline const float operator%(const XYZ& a,const XYZ& b)
+inline float operator%(const XYZ& a,const XYZ& b)
 {
   return a.x*b.x+a.y*b.y+a.z*b.z;
 } 
@@ -201,13 +201,13 @@ inline const XYZ operator/(const XYZ& v,float k)
 }
 
 //! Equality operator.
-inline const bool operator==(const XYZ& a,const XYZ& b)
+inline bool operator==(const XYZ& a,const XYZ& b)
 {
   return (a.x==b.x && a.y==b.y && a.z==b.z);
 }
 
 //! Inequality operator.
-inline const bool operator!=(const XYZ& a,const XYZ& b)
+inline bool operator!=(const XYZ& a,const XYZ& b)
 {
   return (a.x!=b.x || a.y!=b.y || a.z!=b.z);
 }

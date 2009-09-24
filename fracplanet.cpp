@@ -52,7 +52,7 @@ int main(int argc,char* argv[])
 
       opt_desc.add_options()
 	("help,h","show list of recognised options")
-	("info,i","display interesting information")
+	("verbose,v","verbose output to stderr")
 	;
 	
       opt_desc.add(ParametersRender::options());
@@ -70,19 +70,27 @@ int main(int argc,char* argv[])
 	  return 1;
 	}
     }
-  catch (boost::program_options::error e)
+  catch (boost::program_options::error& e)
     {
       std::cerr << "Bad command line: " << e.what() << std::endl;
       std::cerr << "Use -h or --help to list recognised options" << std::endl;
       return 1;
     }
 
-  FracplanetMain*const main_widget=new FracplanetMain(0,&app,opts);
+  const bool verbose=opts.count("verbose");
 
-  app.setMainWidget(main_widget);
+  if (verbose)
+    std::cerr << "Setting up...\n";
+
+  FracplanetMain*const main_widget=new FracplanetMain(0,&app,opts,verbose);
+
+  if (verbose)
+    std::cerr << "...setup completed\n";
+
   main_widget->show();
 
-  if (opts.count("info"))
+  // Do this after setup as that will have initialized GL
+  if (verbose)
     {
       std::cerr << "Fracplanet:" << std::endl;
       std::cerr << "  sizeof(ByteRGBA) is " << sizeof(ByteRGBA) << " (4 is good)" << std::endl;  

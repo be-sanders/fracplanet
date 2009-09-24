@@ -30,11 +30,9 @@ extern "C"
 
 #include <boost/program_options/variables_map.hpp>
 
-#include <qtabwidget.h>
-#include <qhbox.h>
-#include <qvbox.h>
-#include <qlabel.h>
-#include <qprogressdialog.h>
+#include <QLabel>
+#include <QProgressDialog>
+#include <QTabWidget>
 
 #include <iostream>
 #include <vector>
@@ -57,7 +55,7 @@ extern "C"
 #include "triangle_mesh_viewer.h"
 
 //! Top level GUI component for fracplanet application: contains parameter controls and viewing area
-class FracplanetMain : public QHBox , public Progress
+class FracplanetMain : public QWidget,public Progress
 {
  private:
   Q_OBJECT
@@ -77,9 +75,7 @@ protected:
   ParametersCloud parameters_cloud;
   ParametersRender parameters_render;
   ParametersSave parameters_save;
-  
-  QVBox* vbox;
-  
+
   ControlRender* control_render;
   ControlSave* control_save;
   ControlTerrain* control_terrain;
@@ -97,7 +93,7 @@ protected:
   bool startup;
 
  public:
-  FracplanetMain(QWidget* parent,QApplication* app,const boost::program_options::variables_map& opts);
+  FracplanetMain(QWidget* parent,QApplication* app,const boost::program_options::variables_map& opts,bool verbose);
   virtual ~FracplanetMain();
   
   virtual void progress_start(uint target,const std::string&);

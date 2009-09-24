@@ -35,6 +35,8 @@ extern "C"
 #include <string>
 #include <memory>
 
+#define stringify(S) __STRING(S)
+
 typedef unsigned int uint;
 typedef unsigned short ushort;
 typedef unsigned char uchar;

@@ -5,20 +5,22 @@
 
 VERSION=`./VERSION`
 
+DIR=${PWD##*/}
+
 cd ..
 
 PRUNE='-name moc -prune -o -name obj -prune -o -name pkg_* -prune -o -name usage_text.h -prune'
 
-FILES_MISC=`ls fracplanet/{README,BUILD,LICENSE,TODO,CHANGES,BUGS,VERSION,THANKS,configure,doxygen.cfg,mktgz,testtgz,mkdeb,fracplanet.css,fracplanet.htm,htm_to_qml.xsl}`
-FILES_PRO=`find fracplanet     ${PRUNE} -o -name '*.pro' -print`
-FILES_MAN=`find fracplanet/man ${PRUNE} -o -name '*.1'   -print`
-FILES_H=`find fracplanet       ${PRUNE} -o -name '*.h'   -print`
-FILES_C=`find fracplanet       ${PRUNE} -o -name '*.c'   -print`
-FILES_CPP=`find fracplanet     ${PRUNE} -o -name '*.cpp' -print`
+FILES_MISC=`ls ${DIR}/{README,BUILD,LICENSE,TODO,CHANGES,BUGS,VERSION,THANKS,configure,doxygen.cfg,mktgz,testtgz,mkdeb,fracplanet.css,fracplanet.htm,htm_to_qml.xsl}`
+FILES_PRO=`find ${DIR} ${PRUNE} -o -name '*.pro' -print`
+FILES_MAN=`find ${DIR}/man ${PRUNE} -o -name '*.1'   -print`
+FILES_H=`find ${DIR} ${PRUNE} -o -name '*.h'   -print`
+FILES_C=`find ${DIR} ${PRUNE} -o -name '*.c'   -print`
+FILES_CPP=`find ${DIR} ${PRUNE} -o -name '*.cpp' -print`
 
 FILES="$FILES_MISC $FILES_PRO $FILES_MAN $FILES_H $FILES_C $FILES_CPP"
 
-tar cvfz fracplanet/fracplanet.tar.gz $FILES
+tar cvfz ${DIR}/fracplanet.tar.gz $FILES
 
 echo "***"
 echo "*** Suggestion:"

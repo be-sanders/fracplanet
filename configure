@@ -6,16 +6,9 @@ if [ -z "$QTDIR" ] ; then
   echo "If you know different, edit ./configure and remove this test."
   exit 1
 fi
- 
-# QMAKESPEC is possibly also required on some systems
-# See Qt/qmake docs for your system and Evolvotron README if you have any problems.
 
-# Don't run qmake -project again!!! (It wipes fracplanet.pro)
-
-# TODO: Should test "which qmake" here.  If not found, add $(QTDIR)/bin to path
-
-echo "Your qmake version is:"
-qmake --version
+echo "Your qmake-qt4 version is:"
+qmake-qt4 --version
  
 echo
 echo "Your gcc version is (unless qmake is set up to use a different one):"
@@ -30,8 +23,8 @@ echo "...built built-in user documentation"
 VERSION_NUMBER=`./VERSION` 
 
 echo
-echo "Running qmake..."
+echo "Running qmake-qt4..."
 
-qmake "VERSION_NUMBER=$VERSION_NUMBER" "$@" fracplanet.pro
+qmake-qt4 "VERSION_NUMBER=$VERSION_NUMBER" "$@" fracplanet.pro
 
 echo "...configuration completed - ready to do 'make' now"

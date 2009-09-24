@@ -15,43 +15,46 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+
 #include "control_about.h"
 #include "license.h"
 #include "dialog_documentation.h"
 
-#include <qlabel.h>
-#include <qtextedit.h>
-#include <qapplication.h>
-#include <qfont.h>
+#include <QApplication>
+#include <QFont>
+#include <QLabel>
+#include <QTextEdit>
+#include <QVBoxLayout>
 
-ControlAbout::ControlAbout(QWidget* parent)
-  :QVBox(parent)
+ControlAbout::ControlAbout()
+  :Control()
 {
-  setSpacing(10);
-
-  QLabel* label0=new QLabel("\nFracplanet - version "+QString(FRACPLANET_VERSION),this);
+  QLabel*const label0=new QLabel("\nFracplanet - version "+QString(stringify(FRACPLANET_VERSION)));
+  layout()->addWidget(label0);
   label0->setAlignment(Qt::AlignHCenter|label0->alignment());
   QFont label0_font(QApplication::font());
   label0_font.setBold(true);
   label0->setFont(label0_font);
 
-  QLabel* label1=new QLabel("by timday@timday.com\nhttp://fracplanet.sourceforge.net",this);
+  QLabel*const label1=new QLabel("by timday@timday.com\nhttp://fracplanet.sourceforge.net");
+  layout()->addWidget(label1);
   label1->setAlignment(Qt::AlignHCenter|label0->alignment());
   QFont label1_font(QApplication::font());
-  label1_font.setPointSize(std::max(2,label1_font.pointSize()-4));
+  label1_font.setPointSize(std::max(2,label1_font.pointSize()-1));
   label1->setFont(label1_font);
 
-  DialogDocumentation* dialog_docs=new DialogDocumentation(this);
+  DialogDocumentation*const dialog_docs=new DialogDocumentation(this);
 
-  QPushButton* button_docs=new QPushButton("Show documentation", this);
+  QPushButton*const button_docs=new QPushButton("Show documentation");
+  layout()->addWidget(button_docs);
   connect(button_docs,SIGNAL(clicked()),dialog_docs,SLOT(show()));
 
-  QLabel* label2=new QLabel("License:",this);
+  QLabel*const label2=new QLabel("License:");
+  layout()->addWidget(label2);
   label2->setAlignment(Qt::AlignHCenter|label0->alignment());
 
-  QTextEdit* license;
-  license=new QTextEdit(this);
+  QTextEdit*const license=new QTextEdit();
+  layout()->addWidget(license);
   license->setReadOnly(true);
-  license->setTextFormat(PlainText);
   license->setText(license_string);
 }

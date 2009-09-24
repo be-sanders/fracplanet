@@ -40,7 +40,7 @@ template <typename T> class PixelTraits
  public:
   typedef T ComputeType;
   typedef T ScalarType;
-  static const ScalarType scalar(const T& v) {return v;}
+  static ScalarType scalar(const T& v) {return v;}
 };
 
 template<> class PixelTraits<uchar>
@@ -48,7 +48,7 @@ template<> class PixelTraits<uchar>
  public:
   typedef float ComputeType;
   typedef uchar ScalarType;
-  static const ScalarType scalar(const uchar& v) {return v;}
+  static ScalarType scalar(const uchar& v) {return v;}
 };
 
 template<> class PixelTraits<ushort>
@@ -56,7 +56,7 @@ template<> class PixelTraits<ushort>
  public:
   typedef float ComputeType;
   typedef ushort ScalarType;
-  static const ScalarType scalar(const ushort& v) {return v;}
+  static ScalarType scalar(const ushort& v) {return v;}
 };
 
 template<> class PixelTraits<ByteRGBA>
@@ -64,7 +64,7 @@ template<> class PixelTraits<ByteRGBA>
  public:
   typedef FloatRGBA ComputeType;
   typedef float ScalarType;
-  static const ScalarType scalar(const ByteRGBA& v) {return (static_cast<float>(v.r)+static_cast<float>(v.g)+static_cast<float>(v.b))/3.0f;}
+  static ScalarType scalar(const ByteRGBA& v) {return (static_cast<float>(v.r)+static_cast<float>(v.g)+static_cast<float>(v.b))/3.0f;}
 };
 
 //! Class for 2D raster images of a specified type.
@@ -93,43 +93,43 @@ template <typename T> class Raster
   virtual ~Raster()
     {}
 
-  const uint width() const
+  uint width() const
     {
       return _width;
     }
-  const uint height() const
+  uint height() const
     {
       return _height;
     }
-  const uint pitch() const
+  uint pitch() const
     {
       return _pitch;
     }
-  const bool contiguous() const
+  bool contiguous() const
     {
       return (_width==_pitch);
     }
-  const uint contiguous_size() const
+  uint contiguous_size() const
     {
       assert(contiguous());
       return _width*_height;
     }
-  T*const contiguous_begin()
+  T* contiguous_begin()
     {
       assert(contiguous());
       return _data;
     }
-  const T*const contiguous_begin() const
+  const T* contiguous_begin() const
     {
       assert(contiguous());
       return _data;
     }
-  T*const contiguous_end()
+  T* contiguous_end()
     {
       assert(contiguous());
       return _data+contiguous_size();
     }
-  const T*const contiguous_end() const
+  const T* contiguous_end() const
     {
       assert(contiguous());
       return _data+contiguous_size();

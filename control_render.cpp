@@ -20,73 +20,102 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <iostream>
 
-ControlRender::ControlRender(QWidget* parent,ParametersRender* param)
-  :Control(parent)
-   ,parameters(param)
+ControlRender::ControlRender(ParametersRender* param)
+  :Control()
+  ,parameters(param)
 {
-  parameters->notify=this;
-
-  wireframe=new QCheckBox("Wireframe",this);
+  wireframe=new QCheckBox("Wireframe");
+  layout()->addWidget(wireframe);
   wireframe->setChecked(parameters->wireframe);
-  QToolTip::add(wireframe,"Selects wireframe OpenGL rendering");
+  wireframe->setToolTip("Selects wireframe OpenGL rendering");
   connect(
 	  wireframe,SIGNAL(stateChanged(int)),
 	  this,SLOT(setWireframe(int))
 	  );
 
-  joystick_mouse=new QCheckBox("Joystick mouse-Y (fly mode)",this);
+  joystick_mouse=new QCheckBox("Joystick mouse-Y (fly mode)");
+  layout()->addWidget(joystick_mouse);
   joystick_mouse->setChecked(parameters->joystick_mouse);
-  QToolTip::add(joystick_mouse,"Mouse y-axis functions as joystick in fly mode:\nmouse moved down/pulled-back pitches up.");
+  joystick_mouse->setToolTip("Mouse y-axis functions as joystick in fly mode:\nmouse moved down/pulled-back pitches up.");
   connect(
 	  joystick_mouse,SIGNAL(stateChanged(int)),
 	  this,SLOT(setJoystickMouse(int))
 	  );
 
-  display_list=new QCheckBox("Display list",this);
+  display_list=new QCheckBox("Display list");
+  layout()->addWidget(display_list);
   display_list->setChecked(parameters->display_list);
-  QToolTip::add(display_list,"Use OpenGL display lists; CAUTION: unstable on many platforms");
+  display_list->setToolTip("Use OpenGL display lists; CAUTION: unstable on many platforms");
   connect(
 	  display_list,SIGNAL(stateChanged(int)),
 	  this,SLOT(setDisplayList(int))
 	  );
 
-  background_colour_low_button=new QPushButton(build_icon_of_colour(parameters->background_colour_low),"Background colour (low altitude)",this);
-  QToolTip::add(background_colour_low_button,"Colour used in display area when the camera is low.");
+  background_colour_low_button=new QPushButton(build_icon_of_colour(parameters->background_colour_low),"Background colour (low altitude)");
+  layout()->addWidget(background_colour_low_button);
+  background_colour_low_button->setToolTip("Colour used in display area when the camera is low.");
   connect(background_colour_low_button,SIGNAL(clicked()),
 	  this,SLOT(pickBackgroundColourLow())
 	  );
 
-  background_colour_high_button=new QPushButton(build_icon_of_colour(parameters->background_colour_high),"Background colour (high altitude)",this);
-  QToolTip::add(background_colour_high_button,"Colour used in display area when the camera is high.");
+  background_colour_high_button=new QPushButton(build_icon_of_colour(parameters->background_colour_high),"Background colour (high altitude)");
+  layout()->addWidget(background_colour_high_button);
+  background_colour_high_button->setToolTip("Colour used in display area when the camera is high.");
   connect(background_colour_high_button,SIGNAL(clicked()),
 	  this,SLOT(pickBackgroundColourHigh())
 	  );
 	  
-  QGroupBox* ambient_box=new QGroupBox(3,Qt::Horizontal,"Ambient",this);
-  new QLabel("0.0",ambient_box);
-  ambient=new QSlider(0,100,10,10,Qt::Horizontal,ambient_box);
-  ambient->setTickmarks(QSlider::Both);
+  QGroupBox* ambient_box=new QGroupBox("Ambient");
+  layout()->addWidget(ambient_box);
+  ambient_box->setLayout(new QHBoxLayout());
+  
+  ambient_box->layout()->addWidget(new QLabel("0.0"));
+
+  ambient=new QSlider(Qt::Horizontal);
+  ambient_box->layout()->addWidget(ambient);
+  ambient->setMinimum(0);
+  ambient->setValue(10);   //! \todo Should be obtained from somewhere ?
+  ambient->setMaximum(100);
   ambient->setTickInterval(10);
+  ambient->setTickPosition(QSlider::TicksBothSides);
   ambient->setTracking(true);
-  new QLabel("1.0",ambient_box);
+
+  ambient_box->layout()->addWidget(new QLabel("1.0"));
+
   connect(
 	  ambient,SIGNAL(valueChanged(int)),
 	  this,SLOT(setAmbient(int))
 	  );
 
-  QGroupBox* illumination_box=new QGroupBox(3,Qt::Horizontal,"Illumination azimuth/elevation",this);
-  new QLabel("-180",illumination_box);
-  illumination_azimuth=new QSlider(-180,180,10,static_cast<int>(parameters->illumination_azimuth*180/M_PI),Qt::Horizontal,illumination_box);
-  illumination_azimuth->setTickmarks(QSlider::Both);
+  QGroupBox* illumination_box=new QGroupBox("Illumination azimuth/elevation");
+  layout()->addWidget(illumination_box);
+  illumination_box->setLayout(new QHBoxLayout());  // TODO: Need a grid here, not an hbox
+  
+  illumination_box->layout()->addWidget(new QLabel("-180"));
+
+  illumination_azimuth=new QSlider(Qt::Horizontal);
+  illumination_box->layout()->addWidget(illumination_azimuth);
+  illumination_azimuth->setMinimum(-180);
+  illumination_azimuth->setValue(static_cast<int>(parameters->illumination_azimuth*180/M_PI));
+  illumination_azimuth->setMaximum(180);
   illumination_azimuth->setTickInterval(10);
+  illumination_azimuth->setTickPosition(QSlider::TicksBothSides);
   illumination_azimuth->setTracking(true);
-  new QLabel("180",illumination_box);
-  new QLabel("-90",illumination_box);
-  illumination_elevation=new QSlider(-90,90,10,static_cast<int>(parameters->illumination_elevation*180/M_PI),Qt::Horizontal,illumination_box);
-  illumination_elevation->setTickmarks(QSlider::Both);
+  
+  illumination_box->layout()->addWidget(new QLabel("180"));
+  
+  illumination_box->layout()->addWidget(new QLabel("-90"));
+  
+  illumination_elevation=new QSlider(Qt::Horizontal);
+  illumination_box->layout()->addWidget(illumination_elevation);
+  illumination_elevation->setMinimum(-90);
+  illumination_elevation->setValue(static_cast<int>(parameters->illumination_elevation*180/M_PI));
+  illumination_elevation->setMaximum(90);
   illumination_elevation->setTickInterval(10);
+  illumination_elevation->setTickPosition(QSlider::TicksBothSides);
   illumination_elevation->setTracking(true);
-  new QLabel("90",illumination_box);
+  
+  illumination_box->layout()->addWidget(new QLabel("90"));
 
   connect(
 	  illumination_azimuth,SIGNAL(valueChanged(int)),
@@ -96,21 +125,14 @@ ControlRender::ControlRender(QWidget* parent,ParametersRender* param)
 	  illumination_elevation,SIGNAL(valueChanged(int)),
 	  this,SLOT(setIlluminationElevation(int))
 	  );
-
-  new QLabel("Status:",this);
-  status=new QLabel("",this);
-
-  padding=new QVBox(this);
-  setStretchFactor(padding,1);
+  
+  QWidget*const padding=new QWidget();
+  layout()->addWidget(padding);
+  padding->setSizePolicy(QSizePolicy(QSizePolicy::Preferred,QSizePolicy::Expanding));  // Expanding vertically
 }
 
 ControlRender::~ControlRender()
 {}
-
-void ControlRender::notify(const std::string& message)
-{
-  status->setText(message.c_str());
-}
 
 void ControlRender::setWireframe(int v)
 {

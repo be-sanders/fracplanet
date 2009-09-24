@@ -58,11 +58,11 @@ class TriangleEdge
     {}
 
   //! Accessor.
-  const uint vertex0() const
+  uint vertex0() const
     {return _vertex0;}
 
   //! Accessor.
-  const uint vertex1() const
+  uint vertex1() const
     {return _vertex1;}
 };
 

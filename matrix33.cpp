@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "matrix33.h"
 
-const float Matrix33::cofactor(uint row,uint col) const
+float Matrix33::cofactor(uint row,uint col) const
 {
   const uint row0=(row==0 ? 1 : 0);
   const uint col0=(col==0 ? 1 : 0);
@@ -32,7 +32,7 @@ const float Matrix33::cofactor(uint row,uint col) const
     element(row0,col1)*element(row1,col0);
 }
 
-const float Matrix33::determinant() const
+float Matrix33::determinant() const
 {
   return 
     element(0,0)*cofactor(0,0)

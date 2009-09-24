@@ -23,18 +23,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _control_terrain_h_
 #define _control_terrain_h_
 
-#include <qhbox.h>
-#include <qlabel.h>
-#include <qgroupbox.h>
-#include <qcheckbox.h>
-#include <qprogressbar.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
-#include <qtooltip.h>
-#include <qhbuttongroup.h>
-#include <qslider.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
+#include <QButtonGroup>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QProgressBar>
+#include <QPushButton>
+#include <QSlider>
+#include <QSpinBox>
 
 #include "useful.h"
 #include "parameters_terrain.h"
@@ -133,10 +131,10 @@ class ControlTerrain : public Control
   QPushButton* regenerate_with_new_rivers_seed_button;
   QPushButton* regenerate_with_new_clouds_seed_button;
 
-  QVBox* padding;
+  QWidget* padding;
 
  public:
-  ControlTerrain(QWidget* parent,FracplanetMain* tgt,ParametersTerrain* param_terrain,ParametersCloud* param_cloud);
+  ControlTerrain(FracplanetMain* tgt,ParametersTerrain* param_terrain,ParametersCloud* param_cloud);
   virtual ~ControlTerrain()
     {}
 

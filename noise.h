@@ -37,7 +37,7 @@ public:
   Noise(uint seed);
 
   //! Return noise value at a point.
-  const float operator()(const XYZ& p) const;
+  float operator()(const XYZ& p) const;
 
 protected:
   //! Number of table entries.
@@ -58,7 +58,7 @@ class MultiscaleNoise
   ~MultiscaleNoise();
 
   //! Return noise value at a point.
-  const float operator()(const XYZ& p) const;
+  float operator()(const XYZ& p) const;
 
  private:
   //! Number of terms

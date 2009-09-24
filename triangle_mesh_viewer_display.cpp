@@ -24,21 +24,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "matrix33.h"
 
-TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& m)
-  :QGLWidget(parent)
-   ,mesh(m)
-   ,parameters(param)
-   ,frame_number(0)
-   ,width(0)
-   ,height(0)
-   ,frame_time()
-   ,camera_position(3.0f,0.0f,0.0f)
-   ,camera_lookat(0.0f,0.0f,0.0f)
-   ,camera_up(0.0f,0.0f,1.0f)
-   ,object_tilt(30.0f*M_PI/180.0f)
-   ,object_rotation(0.0f)
+TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(const ParametersRender* param,const std::vector<const TriangleMesh*>& m)
+  :mesh(m)
+  ,parameters(param)
+  ,frame_number(0)
+  ,width(0)
+  ,height(0)
+  ,frame_time()
+  ,camera_position(3.0f,0.0f,0.0f)
+  ,camera_lookat(0.0f,0.0f,0.0f)
+  ,camera_up(0.0f,0.0f,1.0f)
+  ,object_tilt(30.0f*M_PI/180.0f)
+  ,object_rotation(0.0f)
 {
-  setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding,1,1));
+  setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding));
 
   frame_time.start();
   frame_time_reported.start();

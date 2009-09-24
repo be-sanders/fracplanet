@@ -26,10 +26,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <boost/program_options/variables_map.hpp>
 #include <boost/program_options/options_description.hpp>
 
-#include "useful.h"
-
 #include "notifiable.h"
 #include "rgb.h"
+#include "useful.h"
 
 class XYZ;
 

@@ -1,3 +1,7 @@
+- fps measurement sensible ?
+- stopping flying should hold position and allow spin and tilt manipulation
+  (have planet rotate under current viewpoint)
+- roll mktgz improvements over to evolvotron
 - Get models into K3D somehow 
   Generating python for K3D's idea of a mesh_source script seems most promising.
   Does seem to allow setting of vertex properties.

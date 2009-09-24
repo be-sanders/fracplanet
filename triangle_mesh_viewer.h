@@ -23,33 +23,30 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _triangle_mesh_viewer_h_
 #define _triangle_mesh_viewer_h_
 
-#include <qwidget.h>
-#include <qvbox.h>
-#include <qhbox.h>
-#include <qslider.h>
-#include <qgroupbox.h>
-#include <qgrid.h>
-#include <qpushbutton.h>
-#include <qdatetime.h>
-#include <qtimer.h>
-#include <qlabel.h>
+#include <QDateTime>
+#include <QGroupBox>
+#include <QLabel>
+#include <QPushButton>
+#include <QSlider>
+#include <QStatusBar>
+#include <QTimer>
+#include <QWidget>
 
 #include <vector>
 #include <boost/scoped_ptr.hpp>
 
-#include "useful.h"
-#include "random.h"
-
-#include "triangle_mesh.h"
+#include "notifiable.h"
 #include "parameters_render.h"
-
+#include "random.h"
+#include "triangle_mesh.h"
 #include "triangle_mesh_viewer_display.h"
+#include "useful.h"
 
 //! A class to display a triangle mesh.
 /*! Wraps a TriangleMeshViewerDisplay with some controls.
   \todo Add better controls.
 */
-class TriangleMeshViewer : public QGrid
+class TriangleMeshViewer : public QWidget,public Notifiable
 {
  private:
   Q_OBJECT;
@@ -73,6 +70,9 @@ class TriangleMeshViewer : public QGrid
   //! Elevation slider.
   QSlider* tilt_slider;
 
+  //! Container for fly and reset buttons
+  QWidget* button_box;
+  
   //! Button to start flying.
   QPushButton* fly_button;
 
@@ -85,8 +85,11 @@ class TriangleMeshViewer : public QGrid
   //! Spin rate slider.
   QSlider* spinrate_slider;
 
-  //! Display speed etc
-  QLabel* fly_info;
+  //! Display fly velocity, render info
+  QStatusBar* statusbar;
+
+  //! Last notified message
+  std::string notify_message;
 
   //@{
   //! Parameter of camera position.
@@ -123,7 +126,11 @@ class TriangleMeshViewer : public QGrid
   //! Constructor.
   TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
 
-  virtual ~TriangleMeshViewer();
+  //! Destructor
+  ~TriangleMeshViewer();
+
+  //! Implement Notifiable mixin
+  void notify(const std::string&);
 
   //! Sets the TriangleMesh to be displayed.
   void set_mesh(const std::vector<const TriangleMesh*>& m);
