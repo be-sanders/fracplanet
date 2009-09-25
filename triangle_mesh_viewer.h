@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QPushButton>
 #include <QSlider>
 #include <QStatusBar>
+#include <QTime>
 #include <QTimer>
 #include <QWidget>
 
@@ -63,6 +64,9 @@ class TriangleMeshViewer : public QWidget,public Notifiable
 
   //! Time for animation progress
   boost::scoped_ptr<QTime> clock;
+
+  //! Record time last tick
+  int last_t;
 
   //! Label and box around the elevation slider.
   QGroupBox* tilt_box;

@@ -1,3 +1,5 @@
+- Display list mode doesn't render sea on Lenovo S10e with Debian/Lenny
+
 - Sparc etch build doesn't display on Nvidia i386 machine.
   However, nvidia OpenGL i386 build does display on the sparc.
 

@@ -116,6 +116,7 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
 
   clock.reset(new QTime());
   clock->start();
+  last_t=0;
 
   timer=new QTimer(this);  
   connect(timer,SIGNAL(timeout()),this,SLOT(tick()));
@@ -270,7 +271,9 @@ void TriangleMeshViewer::reset()
 
 void TriangleMeshViewer::tick()
 {
-  const float dt=0.001f*clock->restart();
+  const int t=clock->elapsed();
+  const float dt=0.001f*(t-last_t);
+  last_t=t;
 
   camera_roll_rate=0.0f;
   if (keypressed_arrow_left || keypressed_mouse_left) camera_roll_rate+=0.5f;
