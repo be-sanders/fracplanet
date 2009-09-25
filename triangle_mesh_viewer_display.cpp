@@ -332,43 +332,48 @@ void TriangleMeshViewerDisplay::paintGL()
   frame_times.push_back(dt);
 
   // Keep last 10 frame times
-  while (frame_times.size()>10) frame_times.pop_front();
+  while (frame_times.size()>30) frame_times.pop_front();
 
   // Only update frame time a couple of times a second to reduce flashing
   if (parameters->notify && frame_time_reported.elapsed()>500)
-  {    
-    const float average_time=std::accumulate(frame_times.begin(),frame_times.end(),0)/static_cast<float>(frame_times.size());
-   
-    const float fps=1000.0/average_time;
-
-    std::ostringstream report;
-    report.setf(std::ios::fixed);
-    report.precision(1);
+    {    
+      const float average_time=std::accumulate
+	(
+	 frame_times.begin(),
+	 frame_times.end(),
+	 0
+	 )/static_cast<float>(frame_times.size());
+      
+      const float fps=1000.0/average_time;
+      
+      std::ostringstream report;
+      report.setf(std::ios::fixed);
+      report.precision(1);
+      
+      uint n_triangles=0;
+      uint n_vertices=0;
+      for (uint m=0;m<mesh.size();m++)
+	{
+	  if (mesh[m])
+	    {
+	      n_triangles+=mesh[m]->triangles();
+	      n_vertices+=mesh[m]->vertices();
+	    }
+	}
+      report 
+	<< "Triangles: " 
+	<< n_triangles
+	<< ", "
+	<< "Vertices: " 
+	<< n_vertices 
+	<< ", "
+	<< "FPS: " 
+	<< fps 
+	<< "\n";
     
-    uint n_triangles=0;
-    uint n_vertices=0;
-    for (uint m=0;m<mesh.size();m++)
-      {
-	if (mesh[m])
-	  {
-	    n_triangles+=mesh[m]->triangles();
-	    n_vertices+=mesh[m]->vertices();
-	  }
-      }
-    report 
-      << "Triangles: " 
-      << n_triangles
-      << ", "
-      << "Vertices: " 
-      << n_vertices 
-      << ", "
-      << "FPS: " 
-      << fps 
-      << "\n";
-    
-    parameters->notify->notify(report.str());
-    frame_time_reported.restart();
-  }
+      parameters->notify->notify(report.str());
+      frame_time_reported.restart();
+    }
 }
 
 void TriangleMeshViewerDisplay::initializeGL()
@@ -403,14 +408,19 @@ void TriangleMeshViewerDisplay::resizeGL(int w,int h)
   width=w;
   height=h;
 
-  glViewport(0,0,(GLint)w,(GLint)h);
+  glViewport(0,0,static_cast<GLint>(w),static_cast<GLint>(h));
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   
   // View angle is specified in vertical direction, but we need to exaggerate it if image is taller than wide.
   const float view_angle_degrees=minimum(90.0,width>height ? 45.0 : 45.0*height/width);
 
-  gluPerspective(view_angle_degrees,(float)width/(float)height,0.01,10.0);  // Was 0.1 (too far); 0.001 gives artefacts
+  gluPerspective
+    (
+     view_angle_degrees,
+     static_cast<float>(width)/static_cast<float>(height),
+     0.01,10.0
+     );  // Was 0.1 (too far); 0.001 gives artefacts
 
   glMatrixMode(GL_MODELVIEW);
 
@@ -429,5 +439,3 @@ void TriangleMeshViewerDisplay::draw_frame(const XYZ& p,const XYZ& l,const XYZ& 
 
   updateGL();
 }
-
-
