@@ -1,4 +1,3 @@
-- fps measurement sensible ?
 - stopping flying should hold position and allow spin and tilt manipulation
   (have planet rotate under current viewpoint)
 - roll mktgz improvements over to evolvotron
