@@ -23,11 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _parameters_terrain_h_
 #define _parameters_terrain_h_
 
-#include "useful.h"
-#include "xyz.h"
-#include "rgb.h"
 #include "parameters_noise.h"
 #include "parameters_object.h"
+#include "rgb.h"
+#include "xyz.h"
 
 //! This class aggregates the controllable parameters for all things related to terrain generation.
 /*! \todo Add these to ParametersTerrain (and ControlTerrain):  float treeline;  float beachline;

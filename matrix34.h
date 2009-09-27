@@ -23,9 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _matrix34_h_
 #define _matrix34_h_
 
-#include "useful.h"
-#include "xyz.h"
 #include "matrix33.h"
+#include "xyz.h"
 
 //! Class to hold 3x4 matrices
 /*! Rotation below actually means any sort of origin preserving transform; 

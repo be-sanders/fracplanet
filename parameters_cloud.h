@@ -23,10 +23,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _parameters_cloud_h_
 #define _parameters_cloud_h_
 
-#include "useful.h"
-#include "xyz.h"
-#include "rgb.h"
 #include "parameters_object.h"
+#include "rgb.h"
+#include "xyz.h"
 
 //! This class aggregates the controllable parameters for all things related to cloud generation.
 class ParametersCloud : public ParametersObject

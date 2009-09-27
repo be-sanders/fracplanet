@@ -24,7 +24,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define _control_about_h_
 
 #include "control.h"
-#include "useful.h"
 
 //! Displays "About" type info
 class ControlAbout : public Control

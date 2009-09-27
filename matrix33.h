@@ -23,7 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _matrix33_h_
 #define _matrix33_h_
 
-#include "useful.h"
 #include "xyz.h"
 
 //! Class to hold 3x3 matrics

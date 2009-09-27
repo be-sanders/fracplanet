@@ -23,8 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _random_h_
 #define _random_h_
 
-#include "useful.h"
-
 //! Generates random numbers in the range [0,1).
 class Random01
 {

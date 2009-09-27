@@ -23,8 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _parameters_save_h_
 #define _parameters_save_h_
 
-#include "useful.h"
-
 class ParametersRender;
 
 //! Aggregates controllable parameters for all things related to save.

@@ -23,7 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _control_terrain_h_
 #define _control_terrain_h_
 
-#include "useful.h"
 #include "parameters_terrain.h"
 #include "parameters_cloud.h"
 #include "control.h"

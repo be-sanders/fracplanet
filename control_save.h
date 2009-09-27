@@ -23,7 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define _control_save_h_
 
 #include "control.h"
-#include "useful.h"
 #include "parameters_save.h"
 
 class FracplanetMain;

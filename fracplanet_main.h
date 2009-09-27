@@ -25,19 +25,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <boost/program_options/variables_map.hpp>
 
-#include "useful.h"
+
+#include "control_about.h"
+#include "control_render.h"
+#include "control_save.h"
+#include "control_terrain.h"
+#include "parameters_render.h"
+#include "parameters_save.h"
+#include "parameters_terrain.h"
 #include "random.h"
 
-#include "parameters_terrain.h"
-#include "parameters_save.h"
-#include "parameters_render.h"
-#include "control_terrain.h"
-#include "control_save.h"
-#include "control_render.h"
-#include "control_about.h"
-
-#include "triangle_mesh_terrain.h"
 #include "triangle_mesh_cloud.h"
+#include "triangle_mesh_terrain.h"
 #include "triangle_mesh_viewer.h"
 
 //! Top level GUI component for fracplanet application: contains parameter controls and viewing area

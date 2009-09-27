@@ -42,7 +42,6 @@ HEADERS += \
            triangle_mesh_terrain.h \
            triangle_mesh_viewer.h \
            triangle_mesh_viewer_display.h \
-           useful.h \
            vertex.h \
            triangle_edge.h \
            xyz.h
@@ -81,7 +80,6 @@ SOURCES += \
            triangle_mesh_terrain.cpp \
            triangle_mesh_viewer.cpp \
            triangle_mesh_viewer_display.cpp \
-           useful.cpp \
            vertex.cpp \
            triangle_edge.cpp \
            xyz.cpp

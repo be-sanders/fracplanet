@@ -28,7 +28,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "random.h"
 #include "triangle_mesh.h"
 #include "triangle_mesh_viewer_display.h"
-#include "useful.h"
 
 //! A class to display a triangle mesh.
 /*! Wraps a TriangleMeshViewerDisplay with some controls.

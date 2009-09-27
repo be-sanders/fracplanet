@@ -23,8 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _progress_h_
 #define _progress_h_
 
-#include "useful.h"
-
 //! Mix-in class for call-backs from long operations.
 /*! Use concrete implementations of these methods to drive progress bars.
  */

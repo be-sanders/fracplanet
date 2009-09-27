@@ -23,9 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _triangle_h_
 #define _triangle_h_
 
-#include "useful.h"
-#include "xyz.h"
 #include "rgb.h"
+#include "xyz.h"
 
 //! Class to store triangle state.
 /*! There is no direct access to members.

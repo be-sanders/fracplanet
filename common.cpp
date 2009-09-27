@@ -19,3 +19,36 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "precompiled.h"
 
 #include "common.h"
+
+void fatal_error(const char* msg)
+{
+  std::cerr
+    << "\n*** Fatal error: "
+    << msg
+    << " ***\n";
+  exit(1);
+}
+
+void fatal_internal_error(const char* src_file,uint src_line)
+{
+  std::cerr 
+    << "\n*** Fatal internal error in "
+    << src_file
+    << " at line "
+    << src_line
+    << " ***\n";
+  exit(1);
+}
+
+void constraint_violation(const char* test,const char* src_file,uint src_line)
+{
+  std::cerr 
+    << "\n*** Constraint \""
+    << test
+    << "\" violated in file"
+    << src_file
+    << " at line "
+    << src_line
+    << " ***\n";
+  exit(1);
+}

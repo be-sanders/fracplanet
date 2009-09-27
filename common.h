@@ -82,4 +82,39 @@ extern "C"
 #include <QVBoxLayout>
 #include <QWidget>
 
+#define stringify(S) __STRING(S)
+
+typedef unsigned int uint;
+typedef unsigned short ushort;
+typedef unsigned char uchar;
+
+template <class T> inline const T maximum(T a,T b) {return (a>b ? a : b);}
+template <class T> inline const T minimum(T a,T b) {return (a<b ? a : b);}
+
+template <class T> inline const T maximum(T a,T b,T c) {return maximum(a,maximum(b,c));}
+template <class T> inline const T minimum(T a,T b,T c) {return minimum(a,minimum(b,c));}
+
+template <class T> inline const T maximum(T a,T b,T c,T d) {return maximum(maximum(a,b),maximum(c,d));}
+template <class T> inline const T minimum(T a,T b,T c,T d) {return minimum(minimum(a,b),minimum(c,d));}
+
+template <class T> inline const T sqr(T a) {return a*a;}
+
+template <class T> inline const T clamped(T v,T lo,T hi) {return (v<lo ? lo : (v>hi ? hi : v));}
+
+template <class T> inline void clamp(T& v,T lo,T hi) {v=(v<lo ? lo : (v>hi ? hi : v));}
+
+template <class T> inline void exchange(T& a,T& b) {const T x(a);a=b;b=x;}
+
+extern void fatal_error(const char*);
+
+inline void fatal_error(const std::string& s)
+{
+  fatal_error(s.c_str());
+}
+
+extern void fatal_internal_error(const char* src_file,uint src_line);
+
+extern void constraint_violation(const char* test,const char* src_file,uint src_line);
+#define constraint(TEST) {if (!TEST) {constraint_violation(#TEST,__FILE__,__LINE__);}}
+
 #endif

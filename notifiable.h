@@ -23,8 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _parameters_notifiable_h_
 #define _parameters_notifiable_h_
 
-#include "useful.h"
-
 // Abstract mixin class for classes with a report(const std::string&) method.
 class Notifiable
 {

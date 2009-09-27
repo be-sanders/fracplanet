@@ -23,7 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _geometry_h_
 #define _geometry_h_
 
-#include "useful.h"
 #include "scan.h"
 #include "vertex.h"
 #include "xyz.h"

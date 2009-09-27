@@ -19,17 +19,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _triangle_mesh_h_
 #define _triangle_mesh_h_
 
-#include "useful.h"
-#include "random.h"
-
+#include "geometry.h"
+#include "parameters_save.h"
+#include "parameters_terrain.h"
 #include "progress.h"
-#include "vertex.h"
+#include "random.h"
 #include "triangle.h"
 #include "triangle_edge.h"
-#include "geometry.h"
-
-#include "parameters_terrain.h"
-#include "parameters_save.h"
+#include "vertex.h"
 
 /*! \file
   \brief Interface for class TriangleMesh.

@@ -29,11 +29,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <QtOpenGL/qgl.h>
 
-#include "useful.h"
-#include "random.h"
-
-#include "triangle_mesh.h"
 #include "parameters_render.h"
+#include "random.h"
+#include "triangle_mesh.h"
 
 //! Contains the actual rendering functionality of a TriangleMeshViewer.
 class TriangleMeshViewerDisplay : public QGLWidget

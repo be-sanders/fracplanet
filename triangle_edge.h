@@ -23,8 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _triangle_edge_h_
 #define _triangle_edge_h_
 
-#include "useful.h"
-
 //! Class to store triangle edges.
 /*! An edge is described by two vertices.
  These are ordered internally for more efficient sorting and comparison.
