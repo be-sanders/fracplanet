@@ -26,9 +26,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "useful.h"
 #include "xyz.h"
 
-#include <boost/scoped_ptr.hpp>
-#include <boost/scoped_array.hpp>
-
 //! Perlin noise generator.
 class Noise
 {

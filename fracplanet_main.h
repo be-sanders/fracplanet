@@ -23,21 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _fracplanet_main_h_
 #define _fracplanet_main_h_
 
-extern "C"
-{
-#include <time.h>
-}
-
 #include <boost/program_options/variables_map.hpp>
-
-#include <QLabel>
-#include <QProgressDialog>
-#include <QTabWidget>
-
-#include <iostream>
-#include <vector>
-
-#include <boost/scoped_ptr.hpp>
 
 #include "useful.h"
 #include "random.h"

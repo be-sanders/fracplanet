@@ -23,12 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _image_h_
 #define _image_h_
 
-#include <iosfwd>
-#include <boost/scoped_array.hpp>
-#include <boost/range.hpp>
-#include <boost/noncopyable.hpp>
-#include <boost/function.hpp>
-
 #include "useful.h"
 #include "rgb.h"
 

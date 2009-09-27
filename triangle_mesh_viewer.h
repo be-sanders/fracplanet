@@ -23,19 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _triangle_mesh_viewer_h_
 #define _triangle_mesh_viewer_h_
 
-#include <QDateTime>
-#include <QGroupBox>
-#include <QLabel>
-#include <QPushButton>
-#include <QSlider>
-#include <QStatusBar>
-#include <QTime>
-#include <QTimer>
-#include <QWidget>
-
-#include <vector>
-#include <boost/scoped_ptr.hpp>
-
 #include "notifiable.h"
 #include "parameters_render.h"
 #include "random.h"

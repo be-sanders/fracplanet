@@ -25,8 +25,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "useful.h"
 
-#include <boost/random.hpp>
-
 //! Generates random numbers in the range [0,1).
 class Random01
 {

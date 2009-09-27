@@ -23,18 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _control_render_h_
 #define _control_render_h_
 
-#include <QCheckBox>
-#include <QGridLayout>
-#include <QGroupBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QProgressBar>
-#include <QRadioButton>
-#include <QSlider>
-#include <QSpinBox>
-#include <QToolTip>
-
 #include "useful.h"
 #include "control.h"
 #include "notifiable.h"

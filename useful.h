@@ -23,17 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _useful_h_
 #define _useful_h_
 
-extern "C"
-{
-#include <stdlib.h>
-}
-
-#include <cassert>
-#include <cmath>
-#include <iosfwd>
-#include <string>
-#include <memory>
-
 #define stringify(S) __STRING(S)
 
 typedef unsigned int uint;
@@ -69,7 +58,4 @@ extern void fatal_internal_error(const char* src_file,uint src_line);
 extern void constraint_violation(const char* test,const char* src_file,uint src_line);
 #define constraint(TEST) {if (!TEST) {constraint_violation(#TEST,__FILE__,__LINE__);}}
 
-
 #endif
-
-

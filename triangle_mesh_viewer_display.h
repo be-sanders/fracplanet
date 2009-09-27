@@ -28,11 +28,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <GL/glext.h>
 
 #include <QtOpenGL/qgl.h>
-#include <QWidget>
-#include <QDateTime>
-
-#include <deque>
-#include <vector>
 
 #include "useful.h"
 #include "random.h"
