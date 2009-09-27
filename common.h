@@ -1,20 +1,21 @@
-// Source file for fracplanet
-// Copyright (C) 2009 Tim Day
-/*
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-*/
+/**************************************************************************/
+/*  Copyright 2009 Tim Day                                                */
+/*                                                                        */
+/*  This file is part of Fracplanet                                       */
+/*                                                                        */
+/*  Evolvotron is free software: you can redistribute it and/or modify    */
+/*  it under the terms of the GNU General Public License as published by  */
+/*  the Free Software Foundation, either version 3 of the License, or     */
+/*  (at your option) any later version.                                   */
+/*                                                                        */
+/*  Evolvotron is distributed in the hope that it will be useful,         */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of        */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         */
+/*  GNU General Public License for more details.                          */
+/*                                                                        */
+/*  You should have received a copy of the GNU General Public License     */
+/*  along with Evolvotron.  If not, see <http://www.gnu.org/licenses/>.   */
+/**************************************************************************/
 
 #ifndef _common_h_
 #define _common_h_
@@ -44,6 +45,10 @@ extern "C"
 #include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/optional.hpp>
+#include <boost/program_options/errors.hpp>
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/parsers.hpp>
+#include <boost/program_options/variables_map.hpp>
 #include <boost/random.hpp>
 #include <boost/range.hpp>
 #include <boost/scoped_array.hpp>
