@@ -3,6 +3,7 @@ From release 0.3.3:
  - Migrate sourceforge repository to svn
  - Port to Qt4
  - Precompiled headers
+ - CHANGES renamed to NEWS
 
 From release 0.3.2:
  - Bump version number to 0.3.3 (dev while under development)
