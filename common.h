@@ -82,6 +82,8 @@ extern "C"
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include <QtOpenGL/qgl.h>
+
 #define stringify(S) __STRING(S)
 
 typedef unsigned int uint;

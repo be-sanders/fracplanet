@@ -20,6 +20,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "triangle_mesh_viewer_display.h"
 
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h>
+#include <GL/glext.h>
+
 #include "matrix33.h"
 
 TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(const ParametersRender* param,const std::vector<const TriangleMesh*>& m)
