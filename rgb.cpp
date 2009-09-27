@@ -20,8 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   \brief Implementation for class ByteRGBA and class FloatRGBA.
 */
 
-#include <iostream>
-#include <sstream>
+#include "precompiled.h"
 
 #include "rgb.h"
 

@@ -20,12 +20,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   \brief Implementation for templated Image class.
 */
 
+#include "precompiled.h"
+
 #include "image.h"
 
 #include "progress.h"
 #include "rgb.h"
-#include <iostream>
-#include <fstream>
 
 template <typename T> void Raster<T>::fill(const T& v)
 {

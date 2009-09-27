@@ -20,6 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   \brief Implementation of class DialogDocumentation.
 */
 
+#include "precompiled.h"
+
 #include "dialog_documentation.h"
 
 static const char*const text=

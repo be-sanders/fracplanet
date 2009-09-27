@@ -17,9 +17,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 /* Copyright (C) 1998,1999,2000 T Day */
 
-#include "useful.h"
+#include "precompiled.h"
 
-#include <iostream>
+#include "useful.h"
 
 void fatal_error(const char* msg)
 {

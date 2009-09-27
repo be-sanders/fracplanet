@@ -20,6 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   \brief License string boilerplate.
 */
 
+#include "precompiled.h"
+
 #include "license.h"
 
 //! \todo Currently emits a warning about multi-line string.  Replace line breaks with backslash-n instead.

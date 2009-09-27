@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+#include "precompiled.h"
+
 #include "matrix34.h"
 
 Matrix34RotateAboutAxisThrough::Matrix34RotateAboutAxisThrough(const XYZ& axis,float angle,const XYZ& pt)

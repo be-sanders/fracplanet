@@ -19,7 +19,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _common_h_
 #define _common_h_
 
+#include <cassert>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <numeric>
+#include <sstream>
+
+#include <boost/bind.hpp>
+#include <boost/optional.hpp>
+#include <boost/scoped_ptr.hpp>
+
+#include <QApplication>
+#include <QColorDialog>
+#include <QCursor>
+#include <QFileDialog>
+#include <QFont>
+#include <QGridLayout>
+#include <QKeyEvent>
+#include <QLabel>
+#include <QMessageBox>
 #include <QObject>
+#include <QTabWidget>
+#include <QTextEdit>
+#include <QToolTip>
+#include <QVBoxLayout>
 #include <QWidget>
 
 #endif

@@ -20,6 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
   \brief Implementation of Noise class
 */
 
+#include "precompiled.h"
+
 #include "noise.h"
 
 Noise::Noise(uint seed)
