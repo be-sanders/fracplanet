@@ -1,12 +1,16 @@
 TEMPLATE = app
 
 # append debug or release :
-CONFIG+= qt stl exceptions release
+CONFIG+= qt stl precompile_header exceptions release
 QT += opengl
 
 # Input files
 
+
+PRECOMPILED_HEADER = precompiled.h
+
 HEADERS += \
+           common.h \
            control.h \
            control_about.h \
            control_render.h \
@@ -44,6 +48,7 @@ HEADERS += \
            xyz.h
 
 SOURCES += \
+           common.cpp \
            control.cpp \
            control_about.cpp \
            control_render.cpp \
