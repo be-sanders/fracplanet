@@ -32,22 +32,27 @@ class FracplanetMain;
 class ControlSave : public Control
 {
  private:
-  Q_OBJECT
- 
- protected:
-  //! The parameters set we control
-  ParametersSave*const parameters;
-  
- public:
-  ControlSave(FracplanetMain* save_target,ParametersSave* param);
-  virtual ~ControlSave();
 
-  public slots:
-   void setAtmosphere(int v);
-   void setSeaSphere(int v);
-   void setPerVertexAlpha(int v);
-   void setTextureShaded(int v);
-   void setTextureHeight(int v);
+  Q_OBJECT
+
+ public:
+
+  ControlSave(FracplanetMain* save_target,ParametersSave* param);
+
+  ~ControlSave();
+
+ public slots:
+
+  void setAtmosphere(int v);
+  void setSeaSphere(int v);
+  void setPerVertexAlpha(int v);
+  void setTextureShaded(int v);
+  void setTextureHeight(int v);
+ 
+ private:
+
+  //! The parameters set we control
+  ParametersSave*const parameters;  
 };
 
 

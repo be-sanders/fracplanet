@@ -36,93 +36,14 @@ class FracplanetMain;
 class ControlTerrain : public Control
 { 
  private:
+
   Q_OBJECT;
 
- protected:
-
-  //! Pointer to the terrain parameters we control.
-  ParametersTerrain*const parameters_terrain;
-
-  //! Pointer to the cloud parameters we control.
-  ParametersCloud*const parameters_cloud;
-
-  //! Requests to regenerate terrain are forwarded to the top level GUI widget.
-  FracplanetMain* regenerate_target;
-
-  QComboBox* object_type_combo_box;
-
-  QLabel* base_height_label;
-  QSpinBox* base_height_spinbox;
-  
-  QLabel* terrain_seed_label;
-  QSpinBox* terrain_seed_spinbox;
-  QLabel* subdivisions_label;
-  QSpinBox* subdivisions_spinbox;
-  QLabel* subdivisions_unperturbed_label;
-  QSpinBox* subdivisions_unperturbed_spinbox;
-
-  QLabel* variation_vertical_label;
-  QSpinBox* variation_vertical_spinbox;
-  QLabel* variation_horizontal_label;
-  QSpinBox* variation_horizontal_spinbox;
-
-  QLabel* noise_terms_label;
-  QSpinBox* noise_terms_spinbox;
-  QLabel* noise_frequency_label;
-  QSpinBox* noise_frequency_spinbox;
-  QLabel* noise_amplitude_label;
-  QSpinBox* noise_amplitude_spinbox;
-  QLabel* noise_amplitude_decay_label;
-  QSpinBox* noise_amplitude_decay_spinbox;
-
-  QLabel* power_law_label;
-  QSpinBox* power_law_spinbox;
-
-  QLabel* snowline_equator_label;
-  QSpinBox* snowline_equator_spinbox;
-  QLabel* snowline_pole_label;
-  QSpinBox* snowline_pole_spinbox;
-  QLabel* snowline_power_law_label;
-  QSpinBox* snowline_power_law_spinbox;
-  QLabel* snowline_slope_effect_label;
-  QSpinBox* snowline_slope_effect_spinbox;
-  QLabel* snowline_glacier_effect_label;
-  QSpinBox* snowline_glacier_effect_spinbox;
-  
-  QLabel* rivers_label;
-  QSpinBox* rivers_spinbox;
-  QLabel* rivers_seed_label;
-  QSpinBox* rivers_seed_spinbox;
-  QLabel* lake_becomes_sea_label;
-  QSpinBox* lake_becomes_sea_spinbox;
-
-  QSpinBox* oceans_and_rivers_emissive_spinbox;
-
-  QLabel* clouds_seed_label;
-  QSpinBox* clouds_seed_spinbox;
-
-  QLabel* colour_label;
-  QPushButton* colour_ocean_button;
-  QPushButton* colour_shoreline_button;
-  QPushButton* colour_low_button;
-  QPushButton* colour_river_button;
-  QPushButton* colour_snow_button;
-  QPushButton* colour_high_button;
-  QPushButton* colour_cloud_button;
-
-  QCheckBox* clouds_subdivisions_unlock_checkbox;
-  QSpinBox* clouds_subdivisions_spinbox;
-
-  QPushButton* regenerate_button;
-  QPushButton* regenerate_with_new_terrain_seed_button;
-  QPushButton* regenerate_with_new_rivers_seed_button;
-  QPushButton* regenerate_with_new_clouds_seed_button;
-
-  QWidget* padding;
-
  public:
+
   ControlTerrain(FracplanetMain* tgt,ParametersTerrain* param_terrain,ParametersCloud* param_cloud);
-  virtual ~ControlTerrain()
+
+  ~ControlTerrain()
     {}
 
   public slots:
@@ -278,10 +199,91 @@ class ControlTerrain : public Control
       parameters_cloud->weather_systems=v;
     }
 
-
   void regenerate_with_new_terrain_seed();
   void regenerate_with_new_rivers_seed();
   void regenerate_with_new_clouds_seed();
+
+ private:
+
+  //! Pointer to the terrain parameters we control.
+  ParametersTerrain*const parameters_terrain;
+
+  //! Pointer to the cloud parameters we control.
+  ParametersCloud*const parameters_cloud;
+
+  //! Requests to regenerate terrain are forwarded to the top level GUI widget.
+  FracplanetMain* regenerate_target;
+
+  QComboBox* object_type_combo_box;
+
+  QLabel* base_height_label;
+  QSpinBox* base_height_spinbox;
+  
+  QLabel* terrain_seed_label;
+  QSpinBox* terrain_seed_spinbox;
+  QLabel* subdivisions_label;
+  QSpinBox* subdivisions_spinbox;
+  QLabel* subdivisions_unperturbed_label;
+  QSpinBox* subdivisions_unperturbed_spinbox;
+
+  QLabel* variation_vertical_label;
+  QSpinBox* variation_vertical_spinbox;
+  QLabel* variation_horizontal_label;
+  QSpinBox* variation_horizontal_spinbox;
+
+  QLabel* noise_terms_label;
+  QSpinBox* noise_terms_spinbox;
+  QLabel* noise_frequency_label;
+  QSpinBox* noise_frequency_spinbox;
+  QLabel* noise_amplitude_label;
+  QSpinBox* noise_amplitude_spinbox;
+  QLabel* noise_amplitude_decay_label;
+  QSpinBox* noise_amplitude_decay_spinbox;
+
+  QLabel* power_law_label;
+  QSpinBox* power_law_spinbox;
+
+  QLabel* snowline_equator_label;
+  QSpinBox* snowline_equator_spinbox;
+  QLabel* snowline_pole_label;
+  QSpinBox* snowline_pole_spinbox;
+  QLabel* snowline_power_law_label;
+  QSpinBox* snowline_power_law_spinbox;
+  QLabel* snowline_slope_effect_label;
+  QSpinBox* snowline_slope_effect_spinbox;
+  QLabel* snowline_glacier_effect_label;
+  QSpinBox* snowline_glacier_effect_spinbox;
+  
+  QLabel* rivers_label;
+  QSpinBox* rivers_spinbox;
+  QLabel* rivers_seed_label;
+  QSpinBox* rivers_seed_spinbox;
+  QLabel* lake_becomes_sea_label;
+  QSpinBox* lake_becomes_sea_spinbox;
+
+  QSpinBox* oceans_and_rivers_emissive_spinbox;
+
+  QLabel* clouds_seed_label;
+  QSpinBox* clouds_seed_spinbox;
+
+  QLabel* colour_label;
+  QPushButton* colour_ocean_button;
+  QPushButton* colour_shoreline_button;
+  QPushButton* colour_low_button;
+  QPushButton* colour_river_button;
+  QPushButton* colour_snow_button;
+  QPushButton* colour_high_button;
+  QPushButton* colour_cloud_button;
+
+  QCheckBox* clouds_subdivisions_unlock_checkbox;
+  QSpinBox* clouds_subdivisions_spinbox;
+
+  QPushButton* regenerate_button;
+  QPushButton* regenerate_with_new_terrain_seed_button;
+  QPushButton* regenerate_with_new_rivers_seed_button;
+  QPushButton* regenerate_with_new_clouds_seed_button;
+
+  QWidget* padding;
 };
 
 #endif

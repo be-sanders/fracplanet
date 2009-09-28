@@ -30,9 +30,11 @@
 class ControlAbout : public Control
 {
  private:
+
   Q_OBJECT;
 
  public:
+
   ControlAbout();
 };
 

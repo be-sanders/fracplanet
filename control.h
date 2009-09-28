@@ -32,7 +32,8 @@ class Control : public QWidget
  public:
 
   Control();
-  virtual ~Control();
+
+  ~Control();
 
   //! Use Qt's colour-picking dialog to replace the referenced colour
   void pickColour(QPushButton* button,FloatRGBA& colour);

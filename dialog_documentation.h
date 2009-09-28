@@ -28,9 +28,11 @@
 class DialogDocumentation : public QDialog
 {
  private:
+
   Q_OBJECT
 
  public:
+
   //! Constructor.
   DialogDocumentation(QWidget* parent);
 

@@ -90,6 +90,7 @@ public:
     }
 
  protected:
+
   //! Common scan-converter code
   static void scan_convert_common
     (
@@ -108,56 +109,58 @@ public:
 class GeometryFlat : public Geometry
 {
  public:
+
   GeometryFlat(uint seed)
     :Geometry(seed)
     {}
-  virtual ~GeometryFlat()
+
+  ~GeometryFlat()
     {}
 
   //! Height is just the z co-ordinate of a point.
-  virtual float height(const XYZ& p) const
+  float height(const XYZ& p) const
     {
       return p.z;
     }
   
   //! Setting a height is simply assigning to the z-coordinate.
-  virtual void set_height(XYZ& p,float v) const
+  void set_height(XYZ& p,float v) const
     {
       p.z=v;
     }
   
   //! The mid-point between two points is simply their average.
-  virtual const XYZ midpoint(const XYZ& v0,const XYZ& v1) const
+  const XYZ midpoint(const XYZ& v0,const XYZ& v1) const
     {
       return 0.5f*(v0+v1);
     }
 
   //! This doesn't really mean anything here, so return zero, which would correspond to the equator of a spherical geometry.
-  virtual float normalised_latitude(const XYZ&) const
+  float normalised_latitude(const XYZ&) const
     {
       return 0.0f;
     }
   
   //! Returns unit z vector.  (Up is the same everywhere in this geometry).
-  virtual const XYZ up(const XYZ&) const
+  const XYZ up(const XYZ&) const
     {
       return XYZ(0.0f,0.0f,1.0f);
     }
 
   //! Returns unit y vector.  (North is the same everywhere in this geometry).
-  virtual const XYZ north(const XYZ&) const
+  const XYZ north(const XYZ&) const
     {
       return XYZ(0.0f,1.0f,0.0f);
     }
 
   //! Returns unit x vector.  (East is the same everywhere in this geometry).
-  virtual const XYZ east(const XYZ&) const
+  const XYZ east(const XYZ&) const
     {
       return XYZ(1.0f,0.0f,0.0f);
     }
 
   //! Add a random variation to a point.
-  virtual const XYZ perturb(const XYZ& p,const XYZ& variation) const
+  const XYZ perturb(const XYZ& p,const XYZ& variation) const
     {
       // The correct thing to do would be to return p+RandomXYZInEllipsoid(_r01,variation);
       // however, this uses a variable number of random number calls which means small parameter changes can have big effects on generated terrain.
@@ -167,7 +170,7 @@ class GeometryFlat : public Geometry
     }
 
   //! Returns zero.  Heights are stored exactly once assigned so no need for non-zero epsilon.
-  virtual float epsilon() const
+  float epsilon() const
     {
       return 0.0f;  // No need 'cos heights are stored exactly
     }
@@ -189,24 +192,24 @@ class GeometrySpherical : public Geometry
     {}
 
   //! Destructor.
-  virtual ~GeometrySpherical()
+  ~GeometrySpherical()
     {}
 
   //! Height is relative to the surface of the unit radius sphere.
-  virtual float height(const XYZ& p) const
+  float height(const XYZ& p) const
     {
       return p.magnitude()-1.0f;
     }
 
   //! The height set is relative to the surface of the unit radius sphere.
-  virtual void set_height(XYZ& p,float h) const
+  void set_height(XYZ& p,float h) const
     {
       const float m=p.magnitude();
       p*=((1.0f+h)/m);
     }
 
   //! Don't just take the mid-point of the straight-line path through the sphere's surface: must work relative to the sphere's surface.
-  virtual const XYZ midpoint(const XYZ& v0,const XYZ& v1) const
+  const XYZ midpoint(const XYZ& v0,const XYZ& v1) const
     {
       const float h0=v0.magnitude();
       const float h1=v1.magnitude();
@@ -217,13 +220,13 @@ class GeometrySpherical : public Geometry
     } 
   
   //! Normalised latitude is 1.0 at the north pole, -1.0 at the south pole
-  virtual float normalised_latitude(const XYZ& p) const
+  float normalised_latitude(const XYZ& p) const
     {
       return p.z;
     }
 
   //! Up is normal to the sphere.
-  virtual const XYZ up(const XYZ& p) const
+  const XYZ up(const XYZ& p) const
     {
       return p.normalised();
     }
@@ -231,7 +234,7 @@ class GeometrySpherical : public Geometry
   //! North is perpendicular to "up" and "east"
   /*! \warning Returns zero vector at the poles
    */
-  virtual const XYZ north(const XYZ& p) const
+  const XYZ north(const XYZ& p) const
     {
       if (p.x==0.0f && p.y==0.0f)
 	return XYZ(0.0f,0.0f,0.0f);
@@ -242,7 +245,7 @@ class GeometrySpherical : public Geometry
   //! East is perpendicular to "up" and the polar vector.
   /*! \warning Returns zero vector at the poles
    */
-  virtual const XYZ east(const XYZ& p) const
+  const XYZ east(const XYZ& p) const
     {
       if (p.x==0.0f && p.y==0.0f)
 	return XYZ(0.0f,0.0f,0.0f);
@@ -253,7 +256,7 @@ class GeometrySpherical : public Geometry
   //! Add a random variation to a point.
   /*! In spherical geometry, the variation ellipsoid tracks the surface (ie z corresponds to up, north to y)
    */
-  virtual const XYZ perturb(const XYZ& p,const XYZ& variation) const
+  const XYZ perturb(const XYZ& p,const XYZ& variation) const
     {
       // The correct thing to do would be to use const RandomXYZInEllipsoid v(_r01,variation);
       // however, this uses a variable number of random number calls which means small parameter changes can have big effects on generated terrain.
@@ -264,24 +267,22 @@ class GeometrySpherical : public Geometry
     }
 
   //! This needs to return something small for the lake flooding algorithm to work.
-  virtual float epsilon() const
+  float epsilon() const
     {
       return 0.000001f;
     }
 
-  virtual void scan_convert
+  void scan_convert
     (
      const boost::array<XYZ,3>& v,
      const ScanConvertBackend&
      ) const;
 
   //! Return 2.0 for spheres because vertical range is +/- pi/2, horizontal is +/- pi
-  virtual uint scan_convert_image_aspect_ratio() const
+  uint scan_convert_image_aspect_ratio() const
     {
       return 2;
     }
-
 };
-
 
 #endif

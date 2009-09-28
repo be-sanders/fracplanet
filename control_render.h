@@ -32,24 +32,16 @@
 class ControlRender : public Control
 {
  private:
-  Q_OBJECT;
- protected:
-  //! The parameter set being controlled.
-  ParametersRender*const parameters;
 
-  QCheckBox* wireframe;
-  QCheckBox* display_list;
-  QCheckBox* joystick_mouse;
-  QSlider* ambient;
-  QSlider* illumination_azimuth;
-  QSlider* illumination_elevation;
+  Q_OBJECT;
 
  public:
 
   ControlRender(ParametersRender* param);
+
   ~ControlRender();
 
-  public slots:
+ public slots:
     
   void setWireframe(int v);
   void setDisplayList(int v);
@@ -62,6 +54,16 @@ class ControlRender : public Control
   void pickBackgroundColourHigh();
 
  private:
+
+  //! The parameter set being controlled.
+  ParametersRender*const parameters;
+
+  QCheckBox* wireframe;
+  QCheckBox* display_list;
+  QCheckBox* joystick_mouse;
+  QSlider* ambient;
+  QSlider* illumination_azimuth;
+  QSlider* illumination_elevation;
 
   QPushButton* background_colour_low_button;
   QPushButton* background_colour_high_button;

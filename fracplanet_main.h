@@ -41,8 +41,36 @@
 class FracplanetMain : public QWidget,public Progress
 {
  private:
+
   Q_OBJECT
-protected:
+
+ public:
+ 
+  FracplanetMain(QWidget* parent,QApplication* app,const boost::program_options::variables_map& opts,bool verbose);
+
+  virtual ~FracplanetMain();
+  
+  virtual void progress_start(uint target,const std::string&);
+  virtual void progress_stall(const std::string& reason);
+  virtual void progress_step(uint step);
+  virtual void progress_complete(const std::string&);
+  
+ public slots:
+    
+  //! Invoked by ControlTerrain to generate new TriangleMesh.
+  void regenerate();
+  
+  //! Invoked by ControlSave to save to file (POV-Ray format).
+  void save_pov();
+
+  //! Invoked by ControlSave to save to file (Blender format).
+  void save_blender();
+
+  //! Invoked by ControlSave to save to file as texture(s).
+  void save_texture();
+
+ private:
+ 
   QApplication*const application;
   
   //! Owned terrain.
@@ -74,29 +102,6 @@ protected:
   bool progress_was_stalled;
 
   bool startup;
-
- public:
-  FracplanetMain(QWidget* parent,QApplication* app,const boost::program_options::variables_map& opts,bool verbose);
-  virtual ~FracplanetMain();
-  
-  virtual void progress_start(uint target,const std::string&);
-  virtual void progress_stall(const std::string& reason);
-  virtual void progress_step(uint step);
-  virtual void progress_complete(const std::string&);
-  
- public slots:
-    
-  //! Invoked by ControlTerrain to generate new TriangleMesh.
-  void regenerate();
-  
-  //! Invoked by ControlSave to save to file (POV-Ray format).
-  void save_pov();
-
-  //! Invoked by ControlSave to save to file (Blender format).
-  void save_blender();
-
-  //! Invoked by ControlSave to save to file as texture(s).
-  void save_texture();
 };
 
 #endif
