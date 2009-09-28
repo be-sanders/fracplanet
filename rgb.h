@@ -141,10 +141,12 @@ class ByteRGBA : public RGBA<uchar>
   ByteRGBA()
     :RGBA<uchar>()
     {}
+
   //! Copy constructor.
   ByteRGBA(const RGBA<uchar>& c)
     :RGBA<uchar>(c)
     {}
+
   //! Componentwise initialization.
   ByteRGBA(uchar vr,uchar vg,uchar vb,uchar va)
     :RGBA<uchar>(vr,vg,vb,va)
@@ -199,6 +201,7 @@ public:
   std::ostream& write(std::ostream&) const;
 
   const std::string format_pov_rgb() const;
+
   const std::string format_pov_rgbf() const;
 };
 
@@ -259,6 +262,3 @@ inline std::ostream& operator<<(std::ostream& out,const FloatRGBA& c)
 }
 
 #endif
-
-
-

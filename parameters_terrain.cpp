@@ -47,3 +47,5 @@ ParametersTerrain::ParametersTerrain()
    ,colour_snow     (1.0,1.0,1.0,1.0)
 {}
 
+ParametersTerrain::~ParametersTerrain()
+{}

@@ -27,8 +27,9 @@
 
 #include "matrix33.h"
 
-TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(const ParametersRender* param,const std::vector<const TriangleMesh*>& m)
-  :mesh(m)
+TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(Notifiable& notify,const ParametersRender* param,const std::vector<const TriangleMesh*>& m)
+  :_notify(notify)
+  ,mesh(m)
   ,parameters(param)
   ,frame_number(0)
   ,width(0)
@@ -341,7 +342,7 @@ void TriangleMeshViewerDisplay::paintGL()
   while (frame_times.size()>30) frame_times.pop_front();
 
   // Only update frame time a couple of times a second to reduce flashing
-  if (parameters->notify && frame_time_reported.elapsed()>500)
+  if (frame_time_reported.elapsed()>500)
     {    
       const float average_time=std::accumulate
 	(
@@ -377,7 +378,7 @@ void TriangleMeshViewerDisplay::paintGL()
 	<< fps 
 	<< "\n";
     
-      parameters->notify->notify(report.str());
+      _notify.notify(report.str());
       frame_time_reported.restart();
     }
 }

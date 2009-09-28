@@ -77,8 +77,6 @@ FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app,const boost::pr
   viewer->layout()->setSpacing(2);
   viewer->layout()->setContentsMargins(2,2,2,2);
 
-  parameters_render.notify=viewer.get();
-
   if (verbose)
     std::cerr << "...TriangleMeshViewer created...\n";
 

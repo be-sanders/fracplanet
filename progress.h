@@ -35,27 +35,39 @@ class Progress
 
   virtual void progress_start(uint steps,const std::string& info)
     =0;
+
   // This will change the dialog text to indicate that progress is stalled for some reason.
   // It resets to the original text when progress_step is next stalled.
   // (Used by river generation).
   virtual void progress_stall(const std::string& reason)
     =0;
+
   virtual void progress_step(uint step)
     =0;
+
   virtual void progress_complete(const std::string& info)
     =0;
 };
 
+//! Helper class to facilitate driving progress bar
 class ProgressScope
 {
  public:
+
   ProgressScope(uint steps,const std::string& info,Progress* tgt);
+
   ~ProgressScope();
+
   void step();
+
  private:
+
   const uint _steps;
+
   const std::string _info;
+
   Progress*const _target;
+
   uint _step;
 };
 

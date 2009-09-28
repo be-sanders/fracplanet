@@ -45,7 +45,7 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
   QGridLayout*const grid=new QGridLayout();
   setLayout(grid);
 
-  display=new TriangleMeshViewerDisplay(param,mesh);
+  display=new TriangleMeshViewerDisplay(*this,param,mesh);
   grid->addWidget(display,0,0);
   grid->setRowStretch(0,1);
   grid->setColumnStretch(0,1);

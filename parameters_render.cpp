@@ -43,7 +43,6 @@ ParametersRender::ParametersRender(const boost::program_options::variables_map& 
   ,background_colour_low(0.25f,0.25f,1.0f,0.0f)
   ,background_colour_high(0.0f,0.0f,0.0f,0.0f)
   ,fps_target(60.0f)
-  ,notify(0)
 {}
 
 ParametersRender::~ParametersRender()

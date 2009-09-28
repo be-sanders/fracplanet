@@ -28,6 +28,7 @@
 class Random01
 {
 public:
+
   // Constructor.  Argument is seed value.
   Random01(uint s=0);
   
@@ -41,8 +42,11 @@ public:
     }
   
  private:
+
   boost::mt19937 _rng;
+
   boost::uniform_real<> _dist;
+
   boost::variate_generator<boost::mt19937,boost::uniform_real<> > _gen;
 };
 

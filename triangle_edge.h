@@ -32,14 +32,8 @@ NB There is no void constructor because the const vertices wouldn't be set.
  */
 class TriangleEdge
 {
- protected:
-  //! One vertex of the edge.  This should always be the lesser valued index.
-  const uint _vertex0;
-
-  //! The other vertex of the edge.  This should always be the greater valued index.
-  const uint _vertex1;
-
  public:
+
   //! Constructor.  Sorts arguments to ensure _vertex0<_vertex1
   TriangleEdge(uint v0,uint v1)
     :_vertex0(v0<v1 ? v0 : v1)
@@ -63,20 +57,29 @@ class TriangleEdge
   //! Accessor.
   uint vertex1() const
     {return _vertex1;}
+
+ protected:
+
+  //! One vertex of the edge.  This should always be the lesser valued index.
+  const uint _vertex0;
+
+  //! The other vertex of the edge.  This should always be the greater valued index.
+  const uint _vertex1;
 };
 
 //! Comparison operator, required to build ordered STL data-structures.
 inline bool operator<(const TriangleEdge& e0,const TriangleEdge& e1)
 {
-  return (
-	  e0.vertex0()<e1.vertex0()
-	  ||
-	  (
-	   e0.vertex0()==e1.vertex0()
-	   &&
-	   e0.vertex1()<e1.vertex1()
-	   )
-	  );
+  return 
+    (
+     e0.vertex0()<e1.vertex0()
+     ||
+     (
+      e0.vertex0()==e1.vertex0()
+      &&
+      e0.vertex1()<e1.vertex1()
+      )
+     );
 }
 
 #endif

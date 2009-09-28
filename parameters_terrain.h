@@ -36,6 +36,12 @@ class ParametersTerrain : public ParametersObject
 {
 public:
 
+  //! Constructor sets up some hopefully sensible defaults.
+  ParametersTerrain();
+
+  //! Destructor
+  ~ParametersTerrain();
+
   //! Numer of subdivisions (at the top level) which will be unperturbed
   uint subdivisions_unperturbed;
   
@@ -90,9 +96,6 @@ public:
   FloatRGBA colour_high;
   FloatRGBA colour_snow;
   //@}
-
-  //! Constructor sets up some hopefully sensible defaults.
-  ParametersTerrain();
 };
 
 #endif

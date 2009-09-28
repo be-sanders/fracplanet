@@ -23,6 +23,9 @@
 
 ParametersObject::ParametersObject()
   :object_type(ObjectTypePlanet)
-   ,seed(time(0))
-   ,subdivisions(5)
+  ,seed(time(0))
+  ,subdivisions(5)
+{}
+
+ParametersObject::~ParametersObject()
 {}

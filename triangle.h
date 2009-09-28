@@ -33,17 +33,18 @@
  */
 class Triangle
 {
- protected:
-  uint _vertex[3];
  public:
+
   Triangle()
     {}
+
   Triangle(uint v0,uint v1,uint v2)
     {
       _vertex[0]=v0;
       _vertex[1]=v1;
       _vertex[2]=v2;
     }
+
   Triangle(const Triangle& t)
     {
       _vertex[0]=t.vertex(0);
@@ -56,6 +57,10 @@ class Triangle
     {
       return _vertex[i];
     }
+
+ protected:
+
+  uint _vertex[3];
 };
 
 #endif

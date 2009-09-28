@@ -24,7 +24,6 @@
 #ifndef _parameters_render_h_
 #define _parameters_render_h_
 
-#include "notifiable.h"
 #include "rgb.h"
 
 class XYZ;
@@ -33,6 +32,13 @@ class XYZ;
 class ParametersRender
 {
 public:
+
+  //! Constructor.
+  ParametersRender(const boost::program_options::variables_map& opts);
+
+  //! Destructor.
+  ~ParametersRender();
+
   //! Flag selecting OpenGL wireframe rendering.
   bool wireframe;
 
@@ -60,15 +66,6 @@ public:
   //! Target frame rate
   float fps_target;
   
-  //! Place to send status reports
-  Notifiable* notify;
-
-  //! Constructor.
-  ParametersRender(const boost::program_options::variables_map& opts);
-
-  //! Destructor.
-  ~ParametersRender();
-
   //! Illumination direction computed from azimuth and elevation angles
   const XYZ illumination_direction() const;
 

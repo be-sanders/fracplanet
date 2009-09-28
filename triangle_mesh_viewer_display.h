@@ -24,6 +24,7 @@
 #ifndef _triangle_mesh_viewer_display_h_
 #define _triangle_mesh_viewer_display_h_
 
+#include "notifiable.h"
 #include "parameters_render.h"
 #include "random.h"
 #include "triangle_mesh.h"
@@ -38,7 +39,7 @@ class TriangleMeshViewerDisplay : public QGLWidget
  public:
 
   //! Constructor.
-  TriangleMeshViewerDisplay(const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
+  TriangleMeshViewerDisplay(Notifiable& notify,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
 
   //! Destructor
   ~TriangleMeshViewerDisplay();
@@ -61,6 +62,8 @@ class TriangleMeshViewerDisplay : public QGLWidget
   void draw_frame(const XYZ& p,const XYZ& l,const XYZ& u,float r,float t);
 
  private:
+
+  Notifiable& _notify;
 
   //! The meshes being displayed.
   /*! NB NOT owned here

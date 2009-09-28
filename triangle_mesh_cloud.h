@@ -35,39 +35,39 @@
  */
 class TriangleMeshCloud : virtual public TriangleMesh
 {
- protected:
-  void do_cloud(const ParametersCloud& parameters);
-
  public:
   
   //! Constructor.
   TriangleMeshCloud(Progress* progress);
 
   //! Destructor.
-  virtual ~TriangleMeshCloud();
+  ~TriangleMeshCloud();
 
   //! Dump mesh to file for POV-Ray
-  virtual void write_povray(std::ofstream& out,const ParametersSave&,const ParametersCloud&) const;
+  void write_povray(std::ofstream& out,const ParametersSave&,const ParametersCloud&) const;
 
   //! Dump mesh to file for Blender
-  virtual void write_blender(std::ofstream& out,const ParametersSave&,const ParametersCloud&,const std::string& mesh_name) const;
+  void write_blender(std::ofstream& out,const ParametersSave&,const ParametersCloud&,const std::string& mesh_name) const;
 
   //! Render the mesh onto a raster image.
   /*! The only interesting thing with clouds is their alpha, so render a greyscale.
   */
-  virtual void render_texture(Raster<uchar>&) const;
+  void render_texture(Raster<uchar>&) const;
+
+ protected:
+
+  void do_cloud(const ParametersCloud& parameters);
 };
 
 //! Class constructing specific case of a planetary cloud.
 class TriangleMeshCloudPlanet : public TriangleMeshSubdividedIcosahedron, virtual public TriangleMeshCloud
 {
- protected:
  public:
   //! Constructor.
   TriangleMeshCloudPlanet(const ParametersCloud& param,Progress* progress);
 
   //! Destructor.
-  virtual ~TriangleMeshCloudPlanet()
+  ~TriangleMeshCloudPlanet()
     {}
 };
 
@@ -79,10 +79,8 @@ class TriangleMeshCloudFlat : public TriangleMeshFlat, virtual public TriangleMe
   TriangleMeshCloudFlat(const ParametersCloud& parameters,Progress* progress);
 
   //! Destructor.
-  virtual ~TriangleMeshCloudFlat()
+  ~TriangleMeshCloudFlat()
     {}
 };
-
-
 
 #endif

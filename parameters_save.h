@@ -30,6 +30,13 @@ class ParametersRender;
 class ParametersSave
 {
  public:
+
+  //! Constructor.
+  ParametersSave(const ParametersRender*);
+
+  //! Destructor.
+  ~ParametersSave();
+
   //! Whether to emit an atmosphere object to POV file.
   bool pov_atmosphere;
 
@@ -47,12 +54,6 @@ class ParametersSave
 
   //! Save for blender needs access to some of these.
   const ParametersRender*const parameters_render;
-
-  //! Constructor.
-  ParametersSave(const ParametersRender*);
-
-  //! Destructor.
-  ~ParametersSave();
 };
 
 #endif

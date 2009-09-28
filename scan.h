@@ -33,14 +33,17 @@
 class ScanEdge
 {
  public:
+
   ScanEdge()
     {}
+
   ScanEdge(float vx,uint v0,uint v1,float l)
     :x(vx)
     ,vertex0(v0)
     ,vertex1(v1)
     ,lambda(l)
     {}
+
   float x;
   uint vertex0;
   uint vertex1;
@@ -52,8 +55,10 @@ class ScanConvertBackend;
 class ScanConverter
 {
  public:
+
   ScanConverter()
     {}
+
   virtual ~ScanConverter()
     {}
 
@@ -71,26 +76,35 @@ class ScanConverter
 class ScanConvertBackend
 {
  public:
+
   ScanConvertBackend(int w,int h)
     :_width(w)
     ,_height(h)
     {}
+
   virtual ~ScanConvertBackend()
     {}
+
   int width() const
     {
       return _width;
     }
+
   int height() const
     {
       return _height;
     }
+
   virtual void scan_convert_backend(uint y,const ScanEdge& edge0,const ScanEdge& edge1) const
     =0;
+
   virtual void subdivide(const boost::array<XYZ,3>&,const XYZ&,const ScanConverter&) const
     =0;
+
  private:
+
   const int _width;
+
   const int _height;
 };
 

@@ -22,6 +22,8 @@
 class SpinBox : public QSpinBox
 {
  public:
+
   SpinBox(int lo,int hi,int step);
+
   ~SpinBox();
 };
