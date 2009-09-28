@@ -35,7 +35,30 @@
  */
 class TriangleMeshTerrain : virtual public TriangleMesh
 {
+ public:
+
+  //! Constructor.
+  TriangleMeshTerrain(Progress* progress);
+
+  //! Destructor.
+  ~TriangleMeshTerrain();
+
+  //! Dump the model as a POV scene.
+  /*! Virtual method because spherical and flat terrains need e.g different sea-level planes and atmosphere layers.
+   */
+  virtual void write_povray(std::ofstream& out,const ParametersSave&,const ParametersTerrain&) const
+    =0;
+
+  //! Dump the model for Blender.
+  /*! Unlike write_povray there are no specialisations for flat/spherical terrain.
+   */
+  virtual void write_blender(std::ofstream& out,const ParametersSave&,const ParametersTerrain&,const std::string& mesh_name) const;
+
+  //! Render the mesh onto raster images (colour texture, and optionally 16-bit DEM and/or normal map).
+  virtual void render_texture(Raster<ByteRGBA>&,Raster<ushort>*,Raster<ByteRGBA>*,bool shading,float ambient,const XYZ& illumination) const;
+
  protected:
+
   //! Indices of the set of triangles with all vertices at sea-level
   std::set<uint> sea_triangles;  
 
@@ -62,58 +85,38 @@ class TriangleMeshTerrain : virtual public TriangleMesh
 
   //! Invokes all the above steps (sea-level through final colouring) on a pre-subdivided triangle mesh.
   void do_terrain(const ParametersTerrain& parameters);
-
- public:
-  //! Constructor.
-  TriangleMeshTerrain(Progress* progress);
-
-  //! Destructor.
-  virtual ~TriangleMeshTerrain();
-
-  //! Dump the model as a POV scene.
-  /*! Virtual method because spherical and flat terrains need e.g different sea-level planes and atmosphere layers.
-   */
-  virtual void write_povray(std::ofstream& out,const ParametersSave&,const ParametersTerrain&) const
-    =0;
-
-  //! Dump the model for Blender.
-  /*! Unlike write_povray there are no specialisations for flat/spherical terrain.
-   */
-  virtual void write_blender(std::ofstream& out,const ParametersSave&,const ParametersTerrain&,const std::string& mesh_name) const;
-
-  //! Render the mesh onto raster images (colour texture, and optionally 16-bit DEM and/or normal map).
-  virtual void render_texture(Raster<ByteRGBA>&,Raster<ushort>*,Raster<ByteRGBA>*,bool shading,float ambient,const XYZ& illumination) const;
 };
 
 //! Class constructing specific case of a planetary terrain.
 class TriangleMeshTerrainPlanet : public TriangleMeshSubdividedIcosahedron, virtual public TriangleMeshTerrain
 {
- protected:
  public:
+
   //! Constructor.
   TriangleMeshTerrainPlanet(const ParametersTerrain& param,Progress* progress);
 
   //! Destructor.
-  virtual ~TriangleMeshTerrainPlanet()
+  ~TriangleMeshTerrainPlanet()
     {}
 
   //! Specifc dump-to-povray for planet terrain.
-  virtual void write_povray(std::ofstream& out,const ParametersSave&,const ParametersTerrain&) const;
+  void write_povray(std::ofstream& out,const ParametersSave&,const ParametersTerrain&) const;
 };
 
 //! Class constructing specific case of a flat-base terrain area.
 class TriangleMeshTerrainFlat : public TriangleMeshFlat, virtual public TriangleMeshTerrain
 {
  public:
+  
   //! Constructor.
   TriangleMeshTerrainFlat(const ParametersTerrain& parameters,Progress* progress);
 
   //! Destructor.
-  virtual ~TriangleMeshTerrainFlat()
+  ~TriangleMeshTerrainFlat()
     {}
 
   //! Specifc dump-to-povray for flat terrain area.
-  virtual void write_povray(std::ofstream& out,const ParametersSave&,const ParametersTerrain&) const;
+  void write_povray(std::ofstream& out,const ParametersSave&,const ParametersTerrain&) const;
 };
 
 #endif

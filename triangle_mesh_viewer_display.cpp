@@ -49,6 +49,9 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(const ParametersRender* par
   gl_display_list_index=0;
 }
 
+TriangleMeshViewerDisplay::~TriangleMeshViewerDisplay()
+{}
+
 void TriangleMeshViewerDisplay::set_mesh(const std::vector<const TriangleMesh*>& m)
 {
   mesh=m;

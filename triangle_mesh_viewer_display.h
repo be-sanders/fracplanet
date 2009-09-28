@@ -32,11 +32,36 @@
 class TriangleMeshViewerDisplay : public QGLWidget
 {
  private:
+
   Q_OBJECT;
 
-  void check_for_gl_errors(const char*) const;
+ public:
+
+  //! Constructor.
+  TriangleMeshViewerDisplay(const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
+
+  //! Destructor
+  ~TriangleMeshViewerDisplay();
+
+  //! Set the mesh being rendered.
+  void set_mesh(const std::vector<const TriangleMesh*>& m);
+
+  //! Called to repaint GL area.
+  void paintGL();
+
+  //! Set up OpenGL.
+  void initializeGL();
+
+  //! Deal with resize.
+  void resizeGL(int w,int h);
   
- protected:
+  public slots:
+  
+  //! Called to redisplay scene
+  void draw_frame(const XYZ& p,const XYZ& l,const XYZ& u,float r,float t);
+
+ private:
+
   //! The meshes being displayed.
   /*! NB NOT owned here
    */
@@ -79,29 +104,10 @@ class TriangleMeshViewerDisplay : public QGLWidget
   float object_rotation;
   //@}
 
+  void check_for_gl_errors(const char*) const;
+  
   //! Compute background colour from render parameters and camera height
   const FloatRGBA background_colour() const;
-
- public:
-  //! Constructor.
-  TriangleMeshViewerDisplay(const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
-
-  //! Set the mesh being rendered.
-  void set_mesh(const std::vector<const TriangleMesh*>& m);
-
-  //! Called to repaint GL area.
-  virtual void paintGL();
-
-  //! Set up OpenGL.
-  virtual void initializeGL();
-
-  //! Deal with resize.
-  virtual void resizeGL(int w,int h);
-  
-  public slots:
-  
-  //! Called to redisplay scene
-  void draw_frame(const XYZ& p,const XYZ& l,const XYZ& u,float r,float t);
 };
 
 #endif

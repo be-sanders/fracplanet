@@ -48,51 +48,8 @@
 */
 class TriangleMesh
 {
- private:
-  //! Fake per-vertex alpha for Blender.
-  static ByteRGBA blender_alpha_workround(const ByteRGBA*,const ByteRGBA&);
-
- protected:
-  //! The vertices of this mesh.
-  std::vector<Vertex> _vertex;
-
-  //! The triangles of this mesh.
-  std::vector<Triangle> _triangle; 
-
-  //! The index of the triangle at which we switch to the alternate colour.
-  uint _triangle_switch_colour;
-
-  //! The emission level for vertices with the _emissive flag set
-  float _emissive;
-
-  //! Pointer to the progress object to which progress reports should be made.
-  Progress*const _progress;
-    
-  //! Accessor.
-  Vertex& vertex(uint i)
-    {
-      return _vertex[i];
-    }
-  
-  //! Accessor.
-  Triangle& triangle(uint i)
-    {
-      return _triangle[i];
-    }
-  
-  //! Convenience wrapper with null test.
-  void progress_start(uint steps,const std::string& info) const;
-
-  //! Convenience wrapper with null test.
-  void progress_stall(const std::string& reason) const;
-
-  //! Convenience wrapper with null test.
-  void progress_step(uint step) const;
-
-  //! Convenience wrapper with null test.
-  void progress_complete(const std::string& info) const;
-
 public:
+
   //! Constructor.
   TriangleMesh(Progress* progress);
   
@@ -235,21 +192,64 @@ public:
 
   //! Dump the mesh to the file in a form suitable for use by Blender.
   void write_blender(std::ofstream& out,const std::string& mesh_name,const FloatRGBA* fake_alpha) const;
+
+ protected:
+
+  //! The vertices of this mesh.
+  std::vector<Vertex> _vertex;
+
+  //! The triangles of this mesh.
+  std::vector<Triangle> _triangle; 
+
+  //! The index of the triangle at which we switch to the alternate colour.
+  uint _triangle_switch_colour;
+
+  //! The emission level for vertices with the _emissive flag set
+  float _emissive;
+
+  //! Pointer to the progress object to which progress reports should be made.
+  Progress*const _progress;
+    
+  //! Accessor.
+  Vertex& vertex(uint i)
+    {
+      return _vertex[i];
+    }
+  
+  //! Accessor.
+  Triangle& triangle(uint i)
+    {
+      return _triangle[i];
+    }
+  
+  //! Convenience wrapper with null test.
+  void progress_start(uint steps,const std::string& info) const;
+
+  //! Convenience wrapper with null test.
+  void progress_stall(const std::string& reason) const;
+
+  //! Convenience wrapper with null test.
+  void progress_step(uint step) const;
+
+  //! Convenience wrapper with null test.
+  void progress_complete(const std::string& info) const;
+
+ private:
+
+  //! Fake per-vertex alpha for Blender.
+  static ByteRGBA blender_alpha_workround(const ByteRGBA*,const ByteRGBA&);
 };
 
 //! A single triangle lying in the z-plane.
 class TriangleMeshFlat : virtual public TriangleMesh
 {
- protected:
-  //! The specifc geometry for this mesh.
-  GeometryFlat _geometry;
  public:
 
   //! Constructor.
   TriangleMeshFlat(ParametersObject::ObjectType obj,float z,uint seed,Progress* progress);
 
   //! Destructor.
-  virtual ~TriangleMeshFlat()
+  ~TriangleMeshFlat()
     {}  
 
   //! Returns the specific geometry.
@@ -257,21 +257,23 @@ class TriangleMeshFlat : virtual public TriangleMesh
     {
       return _geometry;
     }
+
+ private:
+
+  //! The specifc geometry for this mesh.
+  GeometryFlat _geometry;
 };
 
 //! An icosahedron.
 class TriangleMeshIcosahedron : virtual public TriangleMesh
 {
- protected:
-  //! The specifc geometry for this mesh.
-  GeometrySpherical _geometry;
  public:
 
   //! Constructor.
   TriangleMeshIcosahedron(float radius,uint seed,Progress* progress);
 
   //! Destructor.
-  virtual ~TriangleMeshIcosahedron()
+  ~TriangleMeshIcosahedron()
     {}
 
   //! Returns the specific geometry.
@@ -279,17 +281,23 @@ class TriangleMeshIcosahedron : virtual public TriangleMesh
     {
       return _geometry;
     }
+
+ private:
+
+  //! The specifc geometry for this mesh.
+  GeometrySpherical _geometry;
 };
 
 //! A subdivided icosahedron.
 class TriangleMeshSubdividedIcosahedron : public TriangleMeshIcosahedron
 {
  public:
+
   //! Constructor.
   TriangleMeshSubdividedIcosahedron(float radius,uint subdivisions,uint flat_subdivisions,uint seed,const XYZ& variation,Progress* progress);
 
   //! Destructor.
-  virtual ~TriangleMeshSubdividedIcosahedron()
+  ~TriangleMeshSubdividedIcosahedron()
     {}
 };
 
