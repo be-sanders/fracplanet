@@ -270,8 +270,3 @@ class RandomXYZSphereNormal : public XYZ
 };
 
 #endif
-
-
-
-
-

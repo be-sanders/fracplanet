@@ -37,19 +37,40 @@
 class TriangleMeshViewer : public QWidget,public Notifiable
 {
  private:
+
   Q_OBJECT;
 
- protected:
+ public:
+
+  //! Constructor.
+  TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
+
+  //! Destructor
+  ~TriangleMeshViewer();
+
+  //! Implement Notifiable mixin
+  void notify(const std::string&);
+
+  //! Sets the TriangleMesh to be displayed.
+  void set_mesh(const std::vector<const TriangleMesh*>& m);
+
+ public slots:
+
+  void fly();
+  void unfly();
+  
+  void set_tilt(int v);
+  void set_spinrate(int v);
+
+ private:
+
   //! Pointer to the rendering parameters.
   const ParametersRender* parameters;
 
   //! The actual rendering area.
   TriangleMeshViewerDisplay* display;
 
-  //! Timer for driving animation.
-  QTimer* timer;
-
-  //! Time for animation progress
+  //! Real time for computing how much to advance animation
   boost::scoped_ptr<QTime> clock;
 
   //! Record time last tick
@@ -57,19 +78,13 @@ class TriangleMeshViewer : public QWidget,public Notifiable
 
   //! Label and box around the elevation slider.
   QGroupBox* tilt_box;
-  
-  //! Elevation slider.
-  QSlider* tilt_slider;
 
+  //! Slider controlling tilt
+  QSlider* tilt_slider;
+  
   //! Container for fly and reset buttons
   QWidget* button_box;
   
-  //! Button to start flying.
-  QPushButton* fly_button;
-
-  //! Button to restore default orientation.
-  QPushButton* reset_button;
-
   //! Label and box arond the spin-rate slider.
   QGroupBox* spinrate_box;
 
@@ -113,20 +128,6 @@ class TriangleMeshViewer : public QWidget,public Notifiable
   //! Whether in fly mode
   bool fly_mode;
 
- public:
-  //! Constructor.
-  TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
-
-  //! Destructor
-  ~TriangleMeshViewer();
-
-  //! Implement Notifiable mixin
-  void notify(const std::string&);
-
-  //! Sets the TriangleMesh to be displayed.
-  void set_mesh(const std::vector<const TriangleMesh*>& m);
-
- protected:
   //! Interested in some key presses
   void keyPressEvent(QKeyEvent* e);
 
@@ -144,21 +145,12 @@ class TriangleMeshViewer : public QWidget,public Notifiable
 
   //! Interested in wheel for speed
   void wheelEvent(QWheelEvent* e);
-
- public slots:
-  void fly();
-  void unfly();
-  
-  void set_tilt(int v);
-  void set_spinrate(int v);
   
  private slots:
+
   void tick();
 
   void reset();
 };
 
 #endif
-
-
-

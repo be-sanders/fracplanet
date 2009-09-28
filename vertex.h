@@ -34,20 +34,6 @@
  */
 class Vertex
 {
- protected:
-  //! Position of vertex.
-  XYZ _position;
-
-  //! Normal at vertex (for smooth shading).
-  XYZ _normal;
-
-  //! Colours at vertex (could be a different colour in different triangles).
-  /*! By convention, in triangle meshes with emissive in use, we overload the alpha 
-    channel to indicate emissive (zero indicates emissive) shading is required.
-    Actual alpha or emissive are therefore mutually exclusive (anticipate alpha for clouds, emissive for ground).
-   */
-  ByteRGBA _colour[2];
-
  public:
 
   //! Constructor.  NB Almost no default values set.
@@ -116,7 +102,21 @@ class Vertex
       assert(c<2);
       _colour[c]=ByteRGBA(col);
     }
-};
 
+ private:
+
+  //! Position of vertex.
+  XYZ _position;
+
+  //! Normal at vertex (for smooth shading).
+  XYZ _normal;
+
+  //! Colours at vertex (could be a different colour in different triangles).
+  /*! By convention, in triangle meshes with emissive in use, we overload the alpha 
+    channel to indicate emissive (zero indicates emissive) shading is required.
+    Actual alpha or emissive are therefore mutually exclusive (anticipate alpha for clouds, emissive for ground).
+   */
+  ByteRGBA _colour[2];
+};
 
 #endif

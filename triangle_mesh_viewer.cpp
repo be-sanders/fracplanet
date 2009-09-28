@@ -80,11 +80,11 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
   button_box->setLayout(new QVBoxLayout());
   grid->addWidget(button_box,1,1);
 
-  fly_button=new QPushButton("Fly");
+  QPushButton*const fly_button=new QPushButton("Fly");
   button_box->layout()->addWidget(fly_button);
   fly_button->setToolTip("While flying:\nEsc will return to normal view.\nMouse controls pitch and yaw.\nLeft and right mouse buttons (or left/right arrow keys) control roll.\nMouse wheel (or up/down arrow keys) control speed.");
 
-  reset_button=new QPushButton("Reset");
+  QPushButton*const reset_button=new QPushButton("Reset");
   button_box->layout()->addWidget(reset_button);
   reset_button->setToolTip("Press to restore initial default orientation.");
 
@@ -116,7 +116,7 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
   clock->start();
   last_t=0;
 
-  timer=new QTimer(this);  
+  QTimer*const timer=new QTimer(this);  
   connect(timer,SIGNAL(timeout()),this,SLOT(tick()));
   timer->start(static_cast<int>(ceil(1000.0f/parameters->fps_target)));
   
