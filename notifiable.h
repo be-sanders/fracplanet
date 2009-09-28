@@ -28,6 +28,8 @@
 class Notifiable
 {
  public:
+  
+  Notifiable();
 
   virtual ~Notifiable();
 

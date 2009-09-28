@@ -32,6 +32,7 @@ class Progress;
 template <typename T> class PixelTraits
 {
  public:
+
   typedef T ComputeType;
   typedef T ScalarType;
   static ScalarType scalar(const T& v) {return v;}
@@ -40,6 +41,7 @@ template <typename T> class PixelTraits
 template<> class PixelTraits<uchar>
 {
  public:
+
   typedef float ComputeType;
   typedef uchar ScalarType;
   static ScalarType scalar(const uchar& v) {return v;}
@@ -48,6 +50,7 @@ template<> class PixelTraits<uchar>
 template<> class PixelTraits<ushort>
 {
  public:
+
   typedef float ComputeType;
   typedef ushort ScalarType;
   static ScalarType scalar(const ushort& v) {return v;}
@@ -56,6 +59,7 @@ template<> class PixelTraits<ushort>
 template<> class PixelTraits<ByteRGBA>
 {
  public:
+
   typedef FloatRGBA ComputeType;
   typedef float ScalarType;
   static ScalarType scalar(const ByteRGBA& v) {return (static_cast<float>(v.r)+static_cast<float>(v.g)+static_cast<float>(v.b))/3.0f;}
@@ -71,6 +75,7 @@ template<> class PixelTraits<ByteRGBA>
 template <typename T> class Raster
 {
  public:
+
   typedef typename PixelTraits<T>::ComputeType ComputeType;
   typedef typename PixelTraits<T>::ScalarType ScalarType;
 
@@ -84,6 +89,7 @@ template <typename T> class Raster
     ,_row_end(row_range(h),p)
     ,_const_row_end(row_range(h),p)
     {}
+
   virtual ~Raster()
     {}
 
@@ -91,38 +97,46 @@ template <typename T> class Raster
     {
       return _width;
     }
+
   uint height() const
     {
       return _height;
     }
+
   uint pitch() const
     {
       return _pitch;
     }
+
   bool contiguous() const
     {
       return (_width==_pitch);
     }
+
   uint contiguous_size() const
     {
       assert(contiguous());
       return _width*_height;
     }
+
   T* contiguous_begin()
     {
       assert(contiguous());
       return _data;
     }
+
   const T* contiguous_begin() const
     {
       assert(contiguous());
       return _data;
     }
+
   T* contiguous_end()
     {
       assert(contiguous());
       return _data+contiguous_size();
     }
+
   const T* contiguous_end() const
     {
       assert(contiguous());
@@ -133,15 +147,18 @@ template <typename T> class Raster
     {
       return _data+r*_pitch;
     }
+
   const T* row(uint r) const
     {
       return _data+r*_pitch;
     }
+
   boost::iterator_range<T*> row_range(uint r)
     {
       T*const it=row(r);
       return boost::iterator_range<T*>(it,it+_width);
     }
+
   boost::iterator_range<const T*> row_range(uint r) const
     {
       const T*const it=row(r);
@@ -151,26 +168,32 @@ template <typename T> class Raster
   class RowIterator : public std::iterator<std::forward_iterator_tag, boost::iterator_range<T*> >
     {
     public:
+
       RowIterator(const boost::iterator_range<T*>& row, uint p)
 	:_row(row)
 	,_pitch(p)
 	{}
+
       ~RowIterator()
 	{}
+
       RowIterator& operator=(const RowIterator& it)
 	{
 	  _row=it._row;
 	  assert(_pitch==it._pitch);
 	  return (*this);
 	}
+
       bool operator==(const RowIterator& it) const
 	{
 	  return _row.begin()==it._row.begin();
 	}
+
       bool operator!=(const RowIterator& it) const
 	{
 	  return _row.begin()!=it._row.begin();
 	}
+
       RowIterator& operator++()
 	{
 	  _row=boost::iterator_range<T*>
@@ -180,6 +203,7 @@ template <typename T> class Raster
 	     );
 	  return (*this);
 	}
+
       RowIterator operator++(int)
 	{
 	  RowIterator tmp(*this);
@@ -190,17 +214,21 @@ template <typename T> class Raster
 	     );
 	  return tmp;
 	}
+
       boost::iterator_range<T*>& operator*()
 	{
 	  return _row;
 	}
+
       boost::iterator_range<T*>* operator->()
 	{
 	  return &_row;
 	}
       
     private:
+
       boost::iterator_range<T*> _row;
+
       const uint _pitch;
     };
 
@@ -208,6 +236,7 @@ template <typename T> class Raster
     {
       return RowIterator(row_range(0),_pitch);
     }
+
   RowIterator row_end()
     {
       return _row_end;
@@ -216,26 +245,32 @@ template <typename T> class Raster
   class ConstRowIterator : public std::iterator<std::forward_iterator_tag, boost::iterator_range<const T*> >
     {
     public:
+
       ConstRowIterator(const boost::iterator_range<const T*>& row, uint p)
 	:_row(row)
 	,_pitch(p)
 	{}
+
       ~ConstRowIterator()
 	{}
+
       ConstRowIterator& operator=(const ConstRowIterator& it)
 	{
 	  _row=it._row;
 	  assert(_pitch==it._pitch);
 	  return (*this);
 	}
+
       bool operator==(const ConstRowIterator& it) const
 	{
 	  return _row.begin()==it._row.begin();
 	}
+
       bool operator!=(const ConstRowIterator& it) const
 	{
 	  return _row.begin()!=it._row.begin();
 	}
+
       ConstRowIterator& operator++()
 	{
 	  _row=boost::iterator_range<const T*>
@@ -245,6 +280,7 @@ template <typename T> class Raster
 	     );
 	  return (*this);
 	}
+
       ConstRowIterator operator++(int)
 	{
 	  ConstRowIterator tmp(*this);
@@ -255,17 +291,21 @@ template <typename T> class Raster
 	     );
 	  return tmp;
 	}
+
       boost::iterator_range<const T*>& operator*()
 	{
 	  return _row;
 	}
+
       boost::iterator_range<const T*>* operator->()
 	{
 	  return &_row;
 	}
       
     private:
+
       boost::iterator_range<const T*> _row;
+
       const uint _pitch;
     };
 
@@ -273,6 +313,7 @@ template <typename T> class Raster
     {
       return ConstRowIterator(row_range(0),_pitch);
     }
+
   ConstRowIterator row_end() const
     {
       return _const_row_end;
@@ -293,11 +334,17 @@ template <typename T> class Raster
   bool write_pgmfile(const std::string&,Progress*) const;
 
  private:
+
   const uint _width;
+
   const uint _height;
+
   const uint _pitch;
+
   T*const _data;
+
   const RowIterator _row_end;
+
   const ConstRowIterator _const_row_end;
 };
 
@@ -343,7 +390,6 @@ template <typename T> template <typename V> inline void Raster<T>::scan(uint y,f
     }
 }
 
-
 template <typename T> class ImageStorage
 {
  public:
@@ -368,5 +414,3 @@ template <typename T> class Image : private ImageStorage<T>, public Raster<T>, p
 };
 
 #endif
-
-

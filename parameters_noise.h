@@ -27,6 +27,13 @@
 class ParametersNoise
 {
  public:
+
+  //! Construct with given number of terms
+  ParametersNoise(uint);
+
+  //! Destructor
+  ~ParametersNoise();
+
   //! Number of Perlin noise terms
   uint terms;
 
@@ -38,9 +45,6 @@ class ParametersNoise
 
   //! Amplitude decay rate for successive terms
   float amplitude_decay;
-
-  //! Construct with given number of terms
-  ParametersNoise(uint);
 };
 
 #endif

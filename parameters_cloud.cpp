@@ -23,9 +23,11 @@
 
 ParametersCloud::ParametersCloud()
   :ParametersObject()
-   ,enabled(false)
-   ,cloudbase(0.1)
-   ,weather_systems(0)
-   ,colour(1.0,1.0,1.0,1.0)
+  ,enabled(false)
+  ,cloudbase(0.1)
+  ,weather_systems(0)
+  ,colour(1.0,1.0,1.0,1.0)
 {}
 
+ParametersCloud::~ParametersCloud()
+{}

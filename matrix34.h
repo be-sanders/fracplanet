@@ -34,6 +34,7 @@
 class Matrix34
 {
  public:
+
   //! 3x3 rotational component
   Matrix33 rotate;
 

@@ -30,6 +30,7 @@
 class Matrix33
 {
  public:
+
   //! Column vectors of matrix
   XYZ basis[3];
 
@@ -75,11 +76,13 @@ class Matrix33
     {
       return XYZ(basis[0].x,basis[1].x,basis[2].x);
     }
+
   //! Extract copy of the second row of matrix
   const XYZ row1() const
     {
       return XYZ(basis[0].y,basis[1].y,basis[2].y);
     }
+
   //! Extract copy of the third row of matrix
   const XYZ row2() const
     {
@@ -140,6 +143,7 @@ inline const Matrix33 operator*(const Matrix33& a,const Matrix33& b)
 class Matrix33Identity : public Matrix33
 {
  public:
+
   Matrix33Identity()
     {
       basis[0]=XYZ(1.0f,0.0f,0.0f);
@@ -151,6 +155,7 @@ class Matrix33Identity : public Matrix33
 class Matrix33RotateAboutX : public Matrix33
 {
  public:
+
   Matrix33RotateAboutX(float angle)
     {
       const float ca=cos(angle);
@@ -164,6 +169,7 @@ class Matrix33RotateAboutX : public Matrix33
 class Matrix33RotateAboutY : public Matrix33
 {
  public:
+
   Matrix33RotateAboutY(float angle)
     {
       const float ca=cos(angle);
@@ -177,6 +183,7 @@ class Matrix33RotateAboutY : public Matrix33
 class Matrix33RotateAboutZ : public Matrix33
 {
  public:
+
   Matrix33RotateAboutZ(float angle)
     {
       const float ca=cos(angle);
@@ -190,6 +197,7 @@ class Matrix33RotateAboutZ : public Matrix33
 class Matrix33RotateAboutAxis : public Matrix33
 {
  public:
+
   //! NB Axis must be normalized.
   Matrix33RotateAboutAxis(const XYZ& axis,float angle)
     {

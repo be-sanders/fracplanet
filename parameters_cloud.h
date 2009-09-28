@@ -33,6 +33,12 @@ class ParametersCloud : public ParametersObject
 {
 public:
 
+  //! Constructor sets up some hopefully sensible defaults.
+  ParametersCloud();
+
+  //! Destructor
+  ~ParametersCloud();
+
   //! Whether clouds will be generated.
   bool enabled;
     
@@ -45,8 +51,6 @@ public:
   //! Colour for clouds
   FloatRGBA colour;
 
-  //! Constructor sets up some hopefully sensible defaults.
-  ParametersCloud();
 };
 
 #endif

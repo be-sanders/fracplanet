@@ -21,6 +21,9 @@
 
 #include "notifiable.h"
 
+Notifiable::Notifiable()
+{}
+
 Notifiable::~Notifiable()
 {}
 

@@ -30,24 +30,30 @@
 class Noise
 {
 public:
+
   //! Constructor.
   Noise(uint seed);
+
+  //! Destructor.
+  ~Noise();
 
   //! Return noise value at a point.
   float operator()(const XYZ& p) const;
 
 protected:
+
   //! Number of table entries.
   enum {N=256};
   
-  int _p[N+N+2];
-  XYZ _g[N+N+2];
+  int _p[2*N+2];
+  XYZ _g[2*N+2];
 };
 
 //! Multiscale noise generator.
 class MultiscaleNoise
 {
  public:
+
   //! Constructor.
   MultiscaleNoise(uint seed,uint terms,float decay);
 
@@ -58,6 +64,7 @@ class MultiscaleNoise
   float operator()(const XYZ& p) const;
 
  private:
+
   //! Number of terms
   const uint _terms;
 

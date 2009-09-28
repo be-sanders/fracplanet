@@ -60,6 +60,9 @@ Noise::Noise(uint seed)
     }
 }
 
+Noise::~Noise()
+{}
+
 inline float value(const XYZ& q,float rx,float ry,float rz)
 {
   return rx*q.x+ry*q.y+rz*q.z;

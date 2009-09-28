@@ -27,3 +27,6 @@ ParametersNoise::ParametersNoise(uint n)
   ,amplitude(0.125)
   ,amplitude_decay(0.5)
 {}
+
+ParametersNoise::~ParametersNoise()
+{}
