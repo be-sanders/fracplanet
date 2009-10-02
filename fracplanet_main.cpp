@@ -256,7 +256,7 @@ void FracplanetMain::save_pov()
       const std::string filename_pov=filename_base+".pov";
       const std::string filename_inc=filename_base+".inc";
       
-      const uint last_separator=filename_inc.rfind('/');
+      const size_t last_separator=filename_inc.rfind('/');
       const std::string filename_inc_relative_to_pov=
 	"./"
 	+(

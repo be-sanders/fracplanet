@@ -21,10 +21,6 @@
 
 #include "triangle_mesh_viewer_display.h"
 
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
-#include <GL/glext.h>
-
 #include "matrix33.h"
 
 TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(Notifiable& notify,const ParametersRender* param,const std::vector<const TriangleMesh*>& m)

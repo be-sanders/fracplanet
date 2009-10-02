@@ -87,6 +87,10 @@ extern "C"
 #include <QVBoxLayout>
 #include <QWidget>
 
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h>
+#include <GL/glext.h>
+
 #include <QtOpenGL/qgl.h>
 
 #define stringify(S) __STRING(S)
