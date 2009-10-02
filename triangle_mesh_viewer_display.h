@@ -39,7 +39,7 @@ class TriangleMeshViewerDisplay : public QGLWidget
  public:
 
   //! Constructor.
-  TriangleMeshViewerDisplay(Notifiable& notify,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
+  TriangleMeshViewerDisplay(const QGLFormat& format,Notifiable& notify,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
 
   //! Destructor
   ~TriangleMeshViewerDisplay();

@@ -45,7 +45,13 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
   QGridLayout*const grid=new QGridLayout();
   setLayout(grid);
 
-  display=new TriangleMeshViewerDisplay(*this,param,mesh);
+  // Enable multisampling ?
+  // With Nvidia still need to set __GL_FSAA_MODE to something appropriate for card to see any effect.
+  // Maybe just helps to get a suitable format ?
+  QGLFormat gl_format;
+  gl_format.setSampleBuffers(true);
+
+  display=new TriangleMeshViewerDisplay(gl_format,*this,param,mesh);
   grid->addWidget(display,0,0);
   grid->setRowStretch(0,1);
   grid->setColumnStretch(0,1);

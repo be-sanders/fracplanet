@@ -1,5 +1,9 @@
 - stopping flying should hold position and allow spin and tilt manipulation
   (have planet rotate under current viewpoint)
+- cancel button on progress bar
+- plate tectonics simulation:
+  Use zero contour of multiscale noise field to modulate heights (gives some boundary-like features).
+  Maybe another field to modulate activity level there (subduction vs collision; fall vs raise terrain?)
 - roll mktgz improvements over to evolvotron
 - Get models into K3D somehow 
   Generating python for K3D's idea of a mesh_source script seems most promising.
