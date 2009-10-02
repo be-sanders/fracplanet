@@ -43,7 +43,6 @@ cp ../${TARBALL} ${TARBALLORIG}
 tar xvfz ${TARBALLORIG}
 mv ${PROJECT} ${PROJECT}-${VER}
 cd ${PROJECT}-${VER}
-#mv CHANGES changelog          # As per policy manual. Not needed now use NEWS ?  Or need to copy NEWS ?
 sed -i "s/${VER}/${VER}-${REV}/g" VERSION
 
 mkdir debian
@@ -67,7 +66,7 @@ Home-Page: <URL:http://www.bottlenose.demon.co.uk/share/fracplanet>
 Description: Fractal terrain generator
 Copyright: GPL
  Copyright 2009 Tim Day
-Build-Depends: qt4-qmake,libqt4-dev,libqt4-opengl-dev,libboost-dev,libboost-program-options-dev
+Build-Depends: qt4-qmake,libqt4-dev,libqt4-opengl-dev,libboost1.35-dev,libboost-program-options1.35-dev
 Build: sh
  export QTDIR=/usr/share/qt4
  # Note: yada install deals with DEB_BUILD_OPTIONS 'nostrip'
@@ -92,9 +91,9 @@ Description: Fractal terrain generator
 Install: sh
  yada install -bin fracplanet
  yada install -doc fracplanet.htm fracplanet.css
- yada install -doc BUGS TODO THANKS changelog
+ yada install -doc BUGS TODO NEWS THANKS
  yada install -man man/man1/fracplanet.1
-Menu: ?package(fracplanet): needs="x11" section="Applicationss/Graphics" title="Fracplanet" command="/usr/bin/fracplanet" longtitle="Fractal terrain generator"
+Menu: ?package(fracplanet): needs="x11" section="Applications/Graphics" title="Fracplanet" command="/usr/bin/fracplanet" longtitle="Fractal terrain generator"
 EOF
 
 yada rebuild

@@ -2,6 +2,7 @@ From release 0.3.3:
  - Bump version number to 0.4.0 (0.4.0dev while under development)
  - Migrate sourceforge repository to svn
  - Port to Qt4
+ - Enable multisampling in OpenGL window
  - Precompiled headers
  - CHANGES renamed to NEWS
  - License boilerplate managed by "headache"

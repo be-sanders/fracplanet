@@ -24,7 +24,7 @@
 #include "matrix33.h"
 
 TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(const QGLFormat& format,Notifiable& notify,const ParametersRender* param,const std::vector<const TriangleMesh*>& m)
-  :QGLWidget()
+  :QGLWidget(format)
   ,_notify(notify)
   ,mesh(m)
   ,parameters(param)

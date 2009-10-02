@@ -45,9 +45,7 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
   QGridLayout*const grid=new QGridLayout();
   setLayout(grid);
 
-  // Enable multisampling ?
-  // With Nvidia still need to set __GL_FSAA_MODE to something appropriate for card to see any effect.
-  // Maybe just helps to get a suitable format ?
+  //! \todo Is there any good reason not to enable multisampling by default ?
   QGLFormat gl_format;
   gl_format.setSampleBuffers(true);
 
