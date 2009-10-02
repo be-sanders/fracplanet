@@ -18,7 +18,8 @@
 <h2>Introduction</h2>
 
 <p>
-  Fracplanet is an application to generate random planets and terrain with oceans, mountains, icecaps and rivers.
+  Fracplanet is an application to generate simple random planets and terrain 
+  with oceans, mountains, icecaps and rivers.
   Parameters are specified interactively and the results displayed using OpenGL.
   The generated objects can be exported in formats directly usable by POV-Ray or Blender,
   or as more generally useful texture images.
@@ -164,7 +165,6 @@
 </dl>
 
 <h4>Snow</h4>
-
 
 <dl>
   <dt>Snowline at equator</dt>
@@ -508,8 +508,8 @@
   Note that in the latter case the bottom half of the slider places the camera below base ground level/sea level, 
   which results in little being seen due to back-face culling.
   The &quot;spin rate&quot; controls the rate at which the object is rotated.
-  The display window update rate is clamped to 75Hz, although this will typically
-  only be reached at the lowest levels of subdivision.
+  The display window update rate is clamped to 60Hz, although this will typically
+  only be reached at the lower levels of subdivision.
 </p>
 
 <p>
@@ -545,7 +545,7 @@
 </p>
 
 <p>
-  (The author currently uses POV-Ray 3.5).
+  (The author currently uses POV-Ray 3.6).
 </p>
 
 <a name="blender"><h3>Blender</h3></a>
@@ -553,6 +553,9 @@
 <p>
   The easiest way to load mesh saved for blender is with blender's <code>-P &lt;filename.py&gt;</code>
   command line argument on startup.
+  Note that you'll have to remove blender's default initially created object to see much of the fracplanet object.
+  Also, its shading won't look much like it did in fracplanet until you change blender's viewport shading mode to
+  something better than the &quot;solid&quot; default.
 </p>
 
 <p>
@@ -597,7 +600,7 @@
 </p>
 
 <p>
-  (The author currently uses Blender 2.36).
+  (The author currently uses Blender 2.46).
 </p>
 
 <a name="texture"><h3>Texture Maps</h3></a>
@@ -620,7 +623,7 @@
 
 <p>
   As a simple demonstration of how to use a saved planet texture, here's how to use it as a spheremap in POV-Ray.
-  Save an <em>unshaded</em> <code>spheremap.ppm</code> from fracplanet, and do:<br/>
+  Save an unshaded <code>spheremap.ppm</code> from fracplanet, and do:<br/>
   <code>
     convert spheremap.ppm spheremap.png<br/>
     convert -depth 8 spheremap_dem.pgm spheremap_dem.png<br/>

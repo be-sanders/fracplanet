@@ -4,7 +4,8 @@
 - plate tectonics simulation:
   Use zero contour of multiscale noise field to modulate heights (gives some boundary-like features).
   Maybe another field to modulate activity level there (subduction vs collision; fall vs raise terrain?)
-- roll mktgz improvements over to evolvotron
+- coding style is a mess of _-prefixed and not prefixed members.
+  Cleanup should include stronger use of accessors.
 - Get models into K3D somehow 
   Generating python for K3D's idea of a mesh_source script seems most promising.
   Does seem to allow setting of vertex properties.

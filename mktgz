@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 # Execute this to package up fracplanet as a .tar.gz.
 # This is the script used to build the tarballs released on sourceforge
@@ -20,7 +20,7 @@ FILES_CPP=`find ${DIR} ${PRUNE} -o -name '*.cpp' -print`
 
 FILES="$FILES_MISC $FILES_PRO $FILES_MAN $FILES_H $FILES_C $FILES_CPP"
 
-tar cvfz ${DIR}/fracplanet.tar.gz $FILES
+tar --transform "s:^${DIR}/:fracplanet/:" -cz -f ${DIR}/fracplanet.tar.gz $FILES
 
 echo "***"
 echo "*** Suggestion:"

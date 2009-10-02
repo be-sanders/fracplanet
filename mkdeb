@@ -43,7 +43,7 @@ cp ../${TARBALL} ${TARBALLORIG}
 tar xvfz ${TARBALLORIG}
 mv ${PROJECT} ${PROJECT}-${VER}
 cd ${PROJECT}-${VER}
-mv CHANGES changelog          # As per policy manual
+#mv CHANGES changelog          # As per policy manual. Not needed now use NEWS ?  Or need to copy NEWS ?
 sed -i "s/${VER}/${VER}-${REV}/g" VERSION
 
 mkdir debian
@@ -66,15 +66,15 @@ Upstream-Source: <URL:http://sourceforge.net/projects/fracplanet/index.htm>
 Home-Page: <URL:http://www.bottlenose.demon.co.uk/share/fracplanet>
 Description: Fractal terrain generator
 Copyright: GPL
- Copyright 2006 Tim Day
-Build-Depends: qt3-dev-tools,libqt3-headers,libqt3-mt-dev,libqt3-mt,xsltproc,libboost-dev,libboost-program-options-dev
+ Copyright 2009 Tim Day
+Build-Depends: qt4-qmake,libqt4-dev,libqt4-opengl-dev,libboost-dev,libboost-program-options-dev
 Build: sh
- export QTDIR=/usr/share/qt3
+ export QTDIR=/usr/share/qt4
  # Note: yada install deals with DEB_BUILD_OPTIONS 'nostrip'
  if [ "${DEB_BUILD_OPTIONS#*noopt}" != "$DEB_BUILD_OPTIONS" ]; then
    ./configure "CONFIG -= release" "CONFIG += debug"
  else
-   ./configure # No noticeable advantage in overriding qt optimisation options
+   ./configure # No noticeable advantage in overriding default qt optimisation options
  fi
  make
 Clean: sh
@@ -88,13 +88,13 @@ Description: Fractal terrain generator
  Fracplanet generates random planets and terrain with oceans, 
  mountains, icecaps and rivers.  Parameters are specified interactively 
  and the results displayed using OpenGL.  The generated objects can be
- exported for Pov-Ray or Blender.
+ exported as geometry for Pov-Ray or Blender, or as textures.
 Install: sh
  yada install -bin fracplanet
  yada install -doc fracplanet.htm fracplanet.css
  yada install -doc BUGS TODO THANKS changelog
  yada install -man man/man1/fracplanet.1
-Menu: ?package(fracplanet): needs="x11" section="Apps/Graphics" title="Fracplanet" command="/usr/bin/fracplanet"
+Menu: ?package(fracplanet): needs="x11" section="Applicationss/Graphics" title="Fracplanet" command="/usr/bin/fracplanet" longtitle="Fractal terrain generator"
 EOF
 
 yada rebuild
