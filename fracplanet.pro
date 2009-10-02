@@ -4,86 +4,10 @@ TEMPLATE = app
 CONFIG+= qt stl precompile_header exceptions release  # debug/release
 QT += opengl
 
-# Input files
-
-
 PRECOMPILED_HEADER = precompiled.h
 
-HEADERS += \
-           common.h \
-           control.h \
-           control_about.h \
-           control_render.h \
-           control_save.h \
-           control_terrain.h \
-           dialog_documentation.h \
-           fracplanet_main.h \
-           geometry.h \
-           image.h \
-           license.h \
-           matrix33.h \
-           matrix34.h \
-           noise.h \
-           notifiable.h \
-           parameters_cloud.h \
-           parameters_noise.h \
-           parameters_object.h \
-           parameters_render.h \
-           parameters_save.h \
-           parameters_terrain.h \
-           progress.h \
-           random.h \
-           rgb.h \
-           scan.h \
-           spinbox.h \
-           triangle.h \
-           triangle_mesh.h \
-           triangle_mesh_cloud.h \
-           triangle_mesh_terrain.h \
-           triangle_mesh_viewer.h \
-           triangle_mesh_viewer_display.h \
-           vertex.h \
-           triangle_edge.h \
-           xyz.h
-
-SOURCES += \
-           common.cpp \
-           control.cpp \
-           control_about.cpp \
-           control_render.cpp \
-           control_save.cpp \
-           control_terrain.cpp \
-           dialog_documentation.cpp \
-           fracplanet.cpp \
-           fracplanet_main.cpp \
-           geometry.cpp \
-           image.cpp \
-           license.cpp \
-           matrix33.cpp \
-           matrix34.cpp \
-           noise.cpp \
-           notifiable.cpp \
-           parameters_cloud.cpp \
-           parameters_noise.cpp \
-           parameters_object.cpp \
-           parameters_render.cpp \
-           parameters_save.cpp \
-           parameters_terrain.cpp \
-           progress.cpp \
-           random.cpp \
-           rgb.cpp \
-           scan.cpp \
-           spinbox.cpp \
-           triangle.cpp \
-           triangle_mesh.cpp \
-           triangle_mesh_cloud.cpp \
-           triangle_mesh_terrain.cpp \
-           triangle_mesh_viewer.cpp \
-           triangle_mesh_viewer_display.cpp \
-           vertex.cpp \
-           triangle_edge.cpp \
-           xyz.cpp
-
+HEADERS += $$system(ls *.h)
+SOURCES += $$system(ls *.cpp)
 LIBS += -lboost_program_options
 
 DEFINES += QT_DLL
