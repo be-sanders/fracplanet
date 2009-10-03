@@ -47,7 +47,7 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
 
   //! \todo Is there any good reason not to enable multisampling by default ?
   QGLFormat gl_format;
-  gl_format.setSampleBuffers(true);
+  //gl_format.setSampleBuffers(true);
 
   display=new TriangleMeshViewerDisplay(gl_format,*this,param,mesh);
   grid->addWidget(display,0,0);

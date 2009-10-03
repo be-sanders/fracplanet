@@ -74,6 +74,7 @@ class TriangleMeshViewerDisplay : public QGLWidget
   const ParametersRender* parameters;
 
   //! GL display list index
+  /*! Zero is not a valid value according to red book, so use zero to designate unset */
   uint gl_display_list_index;
 
   //! Frame count.

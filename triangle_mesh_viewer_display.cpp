@@ -28,6 +28,7 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(const QGLFormat& format,Not
   ,_notify(notify)
   ,mesh(m)
   ,parameters(param)
+  ,gl_display_list_index(0)
   ,frame_number(0)
   ,width(0)
   ,height(0)
@@ -42,9 +43,6 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(const QGLFormat& format,Not
 
   frame_time.start();
   frame_time_reported.start();
-
-  // Zero is not a valid value according to red book, so use it to designate unset
-  gl_display_list_index=0;
 }
 
 TriangleMeshViewerDisplay::~TriangleMeshViewerDisplay()
@@ -54,7 +52,7 @@ void TriangleMeshViewerDisplay::set_mesh(const std::vector<const TriangleMesh*>&
 {
   mesh=m;
 
-  // If there is a display list allocated for the current mesh, delete it.
+  // If there is a display list allocated for the previous mesh, delete it.
   if (gl_display_list_index!=0)
     {
       glDeleteLists(gl_display_list_index,1);
@@ -160,6 +158,7 @@ void TriangleMeshViewerDisplay::paintGL()
       if (building_display_list)
 	{
 	  gl_display_list_index=glGenLists(1);
+	  assert(gl_display_list_index!=0);
 	  glNewList(gl_display_list_index,GL_COMPILE_AND_EXECUTE);
 	  std::cerr << "Building display list...";
 	}
@@ -325,9 +324,9 @@ void TriangleMeshViewerDisplay::paintGL()
 	}
     }
 
-  glFlush();
-
   check_for_gl_errors("TriangleMeshViewerDisplay::paintGL");
+
+  glFlush();
 
   // Get time taken since last frame
   const uint dt=frame_time.restart();
@@ -335,12 +334,13 @@ void TriangleMeshViewerDisplay::paintGL()
   // Save it in the queue
   frame_times.push_back(dt);
 
-  // Keep last 10 frame times
+  // Keep last 30 frame times
   while (frame_times.size()>30) frame_times.pop_front();
 
   // Only update frame time a couple of times a second to reduce flashing
   if (frame_time_reported.elapsed()>500)
     {    
+      //! \todo Frame time calculation is wrong... need -1 correction to number of frames
       const float average_time=std::accumulate
 	(
 	 frame_times.begin(),
@@ -387,6 +387,7 @@ void TriangleMeshViewerDisplay::initializeGL()
 
   std::cerr << "Double buffering " << (doubleBuffer() ? "ON" : "OFF") << "\n";
   std::cerr << "Auto Buffer Swap " << (autoBufferSwap() ? "ON" : "OFF") << "\n";
+  std::cerr << "Multisampling    " << (format().sampleBuffers() ? "ON" : "OFF") << "\n";
 
   // Switch depth-buffering on
   glEnable(GL_DEPTH_TEST);
