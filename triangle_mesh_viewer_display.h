@@ -47,6 +47,8 @@ class TriangleMeshViewerDisplay : public QGLWidget
   //! Set the mesh being rendered.
   void set_mesh(const std::vector<const TriangleMesh*>& m);
 
+ protected:
+
   //! Called to repaint GL area.
   void paintGL();
 
@@ -56,7 +58,7 @@ class TriangleMeshViewerDisplay : public QGLWidget
   //! Deal with resize.
   void resizeGL(int w,int h);
   
-  public slots:
+ public slots:
   
   //! Called to redisplay scene
   void draw_frame(const XYZ& p,const XYZ& l,const XYZ& u,float r,float t);

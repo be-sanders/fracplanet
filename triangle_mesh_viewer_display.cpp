@@ -107,6 +107,8 @@ void TriangleMeshViewerDisplay::check_for_gl_errors(const char* where) const
 
 void TriangleMeshViewerDisplay::paintGL()
 {
+  assert(isValid());
+
   const FloatRGBA bg=background_colour();
   glClearColor(bg.r,bg.g,bg.b,1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
