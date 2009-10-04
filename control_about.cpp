@@ -24,7 +24,7 @@
 #include "license.h"
 #include "dialog_documentation.h"
 
-ControlAbout::ControlAbout()
+ControlAbout::ControlAbout(QApplication* app)
   :Control()
 {
   QLabel*const label0=new QLabel("\nFracplanet - version "+QString(stringify(FRACPLANET_VERSION)));
@@ -47,7 +47,7 @@ ControlAbout::ControlAbout()
   layout()->addWidget(button_docs);
   connect(button_docs,SIGNAL(clicked()),dialog_docs,SLOT(show()));
 
-  QLabel*const label2=new QLabel("License:");
+  QLabel*const label2=new QLabel("Fracplanet License:");
   layout()->addWidget(label2);
   label2->setAlignment(Qt::AlignHCenter|label0->alignment());
 
@@ -55,4 +55,8 @@ ControlAbout::ControlAbout()
   layout()->addWidget(license);
   license->setReadOnly(true);
   license->setText(license_string);
+ 
+  QPushButton*const button_about_qt=new QPushButton("About Qt");
+  layout()->addWidget(button_about_qt);
+  connect(button_about_qt,SIGNAL(clicked()),app,SLOT(aboutQt()));
 }

@@ -180,7 +180,7 @@ void TriangleMeshViewerDisplay::paintGL()
 	  gl_display_list_index=glGenLists(1);
 	  assert(gl_display_list_index!=0);
 	  glNewList(gl_display_list_index,GL_COMPILE_AND_EXECUTE);
-	  std::cerr << "Building display list...";
+	  if (_verbose) std::cerr << "Building display list...";
 	}
 
       GLfloat default_material_white[3]={1.0f,1.0f,1.0f};
@@ -235,9 +235,9 @@ void TriangleMeshViewerDisplay::paintGL()
 		  // Builds on some platforms (ie Ubuntu) seem to get in a mess if you render >1k primitives
 		  // (3k vertices).  NB This is a problem in the client; not the xserver.
 		  // Debian (Sarge or Etch) has no problems with unlimited batches.
-		  // Note it's simply the batch size; there doesn't seem to be any problem with the 10Ks or vertices.
+		  // Note it's simply the batch size; there doesn't seem to be any problem with the 10Ks of vertices.
 		  // Since the limited batch size doesn't seem to hurt working implementations we just use it everywhere.
-		  const uint batch_size=1024;
+		  const uint batch_size=1000;
 
 		  // Draw the colour-zero triangles
 		  for (uint t=0;t<it->triangles_of_colour0();t+=batch_size)
@@ -251,7 +251,7 @@ void TriangleMeshViewerDisplay::paintGL()
 			 GL_UNSIGNED_INT,
 			 &(it->triangle(t).vertex(0))
 			 );
-		      if (building_display_list)
+		      if (_verbose && building_display_list)
 			{
 			  std::cerr << ".";
 			}
@@ -271,7 +271,7 @@ void TriangleMeshViewerDisplay::paintGL()
 			 GL_UNSIGNED_INT,
 			 &(it->triangle(t).vertex(0))
 			 );
-		      if (building_display_list)
+		      if (_verbose && building_display_list)
 			{
 			  std::cerr << ".";
 			}
@@ -294,7 +294,7 @@ void TriangleMeshViewerDisplay::paintGL()
 		  glBegin(GL_TRIANGLES);
 		  for (unsigned int t=0;t<it->triangles();t++)
 		    {
-		      if (building_display_list && (t&0x3ff) == 0)
+		      if (_verbose && building_display_list && (t&0x3ff) == 0)
 			{
 			  std::cerr << ".";
 			}
@@ -340,7 +340,10 @@ void TriangleMeshViewerDisplay::paintGL()
       if (building_display_list)
 	{
 	  glEndList();
-	  std::cerr << "\n...built display list\n";
+	  if (_verbose)
+	    {
+	      std::cerr << "\n...built display list\n";
+	    }
 	}
     }
 
@@ -435,7 +438,8 @@ void TriangleMeshViewerDisplay::resizeGL(int w,int h)
   width=w;
   height=h;
 
-  std::cerr << "Resized to " << width << "x" << height << std::endl;
+  if (_verbose)
+    std::cerr << "QGLWidget resized to " << width << "x" << height << std::endl;
 
   glViewport(0,0,static_cast<GLint>(w),static_cast<GLint>(h));
   glMatrixMode(GL_PROJECTION);

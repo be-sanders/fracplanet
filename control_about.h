@@ -35,7 +35,7 @@ class ControlAbout : public Control
 
  public:
 
-  ControlAbout();
+  ControlAbout(QApplication*);
 };
 
 #endif

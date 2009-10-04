@@ -47,9 +47,8 @@ class FracplanetMain : public QWidget,public Progress
  public:
  
   FracplanetMain(QWidget* parent,QApplication* app,const boost::program_options::variables_map& opts,bool verbose);
+  ~FracplanetMain();
 
-  virtual ~FracplanetMain();
-  
   virtual void progress_start(uint target,const std::string&);
   virtual void progress_stall(const std::string& reason);
   virtual void progress_step(uint step);

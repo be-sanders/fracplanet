@@ -285,27 +285,77 @@
 <h4>Other &quot;Create&quot; tab controls</h4>  
   
 <dl>
-  <dt>Regenerate</dt>
+  <dt>Generate</dt>
   <dd>
     Click this button to regenerate the planet/terrain area <em>without changing the random seeds</em>.
   </dd>
-  <dt>Regenerate with new rivers seed</dt>
+  <dt>...new rivers seed</dt>
   <dd>
     Click this button to increment the river generation seed by one and regenerate.
     This gets you the same landscape with a different river network.
   </dd>
-  <dt>Regenerate with new terrain seed</dt>
+  <dt>...new terrain seed</dt>
   <dd>
     Click this button increment the terrain seed by one and regenerate.
     This will get you a completely different terrain.
     (The river network will be different too, although it's seed won't have changed, as the rivers flow over the tarrain differently).
   </dd>
-  <dt>Regenerate with new clouds seed</dt>
+  <dt>...new clouds seed</dt>
   <dd>
     Click this button increment the clouds seed by one and regenerate.
     This will get you a different cloud layer.
   </dd>
 </dl>  
+
+<h3>Render tab</h3>
+
+<p>
+  Options controlling OpenGL rendering appear on this tab.
+  Generally none of these makes any difference to the state of the rendered mesh.
+  However, some of the parameters do affect some export methods; see the individual item descriptions.
+</p>
+
+<dl>
+  <dt>Wireframe checkbox</dt>
+  <dd>
+    Selects OpenGL wireframe rendering mode.
+  </dd>
+  <dt>Joystick mouse checkbox</dt>
+  <dd>
+    This simply affects whether, when in flight mode, pulling the mouse down the screen flies you in that
+    direction, or whether it's more like an aircraft joystick and pitches you up instead.
+  </dd>
+  <dt>Display list</dt>
+  <dd>
+    Selects OpenGL display list rendering.
+    Display list rendering is generally but not always faster
+    (depends on your OpenGL implementation and graphics drivers).
+    The main reason display list rendering is not enabled by default is that
+    the application may pause for a long time while OpenGL processes the
+    list when it is first rendered; the amount of additional memory
+    consumed by the display list is also a problem for very large meshes.  
+  </dd>
+  <dt>Background colour</dt>
+  <dd>
+    Colour picking buttons to control the colour used for the viewing area background.
+    The low altitude colour is also used when exporting a cloud mesh to blender.
+  </dd>
+  <dt>Ambient</dt>
+  <dd>
+    The amount of ambient illumination.
+    This is also used when exporting shaded textures.
+  </dd>
+  <dt>Illumination azimuth and elevation</dt>
+  <dd>
+    Control the illumination direction.
+    These are also used when exporting shaded textures.
+  </dd>
+  <dt>Status</dt>
+  <dd>
+    A text field displaying information about the rendered mesh,
+    and rendering performance (recent average frames-per-second).
+  </dd>
+</dl>
 
 <h3>Save tab</h3>
 
@@ -440,61 +490,13 @@
   There are additional comments exported texture usage <a href="#texture">below</a>.
 </p>
 
-<h3>Render tab</h3>
-
-<p>
-  Options controlling OpenGL rendering appear on this tab.
-  Generally none of these makes any difference to the state of the rendered mesh.
-  However, some of the parameters do affect some export methods; see the individual item descriptions.
-</p>
-
-<dl>
-  <dt>Wireframe checkbox</dt>
-  <dd>
-    Selects OpenGL wireframe rendering mode.
-  </dd>
-  <dt>Joystick mouse checkbox</dt>
-  <dd>
-    This simply affects whether, when in flight mode, pulling the mouse down the screen flies you in that
-    direction, or whether it's more like an aircraft joystick and pitches you up instead.
-  </dd>
-  <dt>Display list</dt>
-  <dd>
-    Selects OpenGL display list rendering.
-    Display list rendering is generally but not always faster
-    (depends on your OpenGL implementation and graphics drivers).
-    The main reason display list rendering is not enabled by default is that
-    the application may pause for a long time while OpenGL processes the
-    list when it is first rendered; the amount of additional memory
-    consumed by the display list is also a problem for very large meshes.  
-  </dd>
-  <dt>Background colour</dt>
-  <dd>
-    Colour picking buttons to control the colour used for the viewing area background.
-    The low altitude colour is also used when exporting a cloud mesh to blender.
-  </dd>
-  <dt>Ambient</dt>
-  <dd>
-    The amount of ambient illumination.
-    This is also used when exporting shaded textures.
-  </dd>
-  <dt>Illumination azimuth and elevation</dt>
-  <dd>
-    Control the illumination direction.
-    These are also used when exporting shaded textures.
-  </dd>
-  <dt>Status</dt>
-  <dd>
-    A text field displaying information about the rendered mesh,
-    and rendering performance (recent average frames-per-second).
-  </dd>
-</dl>
 
 <h3>About tab</h3>
 
 <p>
   This tab displays information about the software (in particular the version number) and its license.
-  There is a button to show a dialog containing user documentation.
+  There is a button to show a dialog containing user documentation,
+  and another button to display information about the Qt toolkit.
 </p>
 
 <h3>Display window</h3>

@@ -50,7 +50,7 @@ FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app,const boost::pr
   control_save=new ControlSave(this,&parameters_save);
   tab->addTab(control_save,"Save");
 
-  control_about=new ControlAbout();
+  control_about=new ControlAbout(application);
   tab->addTab(control_about,"About");
 }
 
@@ -127,7 +127,7 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
 {
   const bool first_viewer=!viewer;
 
-  if (viewer) 
+  if (viewer)
     {
       viewer->hide();
       viewer.reset();
@@ -137,6 +137,7 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
   mesh_terrain.reset();
   mesh_cloud.reset();
   
+  //! \todo Recreating viewer every time seems like overkill, but Ubuntu (in VM) doesn't seem to like it otherwise.
   viewer.reset(new TriangleMeshViewer(this,&parameters_render,std::vector<const TriangleMesh*>(),_verbose));
 
   // Tweak viewer appearance so controls not too dominant
@@ -199,11 +200,11 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
     std::cerr << "Mesh build time was " << (t1-t0)/static_cast<double>(CLOCKS_PER_SEC) << "s" << std::endl;
 
   viewer->set_mesh(meshes);
-  viewer->showNormal();
+  viewer->showNormal();  // showNormal() needed to restore from minimised
   viewer->raise();
 
   // Only display this first time viewer is created
-  if (first_viewer)
+  if (_verbose && first_viewer)
     {
       std::cerr << "GL info:" << std::endl;
       std::cerr << "  Vendor   : " << glGetString(GL_VENDOR) << std::endl;

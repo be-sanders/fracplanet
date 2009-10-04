@@ -91,8 +91,9 @@ int main(int argc,char* argv[])
       std::cerr << "  sizeof(ByteRGBA) is " << sizeof(ByteRGBA) << " (4 is good)" << std::endl;  
       std::cerr << "  sizeof(Vertex)   is " << sizeof(Vertex) << " (32 is good)" << std::endl;
       std::cerr << "  sizeof(Triangle) is " << sizeof(Triangle) << " (12 is good)" << std::endl;
-      std::cerr << "fracplanet: commencing main loop...\n";
     }
-
+  
+  main_widget->regenerate();
+  
   return app.exec();
 }
