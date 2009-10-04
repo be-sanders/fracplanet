@@ -42,7 +42,7 @@ class TriangleMeshViewer : public QWidget
  public:
 
   //! Constructor.
-  TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
+  TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& m,bool verbose);
 
   //! Destructor
   ~TriangleMeshViewer();
@@ -62,6 +62,9 @@ class TriangleMeshViewer : public QWidget
   void set_spinrate(int v);
 
  private:
+
+  //! Control logging
+  const bool _verbose;
 
   //! Pointer to the rendering parameters.
   const ParametersRender* parameters;

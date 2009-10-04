@@ -70,6 +70,9 @@ class FracplanetMain : public QWidget,public Progress
   void save_texture();
 
  private:
+  
+  //! Control logging.
+  const bool _verbose;
  
   QApplication*const application;
   
@@ -101,8 +104,6 @@ class FracplanetMain : public QWidget,public Progress
   std::auto_ptr<QProgressDialog> progress_dialog;
   std::string progress_info;
   bool progress_was_stalled;
-
-  bool startup;
 };
 
 #endif

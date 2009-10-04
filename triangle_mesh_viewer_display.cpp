@@ -24,9 +24,10 @@
 #include "matrix33.h"
 #include "triangle_mesh_viewer.h"
 
-TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(TriangleMeshViewer* parent,const QGLFormat& format,const ParametersRender* param,const std::vector<const TriangleMesh*>& m)
+TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(TriangleMeshViewer* parent,const QGLFormat& format,const ParametersRender* param,const std::vector<const TriangleMesh*>& m,bool verbose)
   :QGLWidget(format,parent)
   ,_notify(*parent)
+  ,_verbose(verbose)
   ,mesh(m)
   ,parameters(param)
   ,gl_display_list_index(0)
@@ -51,6 +52,8 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(TriangleMeshViewer* parent,
 TriangleMeshViewerDisplay::~TriangleMeshViewerDisplay()
 {
   makeCurrent();
+  if (gl_display_list_index)
+    glDeleteLists(gl_display_list_index,1);
 }
 
 QSize TriangleMeshViewerDisplay::minimumSizeHint() const
@@ -125,8 +128,7 @@ void TriangleMeshViewerDisplay::paintGL()
   assert(isValid());
 
   const FloatRGBA bg=background_colour();
-  //glClearColor(bg.r,bg.g,bg.b,1.0f);
-  glClearColor(1.0f,0.0f,0.0f,1.0f);
+  glClearColor(bg.r,bg.g,bg.b,1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   const float a=parameters->ambient;
@@ -342,7 +344,8 @@ void TriangleMeshViewerDisplay::paintGL()
 	}
     }
 
-  check_for_gl_errors("TriangleMeshViewerDisplay::paintGL");
+  if (_verbose)
+    check_for_gl_errors(__PRETTY_FUNCTION__);
 
   // Get time taken since last frame
   const uint dt=frame_time.restart();
@@ -398,12 +401,15 @@ void TriangleMeshViewerDisplay::paintGL()
 
 void TriangleMeshViewerDisplay::initializeGL()
 {
+  if (_verbose)
+    {
+      std::cerr << "Double buffering " << (doubleBuffer() ? "ON" : "OFF") << "\n";
+      std::cerr << "Auto Buffer Swap " << (autoBufferSwap() ? "ON" : "OFF") << "\n";
+      std::cerr << "Multisampling    " << (format().sampleBuffers() ? "ON" : "OFF") << "\n";
+    }
+
   const FloatRGBA bg=background_colour();
   glClearColor(bg.r,bg.g,bg.b,1.0f);
-
-  std::cerr << "Double buffering " << (doubleBuffer() ? "ON" : "OFF") << "\n";
-  std::cerr << "Auto Buffer Swap " << (autoBufferSwap() ? "ON" : "OFF") << "\n";
-  std::cerr << "Multisampling    " << (format().sampleBuffers() ? "ON" : "OFF") << "\n";
 
   // Switch depth-buffering on
   glEnable(GL_DEPTH_TEST);

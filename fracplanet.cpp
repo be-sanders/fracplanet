@@ -85,35 +85,14 @@ int main(int argc,char* argv[])
 
   main_widget->show();
 
-  // Do this after setup as that will have initialized GL
   if (verbose)
     {
       std::cerr << "Fracplanet:" << std::endl;
       std::cerr << "  sizeof(ByteRGBA) is " << sizeof(ByteRGBA) << " (4 is good)" << std::endl;  
       std::cerr << "  sizeof(Vertex)   is " << sizeof(Vertex) << " (32 is good)" << std::endl;
       std::cerr << "  sizeof(Triangle) is " << sizeof(Triangle) << " (12 is good)" << std::endl;
-      std::cerr << std::endl;
-
-      std::cerr << "GL:" << std::endl;
-
-      std::cerr << "  Vendor   : " << glGetString(GL_VENDOR) << std::endl;
-      std::cerr << "  Renderer : " << glGetString(GL_RENDERER) << std::endl;
-      std::cerr << "  Version  : " << glGetString(GL_VERSION) << std::endl;
-
-      GLint max_elements_vertices;
-      GLint max_elements_indices; 
-      glGetIntegerv(GL_MAX_ELEMENTS_VERTICES,&max_elements_vertices);
-      glGetIntegerv(GL_MAX_ELEMENTS_INDICES,&max_elements_indices);      
-      std::cerr << "  GL_MAX_ELEMENTS_VERTICES : " << max_elements_vertices << std::endl;
-      std::cerr << "  GL_MAX_ELEMENTS_INDICES : " << max_elements_indices << std::endl;
-
-      std::cerr << "  GL Extensions are : \"" << glGetString(GL_EXTENSIONS) << "\"" << std::endl;
-      //std::cerr << "GLU Extensions are :\n\"" << gluGetString(GL_EXTENSIONS) << "\"\n";
-
-      //std::cerr.flush();
+      std::cerr << "fracplanet: commencing main loop...\n";
     }
-
-  std::cerr << "fracplanet: commencing main loop...\n";
 
   return app.exec();
 }

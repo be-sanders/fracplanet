@@ -24,8 +24,9 @@
 /*! The viewer will be parented on the specified widget, 
   but with a Qt::Window flag to make it a top-level window
  */
-TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& mesh)
+TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& mesh,bool verbose)
   :QWidget(parent,Qt::Window)
+  ,_verbose(verbose)
   ,parameters(param)
   ,camera_position(0.0f,-3.0f,0.0f)
   ,camera_forward(0.0f,1.0f,0.0f)
@@ -54,8 +55,7 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
   QGLFormat gl_format;
   gl_format.setSampleBuffers(true);
 
-  setLayout(new QVBoxLayout());
-  display=new TriangleMeshViewerDisplay(this,gl_format,param,mesh);
+  display=new TriangleMeshViewerDisplay(this,gl_format,param,mesh,_verbose);
   grid->addWidget(display,0,0);
 
   tilt_box=new QGroupBox("Tilt");

@@ -40,7 +40,8 @@ class TriangleMeshViewerDisplay : public QGLWidget
  public:
 
   //! Constructor.
-  TriangleMeshViewerDisplay(TriangleMeshViewer* parent,const QGLFormat& format,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
+  TriangleMeshViewerDisplay(TriangleMeshViewer* parent,const QGLFormat& format,const ParametersRender* param,const std::vector<const TriangleMesh*>& m,bool verbose
+);
 
   //! Destructor
   ~TriangleMeshViewerDisplay();
@@ -72,7 +73,11 @@ class TriangleMeshViewerDisplay : public QGLWidget
 
  private:
 
+  //! Need to know this to update framerate text
   TriangleMeshViewer& _notify;
+
+  //! Control logging
+  const bool _verbose;
 
   //! The meshes being displayed.
   /*! NB NOT owned here
@@ -85,6 +90,8 @@ class TriangleMeshViewerDisplay : public QGLWidget
   //! GL display list index
   /*! Zero is not a valid value according to red book, so use zero to designate unset */
   uint gl_display_list_index;
+
+  
 
   //! Frame count.
   uint frame_number;

@@ -25,6 +25,7 @@
 
 FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app,const boost::program_options::variables_map& opts,bool verbose)
   :QWidget(parent)
+  ,_verbose(verbose)
   ,application(app)
   ,mesh_terrain(0)
   ,mesh_cloud(0)
@@ -34,7 +35,6 @@ FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app,const boost::pr
   ,parameters_save(&parameters_render)
   ,last_step(0)
   ,progress_was_stalled(false)
-  ,startup(true)
 {
   setLayout(new QVBoxLayout);
   
@@ -44,34 +44,14 @@ FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app,const boost::pr
   control_terrain=new ControlTerrain(this,&parameters_terrain,&parameters_cloud);
   tab->addTab(control_terrain,"Create");
 
-  if (verbose)
-    std::cerr << "...ControlTerrain created...\n";
-
   control_render=new ControlRender(&parameters_render);
   tab->addTab(control_render,"Render");
-
-  if (verbose)
-    std::cerr << "...ControlRender created...\n";
 
   control_save=new ControlSave(this,&parameters_save);
   tab->addTab(control_save,"Save");
 
-  if (verbose)
-    std::cerr << "...ControlSave created...\n";
-
   control_about=new ControlAbout();
   tab->addTab(control_about,"About");
-
-  if (verbose)
-    std::cerr << "...ControlAbout created...\n";
-
-  //regenerate();
-  //if (verbose)
-  //  std::cerr << "...terrain created...\n";
-
-  //raise();   // On app start-up the control panel is the most important thing (regenerate raises the viewer window).
-  
-  startup=false;
 }
 
 FracplanetMain::~FracplanetMain()
@@ -79,8 +59,6 @@ FracplanetMain::~FracplanetMain()
 
 void FracplanetMain::progress_start(uint target,const std::string& info)
 {
-  if (startup) return;
-
   if (!progress_dialog.get())
     {
       progress_dialog=std::auto_ptr<QProgressDialog>(new QProgressDialog("Progress","Cancel",0,100,this));
@@ -114,8 +92,6 @@ void FracplanetMain::progress_stall(const std::string& reason)
 
 void FracplanetMain::progress_step(uint step)
 {
-  if (startup) return;
-
   if (progress_was_stalled) 
     {
       progress_dialog->setLabelText(progress_info.c_str());
@@ -138,8 +114,6 @@ void FracplanetMain::progress_step(uint step)
 
 void FracplanetMain::progress_complete(const std::string& info)
 {
-  if (startup) return;
-
   progress_dialog->setLabelText(info.c_str());
 
   last_step=static_cast<uint>(-1);
@@ -151,6 +125,8 @@ void FracplanetMain::progress_complete(const std::string& info)
 
 void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or clouds
 {
+  const bool first_viewer=!viewer;
+
   if (viewer) 
     {
       viewer->hide();
@@ -161,7 +137,7 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
   mesh_terrain.reset();
   mesh_cloud.reset();
   
-  viewer.reset(new TriangleMeshViewer(this,&parameters_render,std::vector<const TriangleMesh*>()));
+  viewer.reset(new TriangleMeshViewer(this,&parameters_render,std::vector<const TriangleMesh*>(),_verbose));
 
   // Tweak viewer appearance so controls not too dominant
   QFont viewer_font;
@@ -169,9 +145,6 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
   viewer->setFont(viewer_font);
   viewer->layout()->setSpacing(2);
   viewer->layout()->setContentsMargins(2,2,2,2);
-
-  //if (verbose)
-  //  std::cerr << "...TriangleMeshViewer created...\n";
 
   const clock_t t0=clock();
 
@@ -222,11 +195,30 @@ void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or
   
   progress_dialog.reset(0);
 
-  std::cerr << "Mesh build time was " << (t1-t0)/static_cast<double>(CLOCKS_PER_SEC) << "s" << std::endl;
+  if (_verbose)
+    std::cerr << "Mesh build time was " << (t1-t0)/static_cast<double>(CLOCKS_PER_SEC) << "s" << std::endl;
 
   viewer->set_mesh(meshes);
   viewer->showNormal();
   viewer->raise();
+
+  // Only display this first time viewer is created
+  if (first_viewer)
+    {
+      std::cerr << "GL info:" << std::endl;
+      std::cerr << "  Vendor   : " << glGetString(GL_VENDOR) << std::endl;
+      std::cerr << "  Renderer : " << glGetString(GL_RENDERER) << std::endl;
+      std::cerr << "  Version  : " << glGetString(GL_VERSION) << std::endl;
+
+      GLint max_elements_vertices;
+      GLint max_elements_indices; 
+      glGetIntegerv(GL_MAX_ELEMENTS_VERTICES,&max_elements_vertices);
+      glGetIntegerv(GL_MAX_ELEMENTS_INDICES,&max_elements_indices);      
+      std::cerr << "  GL_MAX_ELEMENTS_VERTICES : " << max_elements_vertices << std::endl;
+      std::cerr << "  GL_MAX_ELEMENTS_INDICES : " << max_elements_indices << std::endl;
+
+      //std::cerr << "  GL Extensions are : \"" << glGetString(GL_EXTENSIONS) << "\"" << std::endl;
+    }
 }
 
 void FracplanetMain::save_pov()
