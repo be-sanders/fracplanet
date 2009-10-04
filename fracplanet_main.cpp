@@ -47,17 +47,17 @@ FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app,const boost::pr
   if (verbose)
     std::cerr << "...ControlTerrain created...\n";
 
-  control_save=new ControlSave(this,&parameters_save);
-  tab->addTab(control_save,"Save");
-
-  if (verbose)
-    std::cerr << "...ControlSave created...\n";
-
   control_render=new ControlRender(&parameters_render);
   tab->addTab(control_render,"Render");
 
   if (verbose)
     std::cerr << "...ControlRender created...\n";
+
+  control_save=new ControlSave(this,&parameters_save);
+  tab->addTab(control_save,"Save");
+
+  if (verbose)
+    std::cerr << "...ControlSave created...\n";
 
   control_about=new ControlAbout();
   tab->addTab(control_about,"About");
@@ -65,27 +65,11 @@ FracplanetMain::FracplanetMain(QWidget* parent,QApplication* app,const boost::pr
   if (verbose)
     std::cerr << "...ControlAbout created...\n";
 
-  viewer.reset(new TriangleMeshViewer(this,&parameters_render,std::vector<const TriangleMesh*>()));     // Viewer will be a top-level-window
+  //regenerate();
+  //if (verbose)
+  //  std::cerr << "...terrain created...\n";
 
-  viewer->resize(512,512);
-  viewer->move(384,64);  // Moves view away from controls on most window managers
-
-  // Tweak viewer appearance so controls not too dominant
-  QFont viewer_font;
-  viewer_font.setPointSize(viewer_font.pointSize()-2);
-  viewer->setFont(viewer_font);
-  viewer->layout()->setSpacing(2);
-  viewer->layout()->setContentsMargins(2,2,2,2);
-
-  if (verbose)
-    std::cerr << "...TriangleMeshViewer created...\n";
-
-  regenerate();
-
-  if (verbose)
-    std::cerr << "...terrain created...\n";
-
-  raise();   // On app start-up the control panel is the most important thing (regenerate raises the viewer window).
+  //raise();   // On app start-up the control panel is the most important thing (regenerate raises the viewer window).
   
   startup=false;
 }
@@ -167,13 +151,27 @@ void FracplanetMain::progress_complete(const std::string& info)
 
 void FracplanetMain::regenerate()   //! \todo Should be able to retain ground or clouds
 {
-  viewer->hide();
+  if (viewer) 
+    {
+      viewer->hide();
+      viewer.reset();
+    }
 
   meshes.clear();
-  viewer->set_mesh(meshes);
-
   mesh_terrain.reset();
   mesh_cloud.reset();
+  
+  viewer.reset(new TriangleMeshViewer(this,&parameters_render,std::vector<const TriangleMesh*>()));
+
+  // Tweak viewer appearance so controls not too dominant
+  QFont viewer_font;
+  viewer_font.setPointSize(viewer_font.pointSize()-2);
+  viewer->setFont(viewer_font);
+  viewer->layout()->setSpacing(2);
+  viewer->layout()->setContentsMargins(2,2,2,2);
+
+  //if (verbose)
+  //  std::cerr << "...TriangleMeshViewer created...\n";
 
   const clock_t t0=clock();
 

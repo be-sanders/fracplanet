@@ -434,7 +434,7 @@ ControlTerrain::ControlTerrain(FracplanetMain* tgt,ParametersTerrain* param_terr
   QGridLayout*const regenerate_grid=new QGridLayout();
   regenerate_widget->setLayout(regenerate_grid);
   
-  regenerate_button=new QPushButton("Regenerate");
+  regenerate_button=new QPushButton("Generate");
   regenerate_grid->addWidget(regenerate_button,0,0,1,3);
   connect(
 	  regenerate_button,SIGNAL(clicked()),

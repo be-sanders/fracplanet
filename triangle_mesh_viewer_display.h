@@ -24,10 +24,11 @@
 #ifndef _triangle_mesh_viewer_display_h_
 #define _triangle_mesh_viewer_display_h_
 
-#include "notifiable.h"
 #include "parameters_render.h"
 #include "random.h"
 #include "triangle_mesh.h"
+
+class TriangleMeshViewer;
 
 //! Contains the actual rendering functionality of a TriangleMeshViewer.
 class TriangleMeshViewerDisplay : public QGLWidget
@@ -39,10 +40,16 @@ class TriangleMeshViewerDisplay : public QGLWidget
  public:
 
   //! Constructor.
-  TriangleMeshViewerDisplay(const QGLFormat& format,Notifiable& notify,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
+  TriangleMeshViewerDisplay(TriangleMeshViewer* parent,const QGLFormat& format,const ParametersRender* param,const std::vector<const TriangleMesh*>& m);
 
   //! Destructor
   ~TriangleMeshViewerDisplay();
+
+  //! Specify a minimum size
+  QSize minimumSizeHint() const;
+
+  //! Guideline size
+  QSize sizeHint() const;
 
   //! Set the mesh being rendered.
   void set_mesh(const std::vector<const TriangleMesh*>& m);
@@ -65,7 +72,7 @@ class TriangleMeshViewerDisplay : public QGLWidget
 
  private:
 
-  Notifiable& _notify;
+  TriangleMeshViewer& _notify;
 
   //! The meshes being displayed.
   /*! NB NOT owned here

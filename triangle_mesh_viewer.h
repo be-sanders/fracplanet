@@ -24,7 +24,6 @@
 #ifndef _triangle_mesh_viewer_h_
 #define _triangle_mesh_viewer_h_
 
-#include "notifiable.h"
 #include "parameters_render.h"
 #include "random.h"
 #include "triangle_mesh.h"
@@ -34,7 +33,7 @@
 /*! Wraps a TriangleMeshViewerDisplay with some controls.
   \todo Add better controls.
 */
-class TriangleMeshViewer : public QWidget,public Notifiable
+class TriangleMeshViewer : public QWidget
 {
  private:
 
@@ -48,7 +47,7 @@ class TriangleMeshViewer : public QWidget,public Notifiable
   //! Destructor
   ~TriangleMeshViewer();
 
-  //! Implement Notifiable mixin
+  //! Used to set message in statusbar
   void notify(const std::string&);
 
   //! Sets the TriangleMesh to be displayed.

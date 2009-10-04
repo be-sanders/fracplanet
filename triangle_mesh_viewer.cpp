@@ -21,6 +21,9 @@
 
 #include "triangle_mesh_viewer.h"
 
+/*! The viewer will be parented on the specified widget, 
+  but with a Qt::Window flag to make it a top-level window
+ */
 TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& mesh)
   :QWidget(parent,Qt::Window)
   ,parameters(param)
@@ -44,15 +47,16 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
 {
   QGridLayout*const grid=new QGridLayout();
   setLayout(grid);
+  grid->setRowStretch(0,1);
+  grid->setColumnStretch(0,1);
 
   //! \todo Is there any good reason not to enable multisampling by default ?
   QGLFormat gl_format;
   gl_format.setSampleBuffers(true);
 
-  display=new TriangleMeshViewerDisplay(gl_format,*this,param,mesh);
+  setLayout(new QVBoxLayout());
+  display=new TriangleMeshViewerDisplay(this,gl_format,param,mesh);
   grid->addWidget(display,0,0);
-  grid->setRowStretch(0,1);
-  grid->setColumnStretch(0,1);
 
   tilt_box=new QGroupBox("Tilt");
   tilt_box->setLayout(new QVBoxLayout());

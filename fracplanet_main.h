@@ -87,12 +87,13 @@ class FracplanetMain : public QWidget,public Progress
   ParametersRender parameters_render;
   ParametersSave parameters_save;
 
+  ControlTerrain* control_terrain;
   ControlRender* control_render;
   ControlSave* control_save;
-  ControlTerrain* control_terrain;
   ControlAbout* control_about;
 
   boost::scoped_ptr<TriangleMeshViewer> viewer;
+
   QTabWidget* tab;
 
   uint last_step;

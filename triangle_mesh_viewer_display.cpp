@@ -22,10 +22,11 @@
 #include "triangle_mesh_viewer_display.h"
 
 #include "matrix33.h"
+#include "triangle_mesh_viewer.h"
 
-TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(const QGLFormat& format,Notifiable& notify,const ParametersRender* param,const std::vector<const TriangleMesh*>& m)
-  :QGLWidget(format)
-  ,_notify(notify)
+TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(TriangleMeshViewer* parent,const QGLFormat& format,const ParametersRender* param,const std::vector<const TriangleMesh*>& m)
+  :QGLWidget(format,parent)
+  ,_notify(*parent)
   ,mesh(m)
   ,parameters(param)
   ,gl_display_list_index(0)
@@ -39,14 +40,28 @@ TriangleMeshViewerDisplay::TriangleMeshViewerDisplay(const QGLFormat& format,Not
   ,object_tilt(30.0f*M_PI/180.0f)
   ,object_rotation(0.0f)
 {
-  setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding));
+  assert(isValid());
+  
+  setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
 
   frame_time.start();
   frame_time_reported.start();
 }
 
 TriangleMeshViewerDisplay::~TriangleMeshViewerDisplay()
-{}
+{
+  makeCurrent();
+}
+
+QSize TriangleMeshViewerDisplay::minimumSizeHint() const
+{
+  return QSize(64,64);
+}
+
+QSize TriangleMeshViewerDisplay::sizeHint() const
+{
+  return QSize(512,512);
+}
 
 void TriangleMeshViewerDisplay::set_mesh(const std::vector<const TriangleMesh*>& m)
 {
@@ -110,7 +125,8 @@ void TriangleMeshViewerDisplay::paintGL()
   assert(isValid());
 
   const FloatRGBA bg=background_colour();
-  glClearColor(bg.r,bg.g,bg.b,1.0);
+  //glClearColor(bg.r,bg.g,bg.b,1.0f);
+  glClearColor(1.0f,0.0f,0.0f,1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   const float a=parameters->ambient;
@@ -328,8 +344,6 @@ void TriangleMeshViewerDisplay::paintGL()
 
   check_for_gl_errors("TriangleMeshViewerDisplay::paintGL");
 
-  glFlush();
-
   // Get time taken since last frame
   const uint dt=frame_time.restart();
 
@@ -385,7 +399,7 @@ void TriangleMeshViewerDisplay::paintGL()
 void TriangleMeshViewerDisplay::initializeGL()
 {
   const FloatRGBA bg=background_colour();
-  glClearColor(bg.r,bg.g,bg.b,1.0);
+  glClearColor(bg.r,bg.g,bg.b,1.0f);
 
   std::cerr << "Double buffering " << (doubleBuffer() ? "ON" : "OFF") << "\n";
   std::cerr << "Auto Buffer Swap " << (autoBufferSwap() ? "ON" : "OFF") << "\n";
@@ -415,6 +429,8 @@ void TriangleMeshViewerDisplay::resizeGL(int w,int h)
   width=w;
   height=h;
 
+  std::cerr << "Resized to " << width << "x" << height << std::endl;
+
   glViewport(0,0,static_cast<GLint>(w),static_cast<GLint>(h));
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -430,8 +446,7 @@ void TriangleMeshViewerDisplay::resizeGL(int w,int h)
      );  // Was 0.1 (too far); 0.001 gives artefacts
 
   glMatrixMode(GL_MODELVIEW);
-
-  updateGL();
+  glLoadIdentity();
 }
 
 void TriangleMeshViewerDisplay::draw_frame(const XYZ& p,const XYZ& l,const XYZ& u,float r,float t)

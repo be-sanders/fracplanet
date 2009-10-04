@@ -25,7 +25,6 @@
 #define _control_render_h_
 
 #include "control.h"
-#include "notifiable.h"
 #include "parameters_render.h"
 
 //! Encapsulates GUI elements for controlling OpenGL rendering.
