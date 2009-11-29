@@ -66,7 +66,7 @@ Home-Page: <URL:http://www.bottlenose.demon.co.uk/share/fracplanet>
 Description: Fractal terrain generator
 Copyright: GPL
  Copyright 2009 Tim Day
-Build-Depends: qt4-qmake,libqt4-dev,libqt4-opengl-dev,libboost1.35-dev,libboost-program-options1.35-dev,xsltproc
+Build-Depends: qt4-qmake,libqt4-dev,libqt4-opengl-dev,libboost-dev,libboost-program-options-dev,xsltproc
 Build: sh
  export QTDIR=/usr/share/qt4
  # Note: yada install deals with DEB_BUILD_OPTIONS 'nostrip'
