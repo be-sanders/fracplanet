@@ -1,5 +1,6 @@
 From release 0.4.0:
- - Bump version to 0.4.1dev
+ - Bump version to 0.4.1
+ - Fix linkage for Ubuntu Karmic.  Seems to work on Lenny too.
 
 From release 0.3.3:
  - Bump version number to 0.4.0 (0.4.0dev while under development)
