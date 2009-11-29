@@ -50,7 +50,7 @@ echo "${PROJECT} (${VER}-${REV}) ${DISTRIBUTION}; urgency=low" > debian/changelo
 echo >> debian/changelog
 echo "  * Package created by ${PROJECT}'s mkdeb script." >> debian/changelog
 echo >> debian/changelog
-DATE=`822-date`
+DATE=`date -R`
 echo " -- $USER <$EMAIL>  $DATE" >> debian/changelog
 
 # Presumably a dch -i here would increment revision
