@@ -1,3 +1,9 @@
+- Suggestion from "floatingw" at 
+  https://sourceforge.net/projects/fracplanet/forums/forum/239388/topic/3497745/index/page/1
+  "I just realized that by saving the terrain and river seeds you're able to go back to a previous planet after you've pressed the "generate new seed" buttons. Still, I think that there ought to be a method to save all of the current settings in a custom fracplanet file format. That's probably in the roadmap and you just haven't gotten to it yet.
+
+It also would be handy if the settings could be output as comments in the .pov and .py outputs; I now have several planets that I spent lots of time sifting through to find, but I only have the .pov, .py, and texture files for them because I didn't realize that I could just write down the seed numbers."
+
 - stopping flying should hold position and allow spin and tilt manipulation
   (have planet rotate under current viewpoint)
 - cancel button on progress bar
