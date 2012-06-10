@@ -4,6 +4,9 @@
 
 It also would be handy if the settings could be output as comments in the .pov and .py outputs; I now have several planets that I spent lots of time sifting through to find, but I only have the .pov, .py, and texture files for them because I didn't realize that I could just write down the seed numbers."
 
+- Suggestion from Stéphane Mellerio:
+  Commandline version of tool.  Unclear whether it would emit meshes or rendered images (or both).
+
 - stopping flying should hold position and allow spin and tilt manipulation
   (have planet rotate under current viewpoint)
 - cancel button on progress bar
