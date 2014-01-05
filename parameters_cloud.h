@@ -41,7 +41,7 @@ public:
 
   //! Whether clouds will be generated.
   bool enabled;
-    
+
   //! Height of base of clouds
   float cloudbase;
 

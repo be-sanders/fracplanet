@@ -48,7 +48,7 @@ class ParametersSave
 
   //! Whether textures should include shading.
   bool texture_shaded;
-  
+
   //! Size of texture for texture save (is height; width is implicit).
   uint texture_height;
 

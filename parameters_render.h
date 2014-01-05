@@ -65,7 +65,7 @@ public:
 
   //! Target frame rate
   float fps_target;
-  
+
   //! Illumination direction computed from azimuth and elevation angles
   const XYZ illumination_direction() const;
 

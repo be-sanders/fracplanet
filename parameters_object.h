@@ -31,10 +31,10 @@ class ParametersObject
 
   //! Constructor sets up some hopefully sensible defaults.
   ParametersObject();
-  
+
   //! Destructor
   virtual ~ParametersObject();
-  
+
   //! What kind of object will be generated.
   typedef enum
     {

@@ -38,7 +38,7 @@ void Control::pickColour(QPushButton* button,FloatRGBA& colour)
   if (qcol_new.isValid())
     {
       colour=FloatRGBA(ByteRGBA(qcol_new.red(),qcol_new.green(),qcol_new.blue(),255));
-      
+
       QPixmap pmap(16,16);
       pmap.fill(qcol_new);
       button->setIcon(QIcon(pmap));

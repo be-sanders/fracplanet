@@ -19,7 +19,7 @@
 
 /*! \mainpage Fracplanet : fractal terrain generator
 
-  \author Tim Day 
+  \author Tim Day
 
   \section introduction Introduction
   "Fracplanet" is an interactive tool for generating fractal planets and terrains.
@@ -44,27 +44,27 @@ int main(int argc,char* argv[])
   try
     {
       boost::program_options::options_description opt_desc
-	("Recognised options (besides Qt standards):");
+    ("Recognised options (besides Qt standards):");
 
       opt_desc.add_options()
-	("help,h","show list of recognised options")
-	("verbose,v","verbose output to stderr")
-	;
-	
+    ("help,h","show list of recognised options")
+    ("verbose,v","verbose output to stderr")
+    ;
+
       opt_desc.add(ParametersRender::options());
 
       boost::program_options::store
-	(
-	 boost::program_options::parse_command_line(argc,argv,opt_desc),
-	 opts
-	 );
+    (
+     boost::program_options::parse_command_line(argc,argv,opt_desc),
+     opts
+     );
       boost::program_options::notify(opts);
 
       if (opts.count("help"))
-	{
-	  std::cerr << opt_desc << std::endl;
-	  return 1;
-	}
+    {
+      std::cerr << opt_desc << std::endl;
+      return 1;
+    }
     }
   catch (boost::program_options::error& e)
     {
@@ -88,12 +88,12 @@ int main(int argc,char* argv[])
   if (verbose)
     {
       std::cerr << "Fracplanet:" << std::endl;
-      std::cerr << "  sizeof(ByteRGBA) is " << sizeof(ByteRGBA) << " (4 is good)" << std::endl;  
+      std::cerr << "  sizeof(ByteRGBA) is " << sizeof(ByteRGBA) << " (4 is good)" << std::endl;
       std::cerr << "  sizeof(Vertex)   is " << sizeof(Vertex) << " (32 is good)" << std::endl;
       std::cerr << "  sizeof(Triangle) is " << sizeof(Triangle) << " (12 is good)" << std::endl;
     }
-  
+
   main_widget->regenerate();
-  
+
   return app.exec();
 }

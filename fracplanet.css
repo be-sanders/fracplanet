@@ -1,43 +1,43 @@
-BODY 
+BODY
 {
-  background-color: #ffffff; 
+  background-color: #ffffff;
   color: #000000;
 }
 
 H1, H2, H3, H4
 {
-  font-family: sans-serif; 
+  font-family: sans-serif;
   border-bottom: thin #888888 solid;
   background-color: #dddddd;
 }
 
-H1 
+H1
 {
   font-size: 200%;
   margin-left: 0.125in;
 }
 
-H2 
+H2
 {
-  font-size: 150%; 
-  margin-left: 0.25in; 
-} 
+  font-size: 150%;
+  margin-left: 0.25in;
+}
 
-H3 
+H3
 {
-  font-size: 125%; 
-  margin-left: 0.375in; 
+  font-size: 125%;
+  margin-left: 0.375in;
 }
 
 H4
 {
-  font-size: 110%; 
-  margin-left: 0.5in; 
+  font-size: 110%;
+  margin-left: 0.5in;
 }
 
 P,DL,UL
 {
-  margin-left: 0.5in; 
+  margin-left: 0.5in;
 }
 
 DT

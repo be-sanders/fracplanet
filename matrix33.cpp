@@ -37,7 +37,7 @@ float Matrix33::cofactor(uint row,uint col) const
 
 float Matrix33::determinant() const
 {
-  return 
+  return
     element(0,0)*cofactor(0,0)
     -element(0,1)*cofactor(0,1)
     +element(0,2)*cofactor(0,2);
@@ -49,8 +49,8 @@ const Matrix33 Matrix33::inverted() const
   for (uint row=0;row<3;row++)
     for (uint col=0;col<3;col++)
       {
-	const float cf=cofactor(row,col);
-	ret.element(col,row)=(((row+col)&1) ? -cf : cf);  // NB Transpose is deliberate
+    const float cf=cofactor(row,col);
+    ret.element(col,row)=(((row+col)&1) ? -cf : cf);  // NB Transpose is deliberate
       }
 
   return ret/determinant();

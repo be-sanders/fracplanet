@@ -48,11 +48,11 @@ class ControlSave : public Control
   void setPerVertexAlpha(int v);
   void setTextureShaded(int v);
   void setTextureHeight(int v);
- 
+
  private:
 
   //! The parameters set we control
-  ParametersSave*const parameters;  
+  ParametersSave*const parameters;
 };
 
 

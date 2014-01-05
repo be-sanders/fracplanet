@@ -65,9 +65,9 @@ class TriangleMeshViewerDisplay : public QGLWidget
 
   //! Deal with resize.
   void resizeGL(int w,int h);
-  
+
  public slots:
-  
+
   //! Called to redisplay scene
   void draw_frame(const XYZ& p,const XYZ& l,const XYZ& u,float r,float t);
 
@@ -91,11 +91,11 @@ class TriangleMeshViewerDisplay : public QGLWidget
   /*! Zero is not a valid value according to red book, so use zero to designate unset */
   uint gl_display_list_index;
 
-  
+
 
   //! Frame count.
   uint frame_number;
-  
+
   //! Display area width.
   uint width;
 
@@ -104,7 +104,7 @@ class TriangleMeshViewerDisplay : public QGLWidget
 
   //! Time frames for FPS measurement.
   QTime frame_time;
-  
+
   //! Time since FPS last reported.
   QTime frame_time_reported;
 
@@ -125,7 +125,7 @@ class TriangleMeshViewerDisplay : public QGLWidget
   //@}
 
   void check_for_gl_errors(const char*) const;
-  
+
   //! Compute background colour from render parameters and camera height
   const FloatRGBA background_colour() const;
 };

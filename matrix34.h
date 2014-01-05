@@ -28,7 +28,7 @@
 #include "xyz.h"
 
 //! Class to hold 3x4 matrices
-/*! Rotation below actually means any sort of origin preserving transform; 
+/*! Rotation below actually means any sort of origin preserving transform;
   it's just easier to visualize rotations and most of the time that's what they are.
  */
 class Matrix34
@@ -41,7 +41,7 @@ class Matrix34
   //! Translational component
   XYZ translate;
   //! Null constructor.
-  /*! NB The components are not cleared to zero. 
+  /*! NB The components are not cleared to zero.
    */
   Matrix34()
     {}

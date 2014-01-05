@@ -92,11 +92,11 @@ RandomXYZInEllipsoid::RandomXYZInEllipsoid(Random01& rng,const XYZ& axes)
       assign(RandomXYZInBox(rng,axes));
     }
   while (
-	  (axes.x==0.0 ? 0.0 : sqr(x/axes.x))
-	 +(axes.y==0.0 ? 0.0 : sqr(y/axes.y))
-	 +(axes.z==0.0 ? 0.0 : sqr(z/axes.z))
-	 >1.0
-	 );
+      (axes.x==0.0 ? 0.0 : sqr(x/axes.x))
+     +(axes.y==0.0 ? 0.0 : sqr(y/axes.y))
+     +(axes.z==0.0 ? 0.0 : sqr(z/axes.z))
+     >1.0
+     );
 }
 
 RandomXYZSphereNormal::RandomXYZSphereNormal(Random01& rng)

@@ -70,7 +70,7 @@ class TriangleEdge
 //! Comparison operator, required to build ordered STL data-structures.
 inline bool operator<(const TriangleEdge& e0,const TriangleEdge& e1)
 {
-  return 
+  return
     (
      e0.vertex0()<e1.vertex0()
      ||

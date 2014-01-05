@@ -18,7 +18,7 @@
 <h2>Introduction</h2>
 
 <p>
-  Fracplanet is an application to generate simple random planets and terrain 
+  Fracplanet is an application to generate simple random planets and terrain
   with oceans, mountains, icecaps and rivers.
   Parameters are specified interactively and the results displayed using OpenGL.
   The generated objects can be exported in formats directly usable by POV-Ray or Blender,
@@ -29,7 +29,7 @@
 
 <p>
   Some command line arguments (not listed here) are intercepted and interpreted by Qt.
-  These are pretty much what you'd expect most X11 applications to handle 
+  These are pretty much what you'd expect most X11 applications to handle
   e.g <code>-geometry <em>X</em>x<em>Y</em></code>.
   Fracplanet's own command line arguments are:
 </p>
@@ -71,15 +71,15 @@
 <h3>Create tab</h3>
 
 <p>
-  Note that none of the parameters adjustable on this tab have any effect on the displayed model until one of 
+  Note that none of the parameters adjustable on this tab have any effect on the displayed model until one of
   the &quot;Regenerate&quot; buttons is pressed.  This tab is further subdivided into sub-tabs
   (&quot;Terrain&quot;, &quot;Snow&quot;, &quot;Rivers&quot;, &quot;Colours&quot;, &quot;Clouds&quot;).
 </p>
 
 <h4>Terrain</h4>
-  
+
 <p>
-  This tab is actually even further subdivided 
+  This tab is actually even further subdivided
   (&quot;Basics&quot;, &quot;Subdivision&quot; and &quot;Noise&quot; tabs),
   but the list below doesn't distinguish.
 </p>
@@ -95,12 +95,12 @@
   <dt>Base land height</dt>
   <dd>
     This expresses the initial height of the terrain (relative to the sea level) as a percentage of the vertical maximum perturbation size.
-    Negative values produce (on average) more ocean than land, positive values produce more land than ocean. 
+    Negative values produce (on average) more ocean than land, positive values produce more land than ocean.
   </dd>
   <dt>Terrain random seed</dt>
   <dd>
     Specifies the random number generator seed used when creating terrain.
-    Regenerating without changing this value will produce the same terrain, allowing the user to play with subdivision levels, colours etc while still retaining the same basic pattern of oceans and continents. 
+    Regenerating without changing this value will produce the same terrain, allowing the user to play with subdivision levels, colours etc while still retaining the same basic pattern of oceans and continents.
     The value is initially set to the system time on application start-up.
   </dd>
   <dt>Power law</dt>
@@ -126,9 +126,9 @@
   <dd>
     Specifies the maximum size of vertical perturbations at the first level of subdivision.
     The maximum perturbation size is then halved at each subsequent subdivision.
-    Planets and terrain areas both have a nominal radius of 1.0, 
+    Planets and terrain areas both have a nominal radius of 1.0,
     and the number here is divided by 100 so if you specify a vertical variation of 12 you could get mountains which are on the order of 12 percent of the planet's radius high, or larger if subsequent perturbations accumulate upwards at a point (of course suppressing initial large perturbations using the &quot;Unperturbed&quot; parameter will tend to reduce this).
-    This is of course a ridiculous height for mountains on anything but an asteroid, but using realistic values will just produce very boring looking planets. 
+    This is of course a ridiculous height for mountains on anything but an asteroid, but using realistic values will just produce very boring looking planets.
   </dd>
   <dt>Horizontal perturbation</dt>
   <dd>
@@ -185,23 +185,23 @@
   </dd>
   <dt>Snowline slope suppression</dt>
   <dd>
-    The larger this value is, the harder it is for snow to stick to steep slopes 
+    The larger this value is, the harder it is for snow to stick to steep slopes
     (you can see this effect for real on any mountain range).
-    This breaks up the snowline quite nicely, as it otherwise tends to stop at 
+    This breaks up the snowline quite nicely, as it otherwise tends to stop at
     an artificially uniform height (reduce this parameter to zero to see what I mean).
   </dd>
   <dt>Snowline glacier effect</dt>
   <dd>
-    If this parameter is positive, rivers tend to form glaciers and you 
+    If this parameter is positive, rivers tend to form glaciers and you
     will see e.g white lines running out of snowy areas, and frozen lakes.
-    If this parameter is negative rivers find it harder to freeze and 
+    If this parameter is negative rivers find it harder to freeze and
     you will see them running through snowy areas and forming un-frozen lakes.
   </dd>
 </dl>
 
 <h4>Rivers</h4>
 
-<dl>  
+<dl>
   <dt>Rivers</dt>
   <dd>
     Specifies the number of rivers to be generated.
@@ -223,10 +223,10 @@
   <dd>
     As a river is flowed across a terrain, it will sometimes form a lake as the water
     level rises sufficiently to overcome a terrain barrier.
-    If the lake becomes sufficiently large (greater than the percentage of available surface area specified here) 
-    then it is considered to have become an inland sea and it is no longer necessary for the lake to rise until 
-    an outflow to be discovered (in the real world, surface evaporation replaces the outflow). 
-    Increasing this number may result in larger lakes, but the process of river generation can 
+    If the lake becomes sufficiently large (greater than the percentage of available surface area specified here)
+    then it is considered to have become an inland sea and it is no longer necessary for the lake to rise until
+    an outflow to be discovered (in the real world, surface evaporation replaces the outflow).
+    Increasing this number may result in larger lakes, but the process of river generation can
     take considerably longer.
   </dd>
 </dl>
@@ -238,17 +238,17 @@
   <dd>
     Click on these buttons to bring up a colour-picking dialog and change the colour for the selected class of terrain.
     Each button displays the colour currently selected for that class.
-    Obvious things you might want to do are to change the shoreline colour to 
-    the same colour as the low level terrain (those beaches are pretty absurdly <em>wide</em> otherwise), 
+    Obvious things you might want to do are to change the shoreline colour to
+    the same colour as the low level terrain (those beaches are pretty absurdly <em>wide</em> otherwise),
     change the orange highlands to a more mountainous grey, or perhaps you preferd
-    an apocalyptic &quot;lava world&quot; with red rivers and oceans (use emission to make them glow), 
+    an apocalyptic &quot;lava world&quot; with red rivers and oceans (use emission to make them glow),
     black shorelines and ash-grey terrain.
   </dd>
   <dt>Oceans and rivers emissive</dt>
   <dd>
     Sets the emission (also called &quot;glow&quot;) of lakes and rivers, on a scale of 0-100.
     This is mainly to facilitate glowing lava planets.
-    Note that for terrain generated with emission non-zero, 
+    Note that for terrain generated with emission non-zero,
     an alternative OpenGL rendering path must be used which may be a little slower.
   </dd>
 </dl>
@@ -282,8 +282,8 @@
   </dd>
 </dl>
 
-<h4>Other &quot;Create&quot; tab controls</h4>  
-  
+<h4>Other &quot;Create&quot; tab controls</h4>
+
 <dl>
   <dt>Generate</dt>
   <dd>
@@ -305,7 +305,7 @@
     Click this button increment the clouds seed by one and regenerate.
     This will get you a different cloud layer.
   </dd>
-</dl>  
+</dl>
 
 <h3>Render tab</h3>
 
@@ -333,7 +333,7 @@
     The main reason display list rendering is not enabled by default is that
     the application may pause for a long time while OpenGL processes the
     list when it is first rendered; the amount of additional memory
-    consumed by the display list is also a problem for very large meshes.  
+    consumed by the display list is also a problem for very large meshes.
   </dd>
   <dt>Background colour</dt>
   <dd>
@@ -373,7 +373,7 @@
   </dd>
   <dt>Sea object</dt>
   <dd>
-    This tick-box causes a single sphere or infinite plane to generated 
+    This tick-box causes a single sphere or infinite plane to generated
     for the oceans <em>instead</em> of numerous individual triangles.
   </dd>
   <dt>Base filename</dt>
@@ -505,9 +505,9 @@
   The display window, when shown, shows the current
   (most recently generated) terrain model.
   It is hidden when terrain is being regenerated or saved.
-  The (badly named) &quot;tilt&quot; slider controls the latitude of the camera (when viewing a sphere-based object), 
-  and the elevation (as in azimuth-elevation) of the camera when viewing a planar based terrain area.  
-  Note that in the latter case the bottom half of the slider places the camera below base ground level/sea level, 
+  The (badly named) &quot;tilt&quot; slider controls the latitude of the camera (when viewing a sphere-based object),
+  and the elevation (as in azimuth-elevation) of the camera when viewing a planar based terrain area.
+  Note that in the latter case the bottom half of the slider places the camera below base ground level/sea level,
   which results in little being seen due to back-face culling.
   The &quot;spin rate&quot; controls the rate at which the object is rotated.
   The display window update rate is clamped to 60Hz, although this will typically
@@ -530,7 +530,7 @@
 <p>
   To ray-trace a saved terrain (saved as terrain.pov and terrain.inc, say) do:<br/>
   <code>povray -Q9 -geometry 768x576 terrain.pov</code><br/>
-  Expect to get MANY "determinant too small" messages, 
+  Expect to get MANY "determinant too small" messages,
   especially when using high degrees of subdivision.
   It used to take POV-Ray a LOT longer to read large models than
   to render them, but it seems to load much faster these days.
@@ -596,7 +596,7 @@
 <p>
   If you want to manipulate the terrain, and know a bit of Python,
   an easy way might be to edit the <code>.py</code> file;
-  at the start there are two functions defined: 
+  at the start there are two functions defined:
   <code>v</code> called to create each vertex
   and <code>f</code> called to create each face.
 </p>
@@ -612,7 +612,7 @@
   <a href="http://www.shatters.net/celestia/">Celestia</a>.
   (The author hasn't tried it himself yet; at time of writing Celestia
   is waiting to make it's way from Debian Unstable to Testing).
-  Celestia's texture formats are well documented at the 
+  Celestia's texture formats are well documented at the
   <a href="http://www.celestiamotherlode.net/catalog/documentation.html">Celestia Motherlode</a>,
   in particular by the <a href="http://www.lns.cornell.edu/~seb/celestia/textures.html">Virtual Surface Textures</a>
   document.
@@ -659,12 +659,12 @@
   modify it under the terms of the GNU General Public License
   as published by the Free Software Foundation; either version 2
   of the License, or (at your option) any later version.
-  
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.

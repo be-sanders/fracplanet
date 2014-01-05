@@ -19,13 +19,13 @@
   seems to help although some xservers seem to spew
     X Error: GLXBadLargeRequest.
   and give a blank view.  If this happens, increase the
-    Create/Colours/...emissive... 
+    Create/Colours/...emissive...
   spinbox from zero; this uses a different render path.
   [I did wonder if this was something to do with Ubuntu using
   the mesa GL libraries and Debian using the XFree86 versions:
     dpkg-query -S /usr/include/GL/gl.h
       Sarge:  xlibmesa-gl-dev: /usr/include/GL/gl.h
-      Dapper: mesa-common-dev: /usr/include/GL/gl.h 
+      Dapper: mesa-common-dev: /usr/include/GL/gl.h
   But building the package on Debian Etch against
     libgl1-mesa-dev,libglu1-mesa-dev,mesa-common-dev
   (add them into the yadda build dependencies in the mkdeb script)
@@ -40,9 +40,9 @@
 - Bear in mind that selecting display list rendering means a copy
   the GL system takes a copy of the triangle mesh.  This needs memory;
   if there isn't enough the application may crash (some drivers
-  may crash if the display list doesn't fit on the graphics card). 
+  may crash if the display list doesn't fit on the graphics card).
 
-- Base land height doesn't affect noise-only terrain 
+- Base land height doesn't affect noise-only terrain
   (when vertical perturbation is reduced to zero; probably because
   it's expressed as a proportion of vertical perturbation - should
   just be absolute).

@@ -31,16 +31,16 @@ public:
 
   // Constructor.  Argument is seed value.
   Random01(uint s=0);
-  
+
   //! Destructor.
   ~Random01();
-  
+
   // Return random number in 0-1 (don't think we care whether open interval or not).
   double operator()()
     {
       return _gen();
     }
-  
+
  private:
 
   boost::mt19937 _rng;

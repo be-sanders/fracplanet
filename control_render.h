@@ -41,7 +41,7 @@ class ControlRender : public Control
   ~ControlRender();
 
  public slots:
-    
+
   void setWireframe(int v);
   void setDisplayList(int v);
   void setJoystickMouse(int v);

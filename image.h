@@ -83,7 +83,7 @@ template <typename T> class Raster
 
   Raster(uint w,uint h,uint p,T* d)
     :_width(w)
-    ,_height(h) 
+    ,_height(h)
     ,_pitch(p)
     ,_data(d)
     ,_row_end(row_range(h),p)
@@ -170,61 +170,61 @@ template <typename T> class Raster
     public:
 
       RowIterator(const boost::iterator_range<T*>& row, uint p)
-	:_row(row)
-	,_pitch(p)
-	{}
+    :_row(row)
+    ,_pitch(p)
+    {}
 
       ~RowIterator()
-	{}
+    {}
 
       RowIterator& operator=(const RowIterator& it)
-	{
-	  _row=it._row;
-	  assert(_pitch==it._pitch);
-	  return (*this);
-	}
+    {
+      _row=it._row;
+      assert(_pitch==it._pitch);
+      return (*this);
+    }
 
       bool operator==(const RowIterator& it) const
-	{
-	  return _row.begin()==it._row.begin();
-	}
+    {
+      return _row.begin()==it._row.begin();
+    }
 
       bool operator!=(const RowIterator& it) const
-	{
-	  return _row.begin()!=it._row.begin();
-	}
+    {
+      return _row.begin()!=it._row.begin();
+    }
 
       RowIterator& operator++()
-	{
-	  _row=boost::iterator_range<T*>
-	    (
-	     _row.begin()+_pitch,
-	     _row.end()+_pitch
-	     );
-	  return (*this);
-	}
+    {
+      _row=boost::iterator_range<T*>
+        (
+         _row.begin()+_pitch,
+         _row.end()+_pitch
+         );
+      return (*this);
+    }
 
       RowIterator operator++(int)
-	{
-	  RowIterator tmp(*this);
-	  _row=boost::iterator_range<T*>
-	    (
-	     _row.begin()+_pitch,
-	     _row.end()+_pitch
-	     );
-	  return tmp;
-	}
+    {
+      RowIterator tmp(*this);
+      _row=boost::iterator_range<T*>
+        (
+         _row.begin()+_pitch,
+         _row.end()+_pitch
+         );
+      return tmp;
+    }
 
       boost::iterator_range<T*>& operator*()
-	{
-	  return _row;
-	}
+    {
+      return _row;
+    }
 
       boost::iterator_range<T*>* operator->()
-	{
-	  return &_row;
-	}
-      
+    {
+      return &_row;
+    }
+
     private:
 
       boost::iterator_range<T*> _row;
@@ -241,67 +241,67 @@ template <typename T> class Raster
     {
       return _row_end;
     }
-  
+
   class ConstRowIterator : public std::iterator<std::forward_iterator_tag, boost::iterator_range<const T*> >
     {
     public:
 
       ConstRowIterator(const boost::iterator_range<const T*>& row, uint p)
-	:_row(row)
-	,_pitch(p)
-	{}
+    :_row(row)
+    ,_pitch(p)
+    {}
 
       ~ConstRowIterator()
-	{}
+    {}
 
       ConstRowIterator& operator=(const ConstRowIterator& it)
-	{
-	  _row=it._row;
-	  assert(_pitch==it._pitch);
-	  return (*this);
-	}
+    {
+      _row=it._row;
+      assert(_pitch==it._pitch);
+      return (*this);
+    }
 
       bool operator==(const ConstRowIterator& it) const
-	{
-	  return _row.begin()==it._row.begin();
-	}
+    {
+      return _row.begin()==it._row.begin();
+    }
 
       bool operator!=(const ConstRowIterator& it) const
-	{
-	  return _row.begin()!=it._row.begin();
-	}
+    {
+      return _row.begin()!=it._row.begin();
+    }
 
       ConstRowIterator& operator++()
-	{
-	  _row=boost::iterator_range<const T*>
-	    (
-	     _row.begin()+_pitch,
-	     _row.end()+_pitch
-	     );
-	  return (*this);
-	}
+    {
+      _row=boost::iterator_range<const T*>
+        (
+         _row.begin()+_pitch,
+         _row.end()+_pitch
+         );
+      return (*this);
+    }
 
       ConstRowIterator operator++(int)
-	{
-	  ConstRowIterator tmp(*this);
-	  _row=boost::iterator_range<const T*>
-	    (
-	     _row.begin()+_pitch,
-	     _row.end()+_pitch
-	     );
-	  return tmp;
-	}
+    {
+      ConstRowIterator tmp(*this);
+      _row=boost::iterator_range<const T*>
+        (
+         _row.begin()+_pitch,
+         _row.end()+_pitch
+         );
+      return tmp;
+    }
 
       boost::iterator_range<const T*>& operator*()
-	{
-	  return _row;
-	}
+    {
+      return _row;
+    }
 
       boost::iterator_range<const T*>* operator->()
-	{
-	  return &_row;
-	}
-      
+    {
+      return &_row;
+    }
+
     private:
 
       boost::iterator_range<const T*> _row;
@@ -318,7 +318,7 @@ template <typename T> class Raster
     {
       return _const_row_end;
     }
-  
+
   //! Clear the image to a constant value.
   void fill(const T& v);
 
@@ -326,8 +326,8 @@ template <typename T> class Raster
 
   //! Fill a line segment on the given half-open range [x0,x1), interpolating between the two given values.
   void scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1);
-  
-  //! Variant scan, interpolates between two values then process them through function before 
+
+  //! Variant scan, interpolates between two values then process them through function before
   template <typename V> void scan(uint y,float x0,const V& v0,float x1,const V& v1,const boost::function<ComputeType (const V&)>& fn);
 
   bool write_ppmfile(const std::string&,Progress*) const;
@@ -355,14 +355,14 @@ template <typename T> class Raster
 template <typename T> inline void Raster<T>::scan(uint y,float x0,const ComputeType& v0,float x1,const ComputeType& v1)
 {
   assert(x0<=x1);
-  
+
   if (x1<0.5f || width()-0.5f<x0) return;  // Early out for spans off edges
-  
+
   const int ix_min=static_cast<int>(std::max(0.0f        ,ceilf(x0-0.5f)));
   const int ix_max=static_cast<int>(std::min(width()-0.5f,floorf(x1-0.5f)));
-  
+
   const ComputeType kv((v1-v0)/(x1-x0));
-  
+
   T*const row_ptr=row(y);
   for (int ix=ix_min;ix<=ix_max;ix++)
     {
@@ -374,14 +374,14 @@ template <typename T> inline void Raster<T>::scan(uint y,float x0,const ComputeT
 template <typename T> template <typename V> inline void Raster<T>::scan(uint y,float x0,const V& v0,float x1,const V& v1,const boost::function<ComputeType (const V&)>& fn)
 {
   assert(x0<=x1);
-  
+
   if (x1<0.5f || width()-0.5f<x0) return;  // Early out for spans off edges
-  
+
   const int ix_min=static_cast<int>(std::max(0.0f        ,ceilf(x0-0.5f)));
   const int ix_max=static_cast<int>(std::min(width()-0.5f,floorf(x1-0.5f)));
-  
+
   const V kv((v1-v0)/(x1-x0));
-  
+
   T*const row_ptr=row(y);
   for (int ix=ix_min;ix<=ix_max;ix++)
     {
@@ -410,7 +410,7 @@ template <typename T> class Image : private ImageStorage<T>, public Raster<T>, p
     ,Raster<T>(w,h,w,ImageStorage<T>::_storage.get())
     {}
   ~Image()
-    {}  
+    {}
 };
 
 #endif

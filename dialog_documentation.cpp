@@ -37,7 +37,7 @@ DialogDocumentation::DialogDocumentation(QWidget* parent)
   setSizeGripEnabled(true);
 
   setLayout(new QVBoxLayout());
-  
+
   QTextBrowser*const browser=new QTextBrowser();
   layout()->addWidget(browser);
   browser->setText(text);
@@ -50,9 +50,9 @@ DialogDocumentation::DialogDocumentation(QWidget* parent)
   ok->setDefault(true);
 
   connect(
-	  ok,SIGNAL(clicked()),
-	  this,SLOT(hide())
-	  );
+      ok,SIGNAL(clicked()),
+      this,SLOT(hide())
+      );
 }
 
 DialogDocumentation::~DialogDocumentation()

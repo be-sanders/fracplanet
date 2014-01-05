@@ -122,13 +122,13 @@ class GeometryFlat : public Geometry
     {
       return p.z;
     }
-  
+
   //! Setting a height is simply assigning to the z-coordinate.
   void set_height(XYZ& p,float v) const
     {
       p.z=v;
     }
-  
+
   //! The mid-point between two points is simply their average.
   const XYZ midpoint(const XYZ& v0,const XYZ& v1) const
     {
@@ -140,7 +140,7 @@ class GeometryFlat : public Geometry
     {
       return 0.0f;
     }
-  
+
   //! Returns unit z vector.  (Up is the same everywhere in this geometry).
   const XYZ up(const XYZ&) const
     {
@@ -217,8 +217,8 @@ class GeometrySpherical : public Geometry
 
       const XYZ m(0.5f*(v0+v1));
       return (h_av/m.magnitude())*m;
-    } 
-  
+    }
+
   //! Normalised latitude is 1.0 at the north pole, -1.0 at the south pole
   float normalised_latitude(const XYZ& p) const
     {
@@ -237,10 +237,10 @@ class GeometrySpherical : public Geometry
   const XYZ north(const XYZ& p) const
     {
       if (p.x==0.0f && p.y==0.0f)
-	return XYZ(0.0f,0.0f,0.0f);
+    return XYZ(0.0f,0.0f,0.0f);
       else
-	return (up(p)*east(p)).normalised();
-    }  
+    return (up(p)*east(p)).normalised();
+    }
 
   //! East is perpendicular to "up" and the polar vector.
   /*! \warning Returns zero vector at the poles
@@ -248,9 +248,9 @@ class GeometrySpherical : public Geometry
   const XYZ east(const XYZ& p) const
     {
       if (p.x==0.0f && p.y==0.0f)
-	return XYZ(0.0f,0.0f,0.0f);
+    return XYZ(0.0f,0.0f,0.0f);
       else
-	return (XYZ(0.0f,0.0f,1.0f)*up(p)).normalised();
+    return (XYZ(0.0f,0.0f,1.0f)*up(p)).normalised();
     }
 
   //! Add a random variation to a point.

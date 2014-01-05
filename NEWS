@@ -35,7 +35,7 @@ From release 0.3.0:
 
 From release 0.2.0:
  - Bump version number to 0.3.0
- - Different flat terrain types 
+ - Different flat terrain types
  - Blender export (faux alpha for clouds).
  - Internal changes (RGB to RGBA, overload alpha for emission)
  - Built in docs
@@ -70,7 +70,7 @@ From release 0.0.1:
  - Bump version number to 0.0.3 (0.0.2 omitted docs)
  - Add fracplanet.htm, fracplanet.css user documentation.
  - Minor changes to code (compiles on RH9)
- - Tweak doxygen.cfg 
+ - Tweak doxygen.cfg
  - Display list option
  - Frame rate display
  - VERSION and mktgz done evolvotron style

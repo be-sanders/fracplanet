@@ -44,7 +44,7 @@ protected:
 
   //! Number of table entries.
   enum {N=256};
-  
+
   int _p[2*N+2];
   XYZ _g[2*N+2];
 };

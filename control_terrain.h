@@ -34,7 +34,7 @@ class FracplanetMain;
 /*! \todo: Way too much stuff in this classes .h file. Shift it to the .cpp!
  */
 class ControlTerrain : public Control
-{ 
+{
  private:
 
   Q_OBJECT;
@@ -169,21 +169,21 @@ class ControlTerrain : public Control
   void setCloudsSubdivisionsUnlocked(bool f)
     {
       if (f)
-	{
-	  disconnect(
-		     subdivisions_spinbox,SIGNAL(valueChanged(int)),
-		     clouds_subdivisions_spinbox,SLOT(setValue(int))
-		     );
-	}
+    {
+      disconnect(
+             subdivisions_spinbox,SIGNAL(valueChanged(int)),
+             clouds_subdivisions_spinbox,SLOT(setValue(int))
+             );
+    }
       else
-	{
-	  clouds_subdivisions_spinbox->setValue(parameters_terrain->subdivisions);
-	  connect(
-		  subdivisions_spinbox,SIGNAL(valueChanged(int)),
-		  clouds_subdivisions_spinbox,SLOT(setValue(int))
-		  );
-		  
-	}
+    {
+      clouds_subdivisions_spinbox->setValue(parameters_terrain->subdivisions);
+      connect(
+          subdivisions_spinbox,SIGNAL(valueChanged(int)),
+          clouds_subdivisions_spinbox,SLOT(setValue(int))
+          );
+
+    }
     }
 
   void setCloudsEnabled(bool f)
@@ -218,7 +218,7 @@ class ControlTerrain : public Control
 
   QLabel* base_height_label;
   QSpinBox* base_height_spinbox;
-  
+
   QLabel* terrain_seed_label;
   QSpinBox* terrain_seed_spinbox;
   QLabel* subdivisions_label;
@@ -253,7 +253,7 @@ class ControlTerrain : public Control
   QSpinBox* snowline_slope_effect_spinbox;
   QLabel* snowline_glacier_effect_label;
   QSpinBox* snowline_glacier_effect_spinbox;
-  
+
   QLabel* rivers_label;
   QSpinBox* rivers_spinbox;
   QLabel* rivers_seed_label;

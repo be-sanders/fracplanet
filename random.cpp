@@ -26,7 +26,7 @@ Random01::Random01(uint s)
   ,_dist(0,1)
   ,_gen(_rng,_dist)
 {}
-  
+
 Random01::~Random01()
 {}
 

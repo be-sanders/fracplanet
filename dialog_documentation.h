@@ -17,7 +17,7 @@
 /*  along with Fracplanet.  If not, see <http://www.gnu.org/licenses/>.   */
 /**************************************************************************/
 
-/*! \file 
+/*! \file
   \brief Interface for class DialogDocumentation.
 */
 

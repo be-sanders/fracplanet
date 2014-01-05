@@ -34,13 +34,13 @@
 class XYZ
 {
  public:
-  
+
   float x;
   float y;
   float z;
 
   //! Null constructor.
-  /*! NB The components are not cleared to zero. 
+  /*! NB The components are not cleared to zero.
    */
   XYZ()
     {}
@@ -107,7 +107,7 @@ class XYZ
       z-=v.z;
     }
 
-  //! Assignment. 
+  //! Assignment.
   void assign(const XYZ& v)
     {
       x=v.x;
@@ -156,11 +156,11 @@ class XYZ
 inline const XYZ operator*(const XYZ& a,const XYZ& b)
 {
   return XYZ(
-	     a.y*b.z-a.z*b.y,
-	     a.z*b.x-a.x*b.z,
-	     a.x*b.y-a.y*b.x
-	     );
-} 
+         a.y*b.z-a.z*b.y,
+         a.z*b.x-a.x*b.z,
+         a.x*b.y-a.y*b.x
+         );
+}
 
 //! Dot product.
 /*! Perhaps a curious choice of operator but it works for me.
@@ -168,7 +168,7 @@ inline const XYZ operator*(const XYZ& a,const XYZ& b)
 inline float operator%(const XYZ& a,const XYZ& b)
 {
   return a.x*b.x+a.y*b.y+a.z*b.z;
-} 
+}
 
 //! Vector addition.
 inline const XYZ operator+(const XYZ& a,const XYZ& b)
@@ -184,7 +184,7 @@ inline const XYZ operator-(const XYZ& a,const XYZ& b)
 
 //! Multiplication by scalar.
 inline const XYZ operator*(float k,const XYZ& v)
-{  
+{
   return XYZ(k*v.x,k*v.y,k*v.z);
 }
 

@@ -21,7 +21,7 @@
 
 #include "triangle_mesh_viewer.h"
 
-/*! The viewer will be parented on the specified widget, 
+/*! The viewer will be parented on the specified widget,
   but with a Qt::Window flag to make it a top-level window
  */
 TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* param,const std::vector<const TriangleMesh*>& mesh,bool verbose)
@@ -83,7 +83,7 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
   spinrate_slider->setTickPosition(QSlider::TicksBothSides);
   spinrate_slider->setTracking(true);
   grid->addWidget(spinrate_box,1,0);
-  
+
   button_box=new QWidget();
   button_box->setLayout(new QVBoxLayout());
   grid->addWidget(button_box,1,1);
@@ -104,30 +104,30 @@ TriangleMeshViewer::TriangleMeshViewer(QWidget* parent,const ParametersRender* p
   spinrate_slider->setFocusPolicy(Qt::NoFocus);
 
   connect(
-	  tilt_slider,SIGNAL(valueChanged(int)),
-	  this,SLOT(set_tilt(int))
-	  );
+      tilt_slider,SIGNAL(valueChanged(int)),
+      this,SLOT(set_tilt(int))
+      );
   connect(
-	  spinrate_slider,SIGNAL(valueChanged(int)),
-	  this,SLOT(set_spinrate(int))
-	  );
+      spinrate_slider,SIGNAL(valueChanged(int)),
+      this,SLOT(set_spinrate(int))
+      );
   connect(
-	  fly_button,SIGNAL(clicked()),
-	  this,SLOT(fly())
-	  );
+      fly_button,SIGNAL(clicked()),
+      this,SLOT(fly())
+      );
   connect(
-	  reset_button,SIGNAL(clicked()),
-	  this,SLOT(reset())
-	  );
+      reset_button,SIGNAL(clicked()),
+      this,SLOT(reset())
+      );
 
   clock.reset(new QTime());
   clock->start();
   last_t=0;
 
-  QTimer*const timer=new QTimer(this);  
+  QTimer*const timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(tick()));
   timer->start(static_cast<int>(ceil(1000.0f/parameters->fps_target)));
-  
+
   setMouseTracking(true);  // To get moves regardless of button state
   display->setMouseTracking(true);
   setFocus();
@@ -215,7 +215,7 @@ void TriangleMeshViewer::wheelEvent(QWheelEvent* e)
     }
 }
 
-inline float signedsquare(float v) 
+inline float signedsquare(float v)
 {
   return (v<0.0f ? -v*v : v*v);
 }
@@ -287,7 +287,7 @@ void TriangleMeshViewer::tick()
 
   if (keypressed_arrow_up) camera_velocity+=120.0f*(0.03125f/480.0f);
   if (keypressed_arrow_down) camera_velocity-=120.0f*(0.03125f/480.0f);
-  
+
   //! \todo Replace cheesy rotation hacks with proper rotation matrices
 
   XYZ camera_right=(camera_forward*camera_up).normalised();

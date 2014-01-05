@@ -32,7 +32,7 @@ void fatal_error(const char* msg)
 
 void fatal_internal_error(const char* src_file,uint src_line)
 {
-  std::cerr 
+  std::cerr
     << "\n*** Fatal internal error in "
     << src_file
     << " at line "
@@ -43,7 +43,7 @@ void fatal_internal_error(const char* src_file,uint src_line)
 
 void constraint_violation(const char* test,const char* src_file,uint src_line)
 {
-  std::cerr 
+  std::cerr
     << "\n*** Constraint \""
     << test
     << "\" violated in file"

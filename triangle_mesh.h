@@ -33,17 +33,17 @@
   \brief Interface for class TriangleMesh.
 */
 
-//! Contains vertices and triangles of a triangle mesh.  
+//! Contains vertices and triangles of a triangle mesh.
 /*! Abstract base class because specific classes must specify a geometry.
   Not as general-purpose as it might be due to constraints imposed by OpenGL.
-  In particular, Triangle can have no attributes (e.g normal, colour) if a single 
+  In particular, Triangle can have no attributes (e.g normal, colour) if a single
   OpenGL call is to be made to draw all triangles, so this information is entirely associated with Vertex.
-  Two colours can be associated with each vertex 
+  Two colours can be associated with each vertex
   (required for fracplanet application to obtain sharp coastlines),
-  and it it a requirement for subclasses to sort triangles so that all 
+  and it it a requirement for subclasses to sort triangles so that all
   those before _triangle_switch_colour use vertex colour index 0,
   and those afterwards vertex colour index 1.
-  \todo The geometry() method is a mess.  
+  \todo The geometry() method is a mess.
   It would surely be better to have a Geometry* in the base class passed in via the constructor.
 */
 class TriangleMesh
@@ -52,7 +52,7 @@ public:
 
   //! Constructor.
   TriangleMesh(Progress* progress);
-  
+
   //! Destructor.
   virtual ~TriangleMesh();
 
@@ -106,7 +106,7 @@ public:
   void set_vertex_height(uint i,float h)
     {
       XYZ p(vertex(i).position());
-      geometry().set_height(p,h);   
+      geometry().set_height(p,h);
       vertex(i).position(p);
     }
 
@@ -115,11 +115,11 @@ public:
     {
       const Triangle& t=triangle(i);
       return minimum
-	(
-	 vertex_height(t.vertex(0)),
-	 vertex_height(t.vertex(1)),
-	 vertex_height(t.vertex(2))
-	 );
+    (
+     vertex_height(t.vertex(0)),
+     vertex_height(t.vertex(1)),
+     vertex_height(t.vertex(2))
+     );
     }
 
   //! Return maximum height of a triangle's vertices.
@@ -127,23 +127,23 @@ public:
     {
       const Triangle& t=triangle(i);
       return maximum
-	(
-	 vertex_height(t.vertex(0)),
-	 vertex_height(t.vertex(1)),
-	 vertex_height(t.vertex(2))
-	 );
+    (
+     vertex_height(t.vertex(0)),
+     vertex_height(t.vertex(1)),
+     vertex_height(t.vertex(2))
+     );
     }
 
   //! Return mean height of a triangle's vertices.
   float triangle_height_average(uint i) const
     {
       const Triangle& t=triangle(i);
-      return 
-	(
-	 vertex_height(t.vertex(0))
-	 +vertex_height(t.vertex(1))
-	 +vertex_height(t.vertex(2))
-	 )/3.0;
+      return
+    (
+     vertex_height(t.vertex(0))
+     +vertex_height(t.vertex(1))
+     +vertex_height(t.vertex(2))
+     )/3.0;
     }
 
   //! Compute and return the normal to a triangle
@@ -183,7 +183,7 @@ public:
 
   //! Perform a single subdivision pass with perturbations up to the specified size
   void subdivide(const XYZ& variation,uint level,uint levels);
-  
+
   //! Perform a number of subdivisions, possibly some unperturbed ("flat"), and halving the perturbation variation each iteration.
   void subdivide(uint subdivisions,uint flat_subdivisions,const XYZ& variation);
 
@@ -199,7 +199,7 @@ public:
   std::vector<Vertex> _vertex;
 
   //! The triangles of this mesh.
-  std::vector<Triangle> _triangle; 
+  std::vector<Triangle> _triangle;
 
   //! The index of the triangle at which we switch to the alternate colour.
   uint _triangle_switch_colour;
@@ -209,19 +209,19 @@ public:
 
   //! Pointer to the progress object to which progress reports should be made.
   Progress*const _progress;
-    
+
   //! Accessor.
   Vertex& vertex(uint i)
     {
       return _vertex[i];
     }
-  
+
   //! Accessor.
   Triangle& triangle(uint i)
     {
       return _triangle[i];
     }
-  
+
   //! Convenience wrapper with null test.
   void progress_start(uint steps,const std::string& info) const;
 
@@ -250,7 +250,7 @@ class TriangleMeshFlat : virtual public TriangleMesh
 
   //! Destructor.
   ~TriangleMeshFlat()
-    {}  
+    {}
 
   //! Returns the specific geometry.
   virtual const Geometry& geometry() const

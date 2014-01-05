@@ -45,7 +45,7 @@ class FracplanetMain : public QWidget,public Progress
   Q_OBJECT
 
  public:
- 
+
   FracplanetMain(QWidget* parent,QApplication* app,const boost::program_options::variables_map& opts,bool verbose);
   ~FracplanetMain();
 
@@ -53,12 +53,12 @@ class FracplanetMain : public QWidget,public Progress
   virtual void progress_stall(const std::string& reason);
   virtual void progress_step(uint step);
   virtual void progress_complete(const std::string&);
-  
+
  public slots:
-    
+
   //! Invoked by ControlTerrain to generate new TriangleMesh.
   void regenerate();
-  
+
   //! Invoked by ControlSave to save to file (POV-Ray format).
   void save_pov();
 
@@ -69,12 +69,12 @@ class FracplanetMain : public QWidget,public Progress
   void save_texture();
 
  private:
-  
+
   //! Control logging.
   const bool _verbose;
- 
+
   QApplication*const application;
-  
+
   //! Owned terrain.
   boost::scoped_ptr<const TriangleMeshTerrain> mesh_terrain;
 

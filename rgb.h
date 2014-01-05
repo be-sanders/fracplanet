@@ -72,7 +72,7 @@ template <typename T> class RGBA
       b+=v.b;
       a+=v.a;
     }
-  
+
   //! Colour subtraction.
   void operator-=(const RGBA& v)
     {
@@ -151,7 +151,7 @@ class ByteRGBA : public RGBA<uchar>
   ByteRGBA(uchar vr,uchar vg,uchar vb,uchar va)
     :RGBA<uchar>(vr,vg,vb,va)
     {}
-  
+
   //! Construct ByteRGBA from float RGBAs.
   /*! Components in the range [0.0,1.0] are scaled to [0,255].
    */
@@ -164,7 +164,7 @@ class ByteRGBA : public RGBA<uchar>
      static_cast<uchar>(255.0*clamped(c.a,0.0f,1.0f))
      )
     {}
-  
+
   std::ostream& write(std::ostream&) const;
   const std::string format_comma() const;
 };
@@ -184,7 +184,7 @@ public:
   FloatRGBA(const RGBA<float>& c)
     :RGBA<float>(c)
     {}
-  
+
   //! Initialise from separate components.
   FloatRGBA(float vr,float vg,float vb,float va)
     :RGBA<float>(vr,vg,vb,va)
@@ -196,7 +196,7 @@ public:
   explicit FloatRGBA(const RGBA<uchar>& c)
     :RGBA<float>(c.r/255.0f,c.g/255.0f,c.b/255.0,c.a/255.0)
     {}
-  
+
   //! Output method.
   std::ostream& write(std::ostream&) const;
 

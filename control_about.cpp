@@ -55,7 +55,7 @@ ControlAbout::ControlAbout(QApplication* app)
   layout()->addWidget(license);
   license->setReadOnly(true);
   license->setText(license_string);
- 
+
   QPushButton*const button_about_qt=new QPushButton("About Qt");
   layout()->addWidget(button_about_qt);
   connect(button_about_qt,SIGNAL(clicked()),app,SLOT(aboutQt()));

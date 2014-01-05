@@ -49,7 +49,7 @@ void TriangleMeshCloud::write_blender(std::ofstream& out,const ParametersSave& p
      );
 }
 
-namespace 
+namespace
 {
   class ScanConvertHelper : public ScanConvertBackend
   {
@@ -79,24 +79,24 @@ void TriangleMeshCloud::render_texture(Raster<uchar>& image) const
     {
       const Triangle& t=triangle(i);
       const boost::array<XYZ,3> vertex_positions
-	={{
-	  vertex(t.vertex(0)).position(),
-	  vertex(t.vertex(1)).position(),
-	  vertex(t.vertex(2)).position()
-	}};
+    ={{
+      vertex(t.vertex(0)).position(),
+      vertex(t.vertex(1)).position(),
+      vertex(t.vertex(2)).position()
+    }};
       const boost::array<float,3> vertex_colours
-	={{
-	  FloatRGBA(vertex(t.vertex(0)).colour(0)).a,
-	  FloatRGBA(vertex(t.vertex(1)).colour(0)).a,
-	  FloatRGBA(vertex(t.vertex(2)).colour(0)).a
-	}};
+    ={{
+      FloatRGBA(vertex(t.vertex(0)).colour(0)).a,
+      FloatRGBA(vertex(t.vertex(1)).colour(0)).a,
+      FloatRGBA(vertex(t.vertex(2)).colour(0)).a
+    }};
 
       ScanConvertHelper scan_convert_backend(image,vertex_colours);
       geometry().scan_convert
-	(
-	 vertex_positions,
-	 scan_convert_backend
-	 );
+    (
+     vertex_positions,
+     scan_convert_backend
+     );
     }
 }
 
@@ -147,32 +147,32 @@ void TriangleMeshCloud::do_cloud(const ParametersCloud& parameters)
       const float strength=r01()*(position.z<0.0 ? -M_PI : M_PI);
 
       for (uint j=0;j<vertices();j++)
-	{
-	  progress_step((100*step)/steps);
-	  step++;
-      
-	  const XYZ p(vertex(j).position());
-	  const XYZ pn=geometry().up(p);
-	  const float pna=pn%axis;
+    {
+      progress_step((100*step)/steps);
+      step++;
 
-	  if (pna>0.0f)  // Don't create same feature on other side of planet (actually the distance would be big so could drop this)
-	    {
-	      const float distance=(p-position).magnitude();
-	      const float rotation_angle=strength*exp(-10.0*distance);
-	      
-	      // Now rotate p about axis through position by the rotation angle
-	      // TODO: Optimise!  axis and position is the same for all points; we're constantly recomputing the basis change matrices.
-	      // Create a stateful version of Matrix34RotateAboutAxisThrough.
-	      vertex(j).position
-		(
-		 Matrix34RotateAboutAxisThrough(axis,rotation_angle,position)*p
-		 );
-	    }
-	}
+      const XYZ p(vertex(j).position());
+      const XYZ pn=geometry().up(p);
+      const float pna=pn%axis;
+
+      if (pna>0.0f)  // Don't create same feature on other side of planet (actually the distance would be big so could drop this)
+        {
+          const float distance=(p-position).magnitude();
+          const float rotation_angle=strength*exp(-10.0*distance);
+
+          // Now rotate p about axis through position by the rotation angle
+          // TODO: Optimise!  axis and position is the same for all points; we're constantly recomputing the basis change matrices.
+          // Create a stateful version of Matrix34RotateAboutAxisThrough.
+          vertex(j).position
+        (
+         Matrix34RotateAboutAxisThrough(axis,rotation_angle,position)*p
+         );
+        }
+    }
     }
 
   progress_complete("Weather systems completed");
-  
+
   _triangle_switch_colour=triangles();
 }
 

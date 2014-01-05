@@ -44,7 +44,7 @@ public:
 
   //! Numer of subdivisions (at the top level) which will be unperturbed
   uint subdivisions_unperturbed;
-  
+
   //! Maximum size of perturbations (z in vertical direction, x & y horizontally).
   XYZ variation;
 
@@ -59,16 +59,16 @@ public:
   float power_law;
 
   //! Normalised height of snowline at the equator.
-  float snowline_equator;  
+  float snowline_equator;
 
   //! Normalised height of snowline at the pole.
-  float snowline_pole;  
+  float snowline_pole;
 
   //! Power law for snowline.
-  float snowline_power_law;  
+  float snowline_power_law;
 
   //! Supresses snow on slopes.
-  float snowline_slope_effect;  
+  float snowline_slope_effect;
 
   //! When positive, rivers become glaciers.  When negative, rivers remain blue.
   float snowline_glacier_effect;
@@ -78,12 +78,12 @@ public:
 
   //! Random seed for river generation.
   uint rivers_seed;
-  
+
   //! Limit on lake size as a proportion of available surface.
   /*! When lakes (produced during the river-growing step) cover this fraction of the available terrain they become seas and no-longer need to find a drain.
    */
   float lake_becomes_sea;
-  
+
   //! Amount of emissive colour for oceans and rivers.
   float oceans_and_rivers_emissive;
 

@@ -92,11 +92,11 @@ class Matrix33
   //! Cofactor of an element
   float cofactor(uint row,uint col) const;
 
-  //! Determinant of matrix 
+  //! Determinant of matrix
   float determinant() const;
 
   //! Return inverse of matrix
-  const Matrix33 inverted() const; 
+  const Matrix33 inverted() const;
 };
 
 //! Multiplication by scalar
@@ -207,11 +207,11 @@ class Matrix33RotateAboutAxis : public Matrix33
 
       // The matrix which rotates identity basis to axis&orthos.  z axis goes to passed in axis
       const Matrix33 xyz_to_axis
-	(
-	 axis_ortho0,
-	 axis_ortho1,
-	 axis
-	 );
+    (
+     axis_ortho0,
+     axis_ortho1,
+     axis
+     );
 
       const Matrix33 axis_to_xyz(xyz_to_axis.inverted());
 

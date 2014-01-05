@@ -57,7 +57,7 @@ class TriangleMeshViewer : public QWidget
 
   void fly();
   void unfly();
-  
+
   void set_tilt(int v);
   void set_spinrate(int v);
 
@@ -83,10 +83,10 @@ class TriangleMeshViewer : public QWidget
 
   //! Slider controlling tilt
   QSlider* tilt_slider;
-  
+
   //! Container for fly and reset buttons
   QWidget* button_box;
-  
+
   //! Label and box arond the spin-rate slider.
   QGroupBox* spinrate_box;
 
@@ -116,7 +116,7 @@ class TriangleMeshViewer : public QWidget
   float object_rotation;
   float object_spinrate;
   //@}
-  
+
   //@{
   //! Key state
   bool keypressed_arrow_left;
@@ -141,13 +141,13 @@ class TriangleMeshViewer : public QWidget
 
   //! Interested in some button state
   void mouseReleaseEvent(QMouseEvent* e);
-  
+
   //! Interested in mouse position for steering
   void mouseMoveEvent(QMouseEvent* e);
 
   //! Interested in wheel for speed
   void wheelEvent(QWheelEvent* e);
-  
+
  private slots:
 
   void tick();

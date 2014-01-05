@@ -4,11 +4,11 @@
 #   sudo pbuilder yada devscripts lintian cdeboostrap (or debootstrap)
 # and maybe dpkg-sig.  Also:
 # set up for sudo
-# set up pbuilder with 
+# set up pbuilder with
 #   sudo emacs -nw /etc/pbuilderrc
 #   ...change MIRRORSITE & DEBSECSERVER
 #   sudo pbuilder create --distribution sarge/etch/whatever
-# and/or update with 
+# and/or update with
 #   sudo pbuilder update
 # Expect a lot of warnings re LOGNAME - see Debian bug Bug#275118
 
@@ -19,7 +19,7 @@ VER=`./VERSION`
 TARBALL=fracplanet-${VER}.tar.gz
 
 if [ ! -s ${TARBALL} ] ; then
-    echo "Could't find ${TARBALL}" ; 
+    echo "Could't find ${TARBALL}" ;
     exit ;
 fi
 
@@ -84,8 +84,8 @@ Architecture: any
 Depends: []
 Suggests: povray,blender
 Description: Fractal terrain generator
- Fracplanet generates random planets and terrain with oceans, 
- mountains, icecaps and rivers.  Parameters are specified interactively 
+ Fracplanet generates random planets and terrain with oceans,
+ mountains, icecaps and rivers.  Parameters are specified interactively
  and the results displayed using OpenGL.  The generated objects can be
  exported as geometry for Pov-Ray or Blender, or as textures.
 Install: sh
@@ -101,7 +101,7 @@ yada rebuild
 cd ..
 dpkg-source -b ${PROJECT}-${VER} ${TARBALLORIG}
 
-# Alternative but inferior approach is apparently to do 
+# Alternative but inferior approach is apparently to do
 #   dpkg-buildpackage -rfakeroot
 
 mkdir result

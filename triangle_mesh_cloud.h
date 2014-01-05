@@ -28,15 +28,15 @@
 #include "parameters_cloud.h"
 #include "triangle_mesh.h"
 
-//! This class holds all the cloud-related methods.  
-/*! It's intended to be used as a "mix-in", adding cloud generating 
+//! This class holds all the cloud-related methods.
+/*! It's intended to be used as a "mix-in", adding cloud generating
   functionality to cloud objects subclassed from simpler geometries.
   \todo Ugh!!!  This is really yucky use of multiple inheritance.  Better for these terrain types to have-a TriangleMesh.
  */
 class TriangleMeshCloud : virtual public TriangleMesh
 {
  public:
-  
+
   //! Constructor.
   TriangleMeshCloud(Progress* progress);
 

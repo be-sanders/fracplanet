@@ -24,7 +24,7 @@
 Matrix34RotateAboutAxisThrough::Matrix34RotateAboutAxisThrough(const XYZ& axis,float angle,const XYZ& pt)
 {
   assign
-    ( 
+    (
      Matrix34Translate(pt)
      *Matrix34(Matrix33RotateAboutAxis(axis,angle),XYZ(0.0f,0.0f,0.0f))
      *Matrix34Translate(-pt)

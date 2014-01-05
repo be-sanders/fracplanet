@@ -51,7 +51,7 @@ class Triangle
       _vertex[1]=t.vertex(1);
       _vertex[2]=t.vertex(2);
     }
-  
+
   //! Return a reference to the vertex because GL will want it's address
   const uint& vertex(uint i) const
     {

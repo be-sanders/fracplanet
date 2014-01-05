@@ -30,7 +30,7 @@
 //! Class to store vertex state information
 /*! There is no direct access to members.
   Should probably be a protected member class of TriangleMesh.
-  sizeof(Vertex) should ideally be 3*4+3*4+2*4=32 
+  sizeof(Vertex) should ideally be 3*4+3*4+2*4=32
  */
 class Vertex
 {
@@ -112,7 +112,7 @@ class Vertex
   XYZ _normal;
 
   //! Colours at vertex (could be a different colour in different triangles).
-  /*! By convention, in triangle meshes with emissive in use, we overload the alpha 
+  /*! By convention, in triangle meshes with emissive in use, we overload the alpha
     channel to indicate emissive (zero indicates emissive) shading is required.
     Actual alpha or emissive are therefore mutually exclusive (anticipate alpha for clouds, emissive for ground).
    */

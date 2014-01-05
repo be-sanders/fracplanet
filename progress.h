@@ -30,7 +30,7 @@
 class Progress
 {
  public:
-  
+
   virtual ~Progress();
 
   virtual void progress_start(uint steps,const std::string& info)

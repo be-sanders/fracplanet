@@ -1,11 +1,11 @@
 ABOUT
 =====
-Fracplanet generates random planets and terrain with oceans, 
-mountains, icecaps and rivers.  Parameters are specified interactively 
+Fracplanet generates random planets and terrain with oceans,
+mountains, icecaps and rivers.  Parameters are specified interactively
 and the results displayed using OpenGL.  The generated objects can be
 exported as Pov-Ray or Blender models, or as textures.
 
-It uses C++ (with STL and boost), Qt and OpenGL.  
+It uses C++ (with STL and boost), Qt and OpenGL.
 
 Home page: http://www.bottlenose.demon.co.uk/share/fracplanet
 
@@ -37,13 +37,13 @@ Either use the traditional
 (NB The configure script is NOT autoconf generated
 and none of the usual autoconf options work)
 
-Or just have both done for you by running 
+Or just have both done for you by running
   ./BUILD
 (which also adds $QTDIR/bin to the PATH while running the above commands;
 this may be useful on the many distros which don't have qmake in the default
 user path).
 
-NB In either case you almost certainly DO need your QTDIR 
+NB In either case you almost certainly DO need your QTDIR
 environment variable to be correctly defined.
 
 This will give you a "fracplanet" executable which you can run with
@@ -56,7 +56,7 @@ fracplanet.htm documentation built into the application.
 [The author primarily uses Debian Sarge these days].
 
 [Selden E Ball Jr reports that "FracPlanet v0.2 builds and runs
-with no errors under the current version of Cygwin for Windows. 
+with no errors under the current version of Cygwin for Windows.
 Of course, the appropriate optional software development subsets
 have to be installed."]
 
@@ -64,9 +64,9 @@ BUILD OPTIONS
 =============
 Qt's qmake builds the Makefile used to build the application
 so to change compile options you should mess with the fracplanet.pro
-(if you do change it, do a "make distclean" before 
+(if you do change it, do a "make distclean" before
 you rebuild to make sure Makefiles are rebuilt)
-or provide overrides on qmake's command line. 
+or provide overrides on qmake's command line.
 An example of how to do this is provided by the
   configure-custom
 script, but note that details may well be different on your system.
@@ -79,7 +79,7 @@ BUILD PROBLEMS
 - Recent versions of gcc may output a lot of warnings about Qt's
 lack of virtual destructors.  Don't worry about them.
 - For a Debian system with nvidia-glx installed it may be
-necessary to have nvidia-glx-dev installed when you build, otherwise 
+necessary to have nvidia-glx-dev installed when you build, otherwise
 the application may not function properly.  Note that binaries
 built in an nvidia-free pbuilder environment seem to run fine on an
 nvidia accelerated system.
@@ -90,27 +90,27 @@ User documentation is contained in fracplanet.htm and accessible
 from the ABout tab of the application while running.
 
 If you just want to dive in all you need to know is this:
-  
-After changing ANY of the terrain generation parameters, you must 
+
+After changing ANY of the terrain generation parameters, you must
 hit "regenerate" to create and display a new model.
 This keeps the random seeds for terrain and river generation the same.
-There are a couple of extra buttons which also change the random seed 
+There are a couple of extra buttons which also change the random seed
 for the terrain or river network before regenerating,
-Most of the parameter entry fields have tooltips on them which 
+Most of the parameter entry fields have tooltips on them which
 give an idea of what they're about.
 To begin with it's best to start by making small changes
 to most parameters, especially the number of subdivisions.
 
 PERFORMANCE
 ===========
-The biggest factor influencing performance (both generation and 
+The biggest factor influencing performance (both generation and
 display) is the degree of subdivision.  For 9 subdivisions
 (for a planet) around 260MB of memory is required.  10 subdivisions
 needs just over a gigabyte.  Needless to say, if it starts swapping,
 it's not pretty.
 On a 2.4GHz machine with a GeForce4 (well, an "MX") and the Nvidia OpenGL
 drivers display rates start to suffer around subdivision level 7 (for planets).
-A NVidia 5200 will get to the next level.  
+A NVidia 5200 will get to the next level.
 See the BUGS file for other issues.
 
 FSAA/MULTISAMPLING
@@ -121,7 +121,7 @@ fracplanet runs nicely antialiased simply by doing
 
 INSTALL
 =======
-Doing 
+Doing
   make install
 no longer attempts to do anything useful.
 The only build product is the executable "fracplanet";
