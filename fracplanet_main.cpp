@@ -287,65 +287,91 @@ void FracplanetMain::save_pov()
 }
 
 void FracplanetMain::save_blender()
-{
-  const QString selected_filename=QFileDialog::getSaveFileName
-    (
-     this,
-     "Blender",
-     ".",
-     "(*.py)"
-     );
-  if (selected_filename.isEmpty())
-    {
-      QMessageBox::critical(this,"Fracplanet","No file specified\nNothing saved");
-    }
-  else
-    {
-      viewer->hide();
+  {
+    const QString selected_filename=QFileDialog::getSaveFileName
+      (
+       this,
+       "Blender",
+       ".",
+       "(*.py)"
+       );
+    if (selected_filename.isEmpty())
+      {
+        QMessageBox::critical(this,"Fracplanet","No file specified\nNothing saved");
+      }
+    else
+      {
+        viewer->hide();
 
-      const std::string filename(selected_filename.toLocal8Bit());
-      std::ofstream out(filename.c_str());
+        const std::string filename(selected_filename.toLocal8Bit());
+        std::ofstream out(filename.c_str());
 
-      // Boilerplate
-      out << "#!BPY\n\n";
-      out << "import Blender\n";
-      out << "from Blender import NMesh, Material\n";
-      out << "\n";
-      out << "def v(mesh,x,y,z):\n";
-      out << "\tmesh.verts.append(NMesh.Vert(x,y,z))\n";
-      out << "\n";
-      out << "def f(mesh,material,v0,v1,v2,c0,c1,c2):\n";
-      out << "\tface=NMesh.Face()\n";
-      out << "\tface.transp=NMesh.FaceTranspModes.ALPHA\n";
-      out << "\tface.smooth=1\n";
-      out << "\tface.mat=material\n";
-      out << "\tface.v.append(mesh.verts[v0])\n";
-      out << "\tface.v.append(mesh.verts[v1])\n";
-      out << "\tface.v.append(mesh.verts[v2])\n";
-      out << "\tface.col.append(NMesh.Col(c0[0],c0[1],c0[2],c0[3]))\n";
-      out << "\tface.col.append(NMesh.Col(c1[0],c1[1],c1[2],c1[3]))\n";
-      out << "\tface.col.append(NMesh.Col(c2[0],c2[1],c2[2],c2[3]))\n";
-      out << "\tmesh.faces.append(face)\n";
-      out << "\n";
+        // Boilerplate
+        out <<
+            "#+\n"
+            "# Instructions for loading this model into Blender:\n"
+            "#\n"
+            "# Open a new Blender document. Get rid of the default cube, and any other\n"
+            "# extraneous stuff you don't want. Bring up a Text Editor window.\n"
+            "# Click the Open button. Select this .py file to load it into\n"
+            "# a new text block. Execute the text block with ALT-P. The recreated model\n"
+            "# should now be visible in the 3D view. You can now delete the text.\n"
+            "# block containing this script from the document. Save the document.\n"
+            "#-\n"
+            "\n";
+        out <<
+            "import bpy\n"
+            "import bmesh\n"
+            "from mathutils import \\\n"
+            "    Color\n"
+            "\n"
+            "bpy.ops.object.add(type = \"MESH\")\n"
+            "the_mesh_obj = bpy.context.active_object\n"
+            "the_mesh = the_mesh_obj.data\n"
+            "the_bmesh = bmesh.new()\n"
+            "color_layer = the_bmesh.loops.layers.color.new(\"Col\") # same name as used by Blender\n"
+            "\n"
+            "def v(x, y, z) :\n"
+            "  # adds a new vertex to the mesh.\n"
+            "    the_bmesh.verts.new((x, y, z))\n"
+            "#end v\n"
+            "\n";
+        out <<
+          "def f(material, v0, v1, v2, c0, c1, c2) :\n"
+          "  # adds a new face and associated vertex colours to the mesh.\n"
+          "    the_bmesh.verts.index_update()\n"
+          "    tface = the_bmesh.faces.new((the_bmesh.verts[v0], the_bmesh.verts[v1], the_bmesh.verts[v2]))\n"
+          "    tface.smooth = True\n"
+          "    tface.material_index = material\n"
+          "    colors = {v0 : Color(c0[:3]), v1 : Color(c1[:3]), v2 : Color(c2[:3])}\n"
+                 /* unfortunately, I can't do anything with alpha */
+          "    for l in tface.loops :\n"
+          "        l[color_layer] = colors[l.vert.index]\n"
+          "    #end for\n"
+          "#end f\n\n";
 
-      mesh_terrain->write_blender(out,parameters_save,parameters_terrain,"fracplanet");
-      if (mesh_cloud) mesh_cloud->write_blender(out,parameters_save,parameters_cloud,"fracplanet");
+        mesh_terrain->write_blender(out,parameters_save,parameters_terrain,"fracplanet");
+        if (mesh_cloud) mesh_cloud->write_blender(out,parameters_save,parameters_cloud,"fracplanet");
 
-      out << "Blender.Redraw()\n";
+        out <<
+            "the_bmesh.normal_update()\n"
+            "the_bmesh.to_mesh(the_mesh)\n"
+            "the_mesh.update()\n"
+            "bpy.context.scene.update()\n";
 
-      out.close();
+        out.close();
 
-      progress_dialog.reset(0);
+        progress_dialog.reset(0);
 
-      viewer->showNormal();
-      viewer->raise();
+        viewer->showNormal();
+        viewer->raise();
 
-      if (!out)
-    {
-      QMessageBox::critical(this,"Fracplanet","Errors ocurred while the files were being written.");
-    }
-    }
-}
+        if (!out)
+      {
+        QMessageBox::critical(this,"Fracplanet","Errors ocurred while the files were being written.");
+      }
+      }
+  } /*FracplanetMain::save_blender*/
 
 void FracplanetMain::save_texture()
 {

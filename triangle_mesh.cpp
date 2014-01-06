@@ -300,70 +300,64 @@ void TriangleMesh::write_povray(std::ofstream& out,bool exclude_alternate_colour
   If a colour is specified, use the vertex alpha to blend with it.
  */
 void TriangleMesh::write_blender(std::ofstream& out,const std::string& mesh_name,const FloatRGBA* faux_alpha) const
-{
-  std::auto_ptr<ByteRGBA> byte_faux_alpha;
-  if (faux_alpha) byte_faux_alpha=std::auto_ptr<ByteRGBA>(new ByteRGBA(*faux_alpha));
-
-  const uint steps=vertices()+triangles();
-  uint step=0;
-
   {
+    std::auto_ptr<ByteRGBA> byte_faux_alpha;
+    if (faux_alpha) byte_faux_alpha=std::auto_ptr<ByteRGBA>(new ByteRGBA(*faux_alpha));
+
+    const uint steps=vertices()+triangles();
+    uint step=0;
+
+    {
+      std::ostringstream msg;
+      msg << "Writing mesh " << mesh_name << " to Blender script file";
+      progress_start(100,msg.str());
+    }
+
+    out <<
+        "mat0 = bpy.data.materials.new(\"fracplanet0\")\n"
+        "mat0.diffuse_color = (0.0, 1.0, 0.0)\n"
+        "mat0.use_vertex_color_paint = True\n"
+        "bpy.ops.object.material_slot_add()\n"
+        "the_mesh_obj.material_slots[-1].material = mat0\n"
+        "mat1 = bpy.data.materials.new(\"fracplanet1\")\n"
+        "mat1.diffuse_color = (0.0, 0.0, 1.0)\n"
+        "mat1.use_vertex_color_paint = True\n"
+        "bpy.ops.object.material_slot_add()\n"
+        "the_mesh_obj.material_slots[-1].material = mat1\n";
+
+    for (uint v=0;v<vertices();v++)
+      {
+        step++;
+        progress_step((100*step)/steps);
+        out << "v(" << vertex(v).position().format_blender() << ")\n";
+      }
+
+    out << "\n";
+
+    for (uint t=0;t<triangles();t++)
+      {
+        step++;
+        progress_step((100*step)/steps);
+        const uint v0=triangle(t).vertex(0);
+        const uint v1=triangle(t).vertex(1);
+        const uint v2=triangle(t).vertex(2);
+        const uint c=(t<triangles_of_colour0() ? 0 : 1);
+        out
+      << "f("
+      << c << ", "
+      << v0 << ", "
+      << v1 << ", "
+      << v2 << ", "
+      << "(" << blender_alpha_workround(byte_faux_alpha.get(),vertex(v0).colour(c)).format_comma() << "), "
+      << "(" << blender_alpha_workround(byte_faux_alpha.get(),vertex(v1).colour(c)).format_comma() << "), "
+      << "(" << blender_alpha_workround(byte_faux_alpha.get(),vertex(v2).colour(c)).format_comma() << ")"
+      << ")\n";
+      }
+
     std::ostringstream msg;
-    msg << "Writing mesh " << mesh_name << " to Blender file";
-    progress_start(100,msg.str());
-  }
-
-  out << "mat0=Material.New()\n";
-  out << "mat0.rgbCol=[0.0,1.0,0.0]\n";
-  out << "mat0.mode=Material.Modes.VCOL_PAINT\n";
-  out << "\n";
-  out << "mat1=Material.New()\n";
-  out << "mat1.rgbCol=[0.0,0.0,1.0]\n";
-  out << "mat1.mode=Material.Modes.VCOL_PAINT\n";
-  out << "\n";
-  out << "m=NMesh.GetRaw()\n";
-  out << "m.materials.append(mat0)\n";
-  out << "m.materials.append(mat1)\n";
-  out << "m.hasVertexColours(1)\n";
-  out << "\n";
-
-  for (uint v=0;v<vertices();v++)
-    {
-      step++;
-      progress_step((100*step)/steps);
-      out << "v(m," << vertex(v).position().format_blender() << ")\n";
-    }
-
-  out << "\n";
-
-  for (uint t=0;t<triangles();t++)
-    {
-      step++;
-      progress_step((100*step)/steps);
-      const uint v0=triangle(t).vertex(0);
-      const uint v1=triangle(t).vertex(1);
-      const uint v2=triangle(t).vertex(2);
-      const uint c=(t<triangles_of_colour0() ? 0 : 1);
-      out
-    << "f(m,"
-    << c << ","
-    << v0 << ","
-    << v1 << ","
-    << v2 << ","
-    << "(" << blender_alpha_workround(byte_faux_alpha.get(),vertex(v0).colour(c)).format_comma() << "),"
-    << "(" << blender_alpha_workround(byte_faux_alpha.get(),vertex(v1).colour(c)).format_comma() << "),"
-    << "(" << blender_alpha_workround(byte_faux_alpha.get(),vertex(v2).colour(c)).format_comma() << ")"
-    << ")\n";
-    }
-
-  out << "\n";
-  out << "NMesh.PutRaw(m,\"" << mesh_name << "\",1)\n";
-  out << "\n";
-
-  std::ostringstream msg;
-  msg << "Wrote mesh " << mesh_name << " to Blender file";
-  progress_complete(msg.str());
-}
+    msg << "Wrote mesh " << mesh_name << " to Blender script file";
+    progress_complete(msg.str());
+  } /*TriangleMesh::write_blender*/
 
 ByteRGBA TriangleMesh::blender_alpha_workround(const ByteRGBA* f,const ByteRGBA& c)
 {
